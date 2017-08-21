@@ -1,0 +1,16 @@
+.\obj\input.o: ..\Action_User\input.c
+.\obj\input.o: ..\Action_User\input.h
+.\obj\input.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\obj\input.o: ..\Action_User\route_ctr.h
+.\obj\input.o: ..\Libraries\CMSIS\arm_math.h
+.\obj\input.o: ..\Libraries\CMSIS\core_cm4.h
+.\obj\input.o: ..\Libraries\CMSIS\core_cmInstr.h
+.\obj\input.o: ..\Libraries\CMSIS\core_cmFunc.h
+.\obj\input.o: ..\Libraries\CMSIS\core_cm4_simd.h
+.\obj\input.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\obj\input.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\obj\input.o: ..\Action_User\config.h
+.\obj\input.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h
+.\obj\input.o: ..\Libraries\CMSIS\stm32f4xx.h
+.\obj\input.o: ..\Libraries\CMSIS\core_cm4.h
+.\obj\input.o: ..\Libraries\CMSIS\system_stm32f4xx.h

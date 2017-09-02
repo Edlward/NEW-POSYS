@@ -187,12 +187,13 @@ void CS_Config(void)
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);                 //ICM20608G
 		
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;             
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12|GPIO_Pin_15;             
 	GPIO_Init(GPIOB, &GPIO_InitStructure);   
 	
 	/* Deselect : Chip Select high ---------*/
 	GPIO_SetBits(GPIOA, GPIO_Pin_4);
 	GPIO_SetBits(GPIOB, GPIO_Pin_12);
+	GPIO_SetBits(GPIOB, GPIO_Pin_15);
 }
 
 /**
@@ -422,5 +423,6 @@ void mRead(uint8_t* pBuffer, uint8_t ReadAddr, uint16_t NumByteToRead)
   /* Set chip select High at the end of the transmission */ 
   GPIO_SetBits(GPIOA,GPIO_Pin_4);
 }
-
 	#endif
+
+

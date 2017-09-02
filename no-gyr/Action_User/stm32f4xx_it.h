@@ -50,7 +50,11 @@
 /* Exported functions ------------------------------------------------------- */
 
 uint8_t getTimeFlag(void);
+int* GetVal(void);
+uint32_t getTimeCount(void);
 
+uint32_t* GetPos(void);
+uint8_t getFlagFinish(void);
 
 #endif /* __STM32F4xx_IT_H */
 

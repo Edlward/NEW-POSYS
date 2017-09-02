@@ -30,12 +30,12 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
+void RoughHandle(void);
+void TemporaryHandle(int start);
 uint8_t updateAngle(void);
 uint8_t adjustVDoff(three_axis *w);
-float KalmanFilterZAxis(float ordata);
 void WaitForUpdataVDoff(void);		
 double safe_atan2(double x,double y);			
-float KalmanFilterTAxis(float ordata);
 three_axis getAngle(void);
 void setAngle(float zAngle);
 void resetAngle(void);

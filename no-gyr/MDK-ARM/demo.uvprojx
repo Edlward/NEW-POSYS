@@ -411,6 +411,16 @@
               <FileType>1</FileType>
               <FilePath>..\Action_User\calculate.c</FilePath>
             </File>
+            <File>
+              <FileName>can.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Action_User\can.c</FilePath>
+            </File>
+            <File>
+              <FileName>elmo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Action_User\elmo.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

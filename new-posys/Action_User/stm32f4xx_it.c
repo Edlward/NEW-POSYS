@@ -132,8 +132,13 @@ void UART5_IRQHandler(void)
 	 
 }
 
-
-
+static int robotStart=0;
+void SetRobotStart(int val){
+	robotStart=val;
+}
+int GetRobotStart(void){
+	return robotStart;
+}
 void USART1_IRQHandler(void)
 {
 	uint8_t data;
@@ -162,6 +167,8 @@ void USART1_IRQHandler(void)
 			case 2:
 				if(data=='T')
 				  status++;
+				else if(data=='C')
+					status=4;
 				else
 					status=0;
 				break;
@@ -175,6 +182,25 @@ void USART1_IRQHandler(void)
 					default:
 						break;
 				}
+				break;
+			case 4:
+				if(data=='T')
+					status++;
+				else
+					status=0;
+				break;
+			case 5:
+				if(data=='0')
+					status++;
+				else
+					status=0;
+				break;
+			case 6:
+				if(data=='0')
+				{
+					SetRobotStart(1);
+				}
+					status=0;
 				break;
 			default:
 				status=0;

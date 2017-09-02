@@ -40,12 +40,12 @@ void init(void)
 	*/
 		
 	/* 陀螺仪加热电阻PWM初始化--------------------------*/
-	//pwm_init(999, 83);//此时PWM的频率为84MHz/(83+1)/(999+1)=1KHz
+	pwm_init(999, 83);//此时PWM的频率为84MHz/(83+1)/(999+1)=1KHz
 	/*
 	设置发生PWM的定时器TIM3的占空比
 	其引脚PB0连接加热电阻
 	*/
-	//ICM_HeatingPower(100);
+	ICM_HeatingPower(50);
 	/* SPI初始化---------------------------------------*/
 	//单轮模式时磁编码器的SPI初始化
 	SPI1_Init();
@@ -60,15 +60,13 @@ void init(void)
 	/* ICM20608G模块初始化-----------------------------------*/
 	ICM20608G_init();
 	///* 最下二乘法拟合零点漂移 */
-	//WaitForUpdataVDoff();
+	WaitForUpdataVDoff();
 	
 }
 
 int main(void)
 {
 	init();
-	uint8_t flag_initilize=0;
-	uint32_t delayTime=0;
 	static uint32_t cpuUsage;
 	while(1)
 	{
@@ -81,14 +79,17 @@ int main(void)
 			 test=ICM_ReadByte(ICM20608G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
 			#endif
 			/* 计算角度 */
-			flag_initilize=updateAngle();
+		  RoughHandle();
+      TemporaryHandle(GetRobotStart());
+		 if(GetRobotStart()){
+			updateAngle();
+			calculatePos();
+		 }
       /* 控制陀螺仪温度  */			
 		  temperature_control(42);
-			/* 计算坐标 */
-			calculatePos();
 			#ifndef DEBUG_ENABLE
 			/* 数据发送 */
-		 if(flag_initilize==1)
+		 if(GetRobotStart())
 					DataSend();
 			#endif
 		}

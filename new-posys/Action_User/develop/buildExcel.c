@@ -33,6 +33,8 @@
 static float *VDoff;
 static uint32_t *countnum_vdoff;
 static float **a_BasicFitting;
+float KalmanFilterZAxis(float ordata);
+float KalmanFilterTAxis(float ordata);
 /* Extern   variables ---------------------------------------------------------*/
 /* Extern   function prototypes -----------------------------------------------*/
 /* Private  function prototypes -----------------------------------------------*/
@@ -202,16 +204,20 @@ void UpdateVDoffTable(void)
 	icm_read_gyro_rate(&gyr_icm);
 	icm_read_temp(&temp_icm);
 
+	/* 新息自适应卡尔曼滤波，滤除角速度中的噪声 */
+	gyr_icm.z=KalmanFilterZAxis(gyr_icm.z);
+	temp_icm=KalmanFilterTAxis(temp_icm);
+	
   if(flag_wait_SetMin>200*60*5)
 	{
 		Table_VDoff_Temp(gyr_icm,temp_icm,
 										 Result, countnum);
 		circle_count++;								 
-		if(circle_count/12000+Min_TempTable<=TempTable_max)
-			temperature_control(circle_count/12000+Min_TempTable);
+		if(circle_count/24000+Min_TempTable<=TempTable_max)
+			temperature_control(circle_count/24000+Min_TempTable);
 		/*到达最高温度后再返回来*/
-		else if(TempTable_max+TempTable_max-circle_count/12000-Min_TempTable>=Min_TempTable)
-			temperature_control(TempTable_max+TempTable_max-circle_count/12000-Min_TempTable);
+		else if(TempTable_max+TempTable_max-circle_count/24000-Min_TempTable>=Min_TempTable)
+			temperature_control(TempTable_max+TempTable_max-circle_count/24000-Min_TempTable);
 		else
 			circle_count=0;
 		
@@ -239,5 +245,116 @@ void UpdateVDoffTable(void)
 		USART_OUT(USART1,"wait for initialization\r\n");
 		flag_wait_SetMin++;
 	}
+}
+
+
+float KalmanFilterZAxis(float ordata)
+{
+	uint8_t i;
+	
+  static double act_value=0;  //实际值
+  double predict;             //预测值
+  
+	static double P_last=0.1;   //上一次的预测误差
+	static double P_now;        //本次的预测误差
+	static double P_mid;        //对预测误差的预测
+	static double Kk;           //滤波增益系数
+	
+	static double Q=0.01;       //系统噪声
+	static double R=0.0002;      //测量噪声          
+	
+	static float IAE_st[50];    //记录的新息
+	double Cr=0;                //新息的方差
+   
+	predict=act_value;
+	
+	memcpy(IAE_st,IAE_st+1,196);
+	IAE_st[49]=ordata-predict;
+	
+	/* 新息的方差计算 */
+	Cr=0;
+	for(i=0;i<50;i++)
+	{
+		Cr=Cr+IAE_st[i]*IAE_st[i];
+	}
+	Cr=Cr/49.0f;
+	
+	
+	/* 预测本次的预测误差 */
+	P_mid=P_last+Q;
+	
+	/* 计算系数，求得输出值 */
+	Kk=P_mid/(P_mid+R);
+	act_value=predict+Kk*(ordata-predict);
+	
+	/* 更新预测误差 */
+	P_now=(1-Kk)*P_mid;
+	
+	/* 计算并调整系统噪声 */
+	Q=Kk*Kk*Cr;
+	
+	P_last=P_now;
+
+	/* 为提高滤波器的响应速度，减小滞后而设下的阈值 */
+	if(Kk>0.5)
+		act_value=ordata;
+	
+	return act_value;
+}
+
+
+
+float KalmanFilterTAxis(float ordata)
+{
+	uint8_t i;
+	
+  static double act_value=0;  //实际值
+  double predict;             //预测值
+  
+	static double P_last=0.1;   //上一次的预测误差
+	static double P_now;        //本次的预测误差
+	static double P_mid;        //对预测误差的预测
+	static double Kk;           //滤波增益系数
+	
+	static double Q=0.8;       //系统噪声
+	static double R=0.973067;      //测量噪声          
+	
+	static float IAE_st[50];    //记录的新息
+	double Cr=0;                //新息的方差
+	
+	predict=act_value;
+	
+	//相当于数组的左移
+	memcpy(IAE_st,IAE_st+1,196);
+	IAE_st[49]=ordata-predict;
+	
+	/* 新息的方差计算 */
+	Cr=0;
+	for(i=0;i<50;i++)
+	{
+		Cr=Cr+IAE_st[i]*IAE_st[i];
+	}
+	Cr=Cr/49.0;		//样本方差（不知道对不对，还要看原公式）
+	
+	/* 预测本次的预测误差 */
+	P_mid=P_last+Q;
+	
+	/* 计算系数，求得输出值 */
+	Kk=P_mid/(P_mid+R);
+	act_value=predict+Kk*(ordata-predict);
+	
+	/* 更新预测误差 */
+	P_now=(1-Kk)*P_mid;
+	
+	/* 计算并调整系统噪声 */
+	Q=Kk*Kk*Cr;
+	
+	P_last=P_now;
+
+	/* 为提高滤波器的响应速度，减小滞后而设下的阈值 */
+	if(Kk>0.5)
+		act_value=ordata;
+	
+	return act_value;
 }
 /************************ (C) COPYRIGHT 2016 ACTION *****END OF FILE****/

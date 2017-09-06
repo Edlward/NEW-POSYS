@@ -14,3 +14,4 @@
 .\szw_stm32f407\usart.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h
 .\szw_stm32f407\usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
 .\szw_stm32f407\usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\szw_stm32f407\usart.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h

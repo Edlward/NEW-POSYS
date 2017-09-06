@@ -1,4 +1,4 @@
---cpu=Cortex-M4 --fpu=SoftVFP
+--cpu=Cortex-M4.fp
 ".\szw_stm32f407\main.o"
 ".\szw_stm32f407\stm32f4xx_it.o"
 ".\szw_stm32f407\gpio.o"
@@ -7,6 +7,7 @@
 ".\szw_stm32f407\calculate.o"
 ".\szw_stm32f407\can.o"
 ".\szw_stm32f407\elmo.o"
+".\szw_stm32f407\dma.o"
 ".\szw_stm32f407\misc.o"
 ".\szw_stm32f407\stm32f4xx_adc.o"
 ".\szw_stm32f407\stm32f4xx_can.o"
@@ -38,6 +39,7 @@
 ".\szw_stm32f407\stm32f4xx_tim.o"
 ".\szw_stm32f407\stm32f4xx_usart.o"
 ".\szw_stm32f407\stm32f4xx_wwdg.o"
+"..\Libraries\dsplib\arm_cortexM4lf_math.lib"
 ".\szw_stm32f407\system_stm32f4xx.o"
 ".\szw_stm32f407\startup_stm32f4xx.o"
 --strict --scatter ".\SZW_STM32F407\demo.sct"

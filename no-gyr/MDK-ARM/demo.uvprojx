@@ -184,7 +184,7 @@
             <hadIRAM>1</hadIRAM>
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
-            <RvdsVP>1</RvdsVP>
+            <RvdsVP>2</RvdsVP>
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -335,9 +335,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--exceptions</MiscControls>
-              <Define>STM32F4XX, USE_STDPERIPH_DRIVER</Define>
+              <Define>STM32F4XX, USE_STDPERIPH_DRIVER,__FPU_PRESENT=1,__FPU_USED=1,ARM_MATH_CM4,__CC_ARM</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\Action_User;..\Libraries\CMSIS;..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\MDK-ARM;..\MAA;..\MAA\AHRS;..\MAA\MAA_Driver;..\Libraries\dsplib\Include;..\Libraries\dsplib;..\temp</IncludePath>
+              <IncludePath>..\;..\Action_User;..\Libraries\CMSIS;..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\MDK-ARM;..\MAA;..\MAA\AHRS;..\MAA\MAA_Driver;..\Libraries\dsplib\Include;..\Libraries\dsplib</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -420,6 +420,11 @@
               <FileName>elmo.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Action_User\elmo.c</FilePath>
+            </File>
+            <File>
+              <FileName>dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Action_User\dma.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -580,6 +585,11 @@
               <FileName>stm32f4xx_wwdg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_wwdg.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_cortexM4lf_math.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\Libraries\dsplib\arm_cortexM4lf_math.lib</FilePath>
             </File>
           </Files>
         </Group>

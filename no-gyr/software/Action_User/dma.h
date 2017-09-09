@@ -23,6 +23,6 @@ void USART_OUT_INT(const int32_t value) ;
 void USART_OUT_UINT(const uint32_t value) ;
 void USART_OUTF(const float value) ;
 void USART_OUT_CHAR(const char* value);
-
+void UART5DMAInit(uint32_t BaudRate);
 #endif /* __DMA_H */
 

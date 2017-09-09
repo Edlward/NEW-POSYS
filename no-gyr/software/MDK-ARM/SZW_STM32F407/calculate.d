@@ -22,3 +22,5 @@
 .\szw_stm32f407\calculate.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h
 .\szw_stm32f407\calculate.o: ..\Libraries\CMSIS\arm_math.h
 .\szw_stm32f407\calculate.o: ..\Libraries\CMSIS\core_cm4.h
+.\szw_stm32f407\calculate.o: ..\Action_User\dma.h
+.\szw_stm32f407\calculate.o: ..\Action_User\spi.h

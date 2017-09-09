@@ -5,7 +5,8 @@
 #include "elmo.h"
 #include "stm32f4xx_it.h"
 #include "arm_math.h"
-//#include "dma.h"
+#include "dma.h"
+#include "spi.h"
 
 void getJacobi(float *jacobi,const float angle);
 void   calculateK(const float angle,float K[3]);
@@ -92,7 +93,7 @@ void RungeKutta(float gRobot[3]){
   }
   
   for(int i=0;i<3;i++)
-  gRobot[i]=gRobot[i]+1.0/6.0*(K1[i]+2.0*K2[i]+2.0*K3[i]+K4[i]);
+  gRobot[i]=gRobot[i]+1.0f/6.0f*(K1[i]+2.0f*K2[i]+2.0f*K3[i]+K4[i]);
 
 }
 
@@ -140,68 +141,55 @@ void getJacobi(float *jacobi,const float angle){
 };
 
 void readSensorData(void){
+	static uint16_t data_last[3]={0,0};
 	
-		int64_t posTem[3]={0l,0l,0l};
-		int64_t tempData[3]={0l,0l,0l};
+	uint16_t data[3];
+	int16_t vell[3];
+	
+	const float wheel[3]={50.f,50.f,50.f};
+	
+	data[0]=SPI_ReadAS5045(0);
+	data[1]=SPI_ReadAS5045(1);
+	data[2]=SPI_ReadAS5045(2);
+	
+
+	vell[0]= (data[0]-data_last[0]);
+	vell[1]= (data[1]-data_last[1]);
 		
-		const float wheel[3]={50.f,50.f,50.f};
-		
-	  static int64_t posLast[3]={0,0,0};
-		static int velLast[3]={0,0,0};
-		static char initForPosLast=1;
-		
-		ReadActualPos(1);
-		ReadActualPos(2);
-		ReadActualPos(3);
-	  while(!getFlagFinish());
-		for(int i=0;i<3;i++){
-		  posTem[i]=GetPos()[i];
-			if(initForPosLast){
-				posLast[i]=posTem[i];
-			}
-		}
-		initForPosLast=0;
-		
-		for(int i=0;i<3;i++){
-			
-			tempData[i]=posTem[i]-posLast[i];//此处需为int64才不会发生泄漏
-			
-			//0到4294967296l
-			if(tempData[i]>=2147483648l)
-				tempData[i]-=4294967296l;
-			else if(tempData[i]<=-2147483648l)
-				tempData[i]+=4294967296l;
-			
-			if(abs_s(velLast[i])<=2&&abs_s(tempData[i])<=2){
-				tempData[i]=0;
-			}
-				velLast[i]=tempData[i];
-			
-			sensorData[i]=tempData[i]/STDPULSE*2.f*3.141592f*wheel[i]/PERIOD;
-		
-		}
-		
-		for(int i=0;i<3;i++)
-		posLast[i]=posTem[i];
-		
+	data_last[0]=data[0];
+	data_last[1]=data[1];
+	
+	/*看这个编码器的范围*/
+	if(vell[0]>2048)
+		vell[0]-=4096;
+	if(vell[0]<-2048)
+		vell[0]+=4096;
+	
+	if(vell[1]>2048)
+		vell[1]-=4096;
+	if(vell[1]<-2048)
+		vell[1]+=4096;
+
+	for(int i=0;i<3;i++)
+	sensorData[i]=vell[i]/STDPULSE*2.f*3.141592f*wheel[i]/PERIOD;
+
 }
 
 void debugMode(void){	
 		
-	  static float realRobot[3]={0.f,0.f,0.f};
+//	  static float realRobot[3]={0.f,0.f,0.f};
 		
 //		realRobot[0]=sqrt(3.f)/2.f*gRobot[0]+1.f/2.f*gRobot[1];
 //		realRobot[1]=sqrt(3.f)/2.f*gRobot[1]-1.f/2.f*gRobot[0];
 //		realRobot[2]=gRobot[2]/3.141592*180.f;
 //	
-  	USART_OUT_F(gRobot[0]);
-  	USART_OUT_F(gRobot[1]);
-   	USART_OUT_F(gRobot[2]);
-  	USART_OUT_F(gRobot2[0]);
-  	USART_OUT_F(gRobot2[1]);
-   	USART_OUT_F(gRobot2[2]);
-		USART_OUT(USART2,(uint8_t*)"\r\n");
-  	//USART_OUT_CHAR("\r\n");
+  	USART_OUTF(gRobot[0]);
+  	USART_OUTF(gRobot[1]);
+   	USART_OUTF(gRobot[2]);
+  	USART_OUTF(gRobot2[0]);
+  	USART_OUTF(gRobot2[1]);
+   	USART_OUTF(gRobot2[2]);
+  	USART_OUT_CHAR("\r\n");
 		
 
 }

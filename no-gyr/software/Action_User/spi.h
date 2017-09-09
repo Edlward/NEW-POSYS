@@ -15,6 +15,7 @@
 /* spi≈‰÷√∫Ø ˝-----------------------------------*/
 void SPI1_Init(void);	
 void SPI2_Init(void);
+void SPI3_Init(void);
 void CS_Config(void);
 void SPI1_SetSpeed(uint8_t SpeedSet); 				
 

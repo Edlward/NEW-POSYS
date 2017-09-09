@@ -5,7 +5,7 @@
 <h2>Tool Versions:</h2>
 IDE-Version: ¦ÌVision V5.24.2.0
 Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: 123 Administrator, 12, LIC=76FUH-WJ119-3MF9Q-NFINY-D8AHZ-XAFWT
+License Information: 123 Windows, HP Inc., LIC=UJWQD-8FAZU-8TL3P-MQ3L1-QQ66P-UP0ZU
  
 Tool Versions:
 Toolchain:       MDK-ARM Plus  Version: 5.24.1
@@ -21,13 +21,26 @@ Target DLL:      Segger\JL2CM3.dll V2.99.23.0
 Dialog DLL:      TCM.DLL V1.32.0.0
  
 <h2>Project:</h2>
-E:\grow\git\new-posys\new-posys\MDK-ARM\demo.uvprojx
+F:\grow\git\new-posys\new-posys\MDK-ARM\demo.uvprojx
 Project File Date:  08/21/2017
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'D:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'ACTION'
-".\SZW_STM32F407\demo.axf" - 0 Error(s), 0 Warning(s).
+compiling figurePos.c...
+compiling spi.c...
+compiling main.c...
+..\Action_User\main.c(70): warning:  #550-D: variable "cpuUsage"  was set but never used
+  	static uint32_t cpuUsage;
+..\Action_User\main.c: 1 warning, 0 errors
+compiling icm_20608_g.c...
+..\Action_User\baseConfig\icm_20608_g.c(35): warning:  #177-D: variable "i"  was declared but never referenced
+  		uint8_t i=0;
+..\Action_User\baseConfig\icm_20608_g.c: 1 warning, 0 errors
+linking...
+Program Size: Code=47060 RO-data=3584 RW-data=452 ZI-data=23764  
+FromELF: creating hex file...
+".\SZW_STM32F407\demo.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -41,7 +54,7 @@ Package Vendor: Keil
   D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

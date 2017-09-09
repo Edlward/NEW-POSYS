@@ -18,8 +18,6 @@
 //每圈脉冲数  顺时针为正
 #define STDPULSE 			4096.0f
 
-#define SIMULATION 
-
 #endif
 
 

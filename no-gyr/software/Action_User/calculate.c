@@ -128,20 +128,23 @@ void  calculateK(const float angle,float K[3]){
     K[i]=robotRate[i]*PERIOD;
 }
 
-void getJacobi(float *jacobi,const float angle){
-  jacobi[0]=-2.f/3.f*arm_sin_f32(angle);
-  jacobi[1]=-sqrt(3.f)/3.f*arm_cos_f32(angle)+1.f/3.f*arm_sin_f32(angle);
-  jacobi[2]=sqrt(3.f)/3.f*arm_cos_f32(angle)+1.f/3.f*arm_sin_f32(angle);
-  jacobi[3]=2.f/3.f*arm_cos_f32(angle);
-  jacobi[4]=-sqrt(3.f)/3.f*arm_sin_f32(angle)-1.f/3.f*arm_cos_f32(angle);
-  jacobi[5]=sqrt(3.f)/3.f*arm_sin_f32(angle)-1.f/3.f*arm_cos_f32(angle);
-  jacobi[6]=1.f/3.f/RADIUS1;
-  jacobi[7]=1.f/3.f/RADIUS2;
-  jacobi[8]=1.f/3.f/RADIUS3;
+void getJacobi(float *jacobi,const float a){
+	const float a1=2.0944f,a2=2.0944f;
+	const float d1=231.45f,d2=231.45f,d3=231.45f;
+  jacobi[0]=(d3*arm_cos_f32(a + a1) - d2*arm_cos_f32(a - a2))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+  jacobi[1]=-(d3*arm_cos_f32(a) - d1*arm_cos_f32(a - a2))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+  jacobi[2]=-(d1*arm_cos_f32(a + a1) - d2*arm_cos_f32(a))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+  jacobi[3]=(d3*arm_sin_f32(a + a1) - d2*arm_sin_f32(a - a2))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+  jacobi[4]=-(d3*arm_sin_f32(a) - d1*arm_sin_f32(a - a2))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+  jacobi[5]=-(d1*arm_sin_f32(a + a1) - d2*arm_sin_f32(a))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+  jacobi[6]=-arm_sin_f32(a1 + a2)/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+  jacobi[7]=arm_sin_f32(a2)/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+  jacobi[8]=arm_sin_f32(a1)/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
 };
 
 void readSensorData(void){
 	static uint16_t data_last[3]={0,0};
+	static int totalDistance[3]={0,0,0};
 	
 	uint16_t data[3];
 	int16_t vell[3];
@@ -155,9 +158,11 @@ void readSensorData(void){
 
 	vell[0]= (data[0]-data_last[0]);
 	vell[1]= (data[1]-data_last[1]);
+	vell[2]= (data[2]-data_last[2]);
 		
 	data_last[0]=data[0];
 	data_last[1]=data[1];
+	data_last[2]=data[2];
 	
 	/*看这个编码器的范围*/
 	if(vell[0]>2048)
@@ -169,7 +174,33 @@ void readSensorData(void){
 		vell[1]-=4096;
 	if(vell[1]<-2048)
 		vell[1]+=4096;
+	
+	if(vell[2]>2048)
+		vell[2]-=4096;
+	if(vell[2]<-2048)
+		vell[2]+=4096;
 
+	for(int i=0;i<3;i++)
+		totalDistance[i]+=vell[i];
+	
+
+	#ifdef CORRECT	
+			/*清0*/
+			if(getI()==1){
+				setI(0);
+				for(int i=0;i<3;i++)
+					totalDistance[i]=0;
+				USART_OUT_CHAR("finish\r\n");
+			/*发数*/
+			}else if(getI()==2){
+				setI(0);
+				for(int i=0;i<3;i++)
+					USART_OUTF(totalDistance[i]);
+				USART_OUT_CHAR("\r\n");
+			}
+				
+	#endif
+	
 	for(int i=0;i<3;i++)
 	sensorData[i]=vell[i]/STDPULSE*2.f*3.141592f*wheel[i]/PERIOD;
 
@@ -182,15 +213,16 @@ void debugMode(void){
 //		realRobot[0]=sqrt(3.f)/2.f*gRobot[0]+1.f/2.f*gRobot[1];
 //		realRobot[1]=sqrt(3.f)/2.f*gRobot[1]-1.f/2.f*gRobot[0];
 //		realRobot[2]=gRobot[2]/3.141592*180.f;
-//	
-  	USART_OUTF(gRobot[0]);
-  	USART_OUTF(gRobot[1]);
-   	USART_OUTF(gRobot[2]);
-  	USART_OUTF(gRobot2[0]);
-  	USART_OUTF(gRobot2[1]);
-   	USART_OUTF(gRobot2[2]);
-  	USART_OUT_CHAR("\r\n");
-		
+
+		#ifndef CORRECT
+			USART_OUTF(gRobot[0]);
+			USART_OUTF(gRobot[1]);
+			USART_OUTF(gRobot[2]);
+			USART_OUTF(gRobot2[0]);
+			USART_OUTF(gRobot2[1]);
+			USART_OUTF(gRobot2[2]);
+			USART_OUT_CHAR("\r\n");
+		#endif
 
 }
 

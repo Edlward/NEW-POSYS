@@ -24,8 +24,21 @@
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
 static uint8_t  flashdata[160*(TempTable_max-TempTable_min)];  //从flash中取出的数据
-static float    *Result;
-static uint32_t *countnum;
+
+/**
+  * @brief  从FLASH里得到的数据分两个部分，第一部分为数据区，第二部分为
+  *         计数区，该函数用于获得数据区的指针
+  * @param  None
+  * @retval Result : 指向flash数据区的指针
+  */
+float    *oldResult;
+/**
+  * @brief  从FLASH里得到的数据分两个部分，第一部分为数据区，第二部分为
+  *         计数区，该函数用于获得计数区的指针
+  * @param  None
+  * @retval Result : 指向flash计数区的指针
+  */
+uint32_t *oldCountNum;
 static uint8_t  flag=0;
 /* Extern   variables ---------------------------------------------------------*/
 /* Extern   function prototypes -----------------------------------------------*/
@@ -123,14 +136,14 @@ void Flash_Init(void)
 {
 	/* 读取FLASH中保存的数据，并将其存到内存(RAM)里 */
 	//static uint8_t  flashdata[160*(TempTable_max-TempTable_min)];  //从flash中取出的数据
-	Flash_Read(flashdata,16*10*(TempTable_max-TempTable_min));  //55-10 
+	Flash_Read(flashdata,16*10*(TempTable_max-TempTable_min));  //50-30
 	/* 一个温度可以分成10等分，每0.1度对应两个芯片，
 	  3个角速度，1个计数值，一共16字节 */
 	/* 分割数据段，将零漂值与计数值分开 */
-	Result=(float *)flashdata;
-	//一共160*45个字节,前120*45是角速度值,此处*30,
+	oldResult=(float *)flashdata;
+	//一共160*(TempTable_max-TempTable_min)个字节,前120*(TempTable_max-TempTable_min)是角速度值,此处*30,
 	//是因为已经转换成32位
-	countnum=(uint32_t *)(flashdata)+30*(TempTable_max-TempTable_min);
+	oldCountNum=(uint32_t *)(flashdata)+30*(TempTable_max-TempTable_min);
 	
 	/* 保护Flash数据 */
 	Flash_Encryp();
@@ -145,26 +158,7 @@ uint8_t *GetFlashArr(void)
 {
 	return flashdata;
 }
-/**
-  * @brief  从FLASH里得到的数据分两个部分，第一部分为数据区，第二部分为
-  *         计数区，该函数用于获得数据区的指针
-  * @param  None
-  * @retval Result : 指向flash数据区的指针
-  */
-float *GetResultArr(void)
-{
-	return Result;
-}
-/**
-  * @brief  从FLASH里得到的数据分两个部分，第一部分为数据区，第二部分为
-  *         计数区，该函数用于获得计数区的指针
-  * @param  None
-  * @retval Result : 指向flash计数区的指针
-  */
-uint32_t *GetCountArr(void)
-{
-	return countnum;
-}
+
 /**
   * @brief  获得FLASH是否需要更新的标志位
   *         

@@ -27,18 +27,17 @@ Project File Date:  08/21/2017
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'D:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'ACTION'
-compiling figurePos.c...
-compiling spi.c...
+compiling usart.c...
+..\Action_User\hardware\usart.c(68): warning:  #167-D: argument of type "int8_t *" is incompatible with parameter of type "char *restrict"
+  	sprintf(s,"%f\t",value);
+..\Action_User\hardware\usart.c: 1 warning, 0 errors
 compiling main.c...
 ..\Action_User\main.c(70): warning:  #550-D: variable "cpuUsage"  was set but never used
   	static uint32_t cpuUsage;
 ..\Action_User\main.c: 1 warning, 0 errors
-compiling icm_20608_g.c...
-..\Action_User\baseConfig\icm_20608_g.c(35): warning:  #177-D: variable "i"  was declared but never referenced
-  		uint8_t i=0;
-..\Action_User\baseConfig\icm_20608_g.c: 1 warning, 0 errors
+compiling figureAngle.c...
 linking...
-Program Size: Code=47060 RO-data=3584 RW-data=452 ZI-data=23764  
+Program Size: Code=34456 RO-data=1264 RW-data=428 ZI-data=23764  
 FromELF: creating hex file...
 ".\SZW_STM32F407\demo.axf" - 0 Error(s), 2 Warning(s).
 
@@ -54,7 +53,7 @@ Package Vendor: Keil
   D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

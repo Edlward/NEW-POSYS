@@ -154,7 +154,7 @@ void USART1_IRQHandler(void)
 				if(data=='A')
 				  status++;
 				else if(data=='S')
-					USART_OUT(USART1,(uint8_t*)"\r\nok");
+					USART_OUT(USART1,"\r\nok");
 				else
 					status=0;
 				break;

@@ -1,5 +1,5 @@
 Dependencies for Project 'demo', Target 'ACTION': (DO NOT MODIFY !)
-F (..\Action_User\main.c)(0x59B37E35)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib-I.\RTE\_ACTION-ID:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="524" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\main.o --omf_browse .\szw_stm32f407\main.crf --depend .\szw_stm32f407\main.d)
+F (..\Action_User\main.c)(0x59B4FFC4)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib-I.\RTE\_ACTION-ID:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="524" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\main.o --omf_browse .\szw_stm32f407\main.crf --depend .\szw_stm32f407\main.d)
 I (..\Libraries\CMSIS\stm32f4xx.h)(0x58962F06)
 I (..\Libraries\CMSIS\core_cm4.h)(0x58962F06)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x588B8344)
@@ -14,18 +14,18 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h)(0x58962F06)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x58962F06)
 I (..\Action_User\timer.h)(0x599ED5BF)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x58962F06)
-I (..\Action_User\stm32f4xx_it.h)(0x59AA1272)
+I (..\Action_User\stm32f4xx_it.h)(0x59B50087)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x588B8344)
 I (D:\Keil_v5\ARM\ARMCC\include\String.h)(0x588B8344)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h)(0x58962F06)
 I (..\Action_User\gpio.h)(0x597B353D)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x58962F06)
 I (..\Action_User\calculate.h)(0x59AA14B5)
-I (..\Action_User\config.h)(0x59B35BE4)
+I (..\Action_User\config.h)(0x59B5292D)
 I (..\Action_User\dma.h)(0x59B35B67)
 I (..\Action_User\spi.h)(0x59B37E35)
-F (..\Action_User\stm32f4xx_it.c)(0x59B35BB7)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib-I.\RTE\_ACTION-ID:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="524" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\stm32f4xx_it.o --omf_browse .\szw_stm32f407\stm32f4xx_it.crf --depend .\szw_stm32f407\stm32f4xx_it.d)
-I (..\Action_User\stm32f4xx_it.h)(0x59AA1272)
+F (..\Action_User\stm32f4xx_it.c)(0x59B4FFC4)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib-I.\RTE\_ACTION-ID:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="524" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\stm32f4xx_it.o --omf_browse .\szw_stm32f407\stm32f4xx_it.crf --depend .\szw_stm32f407\stm32f4xx_it.d)
+I (..\Action_User\stm32f4xx_it.h)(0x59B50087)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x58962F06)
 I (..\Libraries\CMSIS\stm32f4xx.h)(0x58962F06)
 I (..\Libraries\CMSIS\core_cm4.h)(0x58962F06)
@@ -43,7 +43,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h)(0x58962F06)
 I (..\Action_User\gpio.h)(0x597B353D)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h)(0x58962F06)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x58962F06)
-I (..\Action_User\config.h)(0x59B35BE4)
+I (..\Action_User\config.h)(0x59B5292D)
 F (..\Action_User\gpio.c)(0x594480CB)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib-I.\RTE\_ACTION-ID:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="524" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\gpio.o --omf_browse .\szw_stm32f407\gpio.crf --depend .\szw_stm32f407\gpio.d)
 I (..\Action_User\gpio.h)(0x597B353D)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h)(0x58962F06)
@@ -85,10 +85,10 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x58962F06)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x588B8344)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x588B8344)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h)(0x58962F06)
-F (..\Action_User\calculate.c)(0x59B3802B)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib-I.\RTE\_ACTION-ID:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="524" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\calculate.o --omf_browse .\szw_stm32f407\calculate.crf --depend .\szw_stm32f407\calculate.d)
+F (..\Action_User\calculate.c)(0x59BA1221)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib-I.\RTE\_ACTION-ID:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="524" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\calculate.o --omf_browse .\szw_stm32f407\calculate.crf --depend .\szw_stm32f407\calculate.d)
 I (..\Action_User\calculate.h)(0x59AA14B5)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x588B8344)
-I (..\Action_User\config.h)(0x59B35BE4)
+I (..\Action_User\config.h)(0x59B5292D)
 I (..\Action_User\usart.h)(0x59B01DDE)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x588B8344)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x599298A4)
@@ -99,7 +99,7 @@ I (..\Libraries\CMSIS\core_cmFunc.h)(0x58E0F747)
 I (..\Libraries\CMSIS\core_cm4_simd.h)(0x58E0F747)
 I (..\Libraries\CMSIS\system_stm32f4xx.h)(0x58962F06)
 I (..\Action_User\elmo.h)(0x599AD7A9)
-I (..\Action_User\stm32f4xx_it.h)(0x59AA1272)
+I (..\Action_User\stm32f4xx_it.h)(0x59B50087)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x58962F06)
 I (..\Action_User\timer.h)(0x599ED5BF)
 I (D:\Keil_v5\ARM\ARMCC\include\String.h)(0x588B8344)
@@ -142,7 +142,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h)(0x58962F06)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x58962F06)
 I (..\Action_User\timer.h)(0x599ED5BF)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x58962F06)
-I (..\Action_User\config.h)(0x59B35BE4)
+I (..\Action_User\config.h)(0x59B5292D)
 F (..\Libraries\STM32F4xx_StdPeriph_Driver\src\misc.c)(0x58962F06)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib-I.\RTE\_ACTION-ID:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="524" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\misc.o --omf_browse .\szw_stm32f407\misc.crf --depend .\szw_stm32f407\misc.d)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x58962F06)
 I (..\Libraries\CMSIS\stm32f4xx.h)(0x58962F06)

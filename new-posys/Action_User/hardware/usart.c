@@ -64,9 +64,9 @@ void USART1_Init(uint32_t BaudRate)
 
 void USART_OUT_F(float value)
 {
-	char s[20]={0};
+	int8_t s[20]={0};
 	sprintf(s,"%f\t",value);
-	USART_OUT(USART1,(uint8_t*)s);
+	USART_OUT(USART1,s);
 }
  /****************************************************************************
 * 名    称：void USART_OUT(USART_TypeDef* USARTx, uint8_t *Data,...)
@@ -82,7 +82,7 @@ void USART_OUT_F(float value)
 			"%d"	十进制	   USART_OUT(USART1, "a=%d",10)
 * 调用方法：无 
 ****************************************************************************/
-void USART_OUT(USART_TypeDef* USARTx,const uint8_t *Data,...){ 
+void USART_OUT(USART_TypeDef* USARTx,const int8_t *Data,...){ 
 	const char *s;
     int d;
     char buf[16];

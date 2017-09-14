@@ -27,9 +27,7 @@
 /* Exported functions ------------------------------------------------------- */
 void WaitForUpdataVDoff(void);
 void TempTablePrintf(float *result);
-float *GetVdoff_icmArr(void);
 float **GetVdoff_icmErrArr(void);
-uint32_t *GetCountnum_icmArr(void);
 void UpdateVDoffTable(void);
 #endif
 

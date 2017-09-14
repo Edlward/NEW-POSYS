@@ -1,0 +1,12 @@
+Board Information Report
+Filename     : Z:\Action\资料\硬件\新建文件夹\定位系统测试小板\定位系统测试小板\ICM模块\ICM模块.PcbDoc
+Date         : 2017/9/5
+Time         : 17:53:30
+Time Elapsed : 00:00:00
+
+Routing Information
+    Routing completion, 100.00%
+    Connections, 47
+    Connections routed, 47
+    Connections remaining, 0
+count : 4

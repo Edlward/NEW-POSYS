@@ -35,15 +35,15 @@ void ICM20608G_init(void)
 		uint8_t i=0;
 		uint8_t data=0xFF;
 		do{
-//			i++;
+			i++;
 			ICM_WriteByte(registers[order*2],registers[order*2+1]);
 			Delay_ms(1);
-//			Delay_ms(i);
-//			if(i>5)
-//			{
-//				USART_OUT(USART1,(uint8_t*)"init error");
-//				break;
-//			}
+			Delay_ms(i);
+			if(i>5)
+			{
+				USART_OUT(USART1,"init error");
+				break;
+			}
 			data=ICM_ReadByte(registers[order*2]);
 		}while(data!=registers[order*2+1]);
 	}

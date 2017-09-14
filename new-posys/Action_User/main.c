@@ -60,7 +60,7 @@ void init(void)
 	/* ICM20608G模块初始化-----------------------------------*/
 	ICM20608G_init();
 	///* 最下二乘法拟合零点漂移 */
-	WaitForUpdataVDoff();
+	//WaitForUpdataVDoff();
 	
 }
 

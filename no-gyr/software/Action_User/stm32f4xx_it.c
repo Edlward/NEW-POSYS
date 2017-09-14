@@ -117,37 +117,38 @@ void TIM4_IRQHandler(void)
 	}
 }
 
-void UART5_IRQHandler(void)
-{
-	//uint8_t data = 0;
-	if(USART_GetITStatus(UART5, USART_IT_RXNE)==SET)   
-	{
-		USART_ClearITPendingBit( UART5,USART_IT_RXNE);
-		//data=USART_ReceiveData(UART5);
-		
-	}
-	 
+static int gI=0;
+void setI(int val){
+	gI=val;
 }
-
-void USART2_IRQHandler(void)
-{
-	//uint8_t data = 0;
-	if(USART_GetITStatus(USART2, USART_IT_RXNE)==SET)   
-	{
-		USART_ClearITPendingBit( USART2,USART_IT_RXNE);
-		//data=USART_ReceiveData(UART5);
-		
-	}
-	 
+int getI(void){
+	return gI;
 }
-
 void USART1_IRQHandler(void)
 {
-	//uint8_t data = 0;
+	uint8_t data = 0;
+	static int i=0;
 	if(USART_GetITStatus(USART1, USART_IT_RXNE)==SET)   
 	{
 		USART_ClearITPendingBit( USART1,USART_IT_RXNE);
-		//data=USART_ReceiveData(USART1);
+		data=USART_ReceiveData(USART1);
+		switch(i){
+			
+			case 0:
+				if(data=='A')
+					i++;
+				else
+					i=0;
+				break;
+			case 1:
+				if(data=='1')
+					setI(1);
+				else if(data=='2')
+					setI(2);
+				else
+					i=0;
+				break;
+		}
 	}
 	else{
 		USART_ReceiveData(USART1);
@@ -156,16 +157,6 @@ void USART1_IRQHandler(void)
 }
 
 
-void USART3_IRQHandler(void)
-{
-	//uint8_t data = 0;
-	if(USART_GetITStatus(USART3, USART_IT_RXNE)==SET)   
-	{
-		USART_ClearITPendingBit( USART3,USART_IT_RXNE);
-		//data=USART_ReceiveData(USART3);
-	}
-	 
-}
 
 
 /**

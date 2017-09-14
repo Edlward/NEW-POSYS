@@ -55,7 +55,8 @@ uint32_t getTimeCount(void);
 
 uint32_t* GetPos(void);
 uint8_t getFlagFinish(void);
-
+void setI(int val);
+int getI(void);
 #endif /* __STM32F4xx_IT_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

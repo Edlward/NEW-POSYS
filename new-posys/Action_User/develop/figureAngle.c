@@ -28,9 +28,9 @@
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-static float *VDoff;
 static float **a_icm;
-static uint32_t *countnum_icm;
+extern float *oldResult;
+extern uint32_t *oldCountNum;
 static three_axis result_angle={0,0,0};
 static Quarternion quaternion={1,0,0,0};
 /* Extern   variables ---------------------------------------------------------*/
@@ -76,20 +76,17 @@ void RoughHandle(void)
 	
 	temp_icm=KalmanFilterT(temp_icm);
 	
-	/*获取零漂信息*/
-	VDoff=GetVdoff_icmArr();           //温度零漂表中的信息
-	countnum_icm=GetCountnum_icmArr(); //获取计数值
 	a_icm=GetVdoff_icmErrArr();        //最小二乘拟合的结果
 
 	/* 温度值转换成数组的序号来寻找温度零漂表里对应的值 */
 	convert=(int16_t)((temp_icm-TempTable_min)*10.0f/1.0f);
 	if((convert>=0&&convert<10*(TempTable_max-TempTable_min))
-	    &&countnum_icm[convert]>10           //表里的值得数量需要大于10
-	    &&countnum_icm[convert]!=0xffffffff) //表里面需要有值,原因flash默认都是1
+	    &&oldCountNum[convert]>10           //表里的值得数量需要大于10
+	    &&oldCountNum[convert]!=0xffffffff) //表里面需要有值,原因flash默认都是1
 	{
-		gyr_act.x=(gyr_icm.x-VDoff[convert]);
-		gyr_act.y=(gyr_icm.y-VDoff[convert+10*(TempTable_max-TempTable_min)]);
-		gyr_act.z=(gyr_icm.z-VDoff[convert+20*(TempTable_max-TempTable_min)]);
+		gyr_act.x=(gyr_icm.x-oldResult[convert]);
+		gyr_act.y=(gyr_icm.y-oldResult[convert+10*(TempTable_max-TempTable_min)]);
+		gyr_act.z=(gyr_icm.z-oldResult[convert+20*(TempTable_max-TempTable_min)]);
 	}
   else /* 当温度表里信息不理想时采用最小二乘法来拟合曲线参与零点漂移的计算  */
 	{
@@ -119,10 +116,14 @@ void TemporaryHandle(int start)
 			gyr_aver[index]=gyr_aver[index]*countTemp[index]/(countTemp[index]+1)+gyr_act.z/(countTemp[index]+1);
 		else
 			gyr_aver[index]=gyr_act.z;
+		
 			countTemp[index]++;
 	}else{
-		if(countTemp[index]>=10)
-		gyr_act.z=gyr_act.z-gyr_aver[index];
+		if(countTemp[index]>=10){
+			float proportion=(temp_icm-30.f)*10.0f-index;
+			/*分段插值*/
+			gyr_act.z=gyr_act.z-(gyr_aver[index]*(1-proportion)+gyr_aver[index+1]*proportion);
+		}
 	}
 }
 	
@@ -526,7 +527,7 @@ void DebugMode(void)
 	//gyr_act.z=gyr_act.z*57.29577f;
 	USART_OUT_F(gyr_act.z);
 	USART_OUT_F(result_angle.z);
-	USART_OUT(USART1,(uint8_t*)"\r\n");
+	USART_OUT(USART1,"\r\n");
 	#endif
 }
 

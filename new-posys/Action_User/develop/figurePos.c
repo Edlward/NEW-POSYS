@@ -166,7 +166,7 @@ void calculatePos(void)
 	#ifdef DEBUG_ENABLE
 	USART_OUT_F(posx);
 	USART_OUT_F(posy);
-	USART_OUT(USART1,(uint8_t*)"\r\n");
+	USART_OUT(USART1,"\r\n");
 	#endif
 }
 #endif

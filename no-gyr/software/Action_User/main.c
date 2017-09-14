@@ -17,7 +17,7 @@ void init(void)
 {
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);	
 	  
-	TIM_Init(TIM2,99,83,0,0);					//主周期定时5ms	
+	TIM_Init(TIM2,99,83,0,0);				
 	
 	SPI1_Init();
 	SPI2_Init();
@@ -37,8 +37,10 @@ int main(void)
 		while(getTimeFlag())
 		{
 			readSensorData();
+			#ifndef CORRECT
 			run();
-		  debugMode();
+			#endif
+			debugMode();
 			CPUUsage=getTimeCount();
 		}
 	}

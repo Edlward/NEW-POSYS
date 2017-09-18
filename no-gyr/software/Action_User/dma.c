@@ -161,12 +161,12 @@ void UART5DMAInit(uint32_t BaudRate)
 	NVIC_Init(&NVIC_InitStructure);
 }
 
-void DMA1_Stream7_IRQHandler(void)
+void DMA2_Stream7_IRQHandler(void)
 {
-	if(DMA_GetITStatus(DMA1_Stream7, DMA_IT_TCIF7) != RESET)
+	if(DMA_GetITStatus(DMA2_Stream7, DMA_IT_TCIF7) != RESET)
 	{
-		DMA_Cmd(DMA1_Stream7, DISABLE);
-		DMA_ClearITPendingBit(DMA1_Stream7, DMA_IT_TCIF7);
+		DMA_Cmd(DMA2_Stream7, DISABLE);
+		DMA_ClearITPendingBit(DMA2_Stream7, DMA_IT_TCIF7);
 	}
 }
 /* Exported function prototypes -----------------------------------------------*/

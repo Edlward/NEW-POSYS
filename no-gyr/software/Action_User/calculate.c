@@ -129,33 +129,42 @@ void  calculateK(const float angle,float K[3]){
 }
 
 void getJacobi(float *jacobi,const float a){
-	const float a1=2.0944f,a2=2.0944f;
-	const float d1=231.45f,d2=231.45f,d3=231.45f;
-  jacobi[0]=(d3*arm_cos_f32(a + a1) - d2*arm_cos_f32(a - a2))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
-  jacobi[1]=-(d3*arm_cos_f32(a) - d1*arm_cos_f32(a - a2))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
-  jacobi[2]=-(d1*arm_cos_f32(a + a1) - d2*arm_cos_f32(a))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
-  jacobi[3]=(d3*arm_sin_f32(a + a1) - d2*arm_sin_f32(a - a2))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
-  jacobi[4]=-(d3*arm_sin_f32(a) - d1*arm_sin_f32(a - a2))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
-  jacobi[5]=-(d1*arm_sin_f32(a + a1) - d2*arm_sin_f32(a))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
-  jacobi[6]=-arm_sin_f32(a1 + a2)/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
-  jacobi[7]=arm_sin_f32(a2)/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
-  jacobi[8]=arm_sin_f32(a1)/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+	const float a1=2.125811f,a2=2.097885f;
+	const float d1=35.69f,d2=35.69f,d3=35.69f;
+//  jacobi[0]=(d3*arm_cos_f32(a + a1) - d2*arm_cos_f32(a - a2))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+//  jacobi[1]=-(d3*arm_cos_f32(a) - d1*arm_cos_f32(a - a2))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+//  jacobi[2]=-(d1*arm_cos_f32(a + a1) - d2*arm_cos_f32(a))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+//  jacobi[3]=(d3*arm_sin_f32(a + a1) - d2*arm_sin_f32(a - a2))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+//  jacobi[4]=-(d3*arm_sin_f32(a) - d1*arm_sin_f32(a - a2))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+//  jacobi[5]=-(d1*arm_sin_f32(a + a1) - d2*arm_sin_f32(a))/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+//  jacobi[6]=-arm_sin_f32(a1 + a2)/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+//  jacobi[7]=arm_sin_f32(a2)/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+//  jacobi[8]=arm_sin_f32(a1)/(d2*arm_sin_f32(a2) - d1*arm_sin_f32(a1 + a2) + d3*arm_sin_f32(a1));
+  jacobi[0]=(d3*arm_cos_f32(a + a1) - d2*arm_cos_f32(a - a2))/(30.845981f - d1*arm_sin_f32(a1 + a2) + 30.332671f );
+  jacobi[1]=-(d3*arm_cos_f32(a) - d1*arm_cos_f32(a - a2))/(30.845981f - d1*arm_sin_f32(a1 + a2) + 30.332671f );
+  jacobi[2]=-(d1*arm_cos_f32(a + a1) - d2*arm_cos_f32(a))/(30.845981f - d1*arm_sin_f32(a1 + a2) + 30.332671f );
+  jacobi[3]=(d3*arm_sin_f32(a + a1) - d2*arm_sin_f32(a - a2))/(30.845981f - d1*arm_sin_f32(a1 + a2) + 30.332671f );
+  jacobi[4]=-(d3*arm_sin_f32(a) - d1*arm_sin_f32(a - a2))/(30.845981f - d1*arm_sin_f32(a1 + a2) + 30.332671f );
+  jacobi[5]=-(d1*arm_sin_f32(a + a1) - d2*arm_sin_f32(a))/(30.845981f - d1*arm_sin_f32(a1 + a2) + 30.332671f );
+  jacobi[6]=0.882947f/(30.845981f - d1*arm_sin_f32(a1 + a2) + 30.332671f );
+  jacobi[7]=0.864275f/(30.845981f - d1*arm_sin_f32(a1 + a2) + 30.332671f );
+  jacobi[8]=0.849893f/(30.845981f - d1*arm_sin_f32(a1 + a2) + 30.332671f );
 };
 
 void readSensorData(void){
 	static uint16_t data_last[3]={0,0};
 	static int totalDistance[3]={0,0,0};
+	static int iForStartErrorOfVell=0;
 	
 	uint16_t data[3];
 	int16_t vell[3];
 	
-	const float wheel[3]={50.f,50.f,50.f};
+	const float wheel[3]={25.395f,25.34f,25.4f};
 	
 	data[0]=SPI_ReadAS5045(0);
 	data[1]=SPI_ReadAS5045(1);
 	data[2]=SPI_ReadAS5045(2);
 	
-
 	vell[0]= (data[0]-data_last[0]);
 	vell[1]= (data[1]-data_last[1]);
 	vell[2]= (data[2]-data_last[2]);
@@ -198,11 +207,24 @@ void readSensorData(void){
 					USART_OUTF(totalDistance[i]);
 				USART_OUT_CHAR("\r\n");
 			}
+			
+//			USART_OUTF(vell[0]);
+//			USART_OUTF(vell[1]);
+//			USART_OUTF(vell[2]);
+//			USART_OUTF(totalDistance[0]);
+//			USART_OUTF(totalDistance[1]);
+//			USART_OUTF(totalDistance[2]);
+//			USART_OUT_CHAR("\r\n");
+			
 				
 	#endif
 	
-	for(int i=0;i<3;i++)
-	sensorData[i]=vell[i]/STDPULSE*2.f*3.141592f*wheel[i]/PERIOD;
+	iForStartErrorOfVell++;
+	if(iForStartErrorOfVell>100){
+		iForStartErrorOfVell=101;
+		for(int i=0;i<3;i++)
+		sensorData[i]=vell[i]/4096.f*2.f*3.141592f*wheel[i]/PERIOD;
+	}
 
 }
 
@@ -213,15 +235,48 @@ void debugMode(void){
 //		realRobot[0]=sqrt(3.f)/2.f*gRobot[0]+1.f/2.f*gRobot[1];
 //		realRobot[1]=sqrt(3.f)/2.f*gRobot[1]-1.f/2.f*gRobot[0];
 //		realRobot[2]=gRobot[2]/3.141592*180.f;
-
 		#ifndef CORRECT
-			USART_OUTF(gRobot[0]);
-			USART_OUTF(gRobot[1]);
-			USART_OUTF(gRobot[2]);
-			USART_OUTF(gRobot2[0]);
-			USART_OUTF(gRobot2[1]);
-			USART_OUTF(gRobot2[2]);
-			USART_OUT_CHAR("\r\n");
+			static int i=0;  
+		  switch(i)
+			{
+				case 0:
+					USART_OUT_F(gRobot[0]);
+					i++;
+					break;
+				case 1:
+					USART_OUT_F(gRobot[1]);
+					i++;
+					break;
+				case 2:
+					USART_OUT_F(gRobot[2]/3.141592*180.f);
+					i++;
+					break;
+				case 3:
+					USART_OUT_F(gRobot2[0]);
+					i++;
+					break;
+				case 4:
+					USART_OUT_F(gRobot2[1]);
+					i++;
+					break;
+				case 5:
+					USART_OUT_F(gRobot2[2]/3.141592*180.f);
+					i++;
+					break;
+				case 6:
+					USART_OUT(USART1,"\r\n");
+					i=0;
+					break;
+				case 7:
+					break;
+				case 8:
+					break;
+			
+			}
+			//USART_OUT_CHAR("\r\n");
+		#else
+			
+			
 		#endif
 
 }

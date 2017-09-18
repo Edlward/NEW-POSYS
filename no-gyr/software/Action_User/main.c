@@ -25,6 +25,7 @@ void init(void)
 	CS_Config();
 	
 	USART1_DMA_INIT();
+	
 
 }
 static uint8_t CPUUsage=0;

@@ -255,5 +255,5 @@ void USART_OUT_F(float value)
 {
 	char s[20]={0};
 	sprintf(s,"%f\t",value);
-	USART_OUT(USART2,(uint8_t*)s);
+	USART_OUT(USART1,(uint8_t*)s);
 }

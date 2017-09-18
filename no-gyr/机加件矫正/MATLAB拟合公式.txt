@@ -1,1 +1,3 @@
-sqrt((v1/4096*2*pi*r1+v2/4096*2*pi*r1*cos(a1/180*pi)+v3/4096*2*pi*r1*cos(a2/180*pi))^2+(v2/4096*2*pi*r1*sin(a1/180*pi)-v3/4096*2*pi*r1*sin(a2/180*pi))^2)
+sqrt((v1/4096*2*pi*r1+v2/4096*2*pi*r2*cos(a1/180*pi)+v3/4096*2*pi*r3*cos(a2/180*pi))^2+(v2/4096*2*pi*r2*sin(a1/180*pi)-v3/4096*2*pi*r3*sin(a2/180*pi))^2)=729
+
+(sqrt(729^2-(v2*r2*sin(a1)-v3*r3*sin(a2))^2)-(v2*r2*cos(a1)+v3*r3*cos(a2)))/r1

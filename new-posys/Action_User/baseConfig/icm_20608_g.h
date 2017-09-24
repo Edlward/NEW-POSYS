@@ -6,18 +6,20 @@
 #define REGISTERS 							30
 
 void ICM20608G_init(void);
+void I3G4250D_init(void);
+
 BOOL icm_check_whoami(void);
-void icm_get_gyro_data(short *data);
-void icm_get_accel_data(short *data);
+void icm_get_gyro_data(short *data1,short *data2);
+void icm_get_accel_data(short *data1,short *data2);
 
 void icm_update_temp(void);
 void icm_read_temp(float *data);
 
-void icm_read_gyro_rate(three_axis *gyro);
 void icm_update_gyro_rate(void);
-
 void icm_update_acc(void);
-void icm_read_accel_acc(three_axis *val);
+
+void icm_read_gyro_rate(gyro_t *data);
+void icm_read_accel_acc(gyro_t *val);
 
 void icm_get_temp(float *temp);
 

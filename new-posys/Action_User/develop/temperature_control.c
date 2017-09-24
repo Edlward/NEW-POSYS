@@ -4,7 +4,7 @@
 #include "stm32f4xx_gpio.h"
 #include "stm32f4xx_rcc.h"
 #include "config.h"
-#include "math.h"
+#include "arm_math.h"
 #include "usart.h"
 
 
@@ -48,10 +48,10 @@ void temp_pid_ctr(float val_ex,float val_or)
 	#define Kd  0.02f
 	*/
 	/*积分量的阈值*/
-	if(err_sum[ch]>70.0f/Ki)
-		err_sum[ch]=70.0f/Ki;
-	if(err_sum[ch]<-70.0f/Ki)
-		err_sum[ch]=-70.0f/Ki;
+	if(err_sum[ch]>70.0f/Ki_summer)
+		err_sum[ch]=70.0f/Ki_summer;
+	if(err_sum[ch]<-70.0f/Ki_summer)
+		err_sum[ch]=-70.0f/Ki_summer;
 			
 	if(ctr<0)
 	{
@@ -59,7 +59,7 @@ void temp_pid_ctr(float val_ex,float val_or)
 	}
 	else
 	{
-		ctr=Kp*err+Ki*err_sum[ch]+Kd*err_v;
+		ctr=Kp_summer*err+Ki_summer*err_sum[ch]+Kd_summer*err_v;
 	}
 	/*调节上限*/
 	if(ctr>100)
@@ -76,6 +76,30 @@ void temp_pid_ctr(float val_ex,float val_or)
 	 ICM_HeatingPower(ctr);
 	}
 }
+
+int TempErgodic(float minTemp,float scale,int minute){
+
+	static uint32_t circle_count=0;
+	static uint8_t flag=0;
+	
+	switch(flag){
+		case 0:
+			circle_count++;
+			temperature_control(minTemp+scale*circle_count*PERIOD/(float)minute/60.f);
+			break;
+		case 1:
+			circle_count--;
+			temperature_control(minTemp+scale*circle_count*PERIOD/(float)minute/60.f);
+			break;
+	}
+	if(circle_count==(int)minute*60.f/PERIOD){
+		flag=1;
+	}else if(circle_count==0){
+		flag=3;
+	}
+	return flag;
+}
+
 
 //PB015
 /**
@@ -116,7 +140,6 @@ void pwm_init(uint32_t arr,uint32_t psc)
 	
 	TIM_TimeBaseInit(TIM3,&TIM_TimeBaseStructure);//初始化定时器3
 
-	
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1; //选择定时器模式:TIM脉冲宽度调制模式1       
  	TIM_OCInitStructure.TIM_Pulse=1000*0.05;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable; //比较输出使能

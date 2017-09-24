@@ -1,0 +1,12 @@
+.\szw_stm32f407\quarternion.o: ..\Action_User\math\quarternion.c
+.\szw_stm32f407\quarternion.o: ..\Libraries\CMSIS\arm_math.h
+.\szw_stm32f407\quarternion.o: ..\Libraries\CMSIS\core_cm4.h
+.\szw_stm32f407\quarternion.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\szw_stm32f407\quarternion.o: ..\Libraries\CMSIS\core_cmInstr.h
+.\szw_stm32f407\quarternion.o: ..\Libraries\CMSIS\core_cmFunc.h
+.\szw_stm32f407\quarternion.o: ..\Libraries\CMSIS\core_cm4_simd.h
+.\szw_stm32f407\quarternion.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\szw_stm32f407\quarternion.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\szw_stm32f407\quarternion.o: ..\Action_User\develop\figureAngle.h
+.\szw_stm32f407\quarternion.o: ..\Action_User\baseConfig\config.h
+.\szw_stm32f407\quarternion.o: ..\Action_User\baseConfig\icm_20608_g.h

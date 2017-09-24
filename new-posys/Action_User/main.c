@@ -21,14 +21,13 @@
 #include "flash.h"
 #include "icm_20608_g.h"
 #include "figureAngle.h"
-#include "figurePos.h"
 #include "buildExcel.h"
 #include "customer.h"
-
+#include "config.h"
 void init(void)
 {
 	NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
-	TIM_Init(TIM2,999,83,0,0);					//主周期定时5ms	
+	TIM_Init(TIM2,99,83,0,0);					//主周期定时5ms	
 	/* 定时器初始化--------------------------------------*/
 	/*
 	时钟的周期设置.溢出时间Tout=(4999+1)*(83+1)/Tclk(时钟频率)(s)
@@ -41,11 +40,11 @@ void init(void)
 		
 	/* 陀螺仪加热电阻PWM初始化--------------------------*/
 	pwm_init(999, 83);//此时PWM的频率为84MHz/(83+1)/(999+1)=1KHz
+	ICM_HeatingPower(0);
 	/*
 	设置发生PWM的定时器TIM3的占空比
 	其引脚PB0连接加热电阻
 	*/
-	ICM_HeatingPower(50);
 	/* SPI初始化---------------------------------------*/
 	//单轮模式时磁编码器的SPI初始化
 	SPI1_Init();
@@ -56,11 +55,11 @@ void init(void)
 	/* 初始化FLASH为温度表修正做准备-------------------*/
 	Flash_Init();
 	/* 串口初始化--------------------------------------*/
-	USART1_Init(115200);
+	USART6_Init(921600);
+	USART1_Init(921600);
 	/* ICM20608G模块初始化-----------------------------------*/
 	ICM20608G_init();
-	///* 最下二乘法拟合零点漂移 */
-	//WaitForUpdataVDoff();
+	/* 最下二乘法拟合零点漂移 */
 	
 }
 
@@ -75,22 +74,30 @@ int main(void)
 		if(!GetFlashUpdataFlag())
 		{	
 			#ifdef HD_TEST //硬件测试，判断焊接是否正常
-			uint8_t test;
-			 test=ICM_ReadByte(ICM20608G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
+			uint8_t test[3];
+			test[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
+			test[1]=SPI_Read(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
+			test[2]=SPI_Read(SPI2,GPIOB,GPIO_Pin_12,I3G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
 			#endif
+		//	PWMTest(0);
+			if(TempErgodic(30,20,20)!=3)
+				Test(0);
+			else
+				Test(1);
+			
+			//test[2]=GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_1);
 			/* 计算角度 */
-		  RoughHandle();
-      TemporaryHandle(GetRobotStart());
-		 if(GetRobotStart()){
-			updateAngle();
-			calculatePos();
-		 }
+		//  RoughHandle();
+   //   TemporaryHandle(GetCommand());
+//		 if(GetCommand()){
+//			updateAngle();
+//		 }
       /* 控制陀螺仪温度  */			
-		  temperature_control(42);
+		  //temperature_control(42);
 			#ifndef DEBUG_ENABLE
 			/* 数据发送 */
-		 if(GetRobotStart())
-					DataSend();
+//		 if(GetCommand())
+//					DataSend();
 			#endif
 		}
 		else
@@ -99,7 +106,7 @@ int main(void)
       UpdateVDoffTable();
 		}
 		//真实的占空比会等于cpuUsage或大于其一个单位
-		cpuUsage=getTimeCount()*100/PERIOD;
+		cpuUsage=getTimeCount();
 	}
 	}
 }

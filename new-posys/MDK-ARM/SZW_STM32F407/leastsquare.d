@@ -1,0 +1,11 @@
+.\szw_stm32f407\leastsquare.o: ..\Action_User\math\leastSquare.c
+.\szw_stm32f407\leastsquare.o: ..\Libraries\CMSIS\arm_math.h
+.\szw_stm32f407\leastsquare.o: ..\Libraries\CMSIS\core_cm4.h
+.\szw_stm32f407\leastsquare.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\szw_stm32f407\leastsquare.o: ..\Libraries\CMSIS\core_cmInstr.h
+.\szw_stm32f407\leastsquare.o: ..\Libraries\CMSIS\core_cmFunc.h
+.\szw_stm32f407\leastsquare.o: ..\Libraries\CMSIS\core_cm4_simd.h
+.\szw_stm32f407\leastsquare.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\szw_stm32f407\leastsquare.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\szw_stm32f407\leastsquare.o: ..\Action_User\math\leastSquare.h
+.\szw_stm32f407\leastsquare.o: ..\Action_User\baseConfig\config.h

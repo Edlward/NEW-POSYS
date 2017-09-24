@@ -16,7 +16,7 @@
 /* Includes -------------------------------------------------------------------*/
 #include "action_math.h"
 #include "action_matrix.h"
-#include "math.h"
+#include "arm_math.h"
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
@@ -42,7 +42,7 @@ void BasicFitting_th(uint8_t num)
   * @param  val_y: y×ø±ê
   * @retval none
   */
-void ordata_input(float val_x,float val_y,float val_y1,float val_y2)
+void measureData_input(float val_x,float val_y,float val_y1,float val_y2)
 {
 	for(uint8_t row=0;row<(BasicFittingA->get_row());row++)
 	{

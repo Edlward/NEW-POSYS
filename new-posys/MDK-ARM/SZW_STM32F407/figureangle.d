@@ -18,5 +18,7 @@
 .\szw_stm32f407\figureangle.o: ..\Action_User\develop\temperature_control.h
 .\szw_stm32f407\figureangle.o: ..\Action_User\develop\buildExcel.h
 .\szw_stm32f407\figureangle.o: ..\Action_User\customer\customer.h
-.\szw_stm32f407\figureangle.o: ..\Action_User\develop\figurePos.h
+.\szw_stm32f407\figureangle.o: ..\Libraries\CMSIS\arm_math.h
+.\szw_stm32f407\figureangle.o: ..\Libraries\CMSIS\core_cm4.h
 .\szw_stm32f407\figureangle.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\szw_stm32f407\figureangle.o: ..\Action_User\math\quarternion.h

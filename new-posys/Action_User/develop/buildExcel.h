@@ -25,9 +25,7 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void WaitForUpdataVDoff(void);
-void TempTablePrintf(float *result);
-float **GetVdoff_icmErrArr(void);
+void UpdataExcel(void);
 void UpdateVDoffTable(void);
 #endif
 

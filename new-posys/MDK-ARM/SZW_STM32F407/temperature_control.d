@@ -14,6 +14,9 @@
 .\szw_stm32f407\temperature_control.o: ..\Libraries\CMSIS\system_stm32f4xx.h
 .\szw_stm32f407\temperature_control.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h
 .\szw_stm32f407\temperature_control.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h
+.\szw_stm32f407\temperature_control.o: ..\Libraries\CMSIS\arm_math.h
+.\szw_stm32f407\temperature_control.o: ..\Libraries\CMSIS\core_cm4.h
+.\szw_stm32f407\temperature_control.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\szw_stm32f407\temperature_control.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\szw_stm32f407\temperature_control.o: ..\Action_User\hardware\usart.h
 .\szw_stm32f407\temperature_control.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h

@@ -31,7 +31,7 @@ extern "C"
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void BasicFitting_th(uint8_t num);
-void ordata_input(float val_x,float val_y,float val_y1,float val_y2);
+void measureData_input(float val_x,float val_y,float val_y1,float val_y2);
 float **BasicFittingCal(void);
 #ifdef __cplusplus
 }

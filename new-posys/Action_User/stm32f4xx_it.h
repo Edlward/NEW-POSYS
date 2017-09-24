@@ -32,7 +32,7 @@
 
 #include "stm32f4xx_tim.h"
 #include "stm32f4xx_usart.h"
-#include "math.h"
+#include "arm_math.h"
 
 #include "usart.h"
 #include "timer.h"
@@ -48,13 +48,12 @@
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
-#define PERIOD 5
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
 uint8_t getTimeFlag(void);
 uint32_t getTimeCount(void);
-int GetRobotStart(void);
+uint8_t GetCommand(void);
 #endif /* __STM32F4xx_IT_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

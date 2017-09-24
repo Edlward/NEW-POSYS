@@ -12,4 +12,3 @@
 .\szw_stm32f407\customer.o: ..\Libraries\CMSIS\core_cmFunc.h
 .\szw_stm32f407\customer.o: ..\Libraries\CMSIS\core_cm4_simd.h
 .\szw_stm32f407\customer.o: ..\Libraries\CMSIS\system_stm32f4xx.h
-.\szw_stm32f407\customer.o: ..\Action_User\develop\figurePos.h

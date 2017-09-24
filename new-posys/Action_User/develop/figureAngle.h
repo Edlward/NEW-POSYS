@@ -33,13 +33,15 @@
 void RoughHandle(void);
 void TemporaryHandle(int start);
 uint8_t updateAngle(void);
-uint8_t adjustVDoff(three_axis *w);
 void WaitForUpdataVDoff(void);		
 double safe_atan2(double x,double y);			
 three_axis getAngle(void);
 void setAngle(float zAngle);
 void resetAngle(void);
 void DebugMode(void);
+void Test(int finish);
+float safe_asin(float v);
+void PWMTest(uint8_t flag);
 #endif
 
 /******************* (C) COPYRIGHT 2015 ACTION *****END OF FILE****/

@@ -23,7 +23,7 @@
 #define FLASH_USER_ADDRESS 0x08040000   //FLASH起始地址
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-static uint8_t  flashdata[160*(TempTable_max-TempTable_min)];  //从flash中取出的数据
+static uint8_t  flashdata[(4+4)*(int)(1.f/TempStep)*(TempTable_max-TempTable_min)];  //从flash中取出的数据
 
 /**
   * @brief  从FLASH里得到的数据分两个部分，第一部分为数据区，第二部分为
@@ -31,14 +31,14 @@ static uint8_t  flashdata[160*(TempTable_max-TempTable_min)];  //从flash中取出的
   * @param  None
   * @retval Result : 指向flash数据区的指针
   */
-float    *oldResult;
+float    *chartW;
 /**
   * @brief  从FLASH里得到的数据分两个部分，第一部分为数据区，第二部分为
   *         计数区，该函数用于获得计数区的指针
   * @param  None
   * @retval Result : 指向flash计数区的指针
   */
-uint32_t *oldCountNum;
+uint32_t *chartNum;
 static uint8_t  flag=0;
 /* Extern   variables ---------------------------------------------------------*/
 /* Extern   function prototypes -----------------------------------------------*/
@@ -136,14 +136,11 @@ void Flash_Init(void)
 {
 	/* 读取FLASH中保存的数据，并将其存到内存(RAM)里 */
 	//static uint8_t  flashdata[160*(TempTable_max-TempTable_min)];  //从flash中取出的数据
-	Flash_Read(flashdata,16*10*(TempTable_max-TempTable_min));  //50-30
-	/* 一个温度可以分成10等分，每0.1度对应两个芯片，
-	  3个角速度，1个计数值，一共16字节 */
+	Flash_Read(flashdata,(4+4)*(int)(1.f/TempStep)*(TempTable_max-TempTable_min));  //50-30
 	/* 分割数据段，将零漂值与计数值分开 */
-	oldResult=(float *)flashdata;
-	//一共160*(TempTable_max-TempTable_min)个字节,前120*(TempTable_max-TempTable_min)是角速度值,此处*30,
+	chartW=(float *)flashdata;
 	//是因为已经转换成32位
-	oldCountNum=(uint32_t *)(flashdata)+30*(TempTable_max-TempTable_min);
+	chartNum=(uint32_t *)(flashdata)+(int)(1.f/TempStep)*(TempTable_max-TempTable_min);
 	
 	/* 保护Flash数据 */
 	Flash_Encryp();

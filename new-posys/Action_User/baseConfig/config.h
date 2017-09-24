@@ -34,16 +34,19 @@
 
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
-
-#define R_wheel1        25.25f
-#define R_wheel2        25.2f
-
+#define PERIOD    				0.005f
+#ifdef SINGLESYSTEM
+	#define R_wheel         25.25f
+#else
+	#define R_wheel1        25.25f
+	#define R_wheel2        25.2f
+#endif
 #define ECD_RANGE      4096
 #define dT 					   0.005f           //积分的步长
-#define PI             3.1415926f       //圆周率的值
 #define Temp_ctr       42             //控温的值    //大车上控制的温度 37 45 30
-#define TempTable_max  50
+#define TempTable_max  50								//30-49.9
 #define TempTable_min  30
+#define TempStep       0.01f
 #define TIME_HEAT      5              //初始化时加热的时间值
 
 #define BF_TH          2               //最下二乘法拟合的阶数
@@ -146,12 +149,21 @@
 #define ICM20608G_ZA_OFFSET_L						0x7E
 
 
+/* ICM20608G 陀螺仪寄存器地址--------------*/
+#define I3G_WHO_AM_I 									  0x00
+
 /* Exported functions ------------------------------------------------------- */
 typedef struct{
 	float x;
 	float y;
 	float z;
 }three_axis;
+
+typedef struct{
+	three_axis No1;
+	three_axis No2;
+	three_axis Real;
+}gyro_t;
 
 typedef struct{
 	float pitch;
@@ -167,13 +179,7 @@ typedef struct{
 }Quarternion;
 
 
-#ifdef SINGLESYSTEM
-#define ICM_ReadByte(address)            	SPI_Read(SPI2,GPIOB,GPIO_Pin_12,address)
-#define ICM_WriteByte(address,value)     	SPI_Write(SPI2,GPIOB,GPIO_Pin_12,address,value)
-#else
-#define ICM_ReadByte(address)            	SPI_Read(SPI1,GPIOA,GPIO_Pin_4,address)
-#define ICM_WriteByte(address,value)     	SPI_Write(SPI1,GPIOA,GPIO_Pin_4,address,value)
-#endif
+
 typedef enum{FALSE = 0,TRUE = !FALSE}BOOL;
 
 #endif	// !__ALGORITHM_H

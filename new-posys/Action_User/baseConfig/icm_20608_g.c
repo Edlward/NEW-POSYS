@@ -1,7 +1,7 @@
 #include "icm_20608_g.h"
 #include "timer.h"
 #include "spi.h"
-#include "math.h"
+#include "arm_math.h"
 #include "usart.h"
 #include "figureAngle.h"
 
@@ -27,254 +27,143 @@ void ICM20608G_init(void)
 	};	
 	
 	Delay_ms(100);																					//Start-up time from power-up for register read/write  max 100
-	ICM_WriteByte(ICM20608G_PWR_MGMT_1,0x80);												/*复位内部寄存器和恢复默认设置。 	初始值为0，成功写入0x80时会自动变成0x40,进入睡眠模式*/	
+	SPI_Write(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_PWR_MGMT_1,0x80);
+	SPI_Write(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_PWR_MGMT_1,0x80);
 	Delay_ms(1);
 	Delay_ms(5);																				  	//Start-up time from sleep for register read/write  max 5
 	
 	for(order=0;order<REGISTERS/2;order++){
 		uint8_t i=0;
-		uint8_t data=0xFF;
+		uint8_t data[2]={0xFF,0XFF};
 		do{
 			i++;
-			ICM_WriteByte(registers[order*2],registers[order*2+1]);
-			Delay_ms(1);
+			SPI_Write(SPI1,GPIOA,GPIO_Pin_4,registers[order*2],registers[order*2+1]);
+			//SPI_Write(SPI2,GPIOB,GPIO_Pin_10,registers[order*2],registers[order*2+1]);
 			Delay_ms(i);
 			if(i>5)
 			{
-				USART_OUT(USART1,"init error");
-				break;
+				i=1;
+				//USART_OUT(USART1,"init error");
+				//break;
 			}
-			data=ICM_ReadByte(registers[order*2]);
-		}while(data!=registers[order*2+1]);
+			data[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,registers[order*2]);
+			data[1]=SPI_Read(SPI2,GPIOB,GPIO_Pin_10,registers[order*2]);
+		}while(data[0]!=registers[order*2+1]);//||data[1]!=registers[order*2+1]);
 	}
 	
 }
 
-void icm_get_gyro_data(short *data)
+
+
+static gyro_t gyro;
+void icm_update_gyro_rate(void)
 {
+	short data1[3] = {0,0,0};
+	short data2[3] = {0,0,0};
 	unsigned char raw[6];
 	/*
 	raw从低地址到高地址依次是
 	X高八位,X第八位,Y高八位,Y第八位,Z高八位,Z第八位
 	*/
-	mRead(raw, ICM20608G_GYRO_XOUT_H, 6);
+	SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_GYRO_XOUT_H,raw,6);
 	/*X的原始角速度值*/
-	data[0] = (raw[0]<<8) | raw[1];
+	data1[0] = (raw[0]<<8) | raw[1];
 	/*Y的原始角速度值*/
-	data[1] = (raw[2]<<8) | raw[3];
+	data1[1] = (raw[2]<<8) | raw[3];
 	/*Y的原始角速度值*/
-	data[2] = (raw[4]<<8) | raw[5];
-}
-
-
-void icm_get_accel_data(short *data)
-{
-	uint8_t raw[6];
-	mRead(raw, ICM20608G_ACCEL_XOUT_H, 6);
-	data[0] = (raw[0]<<8) | raw[1];
-	data[1] = (raw[2]<<8) | raw[3];
-	data[2] = (raw[4]<<8) | raw[5];
+	data1[2] = (raw[4]<<8) | raw[5];
 	
-}
-
-void icm_get_temp_data(long *data)
-{
-	short raw;
-	uint8_t temp[2];
+	gyro.No1.x = -data1[1]/131.f;
+	gyro.No1.y = data1[0]/131.f;
+	gyro.No1.z = data1[2]/131.f;
 	
-	mRead(temp,ICM20608G_TEMP_OUT_H,2);
-	raw = (temp[0] << 8) | temp[1];
-	/*
-	326.8f LSB/℃
-	TEMP_degC = ((TEMP_OUT –
-	RoomTemp_Offset)/Temp_Sensitivity) + 25degC
-	*/
-	data[0] = (long)((25 + ((raw - (float)0) / 326.8f)) * 65536L);//??65536L什么意思
+//	SPI_MultiRead(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_GYRO_XOUT_H,raw,6);
+//	/*X的原始角速度值*/
+//	data2[0] = (raw[0]<<8) | raw[1];
+//	/*Y的原始角速度值*/
+//	data2[1] = (raw[2]<<8) | raw[3];
+//	/*Y的原始角速度值*/
+//	data2[2] = (raw[4]<<8) | raw[5];
+
+//	gyro.No2.x = -data2[1]/131.f;
+//	gyro.No2.y = data2[0]/131.f;
+//	gyro.No2.z = data2[2]/131.f;
 }
-
-BOOL icm_check_whoami(void)
-{   
-    if(ICM_ReadByte(ICM20608G_WHO_AM_I) == 0xAF) {
-      return TRUE;
-    } 
-    
-    return FALSE;
-}
-
-
-/**
- *  @brief      Push biases to the gyro bias 20608 registers.
- *  This function expects biases relative to the current sensor output, and
- *  these biases will be added to the factory-supplied values. Bias inputs are LSB
- *  in +-1000dps format.
- *  @param[in]  gyro_bias  New biases.
- *  @return     0 if successful.
- */
-void icm_set_gyro_bias(long *gyro_bias)
+void icm_read_gyro_rate(gyro_t *data)
 {
-    uint8_t data[6] = {0, 0, 0, 0, 0, 0};
-		
-    data[0] = (gyro_bias[0] >> 8) & 0xff;
-    data[1] = (gyro_bias[0]) & 0xff;
-    data[2] = (gyro_bias[1] >> 8) & 0xff;
-    data[3] = (gyro_bias[1]) & 0xff;
-    data[4] = (gyro_bias[2] >> 8) & 0xff;
-    data[5] = (gyro_bias[2]) & 0xff;
-		
-		ICM_WriteByte(ICM20608G_XG_OFFS_USRH,data[0]);
-		ICM_WriteByte(ICM20608G_XG_OFFS_USRL,data[1]);
-		ICM_WriteByte(ICM20608G_YG_OFFS_USRH,data[2]);
-		ICM_WriteByte(ICM20608G_YG_OFFS_USRL,data[3]);
-		ICM_WriteByte(ICM20608G_ZG_OFFS_USRH,data[4]);
-		ICM_WriteByte(ICM20608G_ZG_OFFS_USRL,data[5]);
+	(*data).No1.x=gyro.No1.x;
+	(*data).No1.y=gyro.No1.y;
+	(*data).No1.z=gyro.No1.z;
+	
+	
+	(*data).No2.x=gyro.No2.x;
+	(*data).No2.y=gyro.No2.y;
+	(*data).No2.z=gyro.No2.z;
 }
 
-/**
- *  @brief      Push biases to the accel bias 20608 registers.
- *  This function expects biases relative to the current sensor output, and
- *  these biases will be added to the factory-supplied values. Bias inputs are LSB
- *  in +-16G format.
- *  @param[in]  accel_bias  New biases.
- *  @return     0 if successful.
- */
-void icm_set_accel_bias(const long *accel_bias)
-{
-    unsigned char data[6] = {0, 0, 0, 0, 0, 0};
-    long accel_reg_bias[3] = {0, 0, 0};
-
-    // Preserve bit 0 of factory value (for temperature compensation)
-    accel_reg_bias[0] -= (accel_bias[0] & ~1);
-    accel_reg_bias[1] -= (accel_bias[1] & ~1);
-    accel_reg_bias[2] -= (accel_bias[2] & ~1);
-
-    data[0] = (accel_reg_bias[0] >> 8) & 0xff;
-    data[1] = (accel_reg_bias[0]) & 0xff;
-    data[2] = (accel_reg_bias[1] >> 8) & 0xff;
-    data[3] = (accel_reg_bias[1]) & 0xff;
-    data[4] = (accel_reg_bias[2] >> 8) & 0xff;
-    data[5] = (accel_reg_bias[2]) & 0xff;
-
-		ICM_WriteByte(ICM20608G_XA_OFFSET_H,data[0]);
-		ICM_WriteByte(ICM20608G_XA_OFFSET_L,data[1]);
-		ICM_WriteByte(ICM20608G_YA_OFFSET_H,data[2]);
-		ICM_WriteByte(ICM20608G_YA_OFFSET_L,data[3]);
-		ICM_WriteByte(ICM20608G_ZA_OFFSET_H,data[4]);
-		ICM_WriteByte(ICM20608G_ZA_OFFSET_L,data[5]);
-}
-
-void icm_read_accel_bias(long *accel_bias) 
-{
-	((uint8_t *)&(accel_bias[0]))[0] = ICM_ReadByte(ICM20608G_XA_OFFSET_L);
-	((uint8_t *)&(accel_bias[0]))[1] = ICM_ReadByte(ICM20608G_XA_OFFSET_H);
-	((uint8_t *)&(accel_bias[1]))[0] = ICM_ReadByte(ICM20608G_YA_OFFSET_L);
-	((uint8_t *)&(accel_bias[1]))[1] = ICM_ReadByte(ICM20608G_YA_OFFSET_H);
-	((uint8_t *)&(accel_bias[2]))[0] = ICM_ReadByte(ICM20608G_ZA_OFFSET_L);
-	((uint8_t *)&(accel_bias[2]))[1] = ICM_ReadByte(ICM20608G_ZA_OFFSET_H);
-}
-
-void icm_read_gyro_bias(long *gyro_bias) 
-{
-	((uint8_t *)&(gyro_bias[0]))[0] = ICM_ReadByte(ICM20608G_XG_OFFS_USRL);
-	((uint8_t *)&(gyro_bias[0]))[1] = ICM_ReadByte(ICM20608G_XG_OFFS_USRH);
-	((uint8_t *)&(gyro_bias[1]))[0] = ICM_ReadByte(ICM20608G_YG_OFFS_USRL);
-	((uint8_t *)&(gyro_bias[1]))[1] = ICM_ReadByte(ICM20608G_YG_OFFS_USRH);
-	((uint8_t *)&(gyro_bias[2]))[0] = ICM_ReadByte(ICM20608G_ZG_OFFS_USRL);
-	((uint8_t *)&(gyro_bias[2]))[1] = ICM_ReadByte(ICM20608G_ZG_OFFS_USRH);
-}
-
-void icm_read_fifo(short *gyro)
-{
-	unsigned short fifo_count;
-	unsigned char data[6] = {0,0,0,0,0,0},packet_size = 0;
-	
-	packet_size = 6;			//  使能了陀螺仪的3轴，6个字节的数据
-	
-	mRead(data,ICM20608G_FIFO_COUNTH,2);
-//	data[0] = ICM_ReadByte(ICM20608G_FIFO_COUNTH);
-//	data[1] = ICM_ReadByte(ICM20608G_FIFO_COUNTL);
-//	
-	fifo_count = (data[0] << 8) | data[1];
-	
-	if(packet_size > fifo_count)
-		return;
-	
-	mRead(data,ICM20608G_FIFO_R_W,6);
-	
-	gyro[0] = (data[0] << 8) | data[1];
-	gyro[1] = (data[2] << 8) | data[3];
-	gyro[2] = (data[4] << 8) | data[5];
-}
-
-
-
-void icm_fifo_enable(void)
-{
-	ICM_WriteByte(ICM20608G_FIFO_EN,0x00);
-	ICM_WriteByte(ICM20608G_USER_CTRL,0x00);
-	
-	ICM_WriteByte(ICM20608G_USER_CTRL,0x04);
-	Delay_ms(100);
-	ICM_WriteByte(ICM20608G_USER_CTRL,0x50);
-	Delay_ms(100);
-	
-	ICM_WriteByte(ICM20608G_FIFO_EN,0x70);
-}
-static three_axis gyro;
-void icm_update_gyro_rate(void)
-{
-	short data[3] = {0,0,0};
-	icm_get_gyro_data(data);
-	
-	/*
-	转到东北天坐标系 全部满足右手定则 
-	北偏东为正由四元数转换到欧垃角实现
-	GYRO_XOUT = Gyro_Sensitivity * X_angular_rate
-	Gyro_Sensitivity = 131 LSB/(o/s)
-	*/
-	gyro.x = -data[1]/128.270614f;
-	gyro.y = data[0]/128.270614f;
-	gyro.z = data[2]/128.270614f;
-}
-void icm_read_gyro_rate(three_axis *data)
-{
-	(*data).x=gyro.x;
-	(*data).y=gyro.y;
-	(*data).z=gyro.z;
-}
-static three_axis acc;
+static gyro_t acc;
 void icm_update_acc(void)
 {
-	short data[3] = {0,0,0};
-	three_axis temp;
-	
-	icm_get_accel_data(data);
-	
+	short data1[3] = {0,0,0};
+	short data2[3] = {0,0,0};
+	unsigned char raw[6];
+	/*
+	raw从低地址到高地址依次是
+	X高八位,X第八位,Y高八位,Y第八位,Z高八位,Z第八位
+	*/
+	SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_ACCEL_XOUT_H,raw,6);
+	/*X的原始角速度值*/
+	data1[0] = (raw[0]<<8) | raw[1];
+	/*Y的原始角速度值*/
+	data1[1] = (raw[2]<<8) | raw[3];
+	/*Y的原始角速度值*/
+	data1[2] = (raw[4]<<8) | raw[5];
 	/*
 	16384 LSB/g
 	*/
-	temp.x = -data[0]/16384.0;
-	temp.y = data[1]/16384.0;
-	temp.z = -data[2]/16384.0;
+	acc.No1.x = -data1[0]/16384.0;
+	acc.No1.y = data1[1]/16384.0;
+	acc.No1.z = -data1[2]/16384.0;
 	
-	acc.x=temp.y;
-	acc.y=temp.x;
-	acc.z=temp.z;
+	acc.No2.x = -data2[0]/16384.0;
+	acc.No2.y = data2[1]/16384.0;
+	acc.No2.z = -data2[2]/16384.0;
 	
+	
+	SPI_MultiRead(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_ACCEL_XOUT_H,raw,6);
+	/*X的原始角速度值*/
+	data2[0] = (raw[0]<<8) | raw[1];
+	/*Y的原始角速度值*/
+	data2[1] = (raw[2]<<8) | raw[3];
+	/*Y的原始角速度值*/
+	data2[2] = (raw[4]<<8) | raw[5];
 }
-void icm_read_accel_acc(three_axis *val)
+void icm_read_accel_acc(gyro_t *data)
 {
-  val->x=acc.x;
-	val->y=acc.y;
-	val->z=acc.z;
+	(*data).No1.x=acc.No1.x;
+	(*data).No1.y=acc.No1.y;
+	(*data).No1.z=acc.No1.z;
+	
+	(*data).No2.x=acc.No2.x;
+	(*data).No2.y=acc.No2.y;
+	(*data).No2.z=acc.No2.z;
 }
 
 static float temp;
 void icm_update_temp(void)
 {
-	long tem_data = 0;
-	icm_get_temp_data(&tem_data);
+	short raw;
+	uint8_t data[2];
 	
-	temp = tem_data/65536.0;
+	SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_TEMP_OUT_H,data,2);
+	
+	raw = (data[0] << 8) | data[1];
+	/*
+	326.8f LSB/℃
+	TEMP_degC = ((TEMP_OUT –
+	RoomTemp_Offset)/Temp_Sensitivity) + 25degC
+	*/
+	temp = 25.f + (float)raw / 326.8f;
 }
 void icm_read_temp(float *data)
 {
@@ -284,7 +173,7 @@ void icm_read_temp(float *data)
 extern float K_acc;
 void icm_update_AccRad(three_axis *rad)
 {
-	float sum=sqrt(acc.x*acc.x+acc.y*acc.y+acc.z*acc.z);
+	float sum=sqrt(acc.No1.x*acc.No1.x+acc.No1.y*acc.No1.y+acc.No1.z*acc.No1.z);
 	float X_G,Y_G,Z_G;
 	static uint8_t fix_flag=0;
 	static float fix_sum;
@@ -314,9 +203,9 @@ void icm_update_AccRad(three_axis *rad)
 	else 
 	 K_acc=1;	
 	
-	X_G=(acc).x/sum;
-	Y_G=(acc).y/sum;
-	Z_G=(acc).z/sum;
+	X_G=(acc).No1.x/sum;
+	Y_G=(acc).No1.y/sum;
+	Z_G=(acc).No1.z/sum;
 	/*初始坐标为0,0,g,然后可以通过坐标变换公式轻易推导*/
 	(*rad).y= safe_atan2( X_G , -Z_G);
   (*rad).x=-safe_atan2( Y_G , X_G/sin((*rad).y));

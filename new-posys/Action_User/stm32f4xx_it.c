@@ -31,22 +31,21 @@
 #include "stm32f4xx_it.h"
 #include "stm32f4xx.h"
 #include "flash.h"
+#include "config.h"
 /*************定时器2******start************/
 //每1ms调用一次  用于读取编码器的值和计算坐标
 
 //int posx,posy;
-static uint16_t timeCount=0;
+static uint32_t timeCount=0;
 static uint8_t timeFlag=0;
-static uint8_t cpuTimes=0;
 void TIM2_IRQHandler(void)
 {
 	if(TIM_GetITStatus(TIM2, TIM_IT_Update)==SET)
   {	
 		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
 		timeCount++;
-		if(timeCount>=PERIOD)
+		if(timeCount>=PERIOD*10000)
 		{
-			cpuTimes++;
 			timeCount=0;
 			timeFlag=1;
 		}
@@ -61,7 +60,6 @@ uint8_t getTimeFlag(void)
 	if(nowFlag)
 	{
 		timeFlag=0;
-		cpuTimes=0;
 		return 1;
 	}
 	return 0;
@@ -69,7 +67,7 @@ uint8_t getTimeFlag(void)
 
 uint32_t getTimeCount(void)
 {
-	return (timeCount+cpuTimes*PERIOD);
+	return (timeCount);
 }
 
 //定时器1  
@@ -132,21 +130,29 @@ void UART5_IRQHandler(void)
 	 
 }
 
-static int robotStart=0;
-void SetRobotStart(int val){
-	robotStart=val;
+/*
+第一位 陀螺仪开始积分
+第二位 陀螺仪开始矫正
+第三位 陀螺
+*/
+
+#define STARTACCUMULATE 0X01
+#define STARTCORRECT    0X02
+static uint8_t command=0;
+void SetCommand(int val){
+	command=val;
 }
-int GetRobotStart(void){
-	return robotStart;
+uint8_t GetCommand(void){
+	return command;
 }
-void USART1_IRQHandler(void)
+void USART6_IRQHandler(void)
 {
 	uint8_t data;
 	static uint8_t status=0;
-	if(USART_GetITStatus(USART1,USART_IT_RXNE)==SET)
+	if(USART_GetITStatus(USART6,USART_IT_RXNE)==SET)
 	{
-		USART_ClearITPendingBit( USART1,USART_IT_RXNE);
-		data=USART_ReceiveData(USART1);
+		USART_ClearITPendingBit( USART6,USART_IT_RXNE);
+		data=USART_ReceiveData(USART6);
 		
 		switch(status)
 		{
@@ -198,7 +204,7 @@ void USART1_IRQHandler(void)
 			case 6:
 				if(data=='0')
 				{
-					SetRobotStart(1);
+					SetCommand(1);
 				}
 					status=0;
 				break;

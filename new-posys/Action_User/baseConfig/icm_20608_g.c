@@ -9,11 +9,11 @@ void ICM20608G_init(void)
 {
 	uint8_t order=0;
 	uint8_t registers[REGISTERS]={
-	ICM20608G_PWR_MGMT_1,3,/*10011 Wake up chip from sleep mode,enable temperature sensor,select pll	*/
+	ICM20608G_PWR_MGMT_1,0,/*10011 Wake up chip from sleep mode,enable temperature sensor,select pll	*/
 	ICM20608G_PWR_MGMT_2,0,/*disable FIFO,enable gyr and accel*/
 	ICM20608G_GYRO_CONFIG,0,/* gyro range:±250dps, Used to bypass DLPF				*/
-	ICM20608G_CONFIG,6,/*  DLPF低通滤波器的设置	低通滤波器截止频率为176Hz 根据↓*/
-	ICM20608G_SMPLRT_DIV,3,/* 设置采样速率为333Hz			能不失真地对最大为	166Hz的波	*/
+	ICM20608G_CONFIG,0,/*  DLPF低通滤波器的设置	低通滤波器截止频率为176Hz 根据↓*/
+	ICM20608G_SMPLRT_DIV,7,/* 设置采样速率为333Hz			能不失真地对最大为	166Hz的波	*/
 	ICM20608G_ACCEL_CONFIG,0,/* accel:2g																	*/
 	ICM20608G_ACCEL_CONFIG2,6,/*000110 DLPF:5.1	低通滤波器的设置	 不能设置低功耗模式的均值滤波，否则数字不对	*/
 	ICM20608G_SIGNAL_PATH_RESET,0,/* Use SIG_COND_RST to clear sensor registers.*/
@@ -35,15 +35,15 @@ void ICM20608G_init(void)
 		uint8_t i=0;
 		uint8_t data=0xFF;
 		do{
-//			i++;
+			i++;
 			ICM_WriteByte(registers[order*2],registers[order*2+1]);
 			Delay_ms(1);
-//			Delay_ms(i);
-//			if(i>5)
-//			{
-//				USART_OUT(USART1,(uint8_t*)"init error");
-//				break;
-//			}
+			Delay_ms(i);
+			if(i>5)
+			{
+				USART_OUT(USART1,"init error");
+				break;
+			}
 			data=ICM_ReadByte(registers[order*2]);
 		}while(data!=registers[order*2+1]);
 	}
@@ -295,9 +295,10 @@ void icm_update_AccRad(three_axis *rad)
 	即使车的的加速度是1m/s也是在我们的范围内,
 	而1m/s已经很大了
 	*/
-	if(fix_flag<10)
+	if(fix_flag<21)
 	{
-		fix_sum=fix_sum+sum/10;
+		if(fix_flag>0)
+		fix_sum=fix_sum+sum/20;
 		fix_flag++;
 	}
 	else if(fabs(sum-fix_sum)<0.001)

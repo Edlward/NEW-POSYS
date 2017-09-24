@@ -28,10 +28,9 @@
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-static void statistic(float w);
-static float *VDoff;
 static float **a_icm;
-static uint32_t *countnum_icm;
+extern float *oldResult;
+extern uint32_t *oldCountNum;
 static three_axis result_angle={0,0,0};
 static Quarternion quaternion={1,0,0,0};
 /* Extern   variables ---------------------------------------------------------*/
@@ -43,6 +42,8 @@ float K_acc=1;
 static Quarternion QuaternionInt(Quarternion quaternion,three_axis data);
 static three_axis Quaternion_to_Euler(Quarternion quaternion);
 static Quarternion Euler_to_Quaternion(three_axis Rad);
+float KalmanFilterT(float ordata);
+float KalmanFilterZ(float ordata);
 /* Exported function prototypes -----------------------------------------------*/
 /* Exported functions ---------------------------------------------------------*/
 
@@ -58,27 +59,10 @@ static Quarternion Euler_to_Quaternion(three_axis Rad);
 static three_axis gyr_icm,gyr_act;  //原始的角速度和处理后的角速度
 static three_axis acc_icm;          //加速度信息
 static float   temp_icm;            //陀螺仪温度
-static three_axis acc_angle;        //加速度计测出的对应的角度
-uint8_t updateAngle(void)
-{	
-	static three_axis euler;            //欧垃角
+
+void RoughHandle(void)
+{
 	static int16_t convert;             //陀螺仪温度对应数组序号  
-	
-	
-	static uint8_t wait_flag=0;
-	static uint8_t wait_second=0;
-	
-	static uint32_t countnum=0;
-	static three_axis averAngular;
-	static three_axis averAcc;
-	static three_axis result;									//最终角度的弧度角
-	#ifdef DEBUG_ENABLE
-	/*
-	用串口发送信息用于debug
-	*/
-	  static int timede=0;
-	#endif
-	
 	/*跟新传感器的数据*/
 	icm_update_gyro_rate();
 	icm_update_temp();
@@ -90,82 +74,66 @@ uint8_t updateAngle(void)
 	icm_read_temp(&temp_icm);
 	icm_read_accel_acc(&acc_icm);
 	
-	USART_OUT_F(gyr_icm.z);
-	USART_OUT_F(temp_icm);
-	gyr_icm.z=KalmanFilterZAxis(gyr_icm.z);
-	temp_icm=KalmanFilterTAxis(temp_icm);
-	USART_OUT_F(gyr_icm.z);
-	USART_OUT_F(temp_icm);
-	USART_OUT(USART1,(uint8_t*)"\r\n");
+	temp_icm=KalmanFilterT(temp_icm);
 	
-	return 0;
-	if(countnum>0&&countnum<2000){
-//	USART_OUT_F(temp_icm);
-	averAngular.x=averAngular.x*countnum/(countnum+1)+gyr_icm.x/(countnum+1);
-	averAngular.y=averAngular.y*countnum/(countnum+1)+gyr_icm.y/(countnum+1);
-	averAngular.z=averAngular.z*countnum/(countnum+1)+gyr_icm.z/(countnum+1);
-		
-	averAcc.x=averAcc.x*countnum/(countnum+1)+acc_icm.x/(countnum+1);
-	averAcc.y=averAcc.y*countnum/(countnum+1)+acc_icm.y/(countnum+1);
-	averAcc.z=averAcc.z*countnum/(countnum+1)+acc_icm.z/(countnum+1);
-	countnum++;
-	return 0;
-	}
-	else if(countnum==0){
-	USART_OUT_F(temp_icm);
-	USART_OUT_F(gyr_icm.z);
-	USART_OUT(USART1,(uint8_t*)"\r\n");
-	averAngular.x=gyr_icm.x;
-	averAngular.y=gyr_icm.y;
-	averAngular.z=gyr_icm.z;
-	countnum++;
-	}
-	else if(countnum==2000){
-	countnum++;
-	USART_OUT_F(averAngular.z);
-	USART_OUT(USART1,(uint8_t*)"  static \r\n");
-	return 0;
-	}
-	else{
-	gyr_icm.x-=averAngular.x;
-	gyr_icm.y-=averAngular.y;
-	gyr_icm.z-=averAngular.z;
-	}
-	
-	gyr_act.x=gyr_icm.x;
-	gyr_act.y=gyr_icm.y;
-	gyr_act.z=gyr_icm.z;
-	
-//	/*获取零漂信息*/
-//	VDoff=GetVdoff_icmArr();           //温度零漂表中的信息
-//	countnum_icm=GetCountnum_icmArr(); //获取计数值
-//	a_icm=GetVdoff_icmErrArr();        //最小二乘拟合的结果
+	a_icm=GetVdoff_icmErrArr();        //最小二乘拟合的结果
 
-//	/* 温度值转换成数组的序号来寻找温度零漂表里对应的值 */
-//	convert=(int16_t)((temp_icm-TempTable_min)*10.0f/1.0f);
-//	if((convert>=0&&convert<10*(TempTable_max-TempTable_min))
-//	    &&countnum_icm[convert]>10           //表里的值得数量需要大于10
-//	    &&countnum_icm[convert]!=0xffffffff) //表里面需要有值,原因flash默认都是1
-//	{
-//		gyr_act.x=(gyr_icm.x-VDoff[convert]);
-//		gyr_act.y=(gyr_icm.y-VDoff[convert+10*(TempTable_max-TempTable_min)]);
-//		gyr_act.z=(gyr_icm.z-VDoff[convert+20*(TempTable_max-TempTable_min)]);
-//	}
-//  else /* 当温度表里信息不理想时采用最小二乘法来拟合曲线参与零点漂移的计算  */
-//	{
-//		gyr_act.x=gyr_icm.x;
-//		gyr_act.y=gyr_icm.y;
-//		gyr_act.z=gyr_icm.z;
-//		/*减去一个一次函数*/
-//		for(uint8_t i=0;i<BF_TH;i++)
-//		{
-//			gyr_act.x=gyr_act.x-a_icm[i][0]*pow(temp_icm,i);
-//			gyr_act.y=gyr_act.y-a_icm[i][1]*pow(temp_icm,i);
-//			gyr_act.z=gyr_act.z-a_icm[i][2]*pow(temp_icm,i);
-//		}
-//	}
+	/* 温度值转换成数组的序号来寻找温度零漂表里对应的值 */
+	convert=(int16_t)((temp_icm-TempTable_min)*10.0f/1.0f);
+	if((convert>=0&&convert<10*(TempTable_max-TempTable_min))
+	    &&oldCountNum[convert]>10           //表里的值得数量需要大于10
+	    &&oldCountNum[convert]!=0xffffffff) //表里面需要有值,原因flash默认都是1
+	{
+		gyr_act.x=(gyr_icm.x-oldResult[convert]);
+		gyr_act.y=(gyr_icm.y-oldResult[convert+10*(TempTable_max-TempTable_min)]);
+		gyr_act.z=(gyr_icm.z-oldResult[convert+20*(TempTable_max-TempTable_min)]);
+	}
+  else /* 当温度表里信息不理想时采用最小二乘法来拟合曲线参与零点漂移的计算  */
+	{
+		gyr_act.x=gyr_icm.x;
+		gyr_act.y=gyr_icm.y;
+		gyr_act.z=gyr_icm.z;
+		/*减去一个一次函数*/
+		for(uint8_t i=0;i<BF_TH;i++)
+		{
+			gyr_act.x=gyr_act.x-a_icm[i][0]*pow(temp_icm,i);
+			gyr_act.y=gyr_act.y-a_icm[i][1]*pow(temp_icm,i);
+			gyr_act.z=gyr_act.z-a_icm[i][2]*pow(temp_icm,i);
+		}
+	}
+}
+
+	//30℃到49.9℃   重新矫正温飘  30 -- 0  30.1 -- 1
+void TemporaryHandle(int start)
+{
+	uint16_t index=(uint16_t)((temp_icm-30.f)*10.0f/1.0f);
+	static float gyr_aver[200]={0};
+	static float countTemp[200]={0};
+	/* 新息自适应卡尔曼滤波，滤除角速度中的噪声 */
+	gyr_act.z=KalmanFilterZ(gyr_act.z);
+	if(start==0){
+    if(countTemp[index]>0)
+			gyr_aver[index]=gyr_aver[index]*countTemp[index]/(countTemp[index]+1)+gyr_act.z/(countTemp[index]+1);
+		else
+			gyr_aver[index]=gyr_act.z;
+		
+			countTemp[index]++;
+	}else{
+		if(countTemp[index]>=10){
+			float proportion=(temp_icm-30.f)*10.0f-index;
+			/*分段插值*/
+			gyr_act.z=gyr_act.z-(gyr_aver[index]*(1-proportion)+gyr_aver[index+1]*proportion);
+		}
+	}
+}
 	
-	//statistic(gyr_act.z);
+static three_axis acc_angle;        //加速度计测出的对应的角度
+uint8_t updateAngle(void)
+{	
+	static three_axis euler;            //欧垃角
+	static uint8_t wait_flag=0;
+	static uint8_t wait_second=0;
+	static three_axis result;									//最终角度的弧度角
 	
 	/* 二次矫正处理 */
 	/*
@@ -173,40 +141,28 @@ uint8_t updateAngle(void)
 	初始化时取一秒的数据进行求平均值
 	然后运动过程中时刻减去
 	*/
-	wait_second=adjustVDoff(&gyr_act);
-	/* 新息自适应卡尔曼滤波，滤除角速度中的噪声 */
-	gyr_act.z=KalmanFilterZAxis(gyr_act.z);
-//	
 	
 	/* 在车动之前不进行积分的标志位 */
-//	if(!wait_flag&&fabs(gyr_act.z)>0.3)
-//	{
-//		wait_flag=1;
-//	}
+	if(!wait_flag&&fabs(gyr_act.z)>0.3)
+	{
+		wait_flag=1;
+	}
 		
 	/* 
 	阈值 低于此值则认为没动
 	*/
-//	if(fabs(gyr_act.z)<0.15)//单位 °/s
-//		gyr_act.z=0;
+	if(fabs(gyr_act.z)<0.05)//单位 °/s
+		gyr_act.z=0;
 	if(fabs(gyr_act.x)<10)	
 		gyr_act.x=0;
 	if(fabs(gyr_act.y)<10)
 		gyr_act.y=0;
-	/*获取z角速度的接口*/
-//	if(wait_second)
-//	DebugMode();
+	
 	/* 角度弧度转换 */
 	gyr_act.x=(gyr_act.x)/180.0f*PI;
 	gyr_act.y=(gyr_act.y)/180.0f*PI;
 	gyr_act.z=(gyr_act.z)/180.0f*PI;
-//	
-
-#ifdef QUATER
-//	/* 四元数积分 */
-	if(wait_second&&(gyr_act.x!=0||
-		             gyr_act.y!=0||
-	               gyr_act.z!=0)){
+	
 	/*角速度积分成四元数*/
 	/*
 	选用ZXY旋转顺序,因为这样符合人们对航向角和俯仰角的认识
@@ -216,7 +172,6 @@ uint8_t updateAngle(void)
 	x正负90,yz正负180.
 	*/
 	  quaternion=QuaternionInt(quaternion,gyr_act);
-}
 	/*
 	三个轴是相互耦合的,能够互相影响
 	*/
@@ -237,15 +192,12 @@ uint8_t updateAngle(void)
 	result_angle.x= result.x/PI*180.0f;
 	result_angle.y= result.y/PI*180.0f;
 	result_angle.z=-result.z/PI*180.0f;
-#endif
 
-#ifdef SINGLE
-		if(wait_second&&fabs(gyr_act.z)>=0.0001){
-		DebugMode();
-		result.z+=gyr_act.z*0.005;
-		result_angle.z=-result.z/PI*180.0f;
-}
-#endif
+	#ifdef DEBUG_ENABLE
+	
+	USART_OUT_F(result_angle.z);
+	#endif 
+
 	return wait_second;
 }
 /**
@@ -283,38 +235,6 @@ uint8_t adjustVDoff(three_axis *w)
 		w->z=w->z-adjust.z/200.0f;
 	}
 	return 1;
-}
-
-
-/**
-  * @brief  数据统计
-  * @param  w: 输入角速度
-  * @retval none
-  */
-static void statistic(float w)
-{
-	static float w_old[50];
-	static float w_aver;
-	static float w_R;
-	
-	memcpy(w_old,w_old+1,49*4);//??49就行
-	w_old[49]=w;
-	
-	w_aver=0;
-	for(uint8_t i=0;i<50;i++)
-	{
-		w_aver+=w_old[i];
-	}
-	/*正常值小于0.15*/
-	w_aver/=50;
-	
-	w_R=0;
-	for(uint8_t i=0;i<50;i++)
-	{
-		w_R+=(w_old[i]-w_aver)*(w_old[i]-w_aver);
-	}
-	/*正常值应小于0.0012*/
-	w_R/=49;
 }
 
 /**
@@ -472,7 +392,7 @@ static Quarternion QuaternionInt(Quarternion quaternion,three_axis data)
 	return quaternion;
 }
 
-float KalmanFilterZAxis(float ordata)
+float KalmanFilterZ(float ordata)
 {
 	uint8_t i;
 	
@@ -485,7 +405,8 @@ float KalmanFilterZAxis(float ordata)
 	static double Kk;           //滤波增益系数
 	
 	static double Q=0.01;       //系统噪声
-	static double R=0.0002;      //测量噪声          
+//	static double R=0.0002;      //测量噪声     
+	static double R=0.012;      //测量噪声             
 	
 	static float IAE_st[50];    //记录的新息
 	double Cr=0;                //新息的方差
@@ -512,7 +433,6 @@ float KalmanFilterZAxis(float ordata)
 	
 	/* 计算系数，求得输出值 */
 	Kk=P_mid/(P_mid+R);
-	USART_OUT_F(P_mid);
 	act_value=predict+Kk*(ordata-predict);
 	
 	/* 更新预测误差 */
@@ -530,7 +450,7 @@ float KalmanFilterZAxis(float ordata)
 	return act_value;
 }
 
-float KalmanFilterTAxis(float ordata)
+float KalmanFilterT(float ordata)
 {
 	uint8_t i;
 	
@@ -607,7 +527,7 @@ void DebugMode(void)
 	//gyr_act.z=gyr_act.z*57.29577f;
 	USART_OUT_F(gyr_act.z);
 	USART_OUT_F(result_angle.z);
-	USART_OUT(USART1,(uint8_t*)"\r\n");
+	USART_OUT(USART1,"\r\n");
 	#endif
 }
 

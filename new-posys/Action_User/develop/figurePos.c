@@ -149,6 +149,8 @@ void calculatePos(void)
 	zangle=getAngle().z;
 	zangle=(zangle+last_ang)/2.0f;
 	last_ang=getAngle().z;
+	//¶Û½Ç
+	//vell[1]=(vell[1]-vell[0]*sin(-0.2274/180.0f*PI))/cos(-0.2274/180.0f*PI);
 	
 	pos[0]+=(-sin(zangle/180.0f*PI)*vell[1]+cos(zangle/180.0f*PI)*vell[0]);
 	pos[1]+=(+cos(zangle/180.0f*PI)*vell[1]+sin(zangle/180.0f*PI)*vell[0]);
@@ -156,12 +158,16 @@ void calculatePos(void)
 	pos_temp[0]=pos[0];
 	pos_temp[1]=pos[1];
 	
-	
 	AxisOriginConvert(0,0,45,getAngle().z,&(pos_temp[0]),&(pos_temp[1]));
 	
-	posx=pos_temp[0]/4096.0f*R_wheel*2*PI;
-	posy=pos_temp[1]/4096.0f*R_wheel*2*PI;
+	posx=pos_temp[0]/4096.0f*R_wheel1*2*PI;
+	posy=pos_temp[1]/4096.0f*R_wheel2*2*PI;
 	
+	#ifdef DEBUG_ENABLE
+	USART_OUT_F(posx);
+	USART_OUT_F(posy);
+	USART_OUT(USART1,"\r\n");
+	#endif
 }
 #endif
 float getPosX(void)

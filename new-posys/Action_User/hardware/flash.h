@@ -30,8 +30,6 @@ void Flash_Zero(uint32_t len);
 void Flash_Read(uint8_t *data,uint32_t len);
 void Flash_Init(void);
 uint8_t  *GetFlashArr(void);
-float    *GetResultArr(void);
-uint32_t *GetCountArr(void);
 uint8_t  GetFlashUpdataFlag(void);
 void     SetFlashUpdateFlag(uint8_t val);
 #endif

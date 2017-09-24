@@ -187,12 +187,13 @@ void CS_Config(void)
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);                 //ICM20608G
 		
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;             
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12|GPIO_Pin_15;             
 	GPIO_Init(GPIOB, &GPIO_InitStructure);   
 	
 	/* Deselect : Chip Select high ---------*/
 	GPIO_SetBits(GPIOA, GPIO_Pin_4);
 	GPIO_SetBits(GPIOB, GPIO_Pin_12);
+	GPIO_SetBits(GPIOB, GPIO_Pin_15);
 }
 
 /**
@@ -201,7 +202,7 @@ void CS_Config(void)
   * @param[in] 波特率预分频值
   * @retval None
   */
-void SPI1_SetSpeed(u8 SPI_BaudRatePrescaler)
+void SPI1_SetSpeed(uint8_t SPI_BaudRatePrescaler)
 {
   assert_param(IS_SPI_BAUDRATE_PRESCALER(SPI_BaudRatePrescaler));					/* 判断有效性												*/
 	SPI1->CR1 &= 0XFFC7;																										/* 位3-5清零，用来设置波特率*/
@@ -320,7 +321,7 @@ uint16_t SPI_ReadAS5045(uint8_t num)
 	return (AS5045_Val>>12) & 0xffff;
 }
 
-u8 SPI2_ReadWriteByte(u8 TxData)
+uint8_t SPI2_ReadWriteByte(uint8_t TxData)
 {		 			 
   while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET){}      	
 	SPI_I2S_SendData(SPI2, TxData);                                     
@@ -387,7 +388,7 @@ uint16_t SPI_ReadAS5045(uint8_t num)
 	
 	return (AS5045_Val>>12) & 0xffff;
 }
-u8 SPI1_ReadWriteByte(u8 TxData)
+uint8_t SPI1_ReadWriteByte(uint8_t TxData)
 {		 			 
   while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET){}      	
 	SPI_I2S_SendData(SPI1, TxData);                                     
@@ -422,5 +423,6 @@ void mRead(uint8_t* pBuffer, uint8_t ReadAddr, uint16_t NumByteToRead)
   /* Set chip select High at the end of the transmission */ 
   GPIO_SetBits(GPIOA,GPIO_Pin_4);
 }
-
 	#endif
+
+

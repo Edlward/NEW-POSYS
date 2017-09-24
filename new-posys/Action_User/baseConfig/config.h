@@ -30,17 +30,20 @@
 /* Hardware Test enable*/
 //#define HD_TEST
 
+#define DEBUG_ENABLE
+
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
 
-#define R_wheel        25.4f
+#define R_wheel1        25.25f
+#define R_wheel2        25.2f
 
 #define ECD_RANGE      4096
 #define dT 					   0.005f           //积分的步长
 #define PI             3.1415926f       //圆周率的值
-#define Temp_ctr       47             //控温的值    //大车上控制的温度 37 45 30
-#define TempTable_max  55
-#define TempTable_min  10
+#define Temp_ctr       42             //控温的值    //大车上控制的温度 37 45 30
+#define TempTable_max  50
+#define TempTable_min  30
 #define TIME_HEAT      5              //初始化时加热的时间值
 
 #define BF_TH          2               //最下二乘法拟合的阶数

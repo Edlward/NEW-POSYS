@@ -16,7 +16,7 @@
 void SPI1_Init(void);	
 void SPI2_Init(void);
 void CS_Config(void);
-void SPI1_SetSpeed(u8 SpeedSet); 				
+void SPI1_SetSpeed(uint8_t SpeedSet); 				
 
 void SPI_Write(SPI_TypeDef *SPI,
 	           GPIO_TypeDef* GPIOx,
@@ -28,7 +28,7 @@ uint8_t SPI_Read(SPI_TypeDef *SPI,
 	                   uint16_t GPIO_Pin,
                       uint8_t address);
 
-u8 SPI2_ReadWriteByte(u8 TxData);
+uint8_t SPI2_ReadWriteByte(uint8_t TxData);
 uint16_t SPI_ReadAS5045(uint8_t num);
 void mRead(uint8_t* pBuffer, uint8_t ReadAddr, uint16_t NumByteToRead);
 #endif

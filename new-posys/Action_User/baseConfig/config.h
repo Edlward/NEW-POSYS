@@ -35,6 +35,7 @@
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
 #define PERIOD    				0.005f
+
 #ifdef SINGLESYSTEM
 	#define R_wheel         25.25f
 #else
@@ -46,10 +47,20 @@
 #define Temp_ctr       42             //控温的值    //大车上控制的温度 37 45 30
 #define TempTable_max  50								//30-49.9
 #define TempTable_min  30
-#define TempStep       0.01f
+#define LEASTNUM			 100
 #define TIME_HEAT      5              //初始化时加热的时间值
 
-#define BF_TH          2               //最下二乘法拟合的阶数
+
+/*
+第一位 陀螺仪是否矫正  1代表矫正
+第二位 陀螺仪
+*/
+
+#define CORRECT    								0X01
+#define UNCORRECT   						  0XFE
+#define ACCUMULATE 								0X02
+
+
 /* Exported macro ------------------------------------------------------------*/
 /* L3GD20H 寄存器地址-----------------------*/
 #define L3GD20H_WHO_AM_I								0x0F

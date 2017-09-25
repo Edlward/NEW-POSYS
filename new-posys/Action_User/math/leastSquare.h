@@ -5,7 +5,7 @@
 
 #define MaxCoeff			 2
 
-void SquareFitting(float data[(int)((TempTable_max - TempTable_min)/TempStep)]);
+void SquareFitting(float data[((TempTable_max - TempTable_min)*10)]);
 float FitResult(float tem);
 #endif
 

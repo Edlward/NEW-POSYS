@@ -1,6 +1,6 @@
 Dependencies for Project 'demo', Target 'ACTION': (DO NOT MODIFY !)
-F (..\Action_User\main.c)(0x59C7DF95)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\main.o --omf_browse .\szw_stm32f407\main.crf --depend .\szw_stm32f407\main.d)
-I (..\Action_User\hardware\usart.h)(0x59C7CE37)
+F (..\Action_User\main.c)(0x59C9294C)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\main.o --omf_browse .\szw_stm32f407\main.crf --depend .\szw_stm32f407\main.d)
+I (..\Action_User\hardware\usart.h)(0x59C8EB13)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x59BB8980)
 I (..\Libraries\CMSIS\stm32f4xx.h)(0x59BB8980)
@@ -14,7 +14,7 @@ I (..\Action_User\hardware\timer.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59BB8980)
 I (..\Action_User\hardware\gpio.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h)(0x59BB8980)
-I (..\Action_User\stm32f4xx_it.h)(0x59C7CE37)
+I (..\Action_User\stm32f4xx_it.h)(0x59C8E791)
 I (..\Libraries\CMSIS\arm_math.h)(0x59BB8980)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
@@ -22,14 +22,14 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x59BB8980)
 I (..\Action_User\develop\temperature_control.h)(0x59C7CE36)
 I (..\Action_User\hardware\spi.h)(0x59C7D12E)
-I (..\Action_User\hardware\flash.h)(0x59BB8980)
+I (..\Action_User\hardware\flash.h)(0x59C90689)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x59C7CE36)
-I (..\Action_User\baseConfig\config.h)(0x59C7CE36)
+I (..\Action_User\baseConfig\config.h)(0x59C93086)
 I (..\Action_User\develop\figureAngle.h)(0x59C7CE36)
-I (..\Action_User\develop\buildExcel.h)(0x59C7DF95)
+I (..\Action_User\develop\buildExcel.h)(0x59C903A1)
 I (..\Action_User\customer\customer.h)(0x59BB8980)
-F (..\Action_User\stm32f4xx_it.c)(0x59C7CE37)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\stm32f4xx_it.o --omf_browse .\szw_stm32f407\stm32f4xx_it.crf --depend .\szw_stm32f407\stm32f4xx_it.d)
-I (..\Action_User\stm32f4xx_it.h)(0x59C7CE37)
+F (..\Action_User\stm32f4xx_it.c)(0x59C8EDF5)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\stm32f4xx_it.o --omf_browse .\szw_stm32f407\stm32f4xx_it.crf --depend .\szw_stm32f407\stm32f4xx_it.d)
+I (..\Action_User\stm32f4xx_it.h)(0x59C8E791)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59BB8980)
 I (..\Libraries\CMSIS\stm32f4xx.h)(0x59BB8980)
 I (..\Libraries\CMSIS\core_cm4.h)(0x59C7CC8A)
@@ -42,19 +42,19 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x59BB8980)
 I (..\Libraries\CMSIS\arm_math.h)(0x59BB8980)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
-I (..\Action_User\hardware\usart.h)(0x59C7CE37)
+I (..\Action_User\hardware\usart.h)(0x59C8EB13)
 I (..\Action_User\hardware\timer.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h)(0x59BB8980)
 I (..\Action_User\hardware\gpio.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x59BB8980)
-I (..\Action_User\hardware\flash.h)(0x59BB8980)
-I (..\Action_User\baseConfig\config.h)(0x59C7CE36)
-F (..\Action_User\develop\buildExcel.c)(0x59C7DF95)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\buildexcel.o --omf_browse .\szw_stm32f407\buildexcel.crf --depend .\szw_stm32f407\buildexcel.d)
-I (..\Action_User\develop\buildExcel.h)(0x59C7DF95)
+I (..\Action_User\hardware\flash.h)(0x59C90689)
+I (..\Action_User\baseConfig\config.h)(0x59C93086)
+F (..\Action_User\develop\buildExcel.c)(0x59C9313B)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\buildexcel.o --omf_browse .\szw_stm32f407\buildexcel.crf --depend .\szw_stm32f407\buildexcel.d)
+I (..\Action_User\develop\buildExcel.h)(0x59C903A1)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
-I (..\Action_User\hardware\flash.h)(0x59BB8980)
-I (..\Action_User\baseConfig\config.h)(0x59C7CE36)
+I (..\Action_User\hardware\flash.h)(0x59C90689)
+I (..\Action_User\baseConfig\config.h)(0x59C93086)
 I (..\Action_User\hardware\timer.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59BB8980)
 I (..\Libraries\CMSIS\stm32f4xx.h)(0x59BB8980)
@@ -63,25 +63,25 @@ I (..\Libraries\CMSIS\core_cmInstr.h)(0x59BB8980)
 I (..\Libraries\CMSIS\core_cmFunc.h)(0x59BB8980)
 I (..\Libraries\CMSIS\core_cm4_simd.h)(0x59BB8980)
 I (..\Libraries\CMSIS\system_stm32f4xx.h)(0x59BB8980)
-I (..\Action_User\hardware\usart.h)(0x59C7CE37)
+I (..\Action_User\hardware\usart.h)(0x59C8EB13)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x59BB8980)
 I (..\Action_User\develop\temperature_control.h)(0x59C7CE36)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x59C7CE36)
 I (..\Libraries\CMSIS\arm_math.h)(0x59BB8980)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
-I (..\Action_User\stm32f4xx_it.h)(0x59C7CE37)
+I (..\Action_User\stm32f4xx_it.h)(0x59C8E791)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h)(0x59BB8980)
 I (..\Action_User\hardware\gpio.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x59BB8980)
-F (..\Action_User\develop\figureAngle.c)(0x59C7DB54)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\figureangle.o --omf_browse .\szw_stm32f407\figureangle.crf --depend .\szw_stm32f407\figureangle.d)
+F (..\Action_User\develop\figureAngle.c)(0x59C93151)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\figureangle.o --omf_browse .\szw_stm32f407\figureangle.crf --depend .\szw_stm32f407\figureangle.d)
 I (..\Action_User\develop\figureAngle.h)(0x59C7CE36)
-I (..\Action_User\baseConfig\config.h)(0x59C7CE36)
+I (..\Action_User\baseConfig\config.h)(0x59C93086)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x59C7CE36)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
-I (..\Action_User\hardware\usart.h)(0x59C7CE37)
+I (..\Action_User\hardware\usart.h)(0x59C8EB13)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x59BB8980)
 I (..\Libraries\CMSIS\stm32f4xx.h)(0x59BB8980)
 I (..\Libraries\CMSIS\core_cm4.h)(0x59C7CC8A)
@@ -91,21 +91,27 @@ I (..\Libraries\CMSIS\core_cm4_simd.h)(0x59BB8980)
 I (..\Libraries\CMSIS\system_stm32f4xx.h)(0x59BB8980)
 I (..\Action_User\hardware\timer.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59BB8980)
-I (..\Action_User\hardware\flash.h)(0x59BB8980)
+I (..\Action_User\hardware\flash.h)(0x59C90689)
 I (..\Action_User\develop\temperature_control.h)(0x59C7CE36)
-I (..\Action_User\develop\buildExcel.h)(0x59C7DF95)
+I (..\Action_User\develop\buildExcel.h)(0x59C903A1)
 I (..\Action_User\customer\customer.h)(0x59BB8980)
 I (..\Libraries\CMSIS\arm_math.h)(0x59BB8980)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\Action_User\math\quarternion.h)(0x59C7CE37)
+I (..\Action_User\math\leastSquare.h)(0x59C9313B)
+I (..\Action_User\stm32f4xx_it.h)(0x59C8E791)
+I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h)(0x59BB8980)
+I (..\Action_User\hardware\gpio.h)(0x59BB8980)
+I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h)(0x59BB8980)
+I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x59BB8980)
 F (..\Action_User\develop\figurePos.c)(0x59C7CF5D)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\figurepos.o --omf_browse .\szw_stm32f407\figurepos.crf --depend .\szw_stm32f407\figurepos.d)
 I (..\Action_User\develop\figurePos.h)(0x59C7CC8A)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
 I (..\Action_User\develop\figureAngle.h)(0x59C7CE36)
-I (..\Action_User\baseConfig\config.h)(0x59C7CE36)
+I (..\Action_User\baseConfig\config.h)(0x59C93086)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x59C7CE36)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
-I (..\Action_User\hardware\usart.h)(0x59C7CE37)
+I (..\Action_User\hardware\usart.h)(0x59C8EB13)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x59BB8980)
 I (..\Libraries\CMSIS\stm32f4xx.h)(0x59BB8980)
 I (..\Libraries\CMSIS\core_cm4.h)(0x59C7CC8A)
@@ -121,7 +127,7 @@ F (..\Action_User\develop\temperature_control.c)(0x59C7CE36)(-c --cpu Cortex-M4.
 I (..\Action_User\develop\temperature_control.h)(0x59C7CE36)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
 I (..\Action_User\develop\figureAngle.h)(0x59C7CE36)
-I (..\Action_User\baseConfig\config.h)(0x59C7CE36)
+I (..\Action_User\baseConfig\config.h)(0x59C93086)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x59C7CE36)
 I (..\Action_User\hardware\timer.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59BB8980)
@@ -136,12 +142,12 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x59BB8980)
 I (..\Libraries\CMSIS\arm_math.h)(0x59BB8980)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
-I (..\Action_User\hardware\usart.h)(0x59C7CE37)
+I (..\Action_User\hardware\usart.h)(0x59C8EB13)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x59BB8980)
 F (..\Action_User\customer\customer.c)(0x59C7CE36)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\customer.o --omf_browse .\szw_stm32f407\customer.crf --depend .\szw_stm32f407\customer.d)
 I (..\Action_User\customer\customer.h)(0x59BB8980)
 I (..\Action_User\develop\figureAngle.h)(0x59C7CE36)
-I (..\Action_User\baseConfig\config.h)(0x59C7CE36)
+I (..\Action_User\baseConfig\config.h)(0x59C93086)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x59C7CE36)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
@@ -154,7 +160,7 @@ I (..\Libraries\CMSIS\core_cm4_simd.h)(0x59BB8980)
 I (..\Libraries\CMSIS\system_stm32f4xx.h)(0x59BB8980)
 F (..\Action_User\baseConfig\icm_20608_g.c)(0x59C7D13E)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\icm_20608_g.o --omf_browse .\szw_stm32f407\icm_20608_g.crf --depend .\szw_stm32f407\icm_20608_g.d)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x59C7CE36)
-I (..\Action_User\baseConfig\config.h)(0x59C7CE36)
+I (..\Action_User\baseConfig\config.h)(0x59C93086)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
 I (..\Action_User\hardware\timer.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59BB8980)
@@ -169,11 +175,11 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h)(0x59BB8980)
 I (..\Libraries\CMSIS\arm_math.h)(0x59BB8980)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
-I (..\Action_User\hardware\usart.h)(0x59C7CE37)
+I (..\Action_User\hardware\usart.h)(0x59C8EB13)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x59BB8980)
 I (..\Action_User\develop\figureAngle.h)(0x59C7CE36)
-F (..\Action_User\hardware\flash.c)(0x59C7DB54)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\flash.o --omf_browse .\szw_stm32f407\flash.crf --depend .\szw_stm32f407\flash.d)
-I (..\Action_User\hardware\flash.h)(0x59BB8980)
+F (..\Action_User\hardware\flash.c)(0x59C9313B)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\flash.o --omf_browse .\szw_stm32f407\flash.crf --depend .\szw_stm32f407\flash.d)
+I (..\Action_User\hardware\flash.h)(0x59C90689)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_flash.h)(0x59BB8980)
 I (..\Libraries\CMSIS\stm32f4xx.h)(0x59BB8980)
@@ -183,7 +189,8 @@ I (..\Libraries\CMSIS\core_cmFunc.h)(0x59BB8980)
 I (..\Libraries\CMSIS\core_cm4_simd.h)(0x59BB8980)
 I (..\Libraries\CMSIS\system_stm32f4xx.h)(0x59BB8980)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
-I (..\Action_User\baseConfig\config.h)(0x59C7CE36)
+I (..\Action_User\baseConfig\config.h)(0x59C93086)
+I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 F (..\Action_User\hardware\gpio.c)(0x59BB8980)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\gpio.o --omf_browse .\szw_stm32f407\gpio.crf --depend .\szw_stm32f407\gpio.d)
 I (..\Action_User\hardware\gpio.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h)(0x59BB8980)
@@ -209,7 +216,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x59BB8980)
 I (..\Action_User\hardware\timer.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59BB8980)
-I (..\Action_User\baseConfig\config.h)(0x59C7CE36)
+I (..\Action_User\baseConfig\config.h)(0x59C93086)
 F (..\Action_User\hardware\timer.c)(0x59BB8980)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\timer.o --omf_browse .\szw_stm32f407\timer.crf --depend .\szw_stm32f407\timer.d)
 I (..\Action_User\hardware\timer.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x59BB8980)
@@ -223,8 +230,8 @@ I (..\Libraries\CMSIS\system_stm32f4xx.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h)(0x59BB8980)
-F (..\Action_User\hardware\usart.c)(0x59C7D4DB)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\usart.o --omf_browse .\szw_stm32f407\usart.crf --depend .\szw_stm32f407\usart.d)
-I (..\Action_User\hardware\usart.h)(0x59C7CE37)
+F (..\Action_User\hardware\usart.c)(0x59C8EDF5)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\usart.o --omf_browse .\szw_stm32f407\usart.crf --depend .\szw_stm32f407\usart.d)
+I (..\Action_User\hardware\usart.h)(0x59C8EB13)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x59BB8980)
 I (..\Libraries\CMSIS\stm32f4xx.h)(0x59BB8980)
@@ -241,7 +248,8 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h)(0x59BB8980)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x59BB8980)
 I (D:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x5475F2FA)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
-F (..\Action_User\math\leastSquare.c)(0x59C7DF01)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\leastsquare.o --omf_browse .\szw_stm32f407\leastsquare.crf --depend .\szw_stm32f407\leastsquare.d)
+I (..\Action_User\baseConfig\config.h)(0x59C93086)
+F (..\Action_User\math\leastSquare.c)(0x59C9313B)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\leastsquare.o --omf_browse .\szw_stm32f407\leastsquare.crf --depend .\szw_stm32f407\leastsquare.d)
 I (..\Libraries\CMSIS\arm_math.h)(0x59BB8980)
 I (..\Libraries\CMSIS\core_cm4.h)(0x59C7CC8A)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
@@ -250,8 +258,8 @@ I (..\Libraries\CMSIS\core_cmFunc.h)(0x59BB8980)
 I (..\Libraries\CMSIS\core_cm4_simd.h)(0x59BB8980)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
-I (..\Action_User\math\leastSquare.h)(0x59C7DE03)
-I (..\Action_User\baseConfig\config.h)(0x59C7CE36)
+I (..\Action_User\math\leastSquare.h)(0x59C9313B)
+I (..\Action_User\baseConfig\config.h)(0x59C93086)
 F (..\Action_User\math\quarternion.c)(0x59C7CE37)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\quarternion.o --omf_browse .\szw_stm32f407\quarternion.crf --depend .\szw_stm32f407\quarternion.d)
 I (..\Libraries\CMSIS\arm_math.h)(0x59BB8980)
 I (..\Libraries\CMSIS\core_cm4.h)(0x59C7CC8A)
@@ -262,7 +270,7 @@ I (..\Libraries\CMSIS\core_cm4_simd.h)(0x59BB8980)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\Action_User\develop\figureAngle.h)(0x59C7CE36)
-I (..\Action_User\baseConfig\config.h)(0x59C7CE36)
+I (..\Action_User\baseConfig\config.h)(0x59C93086)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x59C7CE36)
 F (..\Libraries\STM32F4xx_StdPeriph_Driver\src\misc.c)(0x59BB8980)(-c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I..\ -I..\Action_User -I..\Libraries\CMSIS -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\MDK-ARM -I..\MAA -I..\MAA\AHRS -I..\MAA\MAA_Driver -I..\Libraries\dsplib\Include -I..\Libraries\dsplib -I..\Action_User\hardware -I..\Action_User\baseConfig -I..\Action_User\develop -I..\Action_User\customer -I..\Action_User\math --exceptions-I F:\grow\git\new-posys\new-posys\MDK-ARM\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Keil_v5\ARM\CMSIS\Include-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="514" -DSTM32F405xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM --C99-o .\szw_stm32f407\misc.o --omf_browse .\szw_stm32f407\misc.crf --depend .\szw_stm32f407\misc.d)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x59BB8980)

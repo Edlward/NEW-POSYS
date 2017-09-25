@@ -6,7 +6,7 @@
 #include "stdarg.h"
 #include "stdio.h"
 #include "stm32f4xx_usart.h"
-
+#include "config.h"
 
 /**
   * @brief  Retargets the C library printf function to the USART.
@@ -51,7 +51,7 @@ void USART1_Init(uint32_t BaudRate)
 
 	//Usart1 NVIC 配置
   NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;//串口1中断通道
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0;//抢占优先级3
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1;//抢占优先级3
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority =1;		//子优先级3
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通道使能
 	NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器
@@ -239,6 +239,24 @@ char *itoa(int value, char *string, int radix)
     return string;
 
 } 
+
+static uint8_t command=0;
+void SetCommand(int val){
+	switch(val){
+		case CORRECT:
+			command|=0x01;
+			break;
+		case UNCORRECT:
+			command&=UNCORRECT;
+			break;
+		case ACCUMULATE:
+			command|=0x02;
+			break;
+	}
+}
+uint8_t GetCommand(void){
+	return command;
+}
 
 
 

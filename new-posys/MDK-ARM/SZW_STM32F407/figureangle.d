@@ -22,3 +22,9 @@
 .\szw_stm32f407\figureangle.o: ..\Libraries\CMSIS\core_cm4.h
 .\szw_stm32f407\figureangle.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\szw_stm32f407\figureangle.o: ..\Action_User\math\quarternion.h
+.\szw_stm32f407\figureangle.o: ..\Action_User\math\leastSquare.h
+.\szw_stm32f407\figureangle.o: ..\Action_User\stm32f4xx_it.h
+.\szw_stm32f407\figureangle.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
+.\szw_stm32f407\figureangle.o: ..\Action_User\hardware\gpio.h
+.\szw_stm32f407\figureangle.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h
+.\szw_stm32f407\figureangle.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h

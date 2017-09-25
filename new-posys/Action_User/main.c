@@ -55,7 +55,7 @@ void init(void)
 	/* 初始化FLASH为温度表修正做准备-------------------*/
 	Flash_Init();
 	/* 串口初始化--------------------------------------*/
-	USART6_Init(921600);
+//	USART6_Init(921600);
 	USART1_Init(921600);
 	/* ICM20608G模块初始化-----------------------------------*/
 	ICM20608G_init();
@@ -71,7 +71,7 @@ int main(void)
 	{
 	while(getTimeFlag())
 	{
-		if(!GetFlashUpdataFlag())
+		if(!(GetCommand()&0x01))
 		{	
 			#ifdef HD_TEST //硬件测试，判断焊接是否正常
 			uint8_t test[3];
@@ -79,18 +79,11 @@ int main(void)
 			test[1]=SPI_Read(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
 			test[2]=SPI_Read(SPI2,GPIOB,GPIO_Pin_12,I3G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
 			#endif
-		//	PWMTest(0);
-			if(TempErgodic(30,20,20)!=3)
-				Test(0);
-			else
-				Test(1);
-			
-			//test[2]=GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_1);
 			/* 计算角度 */
 		//  RoughHandle();
    //   TemporaryHandle(GetCommand());
-//		 if(GetCommand()){
-//			updateAngle();
+		// if(GetCommand()){
+	//			updateAngle();
 //		 }
       /* 控制陀螺仪温度  */			
 		  //temperature_control(42);

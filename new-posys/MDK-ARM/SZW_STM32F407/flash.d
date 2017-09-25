@@ -10,3 +10,4 @@
 .\szw_stm32f407\flash.o: ..\Libraries\CMSIS\system_stm32f4xx.h
 .\szw_stm32f407\flash.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\szw_stm32f407\flash.o: ..\Action_User\baseConfig\config.h
+.\szw_stm32f407\flash.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

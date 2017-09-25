@@ -24,13 +24,15 @@
 #include "customer.h"
 #include "arm_math.h"
 #include "quarternion.h"
+#include "leastSquare.h"
+#include "stm32f4xx_it.h"
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-static float **a_icm;
 extern float *chartW;
 extern uint32_t *chartNum;
+extern int chartN;
 static three_axis result_angle={0,0,0};
 static Quarternion quaternion={1,0,0,0};
 /* Extern   variables ---------------------------------------------------------*/
@@ -59,14 +61,13 @@ static gyro_t gyr_icm,gyr_act;			//原始的角速度和处理后的角速度
 static gyro_t acc_icm;          //加速度信息
 static float   temp_icm;            //陀螺仪温度
 static float   temp_icm_filter;            //陀螺仪温度
-
+int chartIndex = 0;
 void RoughHandle(void)
 {
-	static int16_t convert;             //陀螺仪温度对应数组序号  
 	/*跟新传感器的数据*/
 	icm_update_gyro_rate();
 	icm_update_temp();
-	icm_update_acc();
+	//icm_update_acc();
 	
 	/*读取数据*/
 	icm_read_gyro_rate(&gyr_icm);
@@ -74,57 +75,57 @@ void RoughHandle(void)
 	//icm_read_accel_acc(&acc_icm);
 	
 	temp_icm=KalmanFilterT(temp_icm);
-	
 
 	/* 温度值转换成数组的序号来寻找温度零漂表里对应的值 */
-	convert=(int16_t)((temp_icm-TempTable_min)*10.0f/1.0f);
-	if((convert>=0&&convert<10*(TempTable_max-TempTable_min))
-	    &&chartNum[convert]>10           //表里的值得数量需要大于10
-	    &&chartNum[convert]!=0xffffffff) //表里面需要有值,原因flash默认都是1
+	chartIndex=roundf((temp_icm-30.f)*10);
+	if((chartIndex>=0&&chartIndex<chartN)
+	    &&chartNum[chartIndex]>=LEASTNUM           //表里的值得数量需要大于LEASTNUM
+	    &&chartNum[chartIndex]!=0xffffffff) //表里面需要有值,原因flash默认都是1
 	{
-		gyr_act.No1.x=(gyr_icm.No1.x-chartW[convert]);
-		gyr_act.No1.y=(gyr_icm.No1.y-chartW[convert+10*(TempTable_max-TempTable_min)]);
-		gyr_act.No1.z=(gyr_icm.No1.z-chartW[convert+20*(TempTable_max-TempTable_min)]);
+		gyr_act.No1.z=gyr_icm.No1.z-chartW[chartIndex];
 	}
   else /* 当温度表里信息不理想时采用最小二乘法来拟合曲线参与零点漂移的计算  */
 	{
-		gyr_act.No1.x=gyr_icm.No1.x;
-		gyr_act.No1.y=gyr_icm.No1.y;
-		gyr_act.No1.z=gyr_icm.No1.z;
-		/*减去一个一次函数*//*前面须执行拟合函数，否则这边会越界访问*/
-		for(uint8_t i=0;i<BF_TH;i++)
-		{
-			gyr_act.No1.x=gyr_act.No1.x-a_icm[i][0]*pow(temp_icm,i);
-			gyr_act.No1.y=gyr_act.No1.y-a_icm[i][1]*pow(temp_icm,i);
-			gyr_act.No1.z=gyr_act.No1.z-a_icm[i][2]*pow(temp_icm,i);
-		}
+		gyr_act.No1.z=FitResult(temp_icm);
 	}
 }
-
 	//30℃到49.9℃   重新矫正温飘  30 -- 0  30.1 -- 1
 void TemporaryHandle(int start)
 {
-	uint32_t index=(uint32_t)((temp_icm-30.f)*10.0f/1.0f);
-	static float gyr_aver[200]={0};
-	static float countTemp[200]={0};
-	/* 新息自适应卡尔曼滤波，滤除角速度中的噪声 */
-	gyr_act.No1.z=KalmanFilterZ(gyr_act.No1.z);
+	static float gyr_aver[((TempTable_max - TempTable_min)*10)]={0};
+	static float countTemp[((TempTable_max - TempTable_min)*10)]={0};
+	chartIndex=roundf((temp_icm-30.f)*10);
+	if(chartIndex<0||chartIndex>=chartN) 
+		return;
 	if(start==0){
-    if(countTemp[index]>0)
-			gyr_aver[index]=gyr_aver[index]*countTemp[index]/(countTemp[index]+1)+gyr_act.No1.z/(countTemp[index]+1);
+    if(countTemp[chartIndex]>0)
+			gyr_aver[chartIndex]=gyr_aver[chartIndex]*countTemp[chartIndex]/(countTemp[chartIndex]+1)+gyr_act.No1.z/(countTemp[chartIndex]+1);
 		else
-			gyr_aver[index]=gyr_act.No1.z;
+			gyr_aver[chartIndex]=gyr_act.No1.z;
 		
-			countTemp[index]++;
+			countTemp[chartIndex]++;
 	}else{
-		if(countTemp[index]>=10){
-			float proportion=(temp_icm-30.f)*10.0f-index;
+		if(countTemp[chartIndex]>=LEASTNUM){
+			float proportion=(temp_icm-30.f)*10-chartIndex;
 			/*分段插值*/
-			gyr_act.No1.z=gyr_act.No1.z-(gyr_aver[index]*(1-proportion)+gyr_aver[index+1]*proportion);
+			gyr_act.No1.z=gyr_act.No1.z-(gyr_aver[chartIndex]*(1-proportion)+gyr_aver[chartIndex+1]*proportion);
 		}
 	}
 }
 	
+/* Exported function prototypes -----------------------------------------------*/
+/* Exported functions ---------------------------------------------------------*/
+void UpdataExcel(void)
+{
+	uint8_t finish=0;
+  while(!finish){
+		while(getTimeFlag()){
+			
+		
+		}
+	}
+}
+
 static three_axis acc_angle;        //加速度计测出的对应的角度
 uint8_t updateAngle(void)
 {	
@@ -140,6 +141,8 @@ uint8_t updateAngle(void)
 	然后运动过程中时刻减去
 	*/
 	
+	/* 新息自适应卡尔曼滤波，滤除角速度中的噪声 */
+	gyr_act.No1.z=KalmanFilterZ(gyr_act.No1.z);
 	/* 在车动之前不进行积分的标志位 */
 	if(!wait_flag&&fabs(gyr_act.No1.z)>0.3)
 	{
@@ -195,70 +198,70 @@ uint8_t updateAngle(void)
 }
 
 
-void Test(int finish){
-	
-	static float gyr_aver_rough[2000]={0};
-	static float gyr_aver[2000]={0};
-	static float countTemp[2000]={0};
-	static float countTemp_rough[2000]={0};
-	static uint32_t index=0;
-	static uint32_t index_rough=0;
-	static uint32_t count=0;
-	static int ii=0;
-	
-	if(finish==1&&ii<2000){
-//			USART_OUT_F(gyr_aver_rough[ii]);
-//			USART_OUT_F(countTemp_rough[ii]);
-//			USART_OUT_F(gyr_aver[ii]);
-//			USART_OUT_F(countTemp[ii]);
-//			USART_OUT(USART6,"\r\n");
-//			ii++;
-			return ;
-	}
-	
-	icm_update_gyro_rate();
-	icm_update_temp();
-	
-	icm_read_gyro_rate(&gyr_icm);
-	icm_read_temp(&temp_icm);
-	
-	USART_OUT_F(gyr_icm.No1.z);
-	USART_OUT_F(temp_icm);
-	gyr_act.No1.z=KalmanFilterZ(gyr_icm.No1.z);
-	temp_icm_filter=KalmanFilterT(temp_icm);
-	
-	gyr_act.No1.z=KalmanFilterZ(gyr_icm.No1.z);
-	temp_icm_filter=KalmanFilterT(temp_icm);
-	
-	if(temp_icm_filter>30.f){
-		index=(uint32_t)((temp_icm_filter-30.f)*100.0f/1.0f);
-		if(countTemp[index]>0){
-			gyr_aver[index]=gyr_aver[index]*countTemp[index]/(countTemp[index]+1)+gyr_act.No1.z/(countTemp[index]+1);
-		}
-		else{
-			gyr_aver[index]=gyr_act.No1.z;
-		}
-			
-			countTemp[index]++;
-	}
-	
-	if(temp_icm>30.f){
-		index_rough=(uint32_t)((temp_icm-30.f)*100.0f/1.0f);
-		if(countTemp_rough[index_rough]>0){
-			gyr_aver_rough[index_rough]=gyr_aver_rough[index_rough]*countTemp_rough[index_rough]/(countTemp_rough[index_rough]+1)+gyr_icm.No1.z/(countTemp_rough[index_rough]+1);
-		}
-		else{
-			gyr_aver_rough[index_rough]=gyr_icm.No1.z;
-		}
-			countTemp_rough[index_rough]++;
-	}
-	count++;
-	if(count==200){
-		count=0;
-		USART_OUT_F(temp_icm);
-		USART_OUT(USART6,"\r\n");
-	}
-}
+//void Test(int finish){
+//	
+//	static float gyr_aver_rough[2000]={0};
+//	static float gyr_aver[2000]={0};
+//	static float countTemp[2000]={0};
+//	static float countTemp_rough[2000]={0};
+//	static uint32_t index=0;
+//	static uint32_t index_rough=0;
+//	static uint32_t count=0;
+//	static int ii=0;
+//	
+//	if(finish==1&&ii<2000){
+////			USART_OUT_F(gyr_aver_rough[ii]);
+////			USART_OUT_F(countTemp_rough[ii]);
+////			USART_OUT_F(gyr_aver[ii]);
+////			USART_OUT_F(countTemp[ii]);
+////			USART_OUT(USART6,"\r\n");
+////			ii++;
+//			return ;
+//	}
+//	
+//	icm_update_gyro_rate();
+//	icm_update_temp();
+//	
+//	icm_read_gyro_rate(&gyr_icm);
+//	icm_read_temp(&temp_icm);
+//	
+//	USART_OUT_F(gyr_icm.No1.z);
+//	USART_OUT_F(temp_icm);
+//	gyr_act.No1.z=KalmanFilterZ(gyr_icm.No1.z);
+//	temp_icm_filter=KalmanFilterT(temp_icm);
+//	
+//	gyr_act.No1.z=KalmanFilterZ(gyr_icm.No1.z);
+//	temp_icm_filter=KalmanFilterT(temp_icm);
+//	
+//	if(temp_icm_filter>30.f){
+//		index=(uint32_t)((temp_icm_filter-30.f)*100.0f/1.0f);
+//		if(countTemp[index]>0){
+//			gyr_aver[index]=gyr_aver[index]*countTemp[index]/(countTemp[index]+1)+gyr_act.No1.z/(countTemp[index]+1);
+//		}
+//		else{
+//			gyr_aver[index]=gyr_act.No1.z;
+//		}
+//			
+//			countTemp[index]++;
+//	}
+//	
+//	if(temp_icm>30.f){
+//		index_rough=(uint32_t)((temp_icm-30.f)*100.0f/1.0f);
+//		if(countTemp_rough[index_rough]>0){
+//			gyr_aver_rough[index_rough]=gyr_aver_rough[index_rough]*countTemp_rough[index_rough]/(countTemp_rough[index_rough]+1)+gyr_icm.No1.z/(countTemp_rough[index_rough]+1);
+//		}
+//		else{
+//			gyr_aver_rough[index_rough]=gyr_icm.No1.z;
+//		}
+//			countTemp_rough[index_rough]++;
+//	}
+//	count++;
+//	if(count==200){
+//		count=0;
+//		USART_OUT_F(temp_icm);
+//		USART_OUT(USART6,"\r\n");
+//	}
+//}
 
 
 

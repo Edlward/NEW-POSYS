@@ -31,28 +31,20 @@
 /* Private  variables ---------------------------------------------------------*/
 extern float *chartW;
 extern uint32_t *chartNum;
+extern int chartN;
 float KalmanT(float measureData);
 float KalmanZ(float measureData);
 
-/* Exported function prototypes -----------------------------------------------*/
-/* Exported functions ---------------------------------------------------------*/
-void UpdataExcel(void)
+void TempTablePrintf(void)
 {
-  while()
-}
-
-void TempTablePrintf(float *result)
-{
-	float temp=30.f;
-	uint32_t i;
-	Flash_Read(GetFlashArr(),(4+4)*(int)(1.f/TempStep)*(TempTable_max-TempTable_min));
-	for(i=0;i<(int)((TempTable_max-TempTable_min)/TempStep);i++)
+	float temp=TempTable_min;
+	for(int i=0;i<chartN;i++)
 	{
 			USART_OUT_F(temp);
 			USART_OUT_F(chartW[i]);
 			USART_OUT_F(chartNum[i]);
-			temp=temp+TempStep;
 			USART_OUT(USART1,"\r\n");
+			temp=temp+0.1f;
 	}
 }
 
@@ -60,15 +52,21 @@ void UpdateVDoffTable(void)
 {
 	static gyro_t gyr_icm;
 	static float temp_icm;
-	static uint32_t index=0;
+	static int index=0;
 	static int time_count=0;
 	
 	static uint32_t coldCount=0;
-	static const int time=200*60*5;
-	if(coldCount++<time)
+	static const int time=200*60*0.01;
+	coldCount++;
+	if(coldCount<time){
+		ICM_HeatingPower(0);
+		USART_OUT(USART1,"waiting \r\n");
 		return ;
-	else
-		coldCount=time;
+	}
+	else if(coldCount==time){
+		Flash_Return();
+	}else
+		coldCount=time+1;
 	
 	icm_update_gyro_rate();
 	icm_update_temp();
@@ -76,30 +74,42 @@ void UpdateVDoffTable(void)
 	icm_read_gyro_rate(&gyr_icm);
 	icm_read_temp(&temp_icm);
 	
-	if(temp_icm>=TempTable_min){
-		index=(uint32_t)((temp_icm-TempTable_min)/TempStep);
-		if(chartNum[index]>0){
-			chartW[index]=( chartW[index] * chartNum[index] + gyr_icm.No1.z ) / ( chartNum[index] + 1 );
+	temp_icm=KalmanT(temp_icm);
+	
+	if(temp_icm>=TempTable_min&&temp_icm<TempTable_max){
+		index=roundf((temp_icm-TempTable_min)*10);
+		if(chartNum[index]>0&&chartNum[index]!=0xffffffff){
+			chartW[index]+=gyr_icm.No1.z;
 		}
 		else{
 			chartW[index]=gyr_icm.No1.z;
+			chartNum[index]=0;
 		}
 			chartNum[index]++;
 	}
 	
+			USART_OUT_F(gyr_icm.No1.z);
+			USART_OUT_F(temp_icm);
+			USART_OUT(USART1,"\r\n");
 	time_count++;
 	if(time_count>=2000)
 	{
-		USART_OUT(USART1,"ACT TEMP: %d\r\n",(int)(temp_icm*100));
+	//	USART_OUT(USART1,"ACT TEMP: %d\r\n",(int)(temp_icm*100));
 		time_count=0;
 	}
 	
-	if(TempErgodic(30,20,20)==3){
-		SetFlashUpdateFlag(0);
+	if(TempErgodic(TempTable_min,20,1)==3){
+		for(int i=0;i<chartN;i++)
+		{
+			if(chartNum[i]!=0xffffffff)
+				chartW[i]=chartW[i]/chartNum[i];
+		}
+		SetCommand(UNCORRECT);
 		USART_OUT(USART1,"Flash Update begin\r\n");
-		Flash_Write(GetFlashArr(),160*(TempTable_max-TempTable_min));
+		Flash_Write(GetFlashArr(),chartN*8);
 		USART_OUT(USART1,"Flash Update end\r\n");
-		TempTablePrintf(chartW);
+	  Flash_Read(GetFlashArr(),chartN*8);
+		TempTablePrintf();
 	}
 }
 

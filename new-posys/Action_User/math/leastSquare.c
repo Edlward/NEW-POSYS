@@ -3,33 +3,33 @@
 
 #define ARRAY (MaxCoeff+1)
 /*温度除以10，进行拟合*/
-int N = (TempTable_max - TempTable_min)/TempStep;
+const int chartN = (int)((TempTable_max - TempTable_min)*10);
 extern uint32_t *chartNum;
 
 float coefficient[MaxCoeff]={0};
 int PCSolve(float MatrixA[ARRAY][ARRAY], float MatrixB[ARRAY], float* result);
 
-float TemSumByPower(float data[N],int power){
+float TemSumByPower(float data[chartN],int power){
 	float sum=0.f;
-	for(int i=0;i<N;i++){
-		if(data[i]!=0.f&&chartNum[i]>=100)
-			sum+=pow((TempTable_min+TempStep*i)/10.f,power);
+	for(int i=0;i<chartN;i++){
+		if(data[i]!=0.f&&chartNum[i]>=LEASTNUM)
+			sum+=pow((TempTable_min+0.1f*i)/10.f,power);
 	}
 	return sum;
 }
 
-float ResultSumByPower(float data[N],int power){
+float ResultSumByPower(float data[chartN],int power){
 	float sum=0.f;
-	for(int i=0;i<N;i++){
-		if(data[i]!=0.f&&chartNum[i]>=100)
-			sum+=pow((TempTable_min+TempStep*i)/10.f,power)*data[i];
+	for(int i=0;i<chartN;i++){
+		if(data[i]!=0.f&&chartNum[i]>=LEASTNUM)
+			sum+=pow((TempTable_min+0.1*i)/10.f,power)*data[i];
 	}
 	return sum;
 }
 
 static float fittingCoeff[MaxCoeff+1]={0};
 
-void SquareFitting(float data[N]){
+void SquareFitting(float data[chartN]){
 	
 	static float rightArray[ARRAY]={0};
 	

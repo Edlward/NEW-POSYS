@@ -130,92 +130,57 @@ void UART5_IRQHandler(void)
 	 
 }
 
-/*
-第一位 陀螺仪开始积分
-第二位 陀螺仪开始矫正
-第三位 陀螺
-*/
-
-#define STARTACCUMULATE 0X01
-#define STARTCORRECT    0X02
-static uint8_t command=0;
-void SetCommand(int val){
-	command=val;
-}
-uint8_t GetCommand(void){
-	return command;
-}
-void USART6_IRQHandler(void)
+void USART1_IRQHandler(void)
 {
 	uint8_t data;
 	static uint8_t status=0;
-	if(USART_GetITStatus(USART6,USART_IT_RXNE)==SET)
+	if(USART_GetITStatus(USART1,USART_IT_RXNE)==SET)
 	{
-		USART_ClearITPendingBit( USART6,USART_IT_RXNE);
-		data=USART_ReceiveData(USART6);
+		USART_ClearITPendingBit( USART1,USART_IT_RXNE);
+		data=USART_ReceiveData(USART1);
 		
 		switch(status)
 		{
 			case 0:
 				if(data=='A')
 				  status++;
-				else if(data=='S')
-					USART_OUT(USART1,"\r\nok");
 				else
 					status=0;
 				break;
 			case 1:
-				if(data=='C')
+				if(data=='T')
 				  status++;
 				else
 					status=0;
 				break;
 			case 2:
-				if(data=='T')
+				if(data=='+')
 				  status++;
-				else if(data=='C')
-					status=4;
 				else
 					status=0;
 				break;
 			case 3:	
+				status=0;	
 			  switch(data)
 				{
+					//矫正
 					case 'R':
-						status=0;	
-					SetFlashUpdateFlag(1);
+						SetCommand(CORRECT);
 						break;
+					case 'B':
+						SetCommand(ACCUMULATE);
 					default:
 						break;
 				}
-				break;
-			case 4:
-				if(data=='T')
-					status++;
-				else
-					status=0;
-				break;
-			case 5:
-				if(data=='0')
-					status++;
-				else
-					status=0;
-				break;
-			case 6:
-				if(data=='0')
-				{
-					SetCommand(1);
-				}
-					status=0;
 				break;
 			default:
 				status=0;
 				break;
 		}
+	}else{
+		data=USART_ReceiveData(USART1);
 	}
-
 }
-
 
 void USART3_IRQHandler(void)
 {

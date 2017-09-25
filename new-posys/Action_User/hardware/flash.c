@@ -18,12 +18,16 @@
 #include "stm32f4xx_flash.h"
 #include "string.h"
 #include "config.h"
+#include "math.h"
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
 #define FLASH_USER_ADDRESS 0x08040000   //FLASH起始地址
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-static uint8_t  flashdata[(4+4)*(int)(1.f/TempStep)*(TempTable_max-TempTable_min)];  //从flash中取出的数据
+extern int chartN;
+float    *chartW;
+uint32_t *chartNum;
+static uint8_t  flashdata[(4+4)*10*(TempTable_max-TempTable_min)];  //从flash中取出的数据
 
 /**
   * @brief  从FLASH里得到的数据分两个部分，第一部分为数据区，第二部分为
@@ -31,14 +35,12 @@ static uint8_t  flashdata[(4+4)*(int)(1.f/TempStep)*(TempTable_max-TempTable_min
   * @param  None
   * @retval Result : 指向flash数据区的指针
   */
-float    *chartW;
 /**
   * @brief  从FLASH里得到的数据分两个部分，第一部分为数据区，第二部分为
   *         计数区，该函数用于获得计数区的指针
   * @param  None
   * @retval Result : 指向flash计数区的指针
   */
-uint32_t *chartNum;
 static uint8_t  flag=0;
 /* Extern   variables ---------------------------------------------------------*/
 /* Extern   function prototypes -----------------------------------------------*/
@@ -113,6 +115,24 @@ void Flash_Zero(uint32_t len)
 }
 
 /**
+  * @brief  将FLASH中的数据改成0
+	*
+  * @param  len  :  改写的数据量，单位：byte
+  * @retval None
+  */
+void Flash_Return(void)
+{
+  uint32_t count;
+	FLASH_Unlock();
+	/*将标志位都写1*/
+	FLASH_ClearFlag(FLASH_FLAG_EOP|FLASH_FLAG_OPERR|FLASH_FLAG_WRPERR|  FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR|FLASH_FLAG_PGSERR);
+	/*我们的405芯片用的是3.3V,所以选择VoltageRange_3*/
+	FLASH_EraseSector(FLASH_Sector_6,VoltageRange_3);
+	FLASH_WaitForLastOperation();
+	FLASH_Lock();
+}
+
+/**
   * @brief  从FLASH中读取数据
 	*
   * @param  data :  存储数据的指针
@@ -136,11 +156,11 @@ void Flash_Init(void)
 {
 	/* 读取FLASH中保存的数据，并将其存到内存(RAM)里 */
 	//static uint8_t  flashdata[160*(TempTable_max-TempTable_min)];  //从flash中取出的数据
-	Flash_Read(flashdata,(4+4)*(int)(1.f/TempStep)*(TempTable_max-TempTable_min));  //50-30
+	Flash_Read(flashdata,chartN*8);  //50-30
 	/* 分割数据段，将零漂值与计数值分开 */
 	chartW=(float *)flashdata;
 	//是因为已经转换成32位
-	chartNum=(uint32_t *)(flashdata)+(int)(1.f/TempStep)*(TempTable_max-TempTable_min);
+	chartNum=(uint32_t *)(flashdata)+(TempTable_max-TempTable_min)*10;
 	
 	/* 保护Flash数据 */
 	Flash_Encryp();
@@ -156,25 +176,6 @@ uint8_t *GetFlashArr(void)
 	return flashdata;
 }
 
-/**
-  * @brief  获得FLASH是否需要更新的标志位
-  *         
-  * @param  None
-  * @retval flag : flash更新的标志位
-  */
-uint8_t GetFlashUpdataFlag(void)
-{
-	return flag;
-}
-/**
-  * @brief  设置FLASH更新标志位的值
-  *         
-  * @param  val  : 赋给更新标志位的值
-  * @retval None
-  */
-void  SetFlashUpdateFlag(uint8_t val)
-{
-	flag=val;
-}
+
 /************************ (C) COPYRIGHT 2016 ACTION *****END OF FILE****/
 

@@ -27,6 +27,7 @@
 /* Exported functions ------------------------------------------------------- */
 void UpdataExcel(void);
 void UpdateVDoffTable(void);
+void TempTablePrintf(void);
 #endif
 
 /******************* (C) COPYRIGHT 2015 ACTION *****END OF FILE****/

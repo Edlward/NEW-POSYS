@@ -60,7 +60,7 @@ void UpdateVDoffTable(void)
 	static int time_count=0;
 	
 	static uint32_t coldCount=0;
-	static const int time=200*60*5;
+	static const int time=200*60*0.1;
 	coldCount++;
 	if(coldCount<time){
 		ICM_HeatingPower(0);
@@ -96,16 +96,13 @@ void UpdateVDoffTable(void)
 			temp_count[index]++;
 	}
 	
-			USART_OUT_F(gyr_icm.No1.z);
-			USART_OUT_F(temp_icm);
-			USART_OUT(USART1,"\r\n");
 	time_count++;
 	if(time_count>=2000)
 	{
 		time_count=0;
 	}
 	
-	if(TempErgodic(TempTable_min,20,20)==3){
+	if(TempErgodic(TempTable_min,20,10)==3){
 		for(int i=0;i<TempTable_Num;i++)
 		{
 				chartNum[i]=temp_count[i];

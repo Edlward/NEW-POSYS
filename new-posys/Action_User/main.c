@@ -47,7 +47,7 @@ void init(void)
 	/* ICM20608G模块初始化-----------------------------------*/
 	ICM20608G_init();
 	
-	while(!Heating(35));
+//	while(!Heating(35));
 }
 
 int main(void)
@@ -58,7 +58,7 @@ int main(void)
 	{
 	while(getTimeFlag())
 	{
-		if(!(GetCommand()&CORRECT))
+		if((GetCommand()&CORRECT))
 		{	
 			#ifdef HD_TEST //硬件测试，判断焊接是否正常
 			uint8_t test[3];

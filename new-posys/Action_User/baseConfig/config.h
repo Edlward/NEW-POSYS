@@ -35,11 +35,11 @@
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
 #define PERIOD    				0.005f
+#define dT 					  	  0.005           //积分的步长
 
 #define R_wheel1        25.25f
 #define R_wheel2        25.2f
 #define ECD_RANGE      4096
-#define dT 					   0.005f           //积分的步长
 #define Temp_ctr       42             //控温的值    //大车上控制的温度 37 45 30
 #define TempTable_max  45								//30-49.9
 #define TempTable_min  35

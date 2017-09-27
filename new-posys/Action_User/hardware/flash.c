@@ -28,7 +28,7 @@ float    *chartWX;
 float    *chartWY;
 float    *chartWZ;
 uint32_t *chartNum;
-static uint8_t  flashdata[(4+4)*10*(TempTable_max-TempTable_min)];  //´ÓflashÖĞÈ¡³öµÄÊı¾İ
+static uint8_t  flashdata[16*10*(TempTable_max-TempTable_min)];  //´ÓflashÖĞÈ¡³öµÄÊı¾İ
 
 /**
   * @brief  ´ÓFLASHÀïµÃµ½µÄÊı¾İ·ÖÁ½¸ö²¿·Ö£¬µÚÒ»²¿·ÖÎªÊı¾İÇø£¬µÚ¶ş²¿·ÖÎª
@@ -42,7 +42,6 @@ static uint8_t  flashdata[(4+4)*10*(TempTable_max-TempTable_min)];  //´ÓflashÖĞÈ
   * @param  None
   * @retval Result : Ö¸Ïòflash¼ÆÊıÇøµÄÖ¸Õë
   */
-static uint8_t  flag=0;
 /* Extern   variables ---------------------------------------------------------*/
 /* Extern   function prototypes -----------------------------------------------*/
 /* Private  function prototypes -----------------------------------------------*/
@@ -159,7 +158,7 @@ void Flash_Init(void)
 	//static uint8_t  flashdata[160*(TempTable_max-TempTable_min)];  //´ÓflashÖĞÈ¡³öµÄÊı¾İ
 	Flash_Read(flashdata,TempTable_Num*16);  //50-30
 	/* ·Ö¸îÊı¾İ¶Î£¬½«ÁãÆ¯ÖµÓë¼ÆÊıÖµ·Ö¿ª */
-	chartWZ=(float *)flashdata;
+	chartWX=(float *)flashdata;
 	chartWY=(float *)flashdata+(TempTable_max-TempTable_min)*10;
 	chartWZ=(float *)flashdata+(TempTable_max-TempTable_min)*20;
 	//ÊÇÒòÎªÒÑ¾­×ª»»³É32Î»

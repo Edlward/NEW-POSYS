@@ -65,8 +65,6 @@ Quarternion Euler_to_Quaternion(three_axis Rad)
   */
 Quarternion QuaternionInt(Quarternion quaternion,three_axis_d data)
 {          
-	static three_axis_d old_w={0.0,0.0,0.0};
-	
 	/* 角度弧度转换 */
 	data.x=(data.x)/180.0*PI;
 	data.y=(data.y)/180.0*PI;
@@ -76,20 +74,20 @@ Quarternion QuaternionInt(Quarternion quaternion,three_axis_d data)
 	Quarternion dif_quarterion_l;
 	Quarternion med_quarterion;
 	
-	dif_quarterion_f.q0=(-quaternion.q1*old_w.x - quaternion.q2*old_w.y - quaternion.q3*old_w.z)*0.5f;
-	dif_quarterion_f.q1=( quaternion.q0*old_w.x + quaternion.q2*old_w.z - quaternion.q3*old_w.y)*0.5f;
-	dif_quarterion_f.q2=( quaternion.q0*old_w.y - quaternion.q1*old_w.z + quaternion.q3*old_w.x)*0.5f;
-	dif_quarterion_f.q3=( quaternion.q0*old_w.z + quaternion.q1*old_w.y - quaternion.q2*old_w.x)*0.5f;
+	dif_quarterion_f.q0=(-quaternion.q1*data.x - quaternion.q2*data.y - quaternion.q3*data.z)*0.5;
+	dif_quarterion_f.q1=( quaternion.q0*data.x + quaternion.q2*data.z - quaternion.q3*data.y)*0.5;
+	dif_quarterion_f.q2=( quaternion.q0*data.y - quaternion.q1*data.z + quaternion.q3*data.x)*0.5;
+	dif_quarterion_f.q3=( quaternion.q0*data.z + quaternion.q1*data.y - quaternion.q2*data.x)*0.5;
 	/*#define dT 					   0.005f           //积分的步长5ms*/
 	med_quarterion.q0=quaternion.q0+dif_quarterion_f.q0*dT;
 	med_quarterion.q1=quaternion.q1+dif_quarterion_f.q1*dT;
 	med_quarterion.q2=quaternion.q2+dif_quarterion_f.q2*dT;
 	med_quarterion.q3=quaternion.q3+dif_quarterion_f.q3*dT; 
   
-	dif_quarterion_l.q0=(-med_quarterion.q1*data.x - med_quarterion.q2*data.y - med_quarterion.q3*data.z)*0.5f;
-	dif_quarterion_l.q1=( med_quarterion.q0*data.x + med_quarterion.q2*data.z - med_quarterion.q3*data.y)*0.5f;
-	dif_quarterion_l.q2=( med_quarterion.q0*data.y - med_quarterion.q1*data.z + med_quarterion.q3*data.x)*0.5f;
-	dif_quarterion_l.q3=( med_quarterion.q0*data.z + med_quarterion.q1*data.y - med_quarterion.q2*data.x)*0.5f;
+	dif_quarterion_l.q0=(-med_quarterion.q1*data.x - med_quarterion.q2*data.y - med_quarterion.q3*data.z)*0.5;
+	dif_quarterion_l.q1=( med_quarterion.q0*data.x + med_quarterion.q2*data.z - med_quarterion.q3*data.y)*0.5;
+	dif_quarterion_l.q2=( med_quarterion.q0*data.y - med_quarterion.q1*data.z + med_quarterion.q3*data.x)*0.5;
+	dif_quarterion_l.q3=( med_quarterion.q0*data.z + med_quarterion.q1*data.y - med_quarterion.q2*data.x)*0.5;
 	
 	
 	quaternion.q0=quaternion.q0+0.5f*(dif_quarterion_f.q0+dif_quarterion_l.q0)*dT;
@@ -97,7 +95,5 @@ Quarternion QuaternionInt(Quarternion quaternion,three_axis_d data)
 	quaternion.q2=quaternion.q2+0.5f*(dif_quarterion_f.q2+dif_quarterion_l.q2)*dT;
 	quaternion.q3=quaternion.q3+0.5f*(dif_quarterion_f.q3+dif_quarterion_l.q3)*dT;
 	
-	
-	old_w=data;
 	return quaternion;
 }

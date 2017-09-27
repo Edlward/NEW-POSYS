@@ -87,10 +87,6 @@ void RoughHandle(void)
 	}else
 		ignore=51;
 	
-//	USART_OUT_F(gyr_icm.No1.x);
-//	USART_OUT_F(gyr_icm.No1.y);
-//	USART_OUT_F(gyr_icm.No1.z);
-//	USART_OUT(USART1,"\r\n");
 	temp_icm=KalmanFilterT(temp_icm);
 
 	/* 温度值转换成数组的序号来寻找温度零漂表里对应的值 */
@@ -180,6 +176,8 @@ uint8_t updateAngle(void)
 	static three_axis result;									//最终角度的弧度角
 	
 	/* 新息自适应卡尔曼滤波，滤除角速度中的噪声 */
+	gyr_act.x=KalmanFilterX(gyr_act.x);
+	gyr_act.y=KalmanFilterY(gyr_act.y);
 	gyr_act.z=KalmanFilterZ(gyr_act.z);
 		
 	/* 
@@ -213,7 +211,7 @@ uint8_t updateAngle(void)
 //	/*弧度角度转换 */
 //	result_angle.x= result.x/PI*180.0f;
 //	result_angle.y= result.y/PI*180.0f;
-	result_angle.z=-result.z/PI*180.0f;
+	result_angle.z=-euler.z/PI*180.0f;
 	
 	USART_OUT_F(gyr_act.z);
 	USART_OUT_F(result_angle.z);
@@ -345,8 +343,8 @@ double KalmanFilterX(double measureData)
 	static double P_mid;        //对预测误差的预测
 	static double Kk;           //滤波增益系数
 	
-	static double Q=0.007;       //系统噪声         
-	static double R=0.007f;      //测量噪声 
+	static double Q=0.0108;       //系统噪声         
+	static double R=0.0108;      //测量噪声 
 	static double IAE_st[50];    //记录的新息
 	double Cr=0;                //新息的方差
 	
@@ -396,8 +394,8 @@ double KalmanFilterY(double measureData)
 	static double P_mid;        //对预测误差的预测
 	static double Kk;           //滤波增益系数
 	
-	static double Q=0.007;       //系统噪声         
-	static double R=0.007f;      //测量噪声 
+	static double Q=0.00927;       //系统噪声         
+	static double R=0.00927;      //测量噪声 
 	static double IAE_st[50];    //记录的新息
 	double Cr=0;                //新息的方差
 	

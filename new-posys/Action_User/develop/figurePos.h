@@ -32,7 +32,6 @@ float getPosY(void);
 void setPosX(float in);
 void setPosY(float in);
 
-void resetPos(void);
 #endif
 
 /******************* (C) COPYRIGHT 2015 ACTION *****END OF FILE****/

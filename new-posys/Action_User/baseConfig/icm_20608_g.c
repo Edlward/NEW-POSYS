@@ -59,7 +59,7 @@ static gyro_t gyro;
 void icm_update_gyro_rate(void)
 {
 	short data1[3] = {0,0,0};
-	short data2[3] = {0,0,0};
+//	short data2[3] = {0,0,0};
 	unsigned char raw[6];
 	/*
 	raw从低地址到高地址依次是
@@ -74,8 +74,8 @@ void icm_update_gyro_rate(void)
 	data1[2] = (raw[4]<<8) | raw[5];
 	
 	gyro.No1.x = -data1[1]/131.f;
-	gyro.No1.y = data1[0]/131.f;
-	gyro.No1.z = data1[2]/131.f;
+	gyro.No1.y = -data1[0]/131.f;
+	gyro.No1.z = -data1[2]/131.f;
 	
 //	SPI_MultiRead(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_GYRO_XOUT_H,raw,6);
 //	/*X的原始角速度值*/
@@ -105,7 +105,7 @@ static gyro_t acc;
 void icm_update_acc(void)
 {
 	short data1[3] = {0,0,0};
-	short data2[3] = {0,0,0};
+//	short data2[3] = {0,0,0};
 	unsigned char raw[6];
 	/*
 	raw从低地址到高地址依次是
@@ -121,22 +121,22 @@ void icm_update_acc(void)
 	/*
 	16384 LSB/g
 	*/
-	acc.No1.x = -data1[0]/16384.0;
+	acc.No1.x = data1[0]/16384.0;
 	acc.No1.y = data1[1]/16384.0;
-	acc.No1.z = -data1[2]/16384.0;
+	acc.No1.z = data1[2]/16384.0;
 	
-	acc.No2.x = -data2[0]/16384.0;
-	acc.No2.y = data2[1]/16384.0;
-	acc.No2.z = -data2[2]/16384.0;
+//	SPI_MultiRead(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_ACCEL_XOUT_H,raw,6);
+//	/*X的原始角速度值*/
+//	data2[0] = (raw[0]<<8) | raw[1];
+//	/*Y的原始角速度值*/
+//	data2[1] = (raw[2]<<8) | raw[3];
+//	/*Y的原始角速度值*/
+//	data2[2] = (raw[4]<<8) | raw[5];
+//	
+//	acc.No2.x = -data2[0]/16384.0;
+//	acc.No2.y = data2[1]/16384.0;
+//	acc.No2.z = -data2[2]/16384.0;
 	
-	
-	SPI_MultiRead(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_ACCEL_XOUT_H,raw,6);
-	/*X的原始角速度值*/
-	data2[0] = (raw[0]<<8) | raw[1];
-	/*Y的原始角速度值*/
-	data2[1] = (raw[2]<<8) | raw[3];
-	/*Y的原始角速度值*/
-	data2[2] = (raw[4]<<8) | raw[5];
 }
 void icm_read_accel_acc(gyro_t *data)
 {
@@ -144,9 +144,9 @@ void icm_read_accel_acc(gyro_t *data)
 	(*data).No1.y=acc.No1.y;
 	(*data).No1.z=acc.No1.z;
 	
-	(*data).No2.x=acc.No2.x;
-	(*data).No2.y=acc.No2.y;
-	(*data).No2.z=acc.No2.z;
+//	(*data).No2.x=acc.No2.x;
+//	(*data).No2.y=acc.No2.y;
+//	(*data).No2.z=acc.No2.z;
 }
 
 static float temp;
@@ -170,38 +170,10 @@ void icm_read_temp(float *data)
 	*data=temp;
 }
 
-extern float K_acc;
-void icm_update_AccRad(three_axis *rad)
+void icm_update_AccRad(double accInit[3],three_axis *rad)
 {
-	float sum=sqrt(acc.No1.x*acc.No1.x+acc.No1.y*acc.No1.y+acc.No1.z*acc.No1.z);
+	double sum=sqrt(acc.No1.x*acc.No1.x+acc.No1.y*acc.No1.y+acc.No1.z*acc.No1.z);
 	float X_G,Y_G,Z_G;
-	static uint8_t fix_flag=0;
-	static float fix_sum;
-	
-	/*先求静止状态下的十个数*/
-	/*
-	这个值并不是很小,实际上可以计算,
-	即使车的的加速度是1m/s也是在我们的范围内,
-	而1m/s已经很大了
-	*/
-	if(fix_flag<21)
-	{
-		if(fix_flag>0)
-		fix_sum=fix_sum+sum/20;
-		fix_flag++;
-	}
-	else if(fabs(sum-fix_sum)<0.001)
-   K_acc =  0.98;
-	else if(fabs(sum-fix_sum)<0.002)
-   K_acc = 0.985;
-	else if(fabs(sum-fix_sum)<0.003)
-   K_acc = 0.987;
-	else if(fabs(sum-fix_sum)<0.004)
-   K_acc = 0.988;
-	else if(fabs(sum-fix_sum)<0.01)
-	 K_acc = 0.99;
-	else 
-	 K_acc=1;	
 	
 	X_G=(acc).No1.x/sum;
 	Y_G=(acc).No1.y/sum;

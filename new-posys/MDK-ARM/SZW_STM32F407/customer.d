@@ -4,6 +4,7 @@
 .\szw_stm32f407\customer.o: ..\Action_User\baseConfig\config.h
 .\szw_stm32f407\customer.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\szw_stm32f407\customer.o: ..\Action_User\baseConfig\icm_20608_g.h
+.\szw_stm32f407\customer.o: ..\Action_User\develop\figurePos.h
 .\szw_stm32f407\customer.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\szw_stm32f407\customer.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h
 .\szw_stm32f407\customer.o: ..\Libraries\CMSIS\stm32f4xx.h

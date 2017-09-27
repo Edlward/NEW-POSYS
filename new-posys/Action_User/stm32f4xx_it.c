@@ -138,7 +138,7 @@ void USART1_IRQHandler(void)
 	{
 		USART_ClearITPendingBit( USART1,USART_IT_RXNE);
 		data=USART_ReceiveData(USART1);
-		
+		USART_SendData(USART1,data);
 		switch(status)
 		{
 			case 0:
@@ -168,7 +168,11 @@ void USART1_IRQHandler(void)
 						SetCommand(CORRECT);
 						break;
 					case 'B':
+						SetCommand(ADJUST);
+						break;
+					case 'Q':
 						SetCommand(ACCUMULATE);
+						break;
 					default:
 						break;
 				}
@@ -181,6 +185,34 @@ void USART1_IRQHandler(void)
 		data=USART_ReceiveData(USART1);
 	}
 }
+
+static uint8_t command=0;
+void SetCommand(int val){
+	switch(val){
+		case CORRECT:
+			command|=CORRECT;
+			break;
+		case UNCORRECT:
+			command&=UNCORRECT;
+			break;
+		case ADJUST:
+			command|=ADJUST;
+			break;
+		case UNADJUST:
+			command&=UNADJUST;
+			break;
+		case ACCUMULATE:
+			command|=ACCUMULATE;
+			break;
+		case UNACCUMULATE:
+			command&=UNACCUMULATE;
+	}
+}
+uint8_t GetCommand(void){
+	return command;
+}
+
+
 
 void USART3_IRQHandler(void)
 {

@@ -24,8 +24,9 @@
 #define FLASH_USER_ADDRESS 0x08040000   //FLASH起始地址
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-extern int chartN;
-float    *chartW;
+float    *chartWX;
+float    *chartWY;
+float    *chartWZ;
 uint32_t *chartNum;
 static uint8_t  flashdata[(4+4)*10*(TempTable_max-TempTable_min)];  //从flash中取出的数据
 
@@ -156,11 +157,13 @@ void Flash_Init(void)
 {
 	/* 读取FLASH中保存的数据，并将其存到内存(RAM)里 */
 	//static uint8_t  flashdata[160*(TempTable_max-TempTable_min)];  //从flash中取出的数据
-	Flash_Read(flashdata,chartN*8);  //50-30
+	Flash_Read(flashdata,TempTable_Num*16);  //50-30
 	/* 分割数据段，将零漂值与计数值分开 */
-	chartW=(float *)flashdata;
+	chartWZ=(float *)flashdata;
+	chartWY=(float *)flashdata+(TempTable_max-TempTable_min)*10;
+	chartWZ=(float *)flashdata+(TempTable_max-TempTable_min)*20;
 	//是因为已经转换成32位
-	chartNum=(uint32_t *)(flashdata)+(TempTable_max-TempTable_min)*10;
+	chartNum=(uint32_t *)(flashdata)+(TempTable_max-TempTable_min)*30;
 	
 	/* 保护Flash数据 */
 	Flash_Encryp();

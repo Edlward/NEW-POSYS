@@ -30,9 +30,10 @@
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-extern float *chartW;
+extern float *chartWX;
+extern float *chartWY;
+extern float *chartWZ;
 extern uint32_t *chartNum;
-extern int chartN;
 static three_axis result_angle={0,0,0};
 static Quarternion quaternion={1,0,0,0};
 /* Extern   variables ---------------------------------------------------------*/
@@ -41,11 +42,9 @@ float K_acc=1;
 /* Extern   function prototypes -----------------------------------------------*/
 /* Private  function prototypes -----------------------------------------------*/
 /* Private  functions ---------------------------------------------------------*/
-float KalmanFilterT(float measureData);
-float KalmanFilterZ(float measureData);
-/* Exported function prototypes -----------------------------------------------*/
-/* Exported functions ---------------------------------------------------------*/
-
+double KalmanFilterZ(double measureData);
+double KalmanFilterY(double measureData);
+double KalmanFilterX(double measureData);
 
 
 /**
@@ -57,112 +56,137 @@ float KalmanFilterZ(float measureData);
   * @retval 初始化完成的标志位
   */
 	
-static gyro_t gyr_icm,gyr_act;			//原始的角速度和处理后的角速度
+static three_axis_d gyr_act;			//原始的角速度和处理后的角速度
 static gyro_t acc_icm;          //加速度信息
 static float   temp_icm;            //陀螺仪温度
-static float   temp_icm_filter;            //陀螺仪温度
 int chartIndex = 0;
+static float gyr_AVER[3][TempTable_Num]={0.0};
 void RoughHandle(void)
 {
+  gyro_t gyr_icm={0.f};
+	static float proportion=0.f;
 	/*跟新传感器的数据*/
 	icm_update_gyro_rate();
 	icm_update_temp();
-	//icm_update_acc();
 	
 	/*读取数据*/
 	icm_read_gyro_rate(&gyr_icm);
 	icm_read_temp(&temp_icm);
-	//icm_read_accel_acc(&acc_icm);
 	
+	static uint32_t ignore=0;
+	ignore++;
+	if(ignore<50)
+		return ;
+	else if(ignore==50)
+	{
+		for(uint32_t i=0;i<TempTable_Num;i++){
+			gyr_AVER[0][i]=chartWX[i];
+			gyr_AVER[1][i]=chartWY[i];
+			gyr_AVER[2][i]=chartWZ[i];
+		}
+	}else
+		ignore=51;
+	
+//	USART_OUT_F(gyr_icm.No1.x);
+//	USART_OUT_F(gyr_icm.No1.y);
+//	USART_OUT_F(gyr_icm.No1.z);
+//	USART_OUT(USART1,"\r\n");
 	temp_icm=KalmanFilterT(temp_icm);
 
 	/* 温度值转换成数组的序号来寻找温度零漂表里对应的值 */
-	chartIndex=roundf((temp_icm-30.f)*10);
-	if((chartIndex>=0&&chartIndex<chartN)
+	chartIndex=roundf((temp_icm-TempTable_min)*10);
+	if((chartIndex>=0&&chartIndex<TempTable_Num)
 	    &&chartNum[chartIndex]>=LEASTNUM           //表里的值得数量需要大于LEASTNUM
 	    &&chartNum[chartIndex]!=0xffffffff) //表里面需要有值,原因flash默认都是1
 	{
-		gyr_act.No1.z=gyr_icm.No1.z-chartW[chartIndex];
+		  proportion=(temp_icm-TempTable_min)*10-chartIndex;
+			/*分段插值*/
+			gyr_act.x=(double)(gyr_icm.No1.x-(gyr_AVER[0][chartIndex]*(1-proportion)+gyr_AVER[0][chartIndex+1]*proportion));
+			gyr_act.y=(double)(gyr_icm.No1.y-(gyr_AVER[1][chartIndex]*(1-proportion)+gyr_AVER[1][chartIndex+1]*proportion));
+			gyr_act.z=(double)(gyr_icm.No1.z-(gyr_AVER[2][chartIndex]*(1-proportion)+gyr_AVER[2][chartIndex+1]*proportion));
 	}
   else /* 当温度表里信息不理想时采用最小二乘法来拟合曲线参与零点漂移的计算  */
 	{
-		gyr_act.No1.z=FitResult(temp_icm);
+		//gyr_act.z=gyr_icm.No1.z-FitResult(temp_icm);
 	}
 }
-	//30℃到49.9℃   重新矫正温飘  30 -- 0  30.1 -- 1
-void TemporaryHandle(int start)
-{
-	static float gyr_aver[((TempTable_max - TempTable_min)*10)]={0};
-	static float countTemp[((TempTable_max - TempTable_min)*10)]={0};
-	chartIndex=roundf((temp_icm-30.f)*10);
-	if(chartIndex<0||chartIndex>=chartN) 
-		return;
-	if(start==0){
-    if(countTemp[chartIndex]>0)
-			gyr_aver[chartIndex]=gyr_aver[chartIndex]*countTemp[chartIndex]/(countTemp[chartIndex]+1)+gyr_act.No1.z/(countTemp[chartIndex]+1);
-		else
-			gyr_aver[chartIndex]=gyr_act.No1.z;
-		
-			countTemp[chartIndex]++;
-	}else{
-		if(countTemp[chartIndex]>=LEASTNUM){
-			float proportion=(temp_icm-30.f)*10-chartIndex;
-			/*分段插值*/
-			gyr_act.No1.z=gyr_act.No1.z-(gyr_aver[chartIndex]*(1-proportion)+gyr_aver[chartIndex+1]*proportion);
-		}
-	}
+float getTemp_icm(void){
+	return temp_icm;
 }
-	
-/* Exported function prototypes -----------------------------------------------*/
-/* Exported functions ---------------------------------------------------------*/
-void UpdataExcel(void)
-{
-	uint8_t finish=0;
-  while(!finish){
-		while(getTimeFlag()){
-			
-		
-		}
-	}
-}
-
 static three_axis acc_angle;        //加速度计测出的对应的角度
+	//30℃到49.9℃   重新矫正温飘  30 -- 0  30.1 -- 1
+void TemporaryHandle(void)
+{
+	static double gyr_aver[3][TempTable_Num]={0.0};
+	static double countTemp[TempTable_Num]={0.0};
+	static double accInit[3]={0.0,0.0,0.0};
+	static uint32_t count=0;
+	static uint32_t flag=0;
+	
+	//忽略前五十个数
+	static uint32_t ignore=0;
+	if(ignore++<50)
+		return ;
+	else
+		ignore=50;
+	
+	chartIndex=roundf((temp_icm-TempTable_min)*10);
+	if(chartIndex<0||chartIndex>=TempTable_Num) 
+		return;
+	if(!(GetCommand()&ADJUST)){
+    if(countTemp[chartIndex]>0){
+			gyr_aver[0][chartIndex]=gyr_aver[0][chartIndex]+gyr_act.x;
+			gyr_aver[1][chartIndex]=gyr_aver[1][chartIndex]+gyr_act.y;
+			gyr_aver[2][chartIndex]=gyr_aver[2][chartIndex]+gyr_act.z;
+		}
+		else{
+			gyr_aver[0][chartIndex]=gyr_act.x;
+			gyr_aver[1][chartIndex]=gyr_act.y;
+			gyr_aver[2][chartIndex]=gyr_act.z;
+		}
+			countTemp[chartIndex]++;
+			flag=1;
+		
+		icm_update_acc();
+		icm_read_accel_acc(&acc_icm);
+		count++;
+		accInit[0]+=acc_icm.No1.x;
+		accInit[1]+=acc_icm.No1.y;
+		accInit[2]+=acc_icm.No1.z;
+	}else if(flag){
+			flag=0;
+			for(int i=0;i<TempTable_Num;i++){
+				if(countTemp[i]!=0){
+					for(uint32_t j=0;j<3;j++){
+						gyr_aver[j][i]=gyr_aver[j][i]/countTemp[i];
+						gyr_AVER[j][i]=gyr_AVER[j][i]+gyr_aver[j][i];
+						gyr_aver[j][i]=0.0;
+					}
+					countTemp[i]=0;
+				}
+			}
+			//SquareFitting(gyr_AVER);
+			for(uint32_t i=0;i<3;i++)
+				accInit[i]=accInit[i]/count;
+			
+			/* 读取加速度的值 */
+			icm_update_AccRad(accInit,&acc_angle);
+			quaternion=Euler_to_Quaternion(acc_angle);
+		}
+}
 uint8_t updateAngle(void)
 {	
 	static three_axis euler;            //欧垃角
-	static uint8_t wait_flag=0;
-	static uint8_t wait_second=0;
 	static three_axis result;									//最终角度的弧度角
 	
-	/* 二次矫正处理 */
-	/*
-	为了减去零飘带来的影响
-	初始化时取一秒的数据进行求平均值
-	然后运动过程中时刻减去
-	*/
-	
 	/* 新息自适应卡尔曼滤波，滤除角速度中的噪声 */
-	gyr_act.No1.z=KalmanFilterZ(gyr_act.No1.z);
-	/* 在车动之前不进行积分的标志位 */
-	if(!wait_flag&&fabs(gyr_act.No1.z)>0.3)
-	{
-		wait_flag=1;
-	}
+	gyr_act.z=KalmanFilterZ(gyr_act.z);
 		
 	/* 
 	阈值 低于此值则认为没动
 	*/
-	if(fabs(gyr_act.No1.z)<0.05)//单位 °/s
-		gyr_act.No1.z=0;
-	if(fabs(gyr_act.No1.x)<10)	
-		gyr_act.No1.x=0;
-	if(fabs(gyr_act.No1.y)<10)
-		gyr_act.No1.y=0;
-	
-	/* 角度弧度转换 */
-	gyr_act.No1.x=(gyr_act.No1.x)/180.0f*PI;
-	gyr_act.No1.y=(gyr_act.No1.y)/180.0f*PI;
-	gyr_act.No1.z=(gyr_act.No1.z)/180.0f*PI;
+//	if(fabs(gyr_act.z)<0.05)//单位 °/s
+//		gyr_act.z=0;
 	
 	/*角速度积分成四元数*/
 	/*
@@ -172,97 +196,31 @@ uint8_t updateAngle(void)
 	二是从以固定角速度把四元数积分成一个固定姿态,再推倒到欧拉角,以何种顺序完全取决人们自己的认识
 	x正负90,yz正负180.
 	*/
-	 quaternion=QuaternionInt(quaternion,gyr_act.No1);
+	quaternion=QuaternionInt(quaternion,gyr_act);
 	/*
 	三个轴是相互耦合的,能够互相影响
 	*/
   /* 四元数转换成欧垃角 */	
 	euler=Quaternion_to_Euler(quaternion);
 	
-	/* 读取加速度的值 */
-	icm_update_AccRad(&acc_angle);
+//	/* 融合加速度计和陀螺仪 */
+//	result.x=acc_angle.x;
+//	result.y=acc_angle.y;
+//	result.z=euler.z;
+//	/* 回到四元数 */
+//	quaternion=Euler_to_Quaternion(result);
 	
-	/* 融合加速度计和陀螺仪 */
-	result.x=euler.x*K_acc+acc_angle.x*(1-K_acc);
-	result.y=euler.y*K_acc+acc_angle.y*(1-K_acc);
-	result.z=euler.z;
-	/* 回到四元数 */
-	quaternion=Euler_to_Quaternion(result);
-	
-	/*弧度角度转换 */
-	result_angle.x= result.x/PI*180.0f;
-	result_angle.y= result.y/PI*180.0f;
+//	/*弧度角度转换 */
+//	result_angle.x= result.x/PI*180.0f;
+//	result_angle.y= result.y/PI*180.0f;
 	result_angle.z=-result.z/PI*180.0f;
+	
+	USART_OUT_F(gyr_act.z);
+	USART_OUT_F(result_angle.z);
+	USART_OUT(USART1,"\r\n");
 
-	return wait_second;
+	return 1;
 }
-
-
-//void Test(int finish){
-//	
-//	static float gyr_aver_rough[2000]={0};
-//	static float gyr_aver[2000]={0};
-//	static float countTemp[2000]={0};
-//	static float countTemp_rough[2000]={0};
-//	static uint32_t index=0;
-//	static uint32_t index_rough=0;
-//	static uint32_t count=0;
-//	static int ii=0;
-//	
-//	if(finish==1&&ii<2000){
-////			USART_OUT_F(gyr_aver_rough[ii]);
-////			USART_OUT_F(countTemp_rough[ii]);
-////			USART_OUT_F(gyr_aver[ii]);
-////			USART_OUT_F(countTemp[ii]);
-////			USART_OUT(USART6,"\r\n");
-////			ii++;
-//			return ;
-//	}
-//	
-//	icm_update_gyro_rate();
-//	icm_update_temp();
-//	
-//	icm_read_gyro_rate(&gyr_icm);
-//	icm_read_temp(&temp_icm);
-//	
-//	USART_OUT_F(gyr_icm.No1.z);
-//	USART_OUT_F(temp_icm);
-//	gyr_act.No1.z=KalmanFilterZ(gyr_icm.No1.z);
-//	temp_icm_filter=KalmanFilterT(temp_icm);
-//	
-//	gyr_act.No1.z=KalmanFilterZ(gyr_icm.No1.z);
-//	temp_icm_filter=KalmanFilterT(temp_icm);
-//	
-//	if(temp_icm_filter>30.f){
-//		index=(uint32_t)((temp_icm_filter-30.f)*100.0f/1.0f);
-//		if(countTemp[index]>0){
-//			gyr_aver[index]=gyr_aver[index]*countTemp[index]/(countTemp[index]+1)+gyr_act.No1.z/(countTemp[index]+1);
-//		}
-//		else{
-//			gyr_aver[index]=gyr_act.No1.z;
-//		}
-//			
-//			countTemp[index]++;
-//	}
-//	
-//	if(temp_icm>30.f){
-//		index_rough=(uint32_t)((temp_icm-30.f)*100.0f/1.0f);
-//		if(countTemp_rough[index_rough]>0){
-//			gyr_aver_rough[index_rough]=gyr_aver_rough[index_rough]*countTemp_rough[index_rough]/(countTemp_rough[index_rough]+1)+gyr_icm.No1.z/(countTemp_rough[index_rough]+1);
-//		}
-//		else{
-//			gyr_aver_rough[index_rough]=gyr_icm.No1.z;
-//		}
-//			countTemp_rough[index_rough]++;
-//	}
-//	count++;
-//	if(count==200){
-//		count=0;
-//		USART_OUT_F(temp_icm);
-//		USART_OUT(USART6,"\r\n");
-//	}
-//}
-
 
 
 /**
@@ -328,7 +286,7 @@ double safe_atan2(double x,double y)
 	return atan2(x,y);
 }
 /*算法中 H,φ,Γ均为一*/
-float KalmanFilterZ(float measureData)
+double KalmanFilterZ(double measureData)
 {
   static double act_value=0;  //实际值
   double predict;             //预测值
@@ -339,7 +297,7 @@ float KalmanFilterZ(float measureData)
 	
 	static double Q=0.007;       //系统噪声         
 	static double R=0.007f;      //测量噪声 
-	static float IAE_st[50];    //记录的新息
+	static double IAE_st[50];    //记录的新息
 	double Cr=0;                //新息的方差
 	
   //令预测值为上一次的真实值
@@ -348,14 +306,57 @@ float KalmanFilterZ(float measureData)
 	/* 新息的方差计算 */
 	memcpy(IAE_st,IAE_st+1,196);
 	IAE_st[49]=measureData-predict;
-	
-	static uint8_t ignore=0;
 
-	if(ignore++<50)
-		return measureData;
-	else
-		ignore=50;
+	Cr=0;
+	for(int i=0;i<50;i++)
+	{
+		Cr=Cr+IAE_st[i]*IAE_st[i];
+	}
+	Cr=Cr/50.0f;
 	
+	
+	/* 预测本次的预测误差 */
+	P_mid=P_last+Q;
+	
+	/* 计算系数，求得输出值 */
+	Kk=P_mid/(P_mid+R);
+	
+	act_value=predict+Kk*(measureData-predict);
+	
+	/* 更新预测误差 */
+	P_last=(1-Kk)*P_mid;
+	
+	/* 计算并调整系统噪声 */
+	Q=Kk*Kk*Cr;
+
+	/* 为提高滤波器的响应速度，减小滞后而设下的阈值 */
+	if(Kk>0.5)
+		act_value=measureData;
+	
+	return act_value;
+}
+/*算法中 H,φ,Γ均为一*/
+double KalmanFilterX(double measureData)
+{
+  static double act_value=0;  //实际值
+  double predict;             //预测值
+  
+	static double P_last=0.1;   //上一次的预测误差
+	static double P_mid;        //对预测误差的预测
+	static double Kk;           //滤波增益系数
+	
+	static double Q=0.007;       //系统噪声         
+	static double R=0.007f;      //测量噪声 
+	static double IAE_st[50];    //记录的新息
+	double Cr=0;                //新息的方差
+	
+  //令预测值为上一次的真实值
+	predict=act_value;
+	
+	/* 新息的方差计算 */
+	memcpy(IAE_st,IAE_st+1,196);
+	IAE_st[49]=measureData-predict;
+
 	Cr=0;
 	for(int i=0;i<50;i++)
 	{
@@ -385,7 +386,59 @@ float KalmanFilterZ(float measureData)
 	return act_value;
 }
 
-float KalmanFilterT(float measureData)
+/*算法中 H,φ,Γ均为一*/
+double KalmanFilterY(double measureData)
+{
+  static double act_value=0;  //实际值
+  double predict;             //预测值
+  
+	static double P_last=0.1;   //上一次的预测误差
+	static double P_mid;        //对预测误差的预测
+	static double Kk;           //滤波增益系数
+	
+	static double Q=0.007;       //系统噪声         
+	static double R=0.007f;      //测量噪声 
+	static double IAE_st[50];    //记录的新息
+	double Cr=0;                //新息的方差
+	
+  //令预测值为上一次的真实值
+	predict=act_value;
+	
+	/* 新息的方差计算 */
+	memcpy(IAE_st,IAE_st+1,196);
+	IAE_st[49]=measureData-predict;
+
+	Cr=0;
+	for(int i=0;i<50;i++)
+	{
+		Cr=Cr+IAE_st[i]*IAE_st[i];
+	}
+	Cr=Cr/50.0f;
+	
+	
+	/* 预测本次的预测误差 */
+	P_mid=P_last+Q;
+	
+	/* 计算系数，求得输出值 */
+	Kk=P_mid/(P_mid+R);
+	
+	act_value=predict+Kk*(measureData-predict);
+	
+	/* 更新预测误差 */
+	P_last=(1-Kk)*P_mid;
+	
+	/* 计算并调整系统噪声 */
+	Q=Kk*Kk*Cr;
+
+	/* 为提高滤波器的响应速度，减小滞后而设下的阈值 */
+	if(Kk>0.5)
+		act_value=measureData;
+	
+	return act_value;
+}
+
+
+float KalmanFilterT(double measureData)
 {
   static double act_value=0;  //实际值
   double predict;             //预测值
@@ -397,7 +450,7 @@ float KalmanFilterT(float measureData)
 	static double Q=0.025;       //系统噪声
 	static double R=0.025;      //测量噪声         
 	
-	static float IAE_st[50];    //记录的新息
+	static double IAE_st[50];    //记录的新息
 	double Cr=0;                //新息的方差
 	
 	/* 获得来自用户的校正值，如果用户不矫正，则使用0.012 */
@@ -408,13 +461,6 @@ float KalmanFilterT(float measureData)
 	//相当于数组的左移
 	memcpy(IAE_st,IAE_st+1,196);
 	IAE_st[49]=measureData-predict;
-	
-	static uint8_t ignore=0;
-
-	if(ignore++<50)
-		return measureData;
-	else
-		ignore=50;
 	
 	/* 新息的方差计算 */
 	Cr=0;
@@ -441,32 +487,10 @@ float KalmanFilterT(float measureData)
 	if(Kk>0.5)
 		act_value=measureData;
 	
-	return act_value;
+	return (float)act_value;
 }
 
 
-//#define ACC_DEBUG
-#define ICM_DEBUG
-void DebugMode(void)
-{
-	#ifdef ACC_DEBUG
-			/*弧度角度转换 */
-	acc_angle.x= acc_angle.x/PI*180.0f;
-	acc_angle.y= acc_angle.y/PI*180.0f;
-	
-	USART_OUT_F(acc_icm.x);
-	USART_OUT_F(acc_angle.x);
-	USART_OUT_F(acc_icm.y);
-	USART_OUT_F(acc_angle.y);
-	USART_OUT(USART1,(uint8_t*)"\r\n");
-	#endif
-	#ifdef ICM_DEBUG
-	//gyr_act.z=gyr_act.z*57.29577f;
-	USART_OUT_F(gyr_act.No1.z);
-	USART_OUT_F(result_angle.z);
-	USART_OUT(USART1,"\r\n");
-	#endif
-}
 
 
 /************************ (C) COPYRIGHT 2016 ACTION *****END OF FILE****/

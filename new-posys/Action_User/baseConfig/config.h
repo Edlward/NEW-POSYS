@@ -36,18 +36,15 @@
 //#define FLASH_ENCRYP
 #define PERIOD    				0.005f
 
-#ifdef SINGLESYSTEM
-	#define R_wheel         25.25f
-#else
-	#define R_wheel1        25.25f
-	#define R_wheel2        25.2f
-#endif
+#define R_wheel1        25.25f
+#define R_wheel2        25.2f
 #define ECD_RANGE      4096
 #define dT 					   0.005f           //积分的步长
 #define Temp_ctr       42             //控温的值    //大车上控制的温度 37 45 30
-#define TempTable_max  50								//30-49.9
-#define TempTable_min  30
-#define LEASTNUM			 100
+#define TempTable_max  45								//30-49.9
+#define TempTable_min  35
+#define TempTable_Num  100
+#define LEASTNUM			 50
 #define TIME_HEAT      5              //初始化时加热的时间值
 
 
@@ -57,8 +54,11 @@
 */
 
 #define CORRECT    								0X01
-#define UNCORRECT   						  0XFE
-#define ACCUMULATE 								0X02
+#define UNCORRECT   						  (~0X01)
+#define ADJUST 										0X02
+#define UNADJUST 								  (~0X02)
+#define ACCUMULATE 								0X04
+#define UNACCUMULATE 						  (~0X04)
 
 
 /* Exported macro ------------------------------------------------------------*/
@@ -177,16 +177,22 @@ typedef struct{
 }gyro_t;
 
 typedef struct{
+	double x;
+	double y;
+	double z;
+}three_axis_d;
+
+typedef struct{
 	float pitch;
 	float roll;
 	float yaw;
 }euler_angles;
 
 typedef struct{
-	float q0;
-	float q1;
-	float q2;
-	float q3;
+	double q0;
+	double q1;
+	double q2;
+	double q3;
 }Quarternion;
 
 

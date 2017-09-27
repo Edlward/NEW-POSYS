@@ -240,24 +240,6 @@ char *itoa(int value, char *string, int radix)
 
 } 
 
-static uint8_t command=0;
-void SetCommand(int val){
-	switch(val){
-		case CORRECT:
-			command|=0x01;
-			break;
-		case UNCORRECT:
-			command&=UNCORRECT;
-			break;
-		case ACCUMULATE:
-			command|=0x02;
-			break;
-	}
-}
-uint8_t GetCommand(void){
-	return command;
-}
-
 
 
  

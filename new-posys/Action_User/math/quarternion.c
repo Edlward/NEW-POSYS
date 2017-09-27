@@ -40,19 +40,19 @@ Quarternion Euler_to_Quaternion(three_axis Rad)
 {
   Quarternion quaternion;
 
-	quaternion.q0=0.5*sqrt(1+cos(Rad.y)*cos(Rad.z)+cos(Rad.x)*cos(Rad.z)+cos(Rad.x)*cos(Rad.y)+sin(Rad.x)*sin(Rad.y)*sin(Rad.z));
+	quaternion.q0=0.5f*__sqrtf(1+arm_cos_f32(Rad.y)*arm_cos_f32(Rad.z)+arm_cos_f32(Rad.x)*arm_cos_f32(Rad.z)+arm_cos_f32(Rad.x)*arm_cos_f32(Rad.y)+arm_sin_f32(Rad.x)*arm_sin_f32(Rad.y)*arm_sin_f32(Rad.z));
 	if(quaternion.q0==0)
 	{
-		quaternion.q0=1;
-		quaternion.q1=0;
-		quaternion.q2=0;
-		quaternion.q3=0;
+		quaternion.q0=1.0;
+		quaternion.q1=0.0;
+		quaternion.q2=0.0;
+		quaternion.q3=0.0;
 	}
 	else
 	{
-	  quaternion.q1=(sin(Rad.x)+sin(Rad.y)*sin(Rad.z)+sin(Rad.x)*cos(Rad.y)*cos(Rad.z))/4/quaternion.q0;
-	  quaternion.q2=(sin(Rad.y)*cos(Rad.z)-cos(Rad.y)*sin(Rad.z)*sin(Rad.x)+sin(Rad.y)*cos(Rad.x))/4/quaternion.q0;
-	  quaternion.q3=(-cos(Rad.y)*sin(Rad.z)+sin(Rad.y)*cos(Rad.z)*sin(Rad.x)-sin(Rad.z)*cos(Rad.x))/4/quaternion.q0;
+	  quaternion.q1=(arm_sin_f32(Rad.x)+arm_sin_f32(Rad.y)*arm_sin_f32(Rad.z)+arm_sin_f32(Rad.x)*arm_cos_f32(Rad.y)*arm_cos_f32(Rad.z))/4.f/quaternion.q0;
+	  quaternion.q2=(arm_sin_f32(Rad.y)*arm_cos_f32(Rad.z)-arm_cos_f32(Rad.y)*arm_sin_f32(Rad.z)*arm_sin_f32(Rad.x)+arm_sin_f32(Rad.y)*arm_cos_f32(Rad.x))/4.f/quaternion.q0;
+	  quaternion.q3=(-arm_cos_f32(Rad.y)*arm_sin_f32(Rad.z)+arm_sin_f32(Rad.y)*arm_cos_f32(Rad.z)*arm_sin_f32(Rad.x)-arm_sin_f32(Rad.z)*arm_cos_f32(Rad.x))/4.f/quaternion.q0;
 	}
 	
 	return quaternion; 
@@ -63,9 +63,15 @@ Quarternion Euler_to_Quaternion(three_axis Rad)
   * @param  data      : 设备的角速度
   * @retval 积分完后的姿态
   */
-Quarternion QuaternionInt(Quarternion quaternion,three_axis data)
+Quarternion QuaternionInt(Quarternion quaternion,three_axis_d data)
 {          
-	static three_axis old_w={0,0,0};
+	static three_axis_d old_w={0.0,0.0,0.0};
+	
+	/* 角度弧度转换 */
+	data.x=(data.x)/180.0*PI;
+	data.y=(data.y)/180.0*PI;
+	data.z=(data.z)/180.0*PI;
+	
   Quarternion dif_quarterion_f;
 	Quarternion dif_quarterion_l;
 	Quarternion med_quarterion;

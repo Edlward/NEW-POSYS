@@ -10,19 +10,15 @@
 
 void temperature_control(float temp)
 {
-	static float icm_temp;
-	/*
-	这里不需要再用到icm_update_temp()函数
-	因为static float temp;
-	我们可以用上一个周期的温度值
-	*/
-	icm_read_temp(&icm_temp);
-	
-	temp_pid_ctr(temp,icm_temp);
+	temp_pid_ctr(temp,getTemp_icm());
 }
+
 /*
 分别输入设备名称,期望温度,真实温度
 */
+#define Kp_summer  16.0f
+#define Ki_summer  0.007f
+#define Kd_summer  0.00f
 void temp_pid_ctr(float val_ex,float val_or)
 {
 	static float err;
@@ -77,7 +73,20 @@ void temp_pid_ctr(float val_ex,float val_or)
 	}
 }
 
-int TempErgodic(float minTemp,float scale,int minute){
+
+uint32_t Heating(float temp){
+  float icm_temp;
+	
+	icm_update_temp();
+	icm_read_temp(&icm_temp);
+	icm_temp=KalmanFilterT(icm_temp);
+	temp_pid_ctr(temp,icm_temp);
+	if(icm_temp>temp){
+		return 1u;
+	}else
+		return 0u;
+}
+int TempErgodic(float minTemp,float scale,float minute){
 
 	static uint32_t circle_count=0;
 	static uint8_t flag=0;
@@ -85,14 +94,14 @@ int TempErgodic(float minTemp,float scale,int minute){
 	switch(flag){
 		case 0:
 			circle_count++;
-			temperature_control(minTemp+scale*circle_count*PERIOD/(float)minute/60.f);
+			Heating(minTemp+scale*circle_count*PERIOD/(float)minute/60.f);
 			break;
 		case 1:
 			circle_count--;
-			temperature_control(minTemp+scale*circle_count*PERIOD/(float)minute/60.f);
+			Heating(minTemp+scale*circle_count*PERIOD/(float)minute/60.f);
 			break;
 	}
-	if(circle_count==(int)minute*60.f/PERIOD){
+	if(circle_count==(int)(minute*60.f/PERIOD)){
 		flag=1;
 	}else if(circle_count==0){
 		flag=3;

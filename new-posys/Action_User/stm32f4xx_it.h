@@ -53,6 +53,8 @@
 
 uint8_t getTimeFlag(void);
 uint32_t getTimeCount(void);
+uint8_t GetCommand(void);
+void SetCommand(int val);
 #endif /* __STM32F4xx_IT_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

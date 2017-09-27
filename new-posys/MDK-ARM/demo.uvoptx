@@ -174,7 +174,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name></Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -207,32 +206,32 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>chartW[62]</ItemText>
+          <ItemText>temp_icm</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>temp_icm</ItemText>
+          <ItemText>acc_angle</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>index,0x0A</ItemText>
+          <ItemText>result_angle</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>chartNum[62],0x0A</ItemText>
+          <ItemText>gyr_act</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>flashdata</ItemText>
+          <ItemText>chartW[chartIndex]</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>circle_count,0x0A</ItemText>
+          <ItemText>gyr_aver</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

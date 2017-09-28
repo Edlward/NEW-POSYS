@@ -293,8 +293,8 @@ double KalmanFilterZ(double measureData)
 	static double P_mid;        //对预测误差的预测
 	static double Kk;           //滤波增益系数
 	
-	static double Q=0.007;       //系统噪声         
-	static double R=0.007f;      //测量噪声 
+	static double Q=0.006708655;       //系统噪声         
+	static double R=0.006708655;      //测量噪声 
 	static double IAE_st[50];    //记录的新息
 	double Cr=0;                //新息的方差
 	
@@ -343,8 +343,8 @@ double KalmanFilterX(double measureData)
 	static double P_mid;        //对预测误差的预测
 	static double Kk;           //滤波增益系数
 	
-	static double Q=0.0108;       //系统噪声         
-	static double R=0.0108;      //测量噪声 
+	static double Q=0.011205;       //系统噪声         
+	static double R=0.011205;      //测量噪声 
 	static double IAE_st[50];    //记录的新息
 	double Cr=0;                //新息的方差
 	
@@ -394,8 +394,8 @@ double KalmanFilterY(double measureData)
 	static double P_mid;        //对预测误差的预测
 	static double Kk;           //滤波增益系数
 	
-	static double Q=0.00927;       //系统噪声         
-	static double R=0.00927;      //测量噪声 
+	static double Q=0.01010547;       //系统噪声         
+	static double R=0.01010547;      //测量噪声 
 	static double IAE_st[50];    //记录的新息
 	double Cr=0;                //新息的方差
 	

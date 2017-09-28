@@ -8,10 +8,6 @@
 #include "usart.h"
 
 
-void temperature_control(float temp)
-{
-	temp_pid_ctr(temp,getTemp_icm());
-}
 
 /*
 分别输入设备名称,期望温度,真实温度
@@ -73,10 +69,15 @@ void temp_pid_ctr(float val_ex,float val_or)
 	}
 }
 
+void temperature_control(float temp)
+{
+	float temp_icm;
+	icm_read_temp(&temp_icm);
+	temp_pid_ctr(temp,temp_icm);
+}
 
 uint32_t Heating(float temp){
   float icm_temp;
-	
 	icm_update_temp();
 	icm_read_temp(&icm_temp);
 	icm_temp=KalmanFilterT(icm_temp);
@@ -94,11 +95,11 @@ int TempErgodic(float minTemp,float scale,float minute){
 	switch(flag){
 		case 0:
 			circle_count++;
-			Heating(minTemp+scale*circle_count*PERIOD/(float)minute/60.f);
+			temperature_control(minTemp+scale*circle_count*PERIOD/(float)minute/60.f);
 			break;
 		case 1:
 			circle_count--;
-			Heating(minTemp+scale*circle_count*PERIOD/(float)minute/60.f);
+			temperature_control(minTemp+scale*circle_count*PERIOD/(float)minute/60.f);
 			break;
 	}
 	if(circle_count==(int)(minute*60.f/PERIOD)){

@@ -108,9 +108,12 @@ void USART6_Init(uint32_t BaudRate)
 
 void USART_OUT_F(float value)
 {
-	char s[20]={0};
+	char s[10]={0};
 	sprintf(s,"%f\t",value);
 	USART_OUT(USART1,s);
+}
+void USART_Enter(void){
+	USART_OUT(USART1,"\r\n");
 }
  /****************************************************************************
 * Ãû    ³Æ£ºvoid USART_OUT(USART_TypeDef* USARTx, uint8_t *Data,...)

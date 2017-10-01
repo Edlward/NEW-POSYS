@@ -41,9 +41,9 @@
 #define R_wheel2        25.2f
 #define ECD_RANGE      4096
 #define Temp_ctr       42             //控温的值    //大车上控制的温度 37 45 30
-#define TempTable_max  45								//30-49.9
-#define TempTable_min  35
-#define TempTable_Num  100
+#define TempTable_max  50								//30-49.9
+#define TempTable_min  30
+#define TempTable_Num  200
 #define LEASTNUM			 50
 #define TIME_HEAT      5              //初始化时加热的时间值
 

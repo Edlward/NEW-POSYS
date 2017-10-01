@@ -11,7 +11,7 @@ int PCSolve(float MatrixA[ARRAY][ARRAY], float MatrixB[ARRAY], float* result);
 float TemSumByPower(float data[TempTable_Num],int power){
 	float sum=0.f;
 	for(int i=0;i<TempTable_Num;i++){
-		if(data[i]!=0.f&&chartNum[i]>=LEASTNUM)
+		if(data[i]!=0.f&&chartNum[i]>=LEASTNUM*2)
 			sum+=pow((TempTable_min+0.1f*i)/10.f,power);
 	}
 	return sum;
@@ -20,7 +20,7 @@ float TemSumByPower(float data[TempTable_Num],int power){
 float ResultSumByPower(float data[TempTable_Num],int power){
 	float sum=0.f;
 	for(int i=0;i<TempTable_Num;i++){
-		if(data[i]!=0.f&&chartNum[i]>=LEASTNUM)
+		if(data[i]!=0.f&&chartNum[i]>=LEASTNUM*2)
 			sum+=pow((TempTable_min+0.1*i)/10.f,power)*data[i];
 	}
 	return sum;

@@ -57,6 +57,24 @@ Quarternion Euler_to_Quaternion(three_axis Rad)
 	
 	return quaternion; 
 }
+
+void getJacobi(Quarternion *dif_quarterion,Quarternion quaternion,three_axis_d data){
+	dif_quarterion->q0=(-quaternion.q1*data.x - quaternion.q2*data.y - quaternion.q3*data.z)*0.5;
+	dif_quarterion->q1=( quaternion.q0*data.x + quaternion.q2*data.z - quaternion.q3*data.y)*0.5;
+	dif_quarterion->q2=( quaternion.q0*data.y - quaternion.q1*data.z + quaternion.q3*data.x)*0.5;
+	dif_quarterion->q3=( quaternion.q0*data.z + quaternion.q1*data.y - quaternion.q2*data.x)*0.5;
+};
+void  calculateK(const Quarternion quaternion,Quarternion* dif_quarterion,three_axis_d data){
+  
+	Quarternion  jacobi;
+  getJacobi(&jacobi,quaternion,data);
+  
+  dif_quarterion->q0=jacobi.q0*dT;
+	dif_quarterion->q1=jacobi.q1*dT;
+	dif_quarterion->q2=jacobi.q2*dT;
+	dif_quarterion->q3=jacobi.q3*dT; 
+}
+
 /**
   * @brief  针对四元数与角速度的积分  二阶龙格库塔法
   * @param  quaternion: 原始的姿态
@@ -70,30 +88,51 @@ Quarternion QuaternionInt(Quarternion quaternion,three_axis_d data)
 	data.y=(data.y)/180.0*PI;
 	data.z=(data.z)/180.0*PI;
 	
-  Quarternion dif_quarterion_f;
-	Quarternion dif_quarterion_l;
-	Quarternion med_quarterion;
-	
-	dif_quarterion_f.q0=(-quaternion.q1*data.x - quaternion.q2*data.y - quaternion.q3*data.z)*0.5;
-	dif_quarterion_f.q1=( quaternion.q0*data.x + quaternion.q2*data.z - quaternion.q3*data.y)*0.5;
-	dif_quarterion_f.q2=( quaternion.q0*data.y - quaternion.q1*data.z + quaternion.q3*data.x)*0.5;
-	dif_quarterion_f.q3=( quaternion.q0*data.z + quaternion.q1*data.y - quaternion.q2*data.x)*0.5;
-	/*#define dT 					   0.005f           //积分的步长5ms*/
-	med_quarterion.q0=quaternion.q0+dif_quarterion_f.q0*dT;
-	med_quarterion.q1=quaternion.q1+dif_quarterion_f.q1*dT;
-	med_quarterion.q2=quaternion.q2+dif_quarterion_f.q2*dT;
-	med_quarterion.q3=quaternion.q3+dif_quarterion_f.q3*dT; 
+  Quarternion dif_quarterion_1={0.0};
+	Quarternion dif_quarterion_2={0.0};
+  Quarternion dif_quarterion_3={0.0};
+	Quarternion dif_quarterion_4={0.0};
+  Quarternion temp_quarterion={0.0};
+  /*根据其阶数不同改变angle的值*/
+  for(int grade=1;grade<5;grade++){
+		temp_quarterion.q0=quaternion.q0;
+		temp_quarterion.q1=quaternion.q1;
+		temp_quarterion.q2=quaternion.q2;
+		temp_quarterion.q3=quaternion.q3;
+    switch(grade){
+    case 1:
+      calculateK(temp_quarterion,&dif_quarterion_1,data);
+      break;
+    case 2:
+			temp_quarterion.q0=temp_quarterion.q0+dif_quarterion_1.q0/2.0;
+			temp_quarterion.q1=temp_quarterion.q1+dif_quarterion_1.q1/2.0;
+			temp_quarterion.q2=temp_quarterion.q2+dif_quarterion_1.q2/2.0;
+			temp_quarterion.q3=temp_quarterion.q3+dif_quarterion_1.q3/2.0;
+      calculateK(temp_quarterion,&dif_quarterion_2,data);
+      break;
+    case 3:
+			temp_quarterion.q0=temp_quarterion.q0+dif_quarterion_2.q0/2.0;
+			temp_quarterion.q1=temp_quarterion.q1+dif_quarterion_2.q1/2.0;
+			temp_quarterion.q2=temp_quarterion.q2+dif_quarterion_2.q2/2.0;
+			temp_quarterion.q3=temp_quarterion.q3+dif_quarterion_2.q3/2.0;
+      calculateK(temp_quarterion,&dif_quarterion_3,data);
+      break;
+    case 4:
+			temp_quarterion.q0=temp_quarterion.q0+dif_quarterion_3.q0;
+			temp_quarterion.q1=temp_quarterion.q1+dif_quarterion_3.q1;
+			temp_quarterion.q2=temp_quarterion.q2+dif_quarterion_3.q2;
+			temp_quarterion.q3=temp_quarterion.q3+dif_quarterion_3.q3;
+      calculateK(temp_quarterion,&dif_quarterion_4,data);
+      break;
+    }
+  }
   
-	dif_quarterion_l.q0=(-med_quarterion.q1*data.x - med_quarterion.q2*data.y - med_quarterion.q3*data.z)*0.5;
-	dif_quarterion_l.q1=( med_quarterion.q0*data.x + med_quarterion.q2*data.z - med_quarterion.q3*data.y)*0.5;
-	dif_quarterion_l.q2=( med_quarterion.q0*data.y - med_quarterion.q1*data.z + med_quarterion.q3*data.x)*0.5;
-	dif_quarterion_l.q3=( med_quarterion.q0*data.z + med_quarterion.q1*data.y - med_quarterion.q2*data.x)*0.5;
-	
-	
-	quaternion.q0=quaternion.q0+0.5f*(dif_quarterion_f.q0+dif_quarterion_l.q0)*dT;
-	quaternion.q1=quaternion.q1+0.5f*(dif_quarterion_f.q1+dif_quarterion_l.q1)*dT;
-	quaternion.q2=quaternion.q2+0.5f*(dif_quarterion_f.q2+dif_quarterion_l.q2)*dT;
-	quaternion.q3=quaternion.q3+0.5f*(dif_quarterion_f.q3+dif_quarterion_l.q3)*dT;
+	quaternion.q0=quaternion.q0+0.166666666*(dif_quarterion_1.q0+2.0*dif_quarterion_2.q0+2.0*dif_quarterion_3.q0+dif_quarterion_4.q0);
+	quaternion.q1=quaternion.q1+0.166666666*(dif_quarterion_1.q1+2.0*dif_quarterion_2.q1+2.0*dif_quarterion_3.q1+dif_quarterion_4.q1);
+	quaternion.q2=quaternion.q2+0.166666666*(dif_quarterion_1.q2+2.0*dif_quarterion_2.q2+2.0*dif_quarterion_3.q2+dif_quarterion_4.q2);
+	quaternion.q3=quaternion.q3+0.166666666*(dif_quarterion_1.q3+2.0*dif_quarterion_2.q3+2.0*dif_quarterion_3.q3+dif_quarterion_4.q3);
 	
 	return quaternion;
 }
+
+

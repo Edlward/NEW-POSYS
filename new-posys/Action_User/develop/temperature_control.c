@@ -12,16 +12,16 @@
 /*
 分别输入设备名称,期望温度,真实温度
 */
-#define Kp_summer  16.0f
-#define Ki_summer  0.007f
-#define Kd_summer  0.00f
+
 void temp_pid_ctr(float val_ex,float val_or)
 {
 	static float err;
 	static float err_sum[2];
 	static float err_last[2];
 	static float err_v;
-	
+	float Kp_summer = 10.0f;
+  float Ki_summer = 0.007f;
+  float Kd_summer = 0.00f;
 	uint8_t ch;
 	
 	static double ctr;
@@ -34,6 +34,8 @@ void temp_pid_ctr(float val_ex,float val_or)
 	err_v=err-err_last[ch];
 	err_last[ch]=err;
 	
+	if(val_ex-val_or>3)
+		Kp_summer=16;
 	/*
 	#define Kp  15.0f
 	#define Ki  0.007f

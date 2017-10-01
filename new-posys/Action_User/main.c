@@ -46,8 +46,8 @@ void init(void)
 //	USART6_Init(921600);
 	/* ICM20608G模块初始化-----------------------------------*/
 	ICM20608G_init();
-	
-//	while(!Heating(35));
+	ICM_HeatingPower(0);
+	//while(!Heating(38.5));
 }
 
 int main(void)
@@ -58,7 +58,7 @@ int main(void)
 	{
 	while(getTimeFlag())
 	{
-		if((GetCommand()&CORRECT))
+		if(!(GetCommand()&CORRECT))
 		{	
 			#ifdef HD_TEST //硬件测试，判断焊接是否正常
 			uint8_t test[3];
@@ -69,11 +69,11 @@ int main(void)
 			/* 计算角度 */
 		  RoughHandle();
       TemporaryHandle();
-			if(GetCommand()&ACCUMULATE){
+		//	if(GetCommand()&ACCUMULATE){
 				updateAngle();
-			}	
-      /* 控制陀螺仪温度  */			
-		  temperature_control(42);
+	//		}	
+      /* 控制陀螺仪温度  */		
+		 // temperature_control(40);
 			#ifndef DEBUG_ENABLE
 			/* 数据发送 */
 		 if(GetCommand()&ACCUMULATE)

@@ -1,0 +1,14 @@
+new-posys/MDK-ARM/demo.uvprojx
+new-posys/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_tim.h
+new-posys/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dma.h
+new-posys/Libraries/CMSIS/core_cmInstr.h
+new-posys/Libraries/CMSIS/core_cm4_simd.h
+new-posys/Libraries/CMSIS/arm_math.h
+new-posys/MDK-ARM/demo.uvguix.Summer
+new-posys/Libraries/CMSIS/core_cmFunc.h
+new-posys/Libraries/CMSIS/core_cm4.h
+new-posys/MDK-ARM/demo.uvoptx
+new-posys/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_rcc.h
+new-posys/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_gpio.h
+new-posys/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_usart.h
+new-posys/Libraries/CMSIS/stm32f4xx.h

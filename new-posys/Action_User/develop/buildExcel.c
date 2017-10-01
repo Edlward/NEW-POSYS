@@ -60,7 +60,7 @@ void UpdateVDoffTable(void)
 	static int time_count=0;
 	
 	static uint32_t coldCount=0;
-	static const int time=200*60*3;
+	static const int time=200*60*2;
 	coldCount++;
 	if(coldCount<time){
 		ICM_HeatingPower(0);
@@ -95,18 +95,16 @@ void UpdateVDoffTable(void)
 		}
 			temp_count[index]++;
 	}
-	USART_OUT_F(gyr_icm.No1.x);
-	USART_OUT_F(gyr_icm.No1.y);
-	USART_OUT_F(gyr_icm.No1.z);
-	USART_OUT_F(temp_icm);
-	USART_Enter();
+
 	time_count++;
 	if(time_count>=2000)
 	{
 		time_count=0;
+		USART_OUT_F(temp_icm);
+	USART_Enter();
 	}
 	
-	if(TempErgodic(TempTable_min,10,10)==3){
+	if(TempErgodic(TempTable_min,20,30)==3){
 		for(int i=0;i<TempTable_Num;i++)
 		{
 				chartNum[i]=temp_count[i];
@@ -116,7 +114,7 @@ void UpdateVDoffTable(void)
 				chartWZ[i]=(float)(temp_w[2][i]/temp_count[i]);
 			}
 		}
-		SetCommand(CORRECT);
+		SetCommand(UNCORRECT);
 		USART_OUT(USART1,"Flash Update begin\r\n");
 		Flash_Write(GetFlashArr(),TempTable_Num*16);
 		USART_OUT(USART1,"Flash Update end\r\n");

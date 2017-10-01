@@ -72,7 +72,6 @@ void RoughHandle(void)
 	/*读取数据*/
 	icm_read_gyro_rate(&gyr_icm);
 	icm_read_temp(&temp_icm);
-	
 	static uint32_t ignore=0;
 	ignore++;
 	if(ignore<50)
@@ -89,9 +88,19 @@ void RoughHandle(void)
 	
 	temp_icm=KalmanFilterT(temp_icm);
 
+	USART_OUT_F(temp_icm);
+	USART_OUT_F(gyr_icm.No1.z);
+	/* 新息自适应卡尔曼滤波，滤除角速度中的噪声 */
+	gyr_act.x=KalmanFilterX(gyr_icm.No1.x);
+	gyr_act.y=KalmanFilterY(gyr_icm.No1.y);
+	gyr_act.z=KalmanFilterZ(gyr_icm.No1.z);
+
+	USART_OUT_F(gyr_act.z);
+	USART_Enter();
+	/* 要放在滤波之后，因为不能让去温飘影响滤波参数（自适应温飘之后会有突降）*/
 	/* 温度值转换成数组的序号来寻找温度零漂表里对应的值 */
 	chartIndex=roundf((temp_icm-TempTable_min)*10);
-	if((chartIndex>=0&&chartIndex<TempTable_Num)
+	if((chartIndex>=0&&chartIndex<TempTable_Num-1)
 	    &&chartNum[chartIndex]>=LEASTNUM           //表里的值得数量需要大于LEASTNUM
 	    &&chartNum[chartIndex]!=0xffffffff) //表里面需要有值,原因flash默认都是1
 	{
@@ -103,12 +112,13 @@ void RoughHandle(void)
 	}
   else /* 当温度表里信息不理想时采用最小二乘法来拟合曲线参与零点漂移的计算  */
 	{
-		//gyr_act.z=gyr_icm.No1.z-FitResult(temp_icm);
+		gyr_act.z=gyr_icm.No1.z-FitResult(temp_icm);
 	}
 }
 float getTemp_icm(void){
 	return temp_icm;
 }
+void aver(double gyr_aver[3][TempTable_Num],double countTemp[TempTable_Num]);
 static three_axis acc_angle;        //加速度计测出的对应的角度
 	//30℃到49.9℃   重新矫正温飘  30 -- 0  30.1 -- 1
 void TemporaryHandle(void)
@@ -121,10 +131,11 @@ void TemporaryHandle(void)
 	
 	//忽略前五十个数
 	static uint32_t ignore=0;
-	if(ignore++<50)
+	ignore++;
+	if(ignore<50)
 		return ;
 	else
-		ignore=50;
+		ignore=51;
 	
 	chartIndex=roundf((temp_icm-TempTable_min)*10);
 	if(chartIndex<0||chartIndex>=TempTable_Num) 
@@ -151,17 +162,17 @@ void TemporaryHandle(void)
 		accInit[2]+=acc_icm.No1.z;
 	}else if(flag){
 			flag=0;
+			aver(gyr_aver,countTemp);
 			for(int i=0;i<TempTable_Num;i++){
-				if(countTemp[i]!=0){
+						USART_OUT_F(gyr_aver[2][i]);
+						USART_Enter();
 					for(uint32_t j=0;j<3;j++){
-						gyr_aver[j][i]=gyr_aver[j][i]/countTemp[i];
 						gyr_AVER[j][i]=gyr_AVER[j][i]+gyr_aver[j][i];
 						gyr_aver[j][i]=0.0;
 					}
-					countTemp[i]=0;
-				}
+					countTemp[i]=0.0;
 			}
-			//SquareFitting(gyr_AVER);
+			SquareFitting(gyr_AVER[2]);
 			for(uint32_t i=0;i<3;i++)
 				accInit[i]=accInit[i]/count;
 			
@@ -170,16 +181,31 @@ void TemporaryHandle(void)
 			quaternion=Euler_to_Quaternion(acc_angle);
 		}
 }
+void aver(double gyr_aver[3][TempTable_Num],double countTemp[TempTable_Num]){
+	double sum[3]={0.0};
+	uint32_t count=0;
+	for(int i=0;i<TempTable_Num;i++){
+		sum[0]=sum[0]+gyr_aver[0][i];
+		sum[1]=sum[1]+gyr_aver[1][i];
+		sum[2]=sum[2]+gyr_aver[2][i];
+		count=count+countTemp[i];
+	}
+	sum[0]=sum[0]/count;
+	sum[1]=sum[1]/count;
+	sum[2]=sum[2]/count;
+	for(int i=0;i<TempTable_Num;i++){
+		gyr_aver[0][i]=sum[0];
+		gyr_aver[1][i]=sum[1];
+		gyr_aver[2][i]=sum[2];
+	}
+}
+	
+
 uint8_t updateAngle(void)
 {	
 	static three_axis euler;            //欧垃角
 	static three_axis result;									//最终角度的弧度角
 	
-	/* 新息自适应卡尔曼滤波，滤除角速度中的噪声 */
-	gyr_act.x=KalmanFilterX(gyr_act.x);
-	gyr_act.y=KalmanFilterY(gyr_act.y);
-	gyr_act.z=KalmanFilterZ(gyr_act.z);
-		
 	/* 
 	阈值 低于此值则认为没动
 	*/
@@ -213,10 +239,6 @@ uint8_t updateAngle(void)
 //	result_angle.y= result.y/PI*180.0f;
 	result_angle.z=-euler.z/PI*180.0f;
 	
-	USART_OUT_F(gyr_act.z);
-	USART_OUT_F(result_angle.z);
-	USART_OUT(USART1,"\r\n");
-
 	return 1;
 }
 
@@ -293,11 +315,10 @@ double KalmanFilterZ(double measureData)
 	static double P_mid;        //对预测误差的预测
 	static double Kk;           //滤波增益系数
 	
-	static double Q=0.006708655;       //系统噪声         
+	static double Q=0.00000001;       //系统噪声         
 	static double R=0.006708655;      //测量噪声 
 	static double IAE_st[50];    //记录的新息
 	double Cr=0;                //新息的方差
-	
   //令预测值为上一次的真实值
 	predict=act_value;
 	
@@ -325,7 +346,7 @@ double KalmanFilterZ(double measureData)
 	P_last=(1-Kk)*P_mid;
 	
 	/* 计算并调整系统噪声 */
-	Q=Kk*Kk*Cr;
+	//Q=Kk*Kk*Cr;
 
 	/* 为提高滤波器的响应速度，减小滞后而设下的阈值 */
 	if(Kk>0.5)

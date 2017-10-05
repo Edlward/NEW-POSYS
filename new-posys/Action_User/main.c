@@ -70,6 +70,7 @@ int main(void)
 		  RoughHandle();
       TemporaryHandle();
 		//	if(GetCommand()&ACCUMULATE){
+			if(GetCommand()&ADJUST)
 				updateAngle();
 	//		}	
       /* ©ьжфмсбщргнб╤х  */		

@@ -1,17 +1,16 @@
-function [ result ] = kalman( data)
+function [ result ] = kalman( data,P1,Q1)
 %UNTITLED 此处显示有关此函数的摘要
 %   此处显示详细说明
-P(49)=0.001;
-Q=0.0000000015;
-R=0.0006708655;
-QQ(length(data))=Q;
+%Q=0.0000000015;
+Q(1)=Q1;
+R=0.006708655;
+Q(49)=Q(1);
 for j=1:50
     IAE_st(j)=data(j);
     result(j,1)=data(j);
 end
-act_value=data(49);
-% QQ(49)=0.000000008236918;
-% P_last=0.000006478590639000001;
+act_value=mean(data(1:49));
+P(49)=P1;
 for j=50:length(data)
 	predict=act_value;
 	%相当于数组的左移
@@ -28,8 +27,8 @@ for j=50:length(data)
 	Cr=Cr/50;		%样本方差（不知道对不对，还要看原公式）
 	
 	% 预测本次的预测误差 
-% 	P_pre(j)=P(j-1)+QQ(j-1);
-	P_pre(j)=P(j-1)+Q;
+%  	P_pre(j)=P(j-1)+QQ(j-1);
+	P_pre(j)=P(j-1)+Q(j-1);
 	
 	% 计算系数，求得输出值 
 	Kk(j)=P_pre(j)/(P_pre(j)+R);
@@ -39,16 +38,16 @@ for j=50:length(data)
 	P(j)=(1-Kk(j))*P_pre(j);
 	
 	% 计算并调整系统噪声 
-% 	QQ(j)=Kk(j)*Kk(j)*Cr;
+%  	QQ(j)=Kk(j)*Kk(j)*Cr;
+ 	Q(j)=Kk(j)*Kk(j)*Cr;
 
 	% 为提高滤波器的响应速度，减小滞后而设下的阈值 
-	if Kk(j)>0.5
-		act_value=data(j);
-    end
+% 	if Kk(j)>0.5
+% 		act_value=data(j);
+%     end
     result(j,1)=act_value;
 end
-result(:,2)=Kk;
-result(:,3)=QQ;
-result(:,4)=P_pre;
+result(:,2)=P;
+result(:,3)=Q;
 end
 

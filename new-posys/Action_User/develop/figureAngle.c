@@ -61,6 +61,7 @@ static gyro_t acc_icm;          //加速度信息
 static float   temp_icm;            //陀螺仪温度
 int chartIndex = 0;
 static float gyr_AVER[3][TempTable_Num]={0.0};
+static int timeCount=0;
 void RoughHandle(void)
 {
   gyro_t gyr_icm={0.f};
@@ -74,46 +75,53 @@ void RoughHandle(void)
 	icm_read_temp(&temp_icm);
 	static uint32_t ignore=0;
 	ignore++;
-	if(ignore<50)
+	if(ignore<100)
 		return ;
-	else if(ignore==50)
+	else if(ignore==100)
 	{
 		for(uint32_t i=0;i<TempTable_Num;i++){
-			gyr_AVER[0][i]=chartWX[i];
-			gyr_AVER[1][i]=chartWY[i];
-			gyr_AVER[2][i]=chartWZ[i];
+	//		gyr_AVER[0][i]=chartWX[i];
+		//	gyr_AVER[1][i]=chartWY[i];
+		//	gyr_AVER[2][i]=chartWZ[i];
 		}
 	}else
-		ignore=51;
+		ignore=101;
 	
+	if(timeCount<3*60*400)
+		USART_OUT_F(temp_icm);
 	temp_icm=KalmanFilterT(temp_icm);
 
-	USART_OUT_F(temp_icm);
-	USART_OUT_F(gyr_icm.No1.z);
 	/* 新息自适应卡尔曼滤波，滤除角速度中的噪声 */
 	gyr_act.x=KalmanFilterX(gyr_icm.No1.x);
 	gyr_act.y=KalmanFilterY(gyr_icm.No1.y);
 	gyr_act.z=KalmanFilterZ(gyr_icm.No1.z);
-
-	USART_OUT_F(gyr_act.z);
+	if(timeCount<3*60*400){
+	USART_OUT_F(temp_icm);
+	USART_OUT_F(gyr_icm.No1.z);
+  USART_OUT_F(gyr_act.z);
 	USART_Enter();
+	}
+	timeCount++;
 	/* 要放在滤波之后，因为不能让去温飘影响滤波参数（自适应温飘之后会有突降）*/
 	/* 温度值转换成数组的序号来寻找温度零漂表里对应的值 */
-	chartIndex=roundf((temp_icm-TempTable_min)*10);
-	if((chartIndex>=0&&chartIndex<TempTable_Num-1)
-	    &&chartNum[chartIndex]>=LEASTNUM           //表里的值得数量需要大于LEASTNUM
-	    &&chartNum[chartIndex]!=0xffffffff) //表里面需要有值,原因flash默认都是1
-	{
-		  proportion=(temp_icm-TempTable_min)*10-chartIndex;
-			/*分段插值*/
-			gyr_act.x=(double)(gyr_icm.No1.x-(gyr_AVER[0][chartIndex]*(1-proportion)+gyr_AVER[0][chartIndex+1]*proportion));
-			gyr_act.y=(double)(gyr_icm.No1.y-(gyr_AVER[1][chartIndex]*(1-proportion)+gyr_AVER[1][chartIndex+1]*proportion));
-			gyr_act.z=(double)(gyr_icm.No1.z-(gyr_AVER[2][chartIndex]*(1-proportion)+gyr_AVER[2][chartIndex+1]*proportion));
-	}
-  else /* 当温度表里信息不理想时采用最小二乘法来拟合曲线参与零点漂移的计算  */
-	{
-		gyr_act.z=gyr_icm.No1.z-FitResult(temp_icm);
-	}
+//	chartIndex=roundf((temp_icm-TempTable_min)*10);
+//	if((chartIndex>=0&&chartIndex<TempTable_Num-1)
+//	    &&chartNum[chartIndex]>=LEASTNUM           //表里的值得数量需要大于LEASTNUM
+//	    &&chartNum[chartIndex]!=0xffffffff) //表里面需要有值,原因flash默认都是1
+//	{
+//		  proportion=(temp_icm-TempTable_min)*10-chartIndex;
+//			/*分段插值*/
+//			gyr_act.x=(double)(gyr_icm.No1.x-(gyr_AVER[0][chartIndex]*(1-proportion)+gyr_AVER[0][chartIndex+1]*proportion));
+//			gyr_act.y=(double)(gyr_icm.No1.y-(gyr_AVER[1][chartIndex]*(1-proportion)+gyr_AVER[1][chartIndex+1]*proportion));
+//			gyr_act.z=(double)(gyr_icm.No1.z-(gyr_AVER[2][chartIndex]*(1-proportion)+gyr_AVER[2][chartIndex+1]*proportion));
+//	}
+//  else /* 当温度表里信息不理想时采用最小二乘法来拟合曲线参与零点漂移的计算  */
+//	{
+//		gyr_act.z=gyr_icm.No1.z-FitResult(temp_icm);
+//	}
+			gyr_act.x=(double)(gyr_icm.No1.x-gyr_AVER[0][chartIndex]);
+			gyr_act.y=(double)(gyr_icm.No1.y-gyr_AVER[1][chartIndex]);
+			gyr_act.z=(double)(gyr_icm.No1.z-gyr_AVER[2][chartIndex]);
 }
 float getTemp_icm(void){
 	return temp_icm;
@@ -132,10 +140,10 @@ void TemporaryHandle(void)
 	//忽略前五十个数
 	static uint32_t ignore=0;
 	ignore++;
-	if(ignore<50)
+	if(ignore<100)
 		return ;
 	else
-		ignore=51;
+		ignore=101;
 	
 	chartIndex=roundf((temp_icm-TempTable_min)*10);
 	if(chartIndex<0||chartIndex>=TempTable_Num) 
@@ -164,8 +172,6 @@ void TemporaryHandle(void)
 			flag=0;
 			aver(gyr_aver,countTemp);
 			for(int i=0;i<TempTable_Num;i++){
-						USART_OUT_F(gyr_aver[2][i]);
-						USART_Enter();
 					for(uint32_t j=0;j<3;j++){
 						gyr_AVER[j][i]=gyr_AVER[j][i]+gyr_aver[j][i];
 						gyr_aver[j][i]=0.0;
@@ -311,13 +317,14 @@ double KalmanFilterZ(double measureData)
   static double act_value=0;  //实际值
   double predict;             //预测值
   
-	static double P_last=0.1;   //上一次的预测误差
+	static double P_last=0.0000021178304954;   //上一次的预测误差
 	static double P_mid;        //对预测误差的预测
 	static double Kk;           //滤波增益系数
 	
-	static double Q=0.00000001;       //系统噪声         
+	static double Q=0.00000000143649018308130;       //系统噪声         
 	static double R=0.006708655;      //测量噪声 
 	static double IAE_st[50];    //记录的新息
+	static double data=0.0;
 	double Cr=0;                //新息的方差
   //令预测值为上一次的真实值
 	predict=act_value;
@@ -332,7 +339,18 @@ double KalmanFilterZ(double measureData)
 		Cr=Cr+IAE_st[i]*IAE_st[i];
 	}
 	Cr=Cr/50.0f;
-	
+	static uint32_t ignore=0;
+	ignore++;
+	if(ignore<100){
+	data+=measureData;
+		return 1.0;
+	}
+	else if(ignore==100){
+		predict=data/99.0;
+ //USART_OUT_F(predict);
+	USART_Enter();
+	}else
+		ignore=101;
 	
 	/* 预测本次的预测误差 */
 	P_mid=P_last+Q;
@@ -346,7 +364,7 @@ double KalmanFilterZ(double measureData)
 	P_last=(1-Kk)*P_mid;
 	
 	/* 计算并调整系统噪声 */
-	//Q=Kk*Kk*Cr;
+	Q=Kk*Kk*Cr;
 
 	/* 为提高滤波器的响应速度，减小滞后而设下的阈值 */
 	if(Kk>0.5)
@@ -462,12 +480,12 @@ float KalmanFilterT(double measureData)
   static double act_value=0;  //实际值
   double predict;             //预测值
   
-	static double P_last=0.1;   //上一次的预测误差
+	static double P_last=0.0001;   //上一次的预测误差
 	static double P_mid;        //对预测误差的预测
 	static double Kk;           //滤波增益系数
 	
-	static double Q=0.025;       //系统噪声
-	static double R=0.025;      //测量噪声         
+	static double Q=0.02;       //系统噪声
+	static double R=0.02;      //测量噪声         
 	
 	static double IAE_st[50];    //记录的新息
 	double Cr=0;                //新息的方差

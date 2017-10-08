@@ -11,3 +11,5 @@
 .\szw_stm32f407\flash.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\szw_stm32f407\flash.o: ..\Action_User\baseConfig\config.h
 .\szw_stm32f407\flash.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\szw_stm32f407\flash.o: ..\Action_User\hardware\usart.h
+.\szw_stm32f407\flash.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h

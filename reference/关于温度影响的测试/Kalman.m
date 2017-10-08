@@ -1,16 +1,16 @@
-function [ result ] = kalman( data,P1,Q1)
+function [ result ] = kalman( data)
 %UNTITLED 此处显示有关此函数的摘要
 %   此处显示详细说明
 %Q=0.0000000015;
-Q(1)=Q1;
-R=0.006708655;
+Q(1)=0.00000000002514;
+R=0.002;
 Q(49)=Q(1);
 for j=1:50
     IAE_st(j)=data(j);
     result(j,1)=data(j);
 end
 act_value=mean(data(1:49));
-P(49)=P1;
+P(49)=0.0000003169;
 for j=50:length(data)
 	predict=act_value;
 	%相当于数组的左移

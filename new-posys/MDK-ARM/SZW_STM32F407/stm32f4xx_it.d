@@ -21,3 +21,4 @@
 .\szw_stm32f407\stm32f4xx_it.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h
 .\szw_stm32f407\stm32f4xx_it.o: ..\Action_User\hardware\flash.h
 .\szw_stm32f407\stm32f4xx_it.o: ..\Action_User\baseConfig\config.h
+.\szw_stm32f407\stm32f4xx_it.o: ..\Action_User\baseConfig\icm_20608_g.h

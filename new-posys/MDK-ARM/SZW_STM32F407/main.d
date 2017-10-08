@@ -1,9 +1,9 @@
 .\szw_stm32f407\main.o: ..\Action_User\main.c
 .\szw_stm32f407\main.o: ..\Action_User\hardware\usart.h
-.\szw_stm32f407\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\szw_stm32f407\main.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h
 .\szw_stm32f407\main.o: ..\Libraries\CMSIS\stm32f4xx.h
 .\szw_stm32f407\main.o: ..\Libraries\CMSIS\core_cm4.h
+.\szw_stm32f407\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\szw_stm32f407\main.o: ..\Libraries\CMSIS\core_cmInstr.h
 .\szw_stm32f407\main.o: ..\Libraries\CMSIS\core_cmFunc.h
 .\szw_stm32f407\main.o: ..\Libraries\CMSIS\core_cm4_simd.h
@@ -28,3 +28,4 @@
 .\szw_stm32f407\main.o: ..\Action_User\develop\figureAngle.h
 .\szw_stm32f407\main.o: ..\Action_User\develop\buildExcel.h
 .\szw_stm32f407\main.o: ..\Action_User\customer\customer.h
+.\szw_stm32f407\main.o: ..\Action_User\develop\figurePos.h

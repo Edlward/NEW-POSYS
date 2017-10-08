@@ -1,12 +1,12 @@
-#ifndef LEASTSQUARE_H
-#define LEASTSQUARE_H
+//#ifndef LEASTSQUARE_H
+//#define LEASTSQUARE_H
 
-#include "config.h"
+//#include "config.h"
 
-#define MaxCoeff			 1
+//#define MaxCoeff			 1
 
-void SquareFitting(float data[TempTable_Num]);
-double FitResult(float tem);
-#endif
+//void SquareFitting(float data[TempTable_Num]);
+//double FitResult(float tem);
+//#endif
 
 

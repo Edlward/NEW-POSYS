@@ -24,9 +24,9 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void Set_R_Zaxis(float val);
-float Get_R_Zaxis(void);
 void DataSend(void);
+unsigned char GetCommand(void);
+void SetCommand(int val);
 #endif
 
 /******************* (C) COPYRIGHT 2015 ACTION *****END OF FILE****/

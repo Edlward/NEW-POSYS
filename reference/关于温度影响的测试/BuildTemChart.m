@@ -1,5 +1,6 @@
-    function [ result ] = BuildTemChart( data,tem,step )
+    function [ result ] = BuildTemChart( data,tem )
     %数据，温度，步长（温度的步长，0.1,0.2等等）
+    step=0.1;
     if(length(data)~=length(tem))
     'error'
     end

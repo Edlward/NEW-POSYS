@@ -28,10 +28,9 @@
 void calculatePos(void);
 float getPosX(void);
 float getPosY(void);
-
-void setPosX(float in);
-void setPosY(float in);
-
+void SetPosX(float in);
+void SetPosY(float in);
+void CorrectManufacturingErrors(void);
 #endif
 
 /******************* (C) COPYRIGHT 2015 ACTION *****END OF FILE****/

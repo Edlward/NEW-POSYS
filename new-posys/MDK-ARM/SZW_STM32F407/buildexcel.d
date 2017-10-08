@@ -24,3 +24,4 @@
 .\szw_stm32f407\buildexcel.o: ..\Action_User\hardware\gpio.h
 .\szw_stm32f407\buildexcel.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h
 .\szw_stm32f407\buildexcel.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h
+.\szw_stm32f407\buildexcel.o: ..\Action_User\customer\customer.h

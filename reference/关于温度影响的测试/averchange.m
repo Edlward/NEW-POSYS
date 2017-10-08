@@ -1,0 +1,21 @@
+a(1,1)=averFitting(data1);
+a(2,1)=averFitting(data2);
+a(3,1)=averFitting(data3);
+a(4,1)=averFitting(data4);
+a(5,1)=averFitting(data5);
+a(6,1)=averFitting(data6);
+a(7,1)=averFitting(data7);
+a(8,1)=averFitting(data8);
+a(9,1)=averFitting(data9);
+para(1)=build(data1,4,'r');
+para(2)=build(data2,4,'r');
+para(3)=build(data3,4,'r');
+para(4)=build(data4,4,'r');
+para(5)=build(data5,4,'r');
+para(6)=build(data6,4,'r');
+para(7)=build(data7,4,'r');
+para(8)=build(data8,4,'r');
+para(9)=build(data8,4,'r');
+clear result
+result(:,1)=a;
+result(:,2)=para;

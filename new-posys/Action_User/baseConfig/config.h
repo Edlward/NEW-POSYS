@@ -25,27 +25,17 @@
 
 /* Exported constants --------------------------------------------------------*/
 
-//#define SINGLESYSTEM
-
-/* Hardware Test enable*/
-//#define HD_TEST
-
-#define DEBUG_ENABLE
+//#define TEST_SUMMER
 
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
 #define PERIOD    				0.005f
 #define dT 					  	  0.005           //积分的步长
 
-#define R_wheel1        25.25f
-#define R_wheel2        25.2f
-#define ECD_RANGE      4096
-#define Temp_ctr       42             //控温的值    //大车上控制的温度 37 45 30
-#define TempTable_max  50								//30-49.9
-#define TempTable_min  30
-#define TempTable_Num  200
-#define LEASTNUM			 50
-#define TIME_HEAT      5              //初始化时加热的时间值
+#define R_wheel1        25.284126
+#define R_wheel2        25.42820678
+#define TempTable_Num  	126				//3*5个double 存储的是随温度变化的斜率 最后一个int存储的是选几个做平均数
+#define LEASTNUM			 	50
 
 
 /*
@@ -54,47 +44,8 @@
 */
 
 #define CORRECT    								0X01
-#define UNCORRECT   						  (~0X01)
-#define ADJUST 										0X02
-#define UNADJUST 								  (~0X02)
-#define ACCUMULATE 								0X04
-#define UNACCUMULATE 						  (~0X04)
-
-
-/* Exported macro ------------------------------------------------------------*/
-/* L3GD20H 寄存器地址-----------------------*/
-#define L3GD20H_WHO_AM_I								0x0F
-
-#define L3GD20H_CTRL_REG1								0x20
-#define L3GD20H_CTRL_REG2 							0x21
-#define L3GD20H_CTRL_REG3 							0x22
-#define L3GD20H_CTRL_REG4 							0x23
-#define L3GD20H_CTRL_REG5 							0x24
-
-#define L3GD20H_REFERENCE 							0x25
-#define L3GD20H_OUT_TEMP 								0x26
-#define L3GD20H_STATUS_REG 							0x27
-
-#define L3GD20H_OUT_X_L 								0x28											/* X轴角速率数据，值为2的补码						 */
-#define L3GD20H_OUT_X_H 								0x29
-#define L3GD20H_OUT_Y_L 								0x2A											/* Y轴角速率数据，值为2的补码						 */
-#define L3GD20H_OUT_Y_H 								0x2B
-#define L3GD20H_OUT_Z_L 								0x2C											/* Z轴角速率数据，值为2的补码						 */
-#define L3GD20H_OUT_Z_H 								0x2D
-
-#define L3GD20H_FIFO_CTRL_REG 					0x2E
-#define L3GD20H_FIFO_SRC_REG 						0x2F
-#define L3GD20H_INT1_CFG 								0x30
-#define L3GD20H_INT1_SRC 								0x31
-
-#define L3GD20H_INT1_TSH_XH 						0x32
-#define L3GD20H_INT1_TSH_XL 						0x33
-#define L3GD20H_INT1_TSH_YH 						0x34
-#define L3GD20H_INT1_TSH_YL 						0x35
-#define L3GD20H_INT1_TSH_ZH 						0x36
-#define L3GD20H_INT1_TSH_ZL 						0x37
-#define L3GD20H_INT1_DURATION 					0x38
-#define L3GD20H_LOW_ODR               	0x39
+#define ACCUMULATE 								0X02
+#define STATIC										0X04
 
 
 /* ICM20608G 陀螺仪寄存器地址--------------*/

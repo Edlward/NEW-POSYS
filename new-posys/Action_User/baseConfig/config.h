@@ -25,7 +25,7 @@
 
 /* Exported constants --------------------------------------------------------*/
 
-//#define TEST_SUMMER
+#define TEST_SUMMER
 
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
@@ -34,7 +34,6 @@
 
 #define R_wheel1        25.284126
 #define R_wheel2        25.42820678
-#define TempTable_Num  	126				//3*5个double 存储的是随温度变化的斜率 最后一个int存储的是选几个做平均数
 #define LEASTNUM			 	50
 
 

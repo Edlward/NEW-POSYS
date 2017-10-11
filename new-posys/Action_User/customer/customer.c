@@ -44,7 +44,7 @@ void DataSend(void)
   tdata[26]=0x0a;
   tdata[27]=0x0d;
 	
-	valSend.val=angle.z;
+	valSend.val=-angle.z;
   memcpy(tdata+2,valSend.data,4);
 	
 	valSend.val=angle.x;
@@ -70,6 +70,9 @@ static char buffer[20];
 static int bufferI=0;
 extern uint8_t* 	chartMode;
 extern uint8_t 	*chartSelect; 
+extern uint8_t  *scaleMode;
+extern float    *minValue;
+extern float    *varXYZ;
 void bufferInit(void){
   bufferI=0;
   for(int i=0;i<20;i++)
@@ -96,7 +99,7 @@ void USART1_IRQHandler(void)
     data=USART_ReceiveData(USART1);
   }
 }
-
+static int heatPower=0;
 void AT_CMD_Handle(void){
   if((bufferI == 4) && strncmp(buffer, "AT\r\n", 4)==0)//AT    
   {
@@ -112,10 +115,32 @@ void AT_CMD_Handle(void){
     SetCommand(~ACCUMULATE);
     USART_OUT(USART1,"OK\r\n");
   }
-  else if((bufferI == 10) && strncmp(buffer, "AT+reset\r\n", 10)==0)//AT    
+  else if((bufferI == 13) && strncmp(buffer, "AT+reset=\r\n", 9)==0)//AT    
   {
+		heatPower=0;
+		if(buffer[9]<='9'&&buffer[9]>='0')
+			heatPower+=(buffer[9]-'0')*10;
+		if(buffer[10]<='9'&&buffer[10]>='0')
+			heatPower+=(buffer[10]-'0');
+			
     SetCommand(CORRECT);
+    USART_OUT(USART1,"%d\r\n",heatPower);
+  }
+  else if((bufferI == 16) && strncmp(buffer, "AT+setmin=", 10)==0)//AT    
+  {
     USART_OUT(USART1,"OK\r\n");
+	  union{
+		float   val;
+		uint8_t data[4];
+		}temp_float;
+		temp_float.data[0]=buffer[10];
+		temp_float.data[1]=buffer[11];
+		temp_float.data[2]=buffer[12];
+		temp_float.data[3]=buffer[13];
+		*minValue=temp_float.val;
+    USART_OUT(USART1,"writing\r\n");
+    Flash_Write(GetFlashArr(),TempTable_Num);
+    USART_OUT(USART1,"write finished\r\n");
   }
   else if((bufferI == 8) && strncmp(buffer, "AT+set\r\n", 8)==0)//AT    
   {
@@ -132,7 +157,7 @@ void AT_CMD_Handle(void){
     USART_OUT(USART1,"OK\r\n");
     SetCommand(STATIC);
   }
-  else if((bufferI == 14) && strncmp(buffer, "AT+setx=\r\n", 8)==0)//AT    
+  else if((bufferI == 14) && strncmp(buffer, "AT+set", 6)==0)//AT    
   {
     USART_OUT(USART1,"OK\r\n");
 	  union{
@@ -143,33 +168,43 @@ void AT_CMD_Handle(void){
 		temp_float.data[1]=buffer[9];
 		temp_float.data[2]=buffer[10];
 		temp_float.data[3]=buffer[11];
-		SetPosX(temp_float.val);
+		switch(buffer[6]){
+			case 'x':
+			//	SetPosX(temp_float.val);
+				break;
+			case 'y':
+			//	SetPosY(temp_float.val);
+				break;
+			case 'a':
+			//	SetAngle(temp_float.val);
+				break;
+		}
   }
-  else if((bufferI == 14) && strncmp(buffer, "AT+sety=\r\n", 8)==0)//AT    
+  else if((bufferI == 17) && strncmp(buffer, "AT+setvar", 9)==0)//AT    
   {
     USART_OUT(USART1,"OK\r\n");
 	  union{
 		float   val;
 		uint8_t data[4];
 		}temp_float;
-		temp_float.data[0]=buffer[8];
-		temp_float.data[1]=buffer[9];
-		temp_float.data[2]=buffer[10];
-		temp_float.data[3]=buffer[11];
-		SetPosY(temp_float.val);
-  }
-  else if((bufferI == 14) && strncmp(buffer, "AT+seta=\r\n", 8)==0)//AT    
-  {
-    USART_OUT(USART1,"OK\r\n");
-	  union{
-		float   val;
-		uint8_t data[4];
-		}temp_float;
-		temp_float.data[0]=buffer[8];
-		temp_float.data[1]=buffer[9];
-		temp_float.data[2]=buffer[10];
-		temp_float.data[3]=buffer[11];
-		SetAngle(temp_float.val);
+		temp_float.data[0]=buffer[11];
+		temp_float.data[1]=buffer[12];
+		temp_float.data[2]=buffer[13];
+		temp_float.data[3]=buffer[14];
+		switch(buffer[9]){
+			case 'x':
+				*varXYZ=temp_float.val;
+				break;
+			case 'y':
+				*(varXYZ+1)=temp_float.val;
+				break;
+			case 'z':
+				*(varXYZ+2)=temp_float.val;
+				break;
+		}
+    USART_OUT(USART1,"writing\r\n");
+    Flash_Write(GetFlashArr(),TempTable_Num);
+    USART_OUT(USART1,"write finished\r\n");
   }
   else if((bufferI == 11) && strncmp(buffer, "AT+mode=", 8)==0)//AT    
   {
@@ -180,8 +215,22 @@ void AT_CMD_Handle(void){
       *chartMode=0;
     else
       USART_OUT(USART1,"mode command error\r\n");
+    USART_OUT(USART1,"writing\r\n");
     Flash_Write(GetFlashArr(),TempTable_Num);
-    TempTablePrintf();
+    USART_OUT(USART1,"write finished\r\n");
+  }
+  else if((bufferI == 12) && strncmp(buffer, "AT+scale=", 9)==0)//AT    
+  {
+    USART_OUT(USART1,"OK\r\n");
+    if(buffer[9]=='1')
+      *scaleMode=1;
+    else if(buffer[9]=='0')
+      *scaleMode=0;
+    else
+      USART_OUT(USART1,"scaleMode command error\r\n");
+    USART_OUT(USART1,"writing\r\n");
+    Flash_Write(GetFlashArr(),TempTable_Num);
+    USART_OUT(USART1,"write finished\r\n");
   }
   else if((bufferI == 17) && strncmp(buffer, "AT+select=", 10)==0)//AT    
   {
@@ -194,15 +243,18 @@ void AT_CMD_Handle(void){
       else
         USART_OUT(USART1,"select %d error\r\n",i-10);
     }
+    USART_OUT(USART1,"writing\r\n");
     Flash_Write(GetFlashArr(),TempTable_Num);
-    TempTablePrintf();
+    USART_OUT(USART1,"write finished\r\n");
   }
   else 
     USART_OUT(USART1,"error\r\n");
   
   bufferInit();
 }
-
+int getHeatPower(void){
+	return heatPower;
+}
 
 static uint8_t command=0;
 void SetCommand(int val){

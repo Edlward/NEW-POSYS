@@ -35,6 +35,8 @@ extern double *chartWY;
 extern double *chartWZ;
 extern uint8_t 	*chartMode;
 extern uint8_t 	*chartSelect;
+extern float  		*minValue;
+extern float     *varXYZ;
 static three_axis result_angle={0,0,0};
 static Quarternion quaternion={1,0,0,0};
 /* Extern   variables ---------------------------------------------------------*/
@@ -78,8 +80,8 @@ int RoughHandle(void)
   gyr_act.z=(double)gyr_icm.No1.z-drift[2];
 	
 	
-  gyr_act.x=KalmanFilterX(gyr_act.x);
-  gyr_act.y=KalmanFilterY(gyr_act.y);
+//  gyr_act.x=KalmanFilterX(gyr_act.x);
+//  gyr_act.y=KalmanFilterY(gyr_act.y);
   gyr_act.z=KalmanFilterZ(gyr_act.z);
 	
   count++;
@@ -116,15 +118,15 @@ void TemporaryHandle(void)
     accInit[2]=accInit[2]/(3.f*200.f);
     acc_sum=sqrt(accInit[0]*accInit[0]+accInit[1]*accInit[1]+accInit[2]*accInit[2]);
     /* 读取加速度的值 */
-    icm_update_AccRad(accInit,&acc_angle);
-   quaternion=Euler_to_Quaternion(acc_angle);
+    //icm_update_AccRad(accInit,&acc_angle);
+   //quaternion=Euler_to_Quaternion(acc_angle);
   }
 }
 
 void updateAngle(void)
 {	
   static three_axis euler;            //欧垃角
-	float maxStaticValue=0.02f;
+	float maxStaticValue=*minValue;
 	
   if((GetCommand()&STATIC)&&(gyr_act.z<0.2f)){
 		maxStaticValue=0.15f;
@@ -138,21 +140,29 @@ void updateAngle(void)
     gyr_act.z=0.f;
 	
   /*角速度积分成四元数*/
-  quaternion=QuaternionInt(quaternion,gyr_act);
+  //quaternion=QuaternionInt(quaternion,gyr_act);
+ // quaternion=QuaternionInt1(quaternion,gyr_act);
   /* 四元数转换成欧垃角 */
-  euler=Quaternion_to_Euler(quaternion);
+  //euler=Quaternion_to_Euler(quaternion);
 
-  if(JudgeAcc()){
-    euler.x=acc_angle.x;
-		euler.y=acc_angle.y;
-    quaternion=Euler_to_Quaternion(euler);
-  }
-	
+//  if(JudgeAcc()){
+//    euler.x=acc_angle.x;
+//		euler.y=acc_angle.y;
+//    quaternion=Euler_to_Quaternion(euler);
+//  }
+		euler.z=euler.z+gyr_act.z*0.005;
+	if(euler.z>180.0)
+		euler.z-=360.0;
+	else if(euler.z<-180.0)
+		euler.z+=360.0;
   /*弧度角度转换 */
-  result_angle.x= euler.x/PI*180.0f;
-  result_angle.y= euler.y/PI*180.0f;
-  result_angle.z=-euler.z/PI*180.0f;
-//	USART_OUT_F(result_angle.z);
+//  result_angle.x= euler.x/PI*180.0f;
+//  result_angle.y= euler.y/PI*180.0f;
+  result_angle.z=-euler.z;
+	#ifdef TEST_SUMMER
+	USART_OUT_F(result_angle.z);
+	USART_OUT_F(gyr_icm.No1.x);
+	#endif
 }
 void SetAngle(float angle){
 	three_axis euler;
@@ -224,10 +234,12 @@ void driftCoffecientInit(void){
 	driftCoffecient[1]=driftCoffecient[1]/selectCount;
 	driftCoffecient[2]=driftCoffecient[2]/selectCount;
 	
+#ifdef TEST_SUMMER
 	USART_OUT_F(driftCoffecient[0]);
 	USART_OUT_F(driftCoffecient[1]);
 	USART_OUT_F(driftCoffecient[2]);
 	USART_Enter();
+#endif
 	
 }
 float safe_asin(float v)
@@ -294,12 +306,12 @@ double KalmanFilterZ(double measureData)
   static double act_value=0;  //实际值
   double predict;             //预测值
   
-  static double P_last=0.0000003169;   //上一次的预测误差
+  static double P_last=0.01;   //上一次的预测误差
   static double P_mid;        //对预测误差的预测
   static double Kk;           //滤波增益系数
   
-  static double Q=0.00000000002514;       //系统噪声         
-  static double R=0.002;      //测量噪声 
+  static double Q=0.003;       //系统噪声        
+  double R=0.003;      //测量噪声 
   static double IAE_st[50];    //记录的新息
   static double data=0.0;
   double Cr=0;                //新息的方差
@@ -360,7 +372,7 @@ double KalmanFilterX(double measureData)
   static double Kk;           //滤波增益系数
   
   static double Q=0.00000000002514;       //系统噪声         
-  static double R=0.002;      //测量噪声 
+  double R=(double)varXYZ[0];      //测量噪声 
   static double IAE_st[50];    //记录的新息
   static double data=0.0;
   double Cr=0;                //新息的方差
@@ -422,7 +434,7 @@ double KalmanFilterY(double measureData)
   static double Kk;           //滤波增益系数
   
   static double Q=0.00000000002514;       //系统噪声         
-  static double R=0.002;      //测量噪声 
+  double R=(double)varXYZ[1];      //测量噪声 
   static double IAE_st[50];    //记录的新息
   static double data=0.0;
   double Cr=0;                //新息的方差

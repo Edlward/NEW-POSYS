@@ -35,6 +35,9 @@ extern double *chartWY;
 extern double *chartWZ;
 extern uint8_t 	*chartMode;
 extern uint8_t 	*chartSelect;
+extern uint8_t  *scaleMode;
+extern float    *minValue;
+extern float    *varXYZ;
 extern gyro_t gyr_icm;
 extern float  temp_icm;
 void TempTablePrintf(void)
@@ -53,8 +56,16 @@ void TempTablePrintf(void)
   for(int i=0;i<5;i++)
     USART_OUT_F(*(chartWZ+i));
   
-  USART_OUT(USART1,"\r\nchartMode:\r\n%d",*chartMode);
-  USART_OUT(USART1,"\r\nchartSelect:\r\n%d\t%d\t%d\t%d\t%d\r\n",*chartSelect,*(chartSelect+1),*(chartSelect+2),*(chartSelect+3),*(chartSelect+4));
+  USART_OUT(USART1,"chartMode:\r\n%d",*chartMode);
+  USART_OUT(USART1,"chartSelect:\r\n%d\t%d\t%d\t%d\t%d\r\n",*chartSelect,*(chartSelect+1),*(chartSelect+2),*(chartSelect+3),*(chartSelect+4));
+  USART_OUT(USART1,"scaleMode: %d\r\n",*scaleMode);
+  USART_OUT(USART1,"minValue:\r\n");
+  USART_OUT_F(*(minValue));
+	USART_OUT(USART1,"\r\nvarXYZ:  ");
+  USART_OUT_F(*(varXYZ+0));
+  USART_OUT_F(*(varXYZ+1));
+  USART_OUT_F(*(varXYZ+2));
+	USART_Enter();
   
 }
 
@@ -67,9 +78,9 @@ void UpdateVDoffTable(void)
   static uint32_t time_count=0;
   float temp_temp=temp_icm/100.f;
   time_count++;
-  ICM_HeatingPower(25);
   if(time_count<=3.5*60*200&&time_count>=0.25*60*200){
     
+		ICM_HeatingPower(getHeatPower());
     paraX   =paraX + (double)temp_temp;
     
     paraX2  =paraX2 + (double)temp_temp*(double)temp_temp;
@@ -101,6 +112,15 @@ void UpdateVDoffTable(void)
     TempTablePrintf();
 		SetCommand(~CORRECT);
 		ICM_HeatingPower(0);
+		{
+			for(int i=0;i<3;i++){
+				paraXY[i]=0.0;
+				paraY[i]=0.0;
+				paraX=0.0;
+				paraX2=0.0;
+			}
+			time_count=0;
+		}
   }else if(time_count>(3.5*60*200+1))
   {
     time_count=666666;

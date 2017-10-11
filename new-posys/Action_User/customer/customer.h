@@ -27,6 +27,7 @@
 void DataSend(void);
 unsigned char GetCommand(void);
 void SetCommand(int val);
+int getHeatPower(void);
 #endif
 
 /******************* (C) COPYRIGHT 2015 ACTION *****END OF FILE****/

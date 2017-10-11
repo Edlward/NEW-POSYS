@@ -5,6 +5,8 @@
 #include "usart.h"
 #include "figureAngle.h"
 
+extern uint8_t   *scaleMode;
+
 void ICM20608G_init(void)
 {
   uint8_t order=0;
@@ -25,7 +27,17 @@ void ICM20608G_init(void)
     ICM20608G_INT_ENABLE,0,//不使用中断
     ICM20608G_ACCEL_INTEL_CTRL,0//不使能Wake-on-Motion detection logic
   };	
-  
+  	switch(*scaleMode)
+	{
+		/*250dps*/
+		case 0:
+			registers[5]=0;
+			break;
+		/*500dps*/
+		case 1:
+			registers[5]=8;
+			break;
+  }
   Delay_ms(100);																					//Start-up time from power-up for register read/write  max 100
   SPI_Write(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_PWR_MGMT_1,0x80);
   //SPI_Write(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_PWR_MGMT_1,0x80);
@@ -73,10 +85,19 @@ void icm_update_gyro_rate(void)
   /*Y的原始角速度值*/
   data1[2] = (raw[4]<<8) | raw[5];
   
-  gyro.No1.x = -data1[1]/65.5f;
-  gyro.No1.y = -data1[0]/65.5f;
-  gyro.No1.z = -data1[2]/65.5f;
-  
+	switch(*scaleMode)
+	{
+		case 0:
+			gyro.No1.x = -data1[1]/131.f;
+			gyro.No1.y = -data1[0]/131.f;
+			gyro.No1.z = -data1[2]/131.f;
+			break;
+		case 1:
+			gyro.No1.x = -data1[1]/65.5f;
+			gyro.No1.y = -data1[0]/65.5f;
+			gyro.No1.z = -data1[2]/65.5f;
+			break;
+  }
   //	SPI_MultiRead(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_GYRO_XOUT_H,raw,6);
   //	/*X的原始角速度值*/
   //	data2[0] = (raw[0]<<8) | raw[1];

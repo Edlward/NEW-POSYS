@@ -1,9 +1,9 @@
-function [ result ] = kalman( data)
+function [ result ] = kalman( data,R)
 %UNTITLED 此处显示有关此函数的摘要
 %   此处显示详细说明
 %Q=0.0000000015;
 Q(1)=0.00000000002514;
-R=0.002;
+% R=0.002;
 Q(49)=Q(1);
 for j=1:50
     IAE_st(j)=data(j);

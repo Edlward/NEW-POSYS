@@ -30,8 +30,10 @@ double    *chartWY;
 double    *chartWZ;
 uint8_t 	*chartMode;
 uint8_t 	*chartSelect;
+uint8_t   *scaleMode;
+float  		*minValue;
+float     *varXYZ;
 static uint8_t  flashdata[TempTable_Num];  //5个double 存储的是随温度变化的斜率 最后一个int存储的是选几个做平均数
-
 /**
 * @brief  从FLASH里得到的数据分两个部分，第一部分为数据区，第二部分为
 *         计数区，该函数用于获得数据区的指针
@@ -164,7 +166,9 @@ void Flash_Init(void)
   chartWZ=(double *)flashdata+10;
   chartMode=(uint8_t *)flashdata+120;
   chartSelect=(uint8_t *)(flashdata)+121;
-  
+  scaleMode=(uint8_t *)(flashdata)+126;
+	minValue=(float *)((uint8_t *)flashdata+128);
+	varXYZ=(float *)((uint8_t *)flashdata+132);
   /* 保护Flash数据 */
   Flash_Encryp();
 }

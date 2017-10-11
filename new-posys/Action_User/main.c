@@ -30,7 +30,6 @@ void init(void)
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
   /* 陀螺仪加热电阻PWM初始化--------------------------*/
   pwm_init(999, 83);//此时PWM的频率为84MHz/(83+1)/(999+1)=1KHz
-  ICM_HeatingPower(0);
   
   /* SPI初始化---------------------------------------*/
   //单轮模式时磁编码器的SPI初始化
@@ -47,12 +46,12 @@ void init(void)
   /* ICM20608G模块初始化-----------------------------------*/
   ICM20608G_init();
   Flash_Init();
-  TIM_Init(TIM2,99,83,0,0);					//主周期定时5ms
+  TIM_Init(TIM2,999,83,0,0);					//主周期定时5ms
   ICM_HeatingPower(0);
   Delay_ms(100);//过滤开始时的错误数据
   driftCoffecientInit();
 }
-
+static int count=0;
 int main(void)
 {
   init();
@@ -61,6 +60,7 @@ int main(void)
   {
     while(getTimeFlag())
     {
+			count++;
       //				uint8_t test[3];
       //				test[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
       if(!(GetCommand()&CORRECT)){
@@ -68,10 +68,13 @@ int main(void)
         if(!RoughHandle())
           TemporaryHandle();
         else {
-          if(GetCommand()&ACCUMULATE){
+         // if(GetCommand()&ACCUMULATE)
+					{
             updateAngle();
-            calculatePos();
+            calculatePos();	
+						#ifndef TEST_SUMMER
 						DataSend();
+						#endif
           }
         }
       }

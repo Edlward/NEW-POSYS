@@ -56,38 +56,17 @@ void TIM2_IRQHandler(void)
     TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
     timeCount++;
     timeCnt++;
-    if(timeCount>=PERIOD*10000)
+    if(timeCount>=PERIOD*1000)
     {
       timeCount=0;
       timeFlag=1;
     }
-    if(timeCnt%25==0){
-      icm_update_acc();
-      icm_read_accel_acc(&act_temp);
-      act_sum.No1.x=act_sum.No1.x+act_temp.No1.x;
-      act_sum.No1.y=act_sum.No1.y+act_temp.No1.y;
-      act_sum.No1.z=act_sum.No1.z+act_temp.No1.z;
-      icm_update_temp();
-      icm_read_temp(&temp_temp);
-      temp_sum=temp_sum+temp_temp;
-      if(timeCnt==50){
-        acc_icm.No1.x=act_sum.No1.x/2.f;
-        acc_icm.No1.y=act_sum.No1.y/2.f;
-        acc_icm.No1.z=act_sum.No1.z/2.f;
-        act_sum.No1.x=0.f;
-        act_sum.No1.y=0.f;
-        act_sum.No1.z=0.f;
-        temp_icm=temp_sum/2.f;
-        temp_sum=0.f;
-      }
-    }
-    if(timeCnt%10==0){
       icm_update_gyro_rate();
       icm_read_gyro_rate(&gyr_temp);
       gyro_sum.No1.x=gyro_sum.No1.x+gyr_temp.No1.x;
       gyro_sum.No1.y=gyro_sum.No1.y+gyr_temp.No1.y;
       gyro_sum.No1.z=gyro_sum.No1.z+gyr_temp.No1.z;
-      if(timeCnt==50){
+      if(timeCnt==5){
         timeCnt=0;
         gyr_icm.No1.x=gyro_sum.No1.x/5.f;
         gyr_icm.No1.y=gyro_sum.No1.y/5.f;
@@ -96,8 +75,10 @@ void TIM2_IRQHandler(void)
         gyro_sum.No1.y=0.f;
         gyro_sum.No1.z=0.f;
       }
-    }
-  }	 
+  }
+	else{
+		USART_OUT(USART1,"dingshiqierror");
+	}
 }
 
 uint8_t getTimeFlag(void)
@@ -213,6 +194,7 @@ void HardFault_Handler(void)
   /* Go to infinite loop when Hard Fault exception occurs */
   while (1)
   {
+		USART_OUT(USART1,"HardFault_Handler");
   }
 }
 

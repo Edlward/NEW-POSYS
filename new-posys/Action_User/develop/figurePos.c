@@ -56,6 +56,7 @@ static void AxisOriginConvert(float rel_x,float rel_y,float angle,
 
 /* Exported function prototypes -----------------------------------------------*/
 /* Exported functions ---------------------------------------------------------*/
+uint16_t data[2];
 void calculatePos(void)
 {
 	static uint16_t data_last[2]={0,0};
@@ -65,14 +66,10 @@ void calculatePos(void)
 	
 	float  pos_temp[2]={0,0};
 	
-	uint16_t data[2];
 	int16_t vell[2];
 	
 	float zangle;
 	static float last_ang=0.0f;
-	
-	data[0]=SPI_ReadAS5045(0);
-	data[1]=SPI_ReadAS5045(1);
 	
 	if(flag<=5)
 	{
@@ -105,6 +102,8 @@ void calculatePos(void)
 	zangle=(zangle+last_ang)/2.0f;
 	last_ang=getAngle().z;
 	
+	
+	//直角坐标系和非直角坐标系的转换
 //	pos[1]+=vell[1]*cos((zangle+45)/180.0f*PI)+vell[0]*cos((45-zangle)/180.0f*PI);
 //	pos[0]+=vell[0]*cos((zangle+45)/180.0f*PI)-vell[1]*cos((45-zangle)/180.0f*PI);
 	
@@ -141,9 +140,11 @@ void calculatePos(void)
 //		setPosX_Y(set_x,set_y);
 //		set_d=0;
 //	}
-USART_OUT_F(posx);
-USART_OUT_F(posy);
-USART_Enter();
+	#ifdef TEST_SUMMER
+//		USART_OUT_F(posx);
+//		USART_OUT_F(posy);
+//		USART_Enter();
+	#endif
 }
 float getPosX(void)
 {

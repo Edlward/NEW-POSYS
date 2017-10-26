@@ -32,7 +32,6 @@ void DataSend(void)
 	uint8_t 
 	tdata[28];
 	three_axis angle;
-	three_axis w_icm;
   union{
 		float   val;
 		uint8_t data[4];
@@ -100,6 +99,7 @@ void USART1_IRQHandler(void)
   }
 }
 static int heatPower=0;
+extern uint8_t sendPermit;
 void AT_CMD_Handle(void){
   if((bufferI == 4) && strncmp(buffer, "AT\r\n", 4)==0)//AT    
   {
@@ -110,6 +110,16 @@ void AT_CMD_Handle(void){
     SetCommand(ACCUMULATE);
     USART_OUT(USART1,"OK\r\n");
   }
+	else if((bufferI == 13) && strncmp(buffer, "AT+stopSend\r\n", 13)==0)
+	{
+		sendPermit=0;
+		USART_OUT(USART1,"OK\r\n");
+	}
+	else if((bufferI == 14) && strncmp(buffer, "AT+beginSend\r\n", 14)==0)
+	{
+		sendPermit=1;
+		USART_OUT(USART1,"OK\r\n");
+	}
   else if((bufferI == 9) && strncmp(buffer, "AT+stop\r\n", 9)==0)//AT    
   {
     SetCommand(~ACCUMULATE);
@@ -170,13 +180,13 @@ void AT_CMD_Handle(void){
 		temp_float.data[3]=buffer[11];
 		switch(buffer[6]){
 			case 'x':
-			//	SetPosX(temp_float.val);
+				SetPosX(temp_float.val);
 				break;
 			case 'y':
-			//	SetPosY(temp_float.val);
+				SetPosY(temp_float.val);
 				break;
 			case 'a':
-			//	SetAngle(temp_float.val);
+				SetAngle(temp_float.val);
 				break;
 		}
   }

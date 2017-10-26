@@ -33,6 +33,8 @@
 #include "flash.h"
 #include "config.h"
 #include "icm_20608_g.h"
+#include "buildExcel.h"
+#include "spi.h"
 /*************定时器2******start************/
 //每1ms调用一次  用于读取编码器的值和计算坐标
 
@@ -42,6 +44,7 @@ static uint8_t timeFlag=0;
 gyro_t gyr_icm;
 gyro_t acc_icm;
 float temp_icm;
+extern uint16_t data[2];
 void TIM2_IRQHandler(void)
 {
   gyro_t gyr_temp;
@@ -74,10 +77,14 @@ void TIM2_IRQHandler(void)
         gyro_sum.No1.x=0.f;
         gyro_sum.No1.y=0.f;
         gyro_sum.No1.z=0.f;
+				
+				//放到中断里
+				data[0]=SPI_ReadAS5045(0);
+				data[1]=SPI_ReadAS5045(1);
       }
   }
 	else{
-		USART_OUT(USART1,"dingshiqierror");
+		USART_OUT(USART1,"TIM2 error");
 	}
 }
 
@@ -187,14 +194,32 @@ void NMI_Handler(void)
 * @brief  This function handles Hard Fault exception.
 * @param  None
 * @retval None
-*/
+*/	
+
 void HardFault_Handler(void)
-{
-  
+{  
+	  static uint32_t r_sp ;
+		/*判断发生异常时使用MSP还是PSP*/
+		if(__get_PSP()!=0x00) //获取SP的值
+			r_sp = __get_PSP(); 
+		else
+			r_sp = __get_MSP(); 
+		/*因为经历中断函数入栈之后，堆栈指针会减小0x10，所以平移回来（可能不具有普遍性）*/
+		r_sp = r_sp+0x10;
+		/*串口发数通知*/
+		USART_OUT(USART1,"HardFault");
+  	char sPoint[2]={0};
+		USART_OUT(USART1,"%s","0x");
+		/*获取出现异常时程序的地址*/
+		for(int i=3;i>=0;i--){
+			Hex_To_Str((uint8_t*)(r_sp+i+24),sPoint,2);
+			USART_OUT(USART1,"%s",sPoint);
+		}
+		/*发送回车符*/
+		USART_Enter();
   /* Go to infinite loop when Hard Fault exception occurs */
   while (1)
   {
-		USART_OUT(USART1,"HardFault_Handler");
   }
 }
 

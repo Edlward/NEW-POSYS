@@ -7,6 +7,7 @@
 ".\szw_stm32f407\temperature_control.o"
 ".\szw_stm32f407\customer.o"
 ".\szw_stm32f407\icm_20608_g.o"
+".\szw_stm32f407\adxrs453z.o"
 ".\szw_stm32f407\flash.o"
 ".\szw_stm32f407\gpio.o"
 ".\szw_stm32f407\spi.o"

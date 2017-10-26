@@ -127,4 +127,23 @@ void UpdateVDoffTable(void)
   }
 }
 
+
+void Hex_To_Str(uint8_t * pHex,char * s,float num)
+{
+	char        hex[] = "0123456789ABCDEF";
+	char        *pStr = s;
+	for (uint8_t i = 0; i < (int)(num/2.f+0.5f); i++)//(int)(x+0.5f)是把x四舍五入的意思
+	{
+		
+		/*
+		1.*pStr++右结合,并且*索引的是没有++之前的地址
+		2.f.移位不会改变指针指向的那个空间的值
+		3.对指针指向空间的移位也不会改变指针的指向
+		*/
+		if (((num<((int)(num / 2.f + 0.5f))*2.f)&&i>0)|| (num==((int)(num / 2.f + 0.5f)) * 2.f))
+		*pStr++ = hex[*(pHex + (int)(num / 2.f + 0.5f) - i - 1) >> 4];
+		*pStr++ = hex[*(pHex + (int)(num / 2.f + 0.5f) - i - 1) & 0x0F];
+	}
+}
+
 /************************ (C) COPYRIGHT 2016 ACTION *****END OF FILE****/

@@ -1,0 +1,16 @@
+Dependencies for Project 'ADXRS453test', Target 'Target 1': (DO NOT MODIFY !)
+F (.\startup_ADuCM360.s)(0x51B04E86)(--cpu Cortex-M3 -g --apcs=interwork -ID:\Keil_v5\ARM\RV31\INC-ID:\Keil_v5\ARM\CMSIS\Include-ID:\Keil_v5\ARM\INC\ADI--pd "__UVISION_VERSION SETA 524"--list .\lst\startup_aducm360.lst --xref -o .\obj\startup_aducm360.o --depend .\obj\startup_aducm360.d)
+F (.\ADXRS453test.c)(0x5344B375)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include-ID:\Keil_v5\ARM\RV31\INC-ID:\Keil_v5\ARM\CMSIS\Include-ID:\Keil_v5\ARM\INC\ADI-D__UVISION_VERSION="524"-o .\obj\adxrs453test.o --depend .\obj\adxrs453test.d)
+F (.\ADXRS453.c)(0x5344B3FF)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include-ID:\Keil_v5\ARM\RV31\INC-ID:\Keil_v5\ARM\CMSIS\Include-ID:\Keil_v5\ARM\INC\ADI-D__UVISION_VERSION="524"-o .\obj\adxrs453.o --depend .\obj\adxrs453.d)
+F (.\ADuCM360Driver.c)(0x5334E01C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include-ID:\Keil_v5\ARM\RV31\INC-ID:\Keil_v5\ARM\CMSIS\Include-ID:\Keil_v5\ARM\INC\ADI-D__UVISION_VERSION="524"-o .\obj\aducm360driver.o --depend .\obj\aducm360driver.d)
+F (.\ClkLib.c)(0x51B04E86)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include-ID:\Keil_v5\ARM\RV31\INC-ID:\Keil_v5\ARM\CMSIS\Include-ID:\Keil_v5\ARM\INC\ADI-D__UVISION_VERSION="524"-o .\obj\clklib.o --depend .\obj\clklib.d)
+I (ClkLib.h)(0x51B04E86)
+F (.\DioLib.c)(0x51B04E86)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include-ID:\Keil_v5\ARM\RV31\INC-ID:\Keil_v5\ARM\CMSIS\Include-ID:\Keil_v5\ARM\INC\ADI-D__UVISION_VERSION="524"-o .\obj\diolib.o --depend .\obj\diolib.d)
+F (.\IntLib.c)(0x51B04E86)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include-ID:\Keil_v5\ARM\RV31\INC-ID:\Keil_v5\ARM\CMSIS\Include-ID:\Keil_v5\ARM\INC\ADI-D__UVISION_VERSION="524"-o .\obj\intlib.o --depend .\obj\intlib.d)
+I (IntLib.h)(0x51B04E86)
+F (.\SpiLib.c)(0x51B04E86)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include-ID:\Keil_v5\ARM\RV31\INC-ID:\Keil_v5\ARM\CMSIS\Include-ID:\Keil_v5\ARM\INC\ADI-D__UVISION_VERSION="524"-o .\obj\spilib.o --depend .\obj\spilib.d)
+I (SpiLib.h)(0x51B04E86)
+F (.\UrtLib.c)(0x51B04E86)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include-ID:\Keil_v5\ARM\RV31\INC-ID:\Keil_v5\ARM\CMSIS\Include-ID:\Keil_v5\ARM\INC\ADI-D__UVISION_VERSION="524"-o .\obj\urtlib.o --depend .\obj\urtlib.d)
+I (UrtLib.h)(0x52BBF2DD)
+F (.\WdtLib.c)(0x51B04E86)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include-ID:\Keil_v5\ARM\RV31\INC-ID:\Keil_v5\ARM\CMSIS\Include-ID:\Keil_v5\ARM\INC\ADI-D__UVISION_VERSION="524"-o .\obj\wdtlib.o --depend .\obj\wdtlib.d)
+I (WdtLib.h)(0x51B04E86)

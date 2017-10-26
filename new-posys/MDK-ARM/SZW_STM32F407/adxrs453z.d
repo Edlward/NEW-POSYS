@@ -1,0 +1,14 @@
+.\szw_stm32f407\adxrs453z.o: ..\Action_User\baseConfig\ADXRS453Z.c
+.\szw_stm32f407\adxrs453z.o: ..\Action_User\baseConfig\config.h
+.\szw_stm32f407\adxrs453z.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\szw_stm32f407\adxrs453z.o: ..\Action_User\baseConfig\ADXRS453Z.h
+.\szw_stm32f407\adxrs453z.o: ..\Action_User\hardware\timer.h
+.\szw_stm32f407\adxrs453z.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h
+.\szw_stm32f407\adxrs453z.o: ..\Libraries\CMSIS\stm32f4xx.h
+.\szw_stm32f407\adxrs453z.o: ..\Libraries\CMSIS\core_cm4.h
+.\szw_stm32f407\adxrs453z.o: ..\Libraries\CMSIS\core_cmInstr.h
+.\szw_stm32f407\adxrs453z.o: ..\Libraries\CMSIS\core_cmFunc.h
+.\szw_stm32f407\adxrs453z.o: ..\Libraries\CMSIS\core_cm4_simd.h
+.\szw_stm32f407\adxrs453z.o: ..\Libraries\CMSIS\system_stm32f4xx.h
+.\szw_stm32f407\adxrs453z.o: ..\Action_User\hardware\spi.h
+.\szw_stm32f407\adxrs453z.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h

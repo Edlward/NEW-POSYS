@@ -67,6 +67,7 @@ extern float  temp_icm;
 static uint32_t count=0;
 static float acc_sum=0.f;
 static double driftCoffecient[3]={0.0};
+uint8_t sendPermit=1;
 int RoughHandle(void)
 {
   double drift[3]={0.0,0.0,0.0};
@@ -80,8 +81,8 @@ int RoughHandle(void)
   gyr_act.z=(double)gyr_icm.No1.z-drift[2];
 	
 	
-//  gyr_act.x=KalmanFilterX(gyr_act.x);
-//  gyr_act.y=KalmanFilterY(gyr_act.y);
+  gyr_act.x=KalmanFilterX(gyr_act.x);
+  gyr_act.y=KalmanFilterY(gyr_act.y);
   gyr_act.z=KalmanFilterZ(gyr_act.z);
 	
   count++;
@@ -90,6 +91,15 @@ int RoughHandle(void)
     gyr_act.x=(double)(gyr_act.x-gyr_AVER[0]);
     gyr_act.y=(double)(gyr_act.y-gyr_AVER[1]);
     gyr_act.z=(double)(gyr_act.z-gyr_AVER[2]);
+		
+		#ifdef TEST_SUMMER
+		if(sendPermit){
+			USART_OUT_F(gyr_act.x);
+			USART_OUT_F(gyr_act.y);
+			USART_OUT_F(gyr_act.z);
+			USART_Enter();
+		}
+		#endif
     return 1;
   }
   
@@ -151,18 +161,14 @@ void updateAngle(void)
 //    quaternion=Euler_to_Quaternion(euler);
 //  }
 		euler.z=euler.z+gyr_act.z*0.005;
-	if(euler.z>180.0)
-		euler.z-=360.0;
-	else if(euler.z<-180.0)
-		euler.z+=360.0;
+	if(euler.z>180.0f)
+		euler.z-=360.0f;
+	else if(euler.z<-180.0f)
+		euler.z+=360.0f;
   /*»¡¶È½Ç¶È×ª»» */
 //  result_angle.x= euler.x/PI*180.0f;
 //  result_angle.y= euler.y/PI*180.0f;
   result_angle.z=-euler.z;
-	#ifdef TEST_SUMMER
-	USART_OUT_F(result_angle.z);
-	USART_OUT_F(gyr_icm.No1.x);
-	#endif
 }
 void SetAngle(float angle){
 	three_axis euler;
@@ -235,10 +241,10 @@ void driftCoffecientInit(void){
 	driftCoffecient[2]=driftCoffecient[2]/selectCount;
 	
 #ifdef TEST_SUMMER
-	USART_OUT_F(driftCoffecient[0]);
-	USART_OUT_F(driftCoffecient[1]);
-	USART_OUT_F(driftCoffecient[2]);
-	USART_Enter();
+//	USART_OUT_F(driftCoffecient[0]);
+//	USART_OUT_F(driftCoffecient[1]);
+//	USART_OUT_F(driftCoffecient[2]);
+//	USART_Enter();
 #endif
 	
 }

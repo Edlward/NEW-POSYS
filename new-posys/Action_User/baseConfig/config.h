@@ -16,8 +16,8 @@
   */ 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __ALGORITHM_H
-#define __ALGORITHM_H
+#ifndef __CONFIG_H
+#define __CONFIG_H
 
 #include <stdint.h>
 /* Includes ------------------------------------------------------------------*/

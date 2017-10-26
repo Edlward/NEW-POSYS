@@ -421,6 +421,11 @@
               <FileType>1</FileType>
               <FilePath>..\Action_User\baseConfig\icm_20608_g.c</FilePath>
             </File>
+            <File>
+              <FileName>ADXRS453Z.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Action_User\baseConfig\ADXRS453Z.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

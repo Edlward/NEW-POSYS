@@ -1,0 +1,28 @@
+*** Creating Trace Output File '.\Obj\ADXRS453Test.tra' Ok.
+### Preparing for ADS-LD.
+### Creating ADS-LD Command Line
+### List of Objects: adding '".\obj\startup_aducm360.o"'
+### List of Objects: adding '".\obj\adxrs453test.o"'
+### List of Objects: adding '".\obj\adxrs453.o"'
+### List of Objects: adding '".\obj\aducm360driver.o"'
+### List of Objects: adding '".\obj\clklib.o"'
+### List of Objects: adding '".\obj\diolib.o"'
+### List of Objects: adding '".\obj\intlib.o"'
+### List of Objects: adding '".\obj\spilib.o"'
+### List of Objects: adding '".\obj\urtlib.o"'
+### List of Objects: adding '".\obj\wdtlib.o"'
+### ADS-LD Command completed:
+--cpu Cortex-M3 ".\obj\startup_aducm360.o" ".\obj\adxrs453test.o" ".\obj\adxrs453.o" ".\obj\aducm360driver.o" ".\obj\clklib.o" ".\obj\diolib.o" ".\obj\intlib.o" ".\obj\spilib.o" ".\obj\urtlib.o" ".\obj\wdtlib.o" --strict --scatter ".\Obj\ADXRS453Test.sct" 
+--autoat --summary_stderr --info summarysizes --map --xref --callgraph --symbols 
+--info sizes --info totals --info unused --info veneers 
+ --list ".\Lst\ADXRS453Test.map" -o ".\Obj\ADXRS453Test.axf"### Preparing Environment (PrepEnvAds)
+### ADS-LD Output File: '.\Obj\ADXRS453Test.axf'
+### ADS-LD Command File: '.\Obj\ADXRS453Test.lnp'
+### Checking for dirty Components...
+### Creating CmdFile '.\Obj\ADXRS453Test.lnp', Handle=0x0000033C
+### Writing '.lnp' file
+### ADS-LD Command file '.\Obj\ADXRS453Test.lnp' is ready.
+### ADS-LD: About to start ADS-LD Thread.
+### ADS-LD: executed with 0 errors
+### Updating obj list
+### LDADS_file() completed.

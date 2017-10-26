@@ -57,12 +57,16 @@ int main(void)
 {
   init();
   static uint32_t cpuUsage;
+	char readOrderLast=-1;
   while(1)
   {
     while(getTimeFlag())
     {
       //				uint8_t test[3];
       //				test[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
+			//使数据能够同步，但是不同步情况很少
+			while(readOrderLast==getReadOrder());
+			readOrderLast=getReadOrder();
       if(!(GetCommand()&CORRECT)){
         //        /* 计算角度 */
         if(!RoughHandle())
@@ -73,6 +77,7 @@ int main(void)
             updateAngle();
             calculatePos();	
 						#ifndef TEST_SUMMER
+						//串口被中断打断依然能正常发送（试验了几分钟）
 						DataSend();
 						#endif
           }

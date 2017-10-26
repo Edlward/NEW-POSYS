@@ -45,6 +45,7 @@ gyro_t gyr_icm;
 gyro_t acc_icm;
 float temp_icm;
 extern uint16_t data[2];
+static char readOrder=0;
 void TIM2_IRQHandler(void)
 {
   gyro_t gyr_temp;
@@ -65,27 +66,38 @@ void TIM2_IRQHandler(void)
       timeFlag=1;
     }
       icm_update_gyro_rate();
+			icm_update_temp();
+			icm_read_temp(&temp_temp);
       icm_read_gyro_rate(&gyr_temp);
       gyro_sum.No1.x=gyro_sum.No1.x+gyr_temp.No1.x;
       gyro_sum.No1.y=gyro_sum.No1.y+gyr_temp.No1.y;
       gyro_sum.No1.z=gyro_sum.No1.z+gyr_temp.No1.z;
+      temp_sum=temp_sum+temp_temp;
+			if(timeCnt==4){
+				//放到中断里
+				data[0]=SPI_ReadAS5045(0);
+				data[1]=SPI_ReadAS5045(1);
+			}
       if(timeCnt==5){
+				readOrder++;
         timeCnt=0;
         gyr_icm.No1.x=gyro_sum.No1.x/5.f;
         gyr_icm.No1.y=gyro_sum.No1.y/5.f;
         gyr_icm.No1.z=gyro_sum.No1.z/5.f;
+				temp_icm=temp_sum/5.f;
         gyro_sum.No1.x=0.f;
         gyro_sum.No1.y=0.f;
         gyro_sum.No1.z=0.f;
-				
-				//放到中断里
-				data[0]=SPI_ReadAS5045(0);
-				data[1]=SPI_ReadAS5045(1);
+				temp_sum=0.f;
       }
   }
 	else{
 		USART_OUT(USART1,"TIM2 error");
 	}
+}
+
+char getReadOrder(void){
+	return readOrder;
 }
 
 uint8_t getTimeFlag(void)

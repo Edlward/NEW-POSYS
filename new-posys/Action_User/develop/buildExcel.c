@@ -38,8 +38,6 @@ extern uint8_t 	*chartSelect;
 extern uint8_t  *scaleMode;
 extern float    *minValue;
 extern float    *varXYZ;
-extern gyro_t gyr_icm;
-extern float  temp_icm;
 void TempTablePrintf(void)
 {
   Flash_Read(GetFlashArr(),TempTable_Num);
@@ -56,8 +54,8 @@ void TempTablePrintf(void)
   for(int i=0;i<5;i++)
     USART_OUT_F(*(chartWZ+i));
   
-  USART_OUT(USART1,"chartMode:\r\n%d",*chartMode);
-  USART_OUT(USART1,"chartSelect:\r\n%d\t%d\t%d\t%d\t%d\r\n",*chartSelect,*(chartSelect+1),*(chartSelect+2),*(chartSelect+3),*(chartSelect+4));
+  USART_OUT(USART1,"\r\nchartMode:\r\n%d",*chartMode);
+  USART_OUT(USART1,"\r\nchartSelect:\r\n%d\t%d\t%d\t%d\t%d\r\n",*chartSelect,*(chartSelect+1),*(chartSelect+2),*(chartSelect+3),*(chartSelect+4));
   USART_OUT(USART1,"scaleMode: %d\r\n",*scaleMode);
   USART_OUT(USART1,"minValue:\r\n");
   USART_OUT_F(*(minValue));
@@ -69,44 +67,75 @@ void TempTablePrintf(void)
   
 }
 
+extern gyro_t gyr_icm;
+extern float  temp_icm;
 void UpdateVDoffTable(void)
 {
-  static long double paraXY[3]={0.0};
-  static long double paraX    = 0.0 ;
-  static long double paraY[3] ={0.0};
-  static long double paraX2   = 0.0 ;
-  static uint32_t time_count=0;
-  float temp_temp=temp_icm/100.f;
-  time_count++;
-  if(time_count<=3.5*60*200&&time_count>=0.25*60*200){
-    
-		ICM_HeatingPower(getHeatPower());
-    paraX   =paraX + (double)temp_temp;
-    
-    paraX2  =paraX2 + (double)temp_temp*(double)temp_temp;
-    
-    paraY[0]=paraY[0]+(double)gyr_icm.No1.x;
-    paraY[1]=paraY[1]+(double)gyr_icm.No1.y;
-    paraY[2]=paraY[2]+(double)gyr_icm.No1.z;
-    
-    paraXY[0]=paraXY[0]+(double)gyr_icm.No1.x*(double)temp_temp;
-    paraXY[1]=paraXY[1]+(double)gyr_icm.No1.y*(double)temp_temp;
-    paraXY[2]=paraXY[2]+(double)gyr_icm.No1.z*(double)temp_temp;
+	static long double temp_w[3][(TempTable_max-TempTable_min)*10]={0.0};
+	static uint32_t temp_count[(TempTable_max-TempTable_min)*10]={0u};
+  long double paraXY[3]={0.0};
+  long double paraX    = 0.0 ;
+  long double paraY[3] ={0.0};
+  long double paraX2   = 0.0 ;
+  int index=0;
+  long double temp_temp=temp_icm/100.f;
+	
+	if(temp_icm>=TempTable_min&&temp_icm<TempTable_max){
+		/*确定温度索引号*/
+		index=roundf((temp_icm-TempTable_min)*10);
+		if(temp_count[index]>0){
+			/*求这一个温度上的角速度和*/
+			temp_w[0][index]+=gyr_icm.No1.x;
+			temp_w[1][index]+=gyr_icm.No1.y;
+			temp_w[2][index]+=gyr_icm.No1.z;
+		}
+		else{
+			/*初始值*/
+			temp_w[0][index]=gyr_icm.No1.x;
+			temp_w[1][index]=gyr_icm.No1.y;
+			temp_w[2][index]=gyr_icm.No1.z;
+			temp_count[index]=0;
+		}
+			temp_count[index]++;
+	}
+	
     USART_OUT_F(temp_temp);
     USART_OUT_F(gyr_icm.No1.x);
     USART_OUT_F(gyr_icm.No1.y);
     USART_OUT_F(gyr_icm.No1.z);
     USART_Enter();
-  }
-  else if(time_count==(3.5*60*200+1)){
+  if(TempErgodic()==3){
+		USART_OUT(USART1,"\r\nchart\r\n\r\n");
+		for(int i=0;i<(TempTable_max-TempTable_min)*10;i++)
+		{
+			paraX=paraX+temp_count[i]*((TempTable_min+i/10.f)/100.f);
+			paraX2  =paraX2 + temp_count[i]*(double)((TempTable_min+i/10.f)/100.f)*(double)((TempTable_min+i/10.f)/100.f);
+			paraXY[0]=paraXY[0]+temp_w[0][i]*(double)((TempTable_min+i/10.f)/100.f);
+			paraXY[1]=paraXY[1]+temp_w[1][i]*(double)((TempTable_min+i/10.f)/100.f);
+			paraXY[2]=paraXY[2]+temp_w[2][i]*(double)((TempTable_min+i/10.f)/100.f);
+		  paraY[0]=paraY[0]+temp_w[0][i];
+      paraY[1]=paraY[1]+temp_w[1][i];
+      paraY[2]=paraY[2]+temp_w[2][i];
+			if(temp_count[i]!=0x00){
+					temp_w[0][i]=(float)(temp_w[0][i]/temp_count[i]);
+					temp_w[1][i]=(float)(temp_w[1][i]/temp_count[i]);
+					temp_w[2][i]=(float)(temp_w[2][i]/temp_count[i]);
+			}
+			USART_OUT_F(temp_temp);
+			USART_OUT_F(temp_w[0][i]);
+			USART_OUT_F(temp_w[1][i]);
+			USART_OUT_F(temp_w[2][i]);
+			USART_Enter();
+		}
     for(int i=4;i>0;i--){
       *(chartWX+i)=*(chartWX+i-1);
       *(chartWY+i)=*(chartWY+i-1);
       *(chartWZ+i)=*(chartWZ+i-1);
     }
-    *chartWX=(39000.0*paraXY[0]-paraX*paraY[0])/(39000.0*paraX2-paraX*paraX);
-    *chartWY=(39000.0*paraXY[1]-paraX*paraY[1])/(39000.0*paraX2-paraX*paraX);
-    *chartWZ=(39000.0*paraXY[2]-paraX*paraY[2])/(39000.0*paraX2-paraX*paraX);
+		//2*60/0.005=24000
+    *chartWX=(HEATTIME*24000.0*paraXY[0]-paraX*paraY[0])/(HEATTIME*24000.0*paraX2-paraX*paraX);
+    *chartWY=(HEATTIME*24000.0*paraXY[1]-paraX*paraY[1])/(HEATTIME*24000.0*paraX2-paraX*paraX);
+    *chartWZ=(HEATTIME*24000.0*paraXY[2]-paraX*paraY[2])/(HEATTIME*24000.0*paraX2-paraX*paraX);
     Flash_Write(GetFlashArr(),TempTable_Num);
     USART_OUT(USART1,"Flash Update end\r\n");
     TempTablePrintf();
@@ -119,12 +148,9 @@ void UpdateVDoffTable(void)
 				paraX=0.0;
 				paraX2=0.0;
 			}
-			time_count=0;
 		}
-  }else if(time_count>(3.5*60*200+1))
-  {
-    time_count=666666;
   }
+	
 }
 
 

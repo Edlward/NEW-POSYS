@@ -93,12 +93,12 @@ int RoughHandle(void)
     gyr_act.z=(double)(gyr_act.z-gyr_AVER[2]);
 		
 		#ifdef TEST_SUMMER
-		if(sendPermit){
-			USART_OUT_F(gyr_act.x);
-			USART_OUT_F(gyr_act.y);
-			USART_OUT_F(gyr_act.z);
-			USART_Enter();
-		}
+//		if(sendPermit){
+//			USART_OUT_F(gyr_act.x);
+//			USART_OUT_F(gyr_act.y);
+//			USART_OUT_F(gyr_act.z);
+//			USART_Enter();
+//		}
 		#endif
     return 1;
   }
@@ -150,17 +150,17 @@ void updateAngle(void)
     gyr_act.z=0.f;
 	
   /*角速度积分成四元数*/
-  //quaternion=QuaternionInt(quaternion,gyr_act);
+  quaternion=QuaternionInt(quaternion,gyr_act);
  // quaternion=QuaternionInt1(quaternion,gyr_act);
   /* 四元数转换成欧垃角 */
-  //euler=Quaternion_to_Euler(quaternion);
+  euler=Quaternion_to_Euler(quaternion);
 
 //  if(JudgeAcc()){
 //    euler.x=acc_angle.x;
 //		euler.y=acc_angle.y;
 //    quaternion=Euler_to_Quaternion(euler);
 //  }
-		euler.z=euler.z+gyr_act.z*0.005;
+//		euler.z=euler.z+gyr_act.z*0.005;
 	if(euler.z>180.0f)
 		euler.z-=360.0f;
 	else if(euler.z<-180.0f)
@@ -168,7 +168,7 @@ void updateAngle(void)
   /*弧度角度转换 */
 //  result_angle.x= euler.x/PI*180.0f;
 //  result_angle.y= euler.y/PI*180.0f;
-  result_angle.z=-euler.z;
+		result_angle.z=-euler.z;
 }
 void SetAngle(float angle){
 	three_axis euler;
@@ -253,19 +253,20 @@ float safe_asin(float v)
  
 if (isnan(v)) {
  
-	USART_OUT(USART1,"zhang1\r\n");
+	//为什么一直在进？
+//	USART_OUT(USART1,(uint8_t*)"zhang1\r\n");
 return 0.0f;
  
 }
 if (v >= 1.0f) {
  
-	USART_OUT(USART1,"zhang2\r\n");
+//	USART_OUT(USART1,"2\r\n");
 return 3.1415926/2;
  
 }
 if (v <= -1.0f) {
  
-	USART_OUT(USART1,"zhang3\r\n");
+//	USART_OUT(USART1,"zhang3\r\n");
 return -3.1415926/2;
  
 }
@@ -282,24 +283,24 @@ double safe_atan2(double x,double y)
 {
 	if (isnan(y)) 
 	{ 
-	USART_OUT(USART1,"summer1\r\n");
+//	USART_OUT(USART1,"summer1\r\n");
    return 0.0f;
   }
 	
 	if(isnan(x/y))
 	{
 		if(x>0){
-	USART_OUT(USART1,"summer2\r\n");
+//	USART_OUT(USART1,"summer2\r\n");
 		  return  3.1415926/2.0; 
 		}
 		
 		else if(x<0){
-	USART_OUT(USART1,"summer3\r\n");
+//	USART_OUT(USART1,"summer3\r\n");
 			return -3.1415926/2.0;
 		}
 			
 		else {
-	USART_OUT(USART1,"summer4\r\n");
+//	USART_OUT(USART1,"summer4\r\n");
 			return 0.0;
 		}
 	}
@@ -317,7 +318,7 @@ double KalmanFilterZ(double measureData)
   static double Kk;           //滤波增益系数
   
   static double Q=0.003;       //系统噪声        
-  double R=0.003;      //测量噪声 
+  double R=(double)varXYZ[2];      //测量噪声 
   static double IAE_st[50];    //记录的新息
   static double data=0.0;
   double Cr=0;                //新息的方差

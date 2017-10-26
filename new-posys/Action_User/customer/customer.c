@@ -21,6 +21,7 @@
 #include "stm32f4xx_usart.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "usart.h"
 #include "buildExcel.h"
 #include "flash.h"
@@ -134,23 +135,7 @@ void AT_CMD_Handle(void){
 			heatPower+=(buffer[10]-'0');
 			
     SetCommand(CORRECT);
-    USART_OUT(USART1,"%d\r\n",heatPower);
-  }
-  else if((bufferI == 16) && strncmp(buffer, "AT+setmin=", 10)==0)//AT    
-  {
-    USART_OUT(USART1,"OK\r\n");
-	  union{
-		float   val;
-		uint8_t data[4];
-		}temp_float;
-		temp_float.data[0]=buffer[10];
-		temp_float.data[1]=buffer[11];
-		temp_float.data[2]=buffer[12];
-		temp_float.data[3]=buffer[13];
-		*minValue=temp_float.val;
-    USART_OUT(USART1,"writing\r\n");
-    Flash_Write(GetFlashArr(),TempTable_Num);
-    USART_OUT(USART1,"write finished\r\n");
+//    USART_OUT(USART1,"%d\r\n",heatPower);
   }
   else if((bufferI == 8) && strncmp(buffer, "AT+set\r\n", 8)==0)//AT    
   {
@@ -190,37 +175,41 @@ void AT_CMD_Handle(void){
 				break;
 		}
   }
-  else if((bufferI == 17) && strncmp(buffer, "AT+setvar", 9)==0)//AT    
+  else if((bufferI >= 10) && strncmp(buffer, "AT+setmin=", 10)==0)//AT    
   {
     USART_OUT(USART1,"OK\r\n");
-	  union{
-		float   val;
-		uint8_t data[4];
-		}temp_float;
-		temp_float.data[0]=buffer[11];
-		temp_float.data[1]=buffer[12];
-		temp_float.data[2]=buffer[13];
-		temp_float.data[3]=buffer[14];
-		switch(buffer[9]){
-			case 'x':
-				*varXYZ=temp_float.val;
-				break;
-			case 'y':
-				*(varXYZ+1)=temp_float.val;
-				break;
-			case 'z':
-				*(varXYZ+2)=temp_float.val;
-				break;
-		}
+	  *minValue = atof(buffer+10);
     USART_OUT(USART1,"writing\r\n");
     Flash_Write(GetFlashArr(),TempTable_Num);
     USART_OUT(USART1,"write finished\r\n");
+		TempTablePrintf();
+  }
+	else if((bufferI >= 10) && strncmp(buffer, "AT+setvar", 9)==0)//AT    
+  {
+		float value = atof(buffer+10);
+		switch(buffer[9]){
+			case 'x':
+				*varXYZ=value;
+				break;
+			case 'y':
+				*(varXYZ+1)=value;
+				break;
+			case 'z':
+				*(varXYZ+2)=value;
+				break;
+		}		
+    USART_OUT(USART1,"writing\r\n");
+    Flash_Write(GetFlashArr(),TempTable_Num);
+    USART_OUT(USART1,"write finished\r\n");
+		TempTablePrintf();
   }
   else if((bufferI == 11) && strncmp(buffer, "AT+mode=", 8)==0)//AT    
   {
     USART_OUT(USART1,"OK\r\n");
+		/*不结合之前的数据*/
     if(buffer[8]=='1')
       *chartMode=1;
+		/*结合之前的数据*/
     else if(buffer[8]=='0')
       *chartMode=0;
     else
@@ -228,6 +217,7 @@ void AT_CMD_Handle(void){
     USART_OUT(USART1,"writing\r\n");
     Flash_Write(GetFlashArr(),TempTable_Num);
     USART_OUT(USART1,"write finished\r\n");
+		TempTablePrintf();
   }
   else if((bufferI == 12) && strncmp(buffer, "AT+scale=", 9)==0)//AT    
   {

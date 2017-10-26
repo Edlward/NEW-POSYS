@@ -13,7 +13,8 @@
 分别输入设备名称,期望温度,真实温度
 */
 
-void temp_pid_ctr(float val_ex,float val_or)
+extern float  temp_icm;
+void temp_pid_ctr(float val_ex)
 {
   static float err;
   static float err_sum[2];
@@ -27,14 +28,14 @@ void temp_pid_ctr(float val_ex,float val_or)
   static double ctr;
   ch=1;
   /*误差*/
-  err=val_ex-val_or;
+  err=val_ex-temp_icm;
   /*积分*/
   err_sum[ch]=err_sum[ch]+err;
   /*微分量*/
   err_v=err-err_last[ch];
   err_last[ch]=err;
   
-  if(val_ex-val_or>3)
+  if(val_ex-temp_icm>3)
     Kp_summer=16;
   /*
 #define Kp  15.0f
@@ -56,9 +57,9 @@ void temp_pid_ctr(float val_ex,float val_or)
     ctr=Kp_summer*err+Ki_summer*err_sum[ch]+Kd_summer*err_v;
   }
   /*调节上限*/
-  if(ctr>100)
+  if(ctr>40)
   {
-    ctr=100;
+    ctr=40;
   }
   if(ch==0)
   {
@@ -69,13 +70,6 @@ void temp_pid_ctr(float val_ex,float val_or)
     /*之所以最大值为1000,是因为该定时器的装载值为1000*/
     ICM_HeatingPower(ctr);
   }
-}
-
-void temperature_control(float temp)
-{
-  float temp_icm;
-  icm_read_temp(&temp_icm);
-  temp_pid_ctr(temp,temp_icm);
 }
 
 //uint32_t Heating(void){
@@ -103,7 +97,7 @@ void temperature_control(float temp)
 //	}else
 //		return 0u;
 //}
-int TempErgodic(float minTemp,float scale,float minute){
+int TempErgodic(void){
   
   static uint32_t circle_count=0;
   static uint8_t flag=0;
@@ -111,14 +105,14 @@ int TempErgodic(float minTemp,float scale,float minute){
   switch(flag){
   case 0:
     circle_count++;
-    temperature_control(minTemp+scale*circle_count*PERIOD/(float)minute/60.f);
+    temp_pid_ctr(TempTable_min+(TempTable_max-TempTable_min)*circle_count*PERIOD/(float)HEATTIME/60.f);
     break;
   case 1:
     circle_count--;
-    temperature_control(minTemp+scale*circle_count*PERIOD/(float)minute/60.f);
+    temp_pid_ctr(TempTable_min+(TempTable_max-TempTable_min)*circle_count*PERIOD/(float)HEATTIME/60.f);
     break;
   }
-  if(circle_count==(int)(minute*60.f/PERIOD)){
+  if(circle_count==(int)(HEATTIME*60.f/PERIOD)){
     flag=1;
   }else if(circle_count==0){
     flag=3;

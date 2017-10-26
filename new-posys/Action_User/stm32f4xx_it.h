@@ -53,6 +53,7 @@
 
 uint8_t getTimeFlag(void);
 uint32_t getTimeCount(void);
+char getReadOrder(void);
 #endif /* __STM32F4xx_IT_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

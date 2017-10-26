@@ -14,6 +14,7 @@
 .\szw_stm32f407\customer.o: ..\Libraries\CMSIS\core_cm4_simd.h
 .\szw_stm32f407\customer.o: ..\Libraries\CMSIS\system_stm32f4xx.h
 .\szw_stm32f407\customer.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\szw_stm32f407\customer.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\szw_stm32f407\customer.o: ..\Action_User\hardware\usart.h
 .\szw_stm32f407\customer.o: ..\Action_User\develop\buildExcel.h
 .\szw_stm32f407\customer.o: ..\Action_User\hardware\flash.h

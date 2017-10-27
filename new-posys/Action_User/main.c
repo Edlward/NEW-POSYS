@@ -68,7 +68,7 @@ int main(void)
 			while(readOrderLast==getReadOrder());
 			readOrderLast=getReadOrder();
       if(!(GetCommand()&CORRECT)){
-        //        /* 计算角度 */
+        //计算角度 
         if(!RoughHandle())
           TemporaryHandle();
         else {

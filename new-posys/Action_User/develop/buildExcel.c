@@ -100,8 +100,8 @@ void UpdateVDoffTable(void)
 	}
 	
     USART_OUT_F(temp_temp);
-    USART_OUT_F(gyr_icm.No1.x);
-    USART_OUT_F(gyr_icm.No1.y);
+//    USART_OUT_F(gyr_icm.No1.x);
+//    USART_OUT_F(gyr_icm.No1.y);
     USART_OUT_F(gyr_icm.No1.z);
     USART_Enter();
   if(TempErgodic()==3){

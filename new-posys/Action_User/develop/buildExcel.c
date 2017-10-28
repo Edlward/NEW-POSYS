@@ -71,8 +71,10 @@ void TempTablePrintf(void)
 extern gyro_t gyr_icm;
 extern float  temp_icm;
 int CalculateCrAndMean(float stdCr[3],float mean[3]){
-	static float IAE_st[3][200];    //记录的新息
-	static float data[3][200];    	//数据列
+	static float IAE_st[3][200]={0.f};    //记录的新息
+	static float data[3][200]={0.f};    	//数据列
+	static int ignore=0;
+	ignore++;
   /* 数据列表 */
 	for(int i=0;i<3;i++){
 		memcpy(data[i],data[i]+1,796);
@@ -92,13 +94,15 @@ int CalculateCrAndMean(float stdCr[3],float mean[3]){
 	IAE_st[1][199]=gyr_icm.No1.y-mean[1];
 	IAE_st[2][199]=gyr_icm.No1.z-mean[2];
 	
-  if(data[0][0]==0.f&&data[1][0]==0.f&&data[2][0]==0.f)
+  if(ignore<400)
 		return 0;
+	else
+		ignore=400;
 	for(int j=0;j<3;j++){
 		stdCr[j]=0;
 		for(int i=0;i<200;i++)
 		{
-			stdCr[i]=stdCr[i]+IAE_st[j][i]*IAE_st[j][i];
+			stdCr[j]=stdCr[j]+IAE_st[j][i]*IAE_st[j][i];
 		}
 		stdCr[j]=__sqrtf(stdCr[j]/200.0f);
 	}
@@ -108,26 +112,36 @@ int CalculateCrAndMean(float stdCr[3],float mean[3]){
 
 int UpdateVDoffTable(void)
 {
-	static long double temp_w[3][(TempTable_max-TempTable_min)*10]={0.0};
 	static uint32_t temp_count[(TempTable_max-TempTable_min)*10]={0u};
+	static long double temp_w[3][(TempTable_max-TempTable_min)*10]={0.0};
   long double paraXY[3]={0.0};
   long double paraX    = 0.0 ;
   long double paraY[3] ={0.0};
   long double paraX2   = 0.0 ;
   long double temp_temp=temp_icm/100.f;
   int index=0;
-   float stdCr[3]={0.f};                //新息的标准差
-   float mean[3]={0.f};
+  static float stdCr[3]={0.f};                //新息的标准差
+  static float mean[3]={0.f};
 	
 	/*三σ法则*/
 	if(!CalculateCrAndMean(stdCr,mean))
 		return 0;
-//	if((fabs(gyr_icm.No1.x-mean[0])>stdCr[0]*3)||(fabs(gyr_icm.No1.y-mean[1])>stdCr[1]*3)||(fabs(gyr_icm.No1.z-mean[2])>stdCr[2]*3))
-//	{
-//		return 0;
-//	}
-
-	if(temp_icm>=TempTable_min&&temp_icm<TempTable_max-0.5f){
+	
+	if((fabs(gyr_icm.No1.x-mean[0])>stdCr[0]*4)||(fabs(gyr_icm.No1.y-mean[1])>stdCr[1]*4)||(fabs(gyr_icm.No1.z-mean[2])>stdCr[2]*4))
+	{
+		USART_OUT_F(temp_icm);
+		USART_OUT_F(gyr_icm.No1.z);
+		return 0;
+	}
+	else
+	{
+		USART_Enter();		
+		USART_OUT_F(temp_icm);
+		USART_OUT_F(gyr_icm.No1.z);
+	}
+	/*不返回的0结束函数的话，最小二乘样本实际总值会少*/
+	if(temp_icm>=TempTable_min&&temp_icm<TempTable_max-0.6f){
+	
 		/*确定温度索引号,如果不减0.5可能会出现index=200的情况*/
 		index=roundf((temp_icm-TempTable_min)*10);
 		if(temp_count[index]>0){
@@ -144,13 +158,14 @@ int UpdateVDoffTable(void)
 			temp_count[index]=0;
 		}
 			temp_count[index]++;
-    USART_OUT_F(temp_temp);
-    USART_OUT_F(gyr_icm.No1.z);
-    USART_Enter();
 	}
 	
+	
   if(TempErgodic()==3){
-		USART_OUT(USART1,"\r\nchart\r\n\r\n");
+		uint32_t sum=0;
+		for(int i=0;i<(TempTable_max-TempTable_min)*10;i++)
+			sum=sum+temp_count[i];
+		USART_OUT(USART1,"\r\nchart  %d\r\n\r\n",sum);
 		for(int i=0;i<(TempTable_max-TempTable_min)*10;i++)
 		{
 			if(temp_count[i]>100&&temp_count[i]<12000){
@@ -181,9 +196,9 @@ int UpdateVDoffTable(void)
       *(chartWZ+i)=*(chartWZ+i-1);
     }
 		//2*60/0.005=24000
-    *chartWX=(HEATTIME*24000.0*paraXY[0]-paraX*paraY[0])/(HEATTIME*24000.0*paraX2-paraX*paraX);
-    *chartWY=(HEATTIME*24000.0*paraXY[1]-paraX*paraY[1])/(HEATTIME*24000.0*paraX2-paraX*paraX);
-    *chartWZ=(HEATTIME*24000.0*paraXY[2]-paraX*paraY[2])/(HEATTIME*24000.0*paraX2-paraX*paraX);
+    *chartWX=(HEATTIME*sum*paraXY[0]-paraX*paraY[0])/(HEATTIME*sum*paraX2-paraX*paraX);
+    *chartWY=(HEATTIME*sum*paraXY[1]-paraX*paraY[1])/(HEATTIME*sum*paraX2-paraX*paraX);
+    *chartWZ=(HEATTIME*sum*paraXY[2]-paraX*paraY[2])/(HEATTIME*sum*paraX2-paraX*paraX);
     Flash_Write(GetFlashArr(),TempTable_Num);
     USART_OUT(USART1,"Flash Update end\r\n");
     TempTablePrintf();

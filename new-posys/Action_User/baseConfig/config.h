@@ -38,7 +38,7 @@
 
 #define TempTable_min  25
 #define TempTable_max  45
-#define HEATTIME	   30
+#define HEATTIME	   	 30
 /*
 第一位 陀螺仪是否矫正  1代表矫正
 第二位 陀螺仪

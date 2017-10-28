@@ -17,23 +17,21 @@ extern float  temp_icm;
 void temp_pid_ctr(float val_ex)
 {
   static float err;
-  static float err_sum[2];
-  static float err_last[2];
+  static float err_sum;
+  static float err_last;
   static float err_v;
   float Kp_summer = 10.0f;
   float Ki_summer = 0.007f;
   float Kd_summer = 0.00f;
-  uint8_t ch;
   
   static double ctr;
-  ch=1;
   /*误差*/
   err=val_ex-temp_icm;
   /*积分*/
-  err_sum[ch]=err_sum[ch]+err;
+  err_sum=err_sum+err;
   /*微分量*/
-  err_v=err-err_last[ch];
-  err_last[ch]=err;
+  err_v=err-err_last;
+  err_last=err;
   
   if(val_ex-temp_icm>3)
     Kp_summer=16;
@@ -43,10 +41,10 @@ void temp_pid_ctr(float val_ex)
 #define Kd  0.02f
   */
   /*积分量的阈值*/
-  if(err_sum[ch]>70.0f/Ki_summer)
-    err_sum[ch]=70.0f/Ki_summer;
-  if(err_sum[ch]<-70.0f/Ki_summer)
-    err_sum[ch]=-70.0f/Ki_summer;
+  if(err_sum>70.0f/Ki_summer)
+    err_sum=70.0f/Ki_summer;
+  if(err_sum<-70.0f/Ki_summer)
+    err_sum=-70.0f/Ki_summer;
   
   if(ctr<0)
   {
@@ -54,22 +52,16 @@ void temp_pid_ctr(float val_ex)
   }
   else
   {
-    ctr=Kp_summer*err+Ki_summer*err_sum[ch]+Kd_summer*err_v;
+    ctr=Kp_summer*err+Ki_summer*err_sum+Kd_summer*err_v;
   }
   /*调节上限*/
-  if(ctr>40)
+  if(ctr>60)
   {
-    ctr=40;
+    ctr=60;
   }
-  if(ch==0)
-  {
-  }
-  if(ch==1)
-  {
     /*#define ICM_HeatingPower(a)  TIM_SetCompare3(TIM3,a/100.0*1000); */
     /*之所以最大值为1000,是因为该定时器的装载值为1000*/
     ICM_HeatingPower(ctr);
-  }
 }
 
 //uint32_t Heating(void){
@@ -105,13 +97,12 @@ int TempErgodic(void){
   switch(flag){
   case 0:
     circle_count++;
-    temp_pid_ctr(TempTable_min+(TempTable_max-TempTable_min)*circle_count*PERIOD/(float)HEATTIME/60.f);
     break;
   case 1:
     circle_count--;
-    temp_pid_ctr(TempTable_min+(TempTable_max-TempTable_min)*circle_count*PERIOD/(float)HEATTIME/60.f);
     break;
   }
+  temp_pid_ctr(TempTable_min+(TempTable_max-TempTable_min)*circle_count*PERIOD/(float)HEATTIME/60.f);
   if(circle_count==(int)(HEATTIME*60.f/PERIOD)){
     flag=1;
   }else if(circle_count==0){

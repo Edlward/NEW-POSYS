@@ -61,8 +61,8 @@ void calculatePos(void)
 {
 	static uint16_t data_last[2]={0,0};
 	static uint8_t flag=0;
-		extern int set_all;
-	  extern int set_d;
+	extern int set_all;
+	extern int set_d;
 	
 	float  pos_temp[2]={0,0};
 	
@@ -126,8 +126,8 @@ void calculatePos(void)
 	
 	AxisOriginConvert(0,0,45,getAngle().z,&(pos_temp[0]),&(pos_temp[1]));
 	
-	posx=pos_temp[0]/4096.0f*R_wheel1*2*PI;
-	posy=pos_temp[1]/4096.0f*R_wheel2*2*PI;
+	posx=pos_temp[0]/4096.0*R_wheel1*2.0*PI;
+	posy=pos_temp[1]/4096.0*R_wheel2*2.0*PI;
 	
 //	if(set_all==1)
 //	{		

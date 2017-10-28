@@ -26,7 +26,7 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void UpdataExcel(void);
-void UpdateVDoffTable(void);
+int UpdateVDoffTable(void);
 void TempTablePrintf(void);
 void Hex_To_Str(uint8_t * pHex,char * s,float num);
 #endif

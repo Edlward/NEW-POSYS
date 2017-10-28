@@ -223,9 +223,11 @@ void HardFault_Handler(void)
   	char sPoint[2]={0};
 		USART_OUT(USART1,"%s","0x");
 		/*获取出现异常时程序的地址*/
-		for(int i=3;i>=0;i--){
-			Hex_To_Str((uint8_t*)(r_sp+i+24),sPoint,2);
+		for(int i=3;i>=-28;i--){
+			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
 			USART_OUT(USART1,"%s",sPoint);
+			if(i%4==0)
+				USART_Enter();
 		}
 		/*发送回车符*/
 		USART_Enter();

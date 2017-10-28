@@ -1,6 +1,6 @@
 .\szw_stm32f407\buildexcel.o: ..\Action_User\develop\buildExcel.c
 .\szw_stm32f407\buildexcel.o: ..\Action_User\develop\buildExcel.h
-.\szw_stm32f407\buildexcel.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\szw_stm32f407\buildexcel.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\szw_stm32f407\buildexcel.o: ..\Action_User\hardware\flash.h
 .\szw_stm32f407\buildexcel.o: ..\Action_User\baseConfig\config.h
 .\szw_stm32f407\buildexcel.o: ..\Action_User\hardware\timer.h
@@ -17,11 +17,12 @@
 .\szw_stm32f407\buildexcel.o: ..\Action_User\baseConfig\icm_20608_g.h
 .\szw_stm32f407\buildexcel.o: ..\Libraries\CMSIS\arm_math.h
 .\szw_stm32f407\buildexcel.o: ..\Libraries\CMSIS\core_cm4.h
-.\szw_stm32f407\buildexcel.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-.\szw_stm32f407\buildexcel.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\szw_stm32f407\buildexcel.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\szw_stm32f407\buildexcel.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\szw_stm32f407\buildexcel.o: ..\Action_User\stm32f4xx_it.h
 .\szw_stm32f407\buildexcel.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h
 .\szw_stm32f407\buildexcel.o: ..\Action_User\hardware\gpio.h
 .\szw_stm32f407\buildexcel.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h
 .\szw_stm32f407\buildexcel.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h
 .\szw_stm32f407\buildexcel.o: ..\Action_User\customer\customer.h
+.\szw_stm32f407\buildexcel.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

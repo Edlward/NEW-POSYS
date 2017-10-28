@@ -1,6 +1,6 @@
 .\szw_stm32f407\adxrs453z.o: ..\Action_User\baseConfig\ADXRS453Z.c
 .\szw_stm32f407\adxrs453z.o: ..\Action_User\baseConfig\config.h
-.\szw_stm32f407\adxrs453z.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\szw_stm32f407\adxrs453z.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\szw_stm32f407\adxrs453z.o: ..\Action_User\baseConfig\ADXRS453Z.h
 .\szw_stm32f407\adxrs453z.o: ..\Action_User\hardware\timer.h
 .\szw_stm32f407\adxrs453z.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h

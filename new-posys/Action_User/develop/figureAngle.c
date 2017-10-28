@@ -387,7 +387,7 @@ double KalmanFilterX(double measureData)
   predict=act_value;
   
   /* 新息的方差计算 */
-  memcpy(IAE_st,IAE_st+1,196);
+  memcpy(IAE_st,IAE_st+1,392);
   IAE_st[49]=measureData-predict;
   
   Cr=0;
@@ -449,7 +449,7 @@ double KalmanFilterY(double measureData)
   predict=act_value;
   
   /* 新息的方差计算 */
-  memcpy(IAE_st,IAE_st+1,196);
+  memcpy(IAE_st,IAE_st+1,392);
   IAE_st[49]=measureData-predict;
   
   Cr=0;
@@ -511,7 +511,7 @@ float KalmanFilterT(double measureData)
   predict=act_value;
   
   /* 新息的方差计算 */
-  memcpy(IAE_st,IAE_st+1,196);
+  memcpy(IAE_st,IAE_st+1,392);
   IAE_st[49]=measureData-predict;
   
   Cr=0;

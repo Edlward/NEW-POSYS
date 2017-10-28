@@ -83,8 +83,9 @@ int main(void)
           }
         }
       }
-      else
+      else{
         UpdateVDoffTable();
+			}
       //真实的占空比会等于cpuUsage或大于其一个单位
       cpuUsage=getTimeCount();
     }

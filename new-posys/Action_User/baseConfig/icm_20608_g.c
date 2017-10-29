@@ -97,6 +97,11 @@ void icm_update_gyro_rate(void)
 			gyro.No1.y = -data1[0]/65.5f;
 			gyro.No1.z = -data1[2]/65.5f;
 			break;
+		default:
+			gyro.No1.x = -data1[1]/131.f;
+			gyro.No1.y = -data1[0]/131.f;
+			gyro.No1.z = -data1[2]/131.f;
+			break;
   }
   //	SPI_MultiRead(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_GYRO_XOUT_H,raw,6);
   //	/*X的原始角速度值*/

@@ -1,0 +1,19 @@
+diff a/new-posys/Action_User/baseConfig/icm_20608_g.c b/new-posys/Action_User/baseConfig/icm_20608_g.c	(rejected hunks)
+@@ -27,6 +27,17 @@
+     ICM20608G_INT_ENABLE,0,//��ʹ���ж�
+     ICM20608G_ACCEL_INTEL_CTRL,0//��ʹ��Wake-on-Motion detection logic
+   };	
++//  	switch(*scaleMode)
++//	{
++//		/*250dps*/
++//		case 0:
++//			registers[5]=0;
++//			break;
++//		/*500dps*/
++//		case 1:
++//			registers[5]=8;
++//			break;
++//  }
+   Delay_ms(100);																					//Start-up time from power-up for register read/write  max 100
+   SPI_Write(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_PWR_MGMT_1,0x80);
+   //SPI_Write(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_PWR_MGMT_1,0x80);

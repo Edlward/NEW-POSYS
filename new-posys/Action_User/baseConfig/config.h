@@ -36,8 +36,8 @@
 #define R_wheel2        25.42820678
 #define LEASTNUM			 	50
 
-#define TempTable_min  25
-#define TempTable_max  45
+#define TempTable_min  25.0
+#define TempTable_max  45.0
 #define HEATTIME	   	 30
 /*
 第一位 陀螺仪是否矫正  1代表矫正

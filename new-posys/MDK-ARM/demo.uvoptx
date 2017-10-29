@@ -241,6 +241,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>mean</ItemText>
         </Ww>
+        <Ww>
+          <count>7</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>gyr_icm</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

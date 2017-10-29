@@ -112,8 +112,8 @@ int CalculateCrAndMean(float stdCr[3],float mean[3]){
 
 int UpdateVDoffTable(void)
 {
-	static uint32_t temp_count[(TempTable_max-TempTable_min)*10]={0u};
-	static long double temp_w[3][(TempTable_max-TempTable_min)*10]={0.0};
+	static uint32_t temp_count[(int)(TempTable_max-TempTable_min)*10]={0u};
+	static long double temp_w[3][(int)(TempTable_max-TempTable_min)*10]={0.0};
   long double paraXY[3]={0.0};
   long double paraX    = 0.0 ;
   long double paraY[3] ={0.0};
@@ -127,23 +127,25 @@ int UpdateVDoffTable(void)
 	if(!CalculateCrAndMean(stdCr,mean))
 		return 0;
 	
-	if((fabs(gyr_icm.No1.x-mean[0])>stdCr[0]*4)||(fabs(gyr_icm.No1.y-mean[1])>stdCr[1]*4)||(fabs(gyr_icm.No1.z-mean[2])>stdCr[2]*4))
+	if((fabs(gyr_icm.No1.x-mean[0])>stdCr[0]*5)||(fabs(gyr_icm.No1.y-mean[1])>stdCr[1]*5)||(fabs(gyr_icm.No1.z-mean[2])>stdCr[2]*5))
 	{
-		USART_OUT_F(temp_icm);
-		USART_OUT_F(gyr_icm.No1.z);
+//		USART_OUT_F(temp_icm);
+//		USART_OUT_F(gyr_icm.No1.z);
 		return 0;
 	}
 	else
 	{
-		USART_Enter();		
+//		USART_Enter();		
+//		USART_OUT_F(temp_icm);
+//		USART_OUT_F(gyr_icm.No1.z);
+	}	
 		USART_OUT_F(temp_icm);
-		USART_OUT_F(gyr_icm.No1.z);
-	}
+		USART_Enter();	
 	/*不返回的0结束函数的话，最小二乘样本实际总值会少*/
-	if(temp_icm>=TempTable_min&&temp_icm<TempTable_max-0.96f){
+	if((double)temp_icm>=TempTable_min&&(double)temp_icm<TempTable_max-0.06){
 	
 		/*确定温度索引号,如果不减0.5可能会出现index=200的情况*/
-		index=roundf((temp_icm-TempTable_min)*10);
+		index=roundf(((double)temp_icm-TempTable_min)*10.0);
 		if(temp_count[index]>0){
 			/*求这一个温度上的角速度和*/
 			temp_w[0][index]+=gyr_icm.No1.x;
@@ -167,43 +169,30 @@ int UpdateVDoffTable(void)
 		for(int i=0;i<(TempTable_max-TempTable_min)*10;i++)
 		{
 			if(temp_count[i]>500){
-				paraX=paraX+temp_count[i]*((TempTable_min+i/10.f)/100.f);
-				paraX2  =paraX2 + temp_count[i]*(double)((TempTable_min+i/10.f)/100.f)*(double)((TempTable_min+i/10.f)/100.f);
-				paraXY[0]=paraXY[0]+temp_w[0][i]*(double)((TempTable_min+i/10.f)/100.f);
-				paraXY[1]=paraXY[1]+temp_w[1][i]*(double)((TempTable_min+i/10.f)/100.f);
-				paraXY[2]=paraXY[2]+temp_w[2][i]*(double)((TempTable_min+i/10.f)/100.f);
+				paraX=paraX+temp_count[i]*((long double)(TempTable_min+i/10.0)/100.0);
+				paraX2  =paraX2 + temp_count[i]*(long double)((TempTable_min+i/10.0)/100.0)*(long double)((TempTable_min+i/10.0)/100.0);
+				paraXY[0]=paraXY[0]+temp_w[0][i]*(long double)((TempTable_min+i/10.0)/100.0);
+				paraXY[1]=paraXY[1]+temp_w[1][i]*(long double)((TempTable_min+i/10.0)/100.0);
+				paraXY[2]=paraXY[2]+temp_w[2][i]*(long double)((TempTable_min+i/10.0)/100.0);
 				paraY[0]=paraY[0]+temp_w[0][i];
 				paraY[1]=paraY[1]+temp_w[1][i];
 				paraY[2]=paraY[2]+temp_w[2][i];
-				temp_w[0][i]=(float)(temp_w[0][i]/temp_count[i]);
-				temp_w[1][i]=(float)(temp_w[1][i]/temp_count[i]);
-				temp_w[2][i]=(float)(temp_w[2][i]/temp_count[i]);
-				sum=sum+temp_count[i];
 			}else{
 				temp_count[i]=0;
 				temp_w[0][i]=0.f;
 				temp_w[1][i]=0.f;
 				temp_w[2][i]=0.f;
 			}
-				USART_OUT_F((i+TempTable_min*10)/10.f);
-				USART_OUT_F(temp_w[0][i]);
-				USART_OUT_F(temp_w[1][i]);
-				USART_OUT_F(temp_w[2][i]);
-				USART_OUT_F(temp_count[i]);
-				USART_Enter();
-				delay_us(500);
 		}
-		USART_OUT_F((float)sum);
-		USART_Enter();
     for(int i=4;i>0;i--){
       *(chartWX+i)=*(chartWX+i-1);
       *(chartWY+i)=*(chartWY+i-1);
       *(chartWZ+i)=*(chartWZ+i-1);
     }
 		//2*60/0.005=24000
-    *chartWX=(HEATTIME*sum*paraXY[0]-paraX*paraY[0])/(HEATTIME*sum*paraX2-paraX*paraX);
-    *chartWY=(HEATTIME*sum*paraXY[1]-paraX*paraY[1])/(HEATTIME*sum*paraX2-paraX*paraX);
-    *chartWZ=(HEATTIME*sum*paraXY[2]-paraX*paraY[2])/(HEATTIME*sum*paraX2-paraX*paraX);
+    *chartWX=(sum*paraXY[0]-paraX*paraY[0])/(sum*paraX2-paraX*paraX);
+    *chartWY=(sum*paraXY[1]-paraX*paraY[1])/(sum*paraX2-paraX*paraX);
+    *chartWZ=(sum*paraXY[2]-paraX*paraY[2])/(sum*paraX2-paraX*paraX);
     Flash_Write(GetFlashArr(),TempTable_Num);
     USART_OUT(USART1,"Flash Update end\r\n");
     TempTablePrintf();

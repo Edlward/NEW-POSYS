@@ -140,7 +140,7 @@ int UpdateVDoffTable(void)
 		USART_OUT_F(gyr_icm.No1.z);
 	}
 	/*不返回的0结束函数的话，最小二乘样本实际总值会少*/
-	if(temp_icm>=TempTable_min&&temp_icm<TempTable_max-0.6f){
+	if(temp_icm>=TempTable_min&&temp_icm<TempTable_max-0.96f){
 	
 		/*确定温度索引号,如果不减0.5可能会出现index=200的情况*/
 		index=roundf((temp_icm-TempTable_min)*10);
@@ -162,13 +162,11 @@ int UpdateVDoffTable(void)
 	
 	
   if(TempErgodic()==3){
-		uint32_t sum=0;
-		for(int i=0;i<(TempTable_max-TempTable_min)*10;i++)
-			sum=sum+temp_count[i];
-		USART_OUT(USART1,"\r\nchart  %d\r\n\r\n",sum);
+		int32_t sum=0;
+		USART_OUT(USART1,"\r\nfinish\r\n");
 		for(int i=0;i<(TempTable_max-TempTable_min)*10;i++)
 		{
-			if(temp_count[i]>100&&temp_count[i]<12000){
+			if(temp_count[i]>500){
 				paraX=paraX+temp_count[i]*((TempTable_min+i/10.f)/100.f);
 				paraX2  =paraX2 + temp_count[i]*(double)((TempTable_min+i/10.f)/100.f)*(double)((TempTable_min+i/10.f)/100.f);
 				paraXY[0]=paraXY[0]+temp_w[0][i]*(double)((TempTable_min+i/10.f)/100.f);
@@ -180,8 +178,12 @@ int UpdateVDoffTable(void)
 				temp_w[0][i]=(float)(temp_w[0][i]/temp_count[i]);
 				temp_w[1][i]=(float)(temp_w[1][i]/temp_count[i]);
 				temp_w[2][i]=(float)(temp_w[2][i]/temp_count[i]);
+				sum=sum+temp_count[i];
 			}else{
-				
+				temp_count[i]=0;
+				temp_w[0][i]=0.f;
+				temp_w[1][i]=0.f;
+				temp_w[2][i]=0.f;
 			}
 				USART_OUT_F((i+TempTable_min*10)/10.f);
 				USART_OUT_F(temp_w[0][i]);
@@ -189,7 +191,10 @@ int UpdateVDoffTable(void)
 				USART_OUT_F(temp_w[2][i]);
 				USART_OUT_F(temp_count[i]);
 				USART_Enter();
+				delay_us(500);
 		}
+		USART_OUT_F((float)sum);
+		USART_Enter();
     for(int i=4;i>0;i--){
       *(chartWX+i)=*(chartWX+i-1);
       *(chartWY+i)=*(chartWY+i-1);

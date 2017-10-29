@@ -15,7 +15,13 @@
 #include "misc.h"
 #include "stm32f4xx_rcc.h"
 #include "stm32f4xx_gpio.h"
-
+//精确延时函数调用wait
+void wait(uint32_t n)
+{
+	do{
+	n--;
+	}while(n);
+}
 /**
 * @brief  Configures the TIMx's interrupt time.
 * @param  TIMx: where x can be 1-14. 

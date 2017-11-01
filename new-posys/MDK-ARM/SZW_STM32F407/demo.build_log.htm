@@ -27,14 +27,28 @@ Project File Date:  10/29/2017
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 3 (build 300)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'ACTION'
-".\SZW_STM32F407\demo.axf" - 0 Error(s), 0 Warning(s).
+compiling temperature_control.c...
+..\Action_User\develop\temperature_control.c(165): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+    if(temp_icm>
+empTable_max) 
+..\Action_User\develop\temperature_control.c(167): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+    else if(temp_icm<
+empTable_min)
+..\Action_User\develop\temperature_control.c(175): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+    
+CM_HeatingPower(PWM);
+..\Action_User\develop\temperature_control.c: 3 warnings, 0 errors
+linking...
+Program Size: Code=42424 RO-data=3528 RW-data=5272 ZI-data=25752  
+FromELF: creating hex file...
+".\SZW_STM32F407\demo.axf" - 0 Error(s), 3 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   F:\grow\git\new-posys\new-posys\MDK-ARM\RTE
   C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

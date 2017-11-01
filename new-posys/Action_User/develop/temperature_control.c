@@ -20,7 +20,7 @@ void temp_pid_ctr(float val_ex)
   static float err_sum;
   static float err_last;
   static float err_v;
-  float Kp_summer = 10.0f;
+  float Kp_summer = 13.0f;
   float Ki_summer = 0.007f;
   float Kd_summer = 0.00f;
   
@@ -59,9 +59,9 @@ void temp_pid_ctr(float val_ex)
   {
     ctr=60;
   }
-    /*#define ICM_HeatingPower(a)  TIM_SetCompare3(TIM3,a/100.0*1000); */
-    /*之所以最大值为1000,是因为该定时器的装载值为1000*/
-    ICM_HeatingPower(ctr);
+  /*#define ICM_HeatingPower(a)  TIM_SetCompare3(TIM3,a/100.0*1000); */
+  /*之所以最大值为1000,是因为该定时器的装载值为1000*/
+  ICM_HeatingPower(ctr);
 }
 
 //uint32_t Heating(void){
@@ -89,11 +89,13 @@ void temp_pid_ctr(float val_ex)
 //	}else
 //		return 0u;
 //}
-int TempErgodic(void){
+//#define MODE_ONE
+#ifdef MODE_ONE
+int TempErgodic(int reset){
   
   static uint32_t circle_count=0;
   static uint8_t flag=0;
-  
+  if(reset)  flag=0;
   switch(flag){
   case 0:
     circle_count++;
@@ -105,12 +107,75 @@ int TempErgodic(void){
   temp_pid_ctr(TempTable_min+(TempTable_max-TempTable_min)*circle_count*PERIOD/(float)HEATTIME/60.f);
   if(circle_count==(int)(HEATTIME*60.f/PERIOD)){
     flag=1;
+    //USART_OUT(USART1,"finish rise\r\n");
   }else if(circle_count==0){
+    //USART_OUT(USART1,"finish decrease\r\n");
     flag=3;
   }
   return flag;
 }
-
+#else 
+/*单位是秒*/
+#define TIME_BEAR	10
+/*每隔TIME_BEAR秒判断一次，而不是时时刻刻都和前一分钟温度判断（那样的话会加得很快）
+如果一分钟之间温度小于0.1°，那就改变PWM
+这么做是为了不控温，控温会造成不稳定，时滞效果会增大，卡尔曼滤波滞后也会增大*/
+int TempErgodic(int reset){
+  
+  static uint32_t success=0;
+  static int direction=1;
+  static float PWM=0.1f;
+  static float temp_last;
+  static uint32_t time = 0;
+	if(reset) success=0;
+  /*200/s,12000/min*/
+  time++;
+  /*每隔TIME_BEAR秒判断一次*/
+  if(time%(TIME_BEAR*200)==0)
+  {
+    switch(direction)
+    {
+    case -1:
+      if((temp_icm-temp_last)>=-0.1f)
+      {
+        if(PWM>0.1f)
+          PWM-=0.1f;
+        else if(PWM>0.f)
+          PWM=0.f;
+        else if(PWM==0.f)
+				{
+          direction=1;
+					PWM+=0.1f;
+					success=3;
+				}
+      }
+      break;
+    case 1:
+      if((temp_icm-temp_last)<=0.1f)
+      {
+        if(PWM<99.9f)
+          PWM+=0.1f;
+        else
+          PWM=100.f;
+        break;
+      }
+    }
+    temp_last=temp_icm;
+  }
+  if(temp_icm>TempTable_max) 
+    direction=-1;
+  else if(temp_icm<TempTable_min)
+	{
+		/*排除掉起始温度小于最小值的情况*/
+		if(direction==-1)
+			success=3;
+		
+    direction=1;
+	}
+  ICM_HeatingPower(PWM);
+  return success;
+}
+#endif
 
 //PB015
 /**

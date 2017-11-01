@@ -35,6 +35,7 @@
 #include "icm_20608_g.h"
 #include "buildExcel.h"
 #include "spi.h"
+#include "figureAngle.h"
 /*************定时器2******start************/
 //每1ms调用一次  用于读取编码器的值和计算坐标
 
@@ -85,6 +86,7 @@ void TIM2_IRQHandler(void)
         gyr_icm.No1.y=gyro_sum.No1.y/5.f;
         gyr_icm.No1.z=gyro_sum.No1.z/5.f;
 				temp_icm=temp_sum/5.f;
+				temp_icm=KalmanFilterT(temp_icm);
         gyro_sum.No1.x=0.f;
         gyro_sum.No1.y=0.f;
         gyro_sum.No1.z=0.f;

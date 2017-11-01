@@ -24,3 +24,4 @@
 .\szw_stm32f407\stm32f4xx_it.o: ..\Action_User\baseConfig\icm_20608_g.h
 .\szw_stm32f407\stm32f4xx_it.o: ..\Action_User\develop\buildExcel.h
 .\szw_stm32f407\stm32f4xx_it.o: ..\Action_User\hardware\spi.h
+.\szw_stm32f407\stm32f4xx_it.o: ..\Action_User\develop\figureAngle.h

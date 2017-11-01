@@ -134,13 +134,13 @@ int UpdateVDoffTable(void)
 		return 0;
 	}
 	else
-	{
-//		USART_Enter();		
-//		USART_OUT_F(temp_icm);
-//		USART_OUT_F(gyr_icm.No1.z);
-	}	
+	{	
 		USART_OUT_F(temp_icm);
+//		USART_OUT_F(gyr_icm.No1.x);
+//		USART_OUT_F(gyr_icm.No1.y);
+		USART_OUT_F(gyr_icm.No1.z);
 		USART_Enter();	
+	}		
 	/*不返回的0结束函数的话，最小二乘样本实际总值会少*/
 	if((double)temp_icm>=TempTable_min&&(double)temp_icm<TempTable_max-0.06){
 	
@@ -163,7 +163,7 @@ int UpdateVDoffTable(void)
 	}
 	
 	
-  if(TempErgodic()==3){
+  if(TempErgodic(0)==3){
 		int32_t sum=0;
 		USART_OUT(USART1,"\r\nfinish\r\n");
 		for(int i=0;i<(TempTable_max-TempTable_min)*10;i++)
@@ -177,11 +177,15 @@ int UpdateVDoffTable(void)
 				paraY[0]=paraY[0]+temp_w[0][i];
 				paraY[1]=paraY[1]+temp_w[1][i];
 				paraY[2]=paraY[2]+temp_w[2][i];
+				sum=sum+temp_count[i];
+				delay_us(200);
 			}else{
 				temp_count[i]=0;
 				temp_w[0][i]=0.f;
 				temp_w[1][i]=0.f;
 				temp_w[2][i]=0.f;
+//				USART_OUT_F(TempTable_min+i/10.0);
+//				USART_Enter();
 			}
 		}
     for(int i=4;i>0;i--){
@@ -189,6 +193,7 @@ int UpdateVDoffTable(void)
       *(chartWY+i)=*(chartWY+i-1);
       *(chartWZ+i)=*(chartWZ+i-1);
     }
+		TempErgodic(1);
 		//2*60/0.005=24000
     *chartWX=(sum*paraXY[0]-paraX*paraY[0])/(sum*paraX2-paraX*paraX);
     *chartWY=(sum*paraXY[1]-paraX*paraY[1])/(sum*paraX2-paraX*paraX);
@@ -196,14 +201,19 @@ int UpdateVDoffTable(void)
     Flash_Write(GetFlashArr(),TempTable_Num);
     USART_OUT(USART1,"Flash Update end\r\n");
     TempTablePrintf();
-		SetCommand(~CORRECT);
-		ICM_HeatingPower(0);
 		{
 			for(int i=0;i<3;i++){
 				paraXY[i]=0.0;
 				paraY[i]=0.0;
 				paraX=0.0;
 				paraX2=0.0;
+			}
+			for(int i=0;i<(int)(TempTable_max-TempTable_min)*10;i++)
+			{
+				temp_count[i]=0;
+				temp_w[0][i]=0.f;
+				temp_w[1][i]=0.f;
+				temp_w[2][i]=0.f;
 			}
 		}
   }

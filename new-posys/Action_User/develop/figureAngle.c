@@ -502,7 +502,7 @@ float KalmanFilterT(double measureData)
   static double Kk;           //滤波增益系数
   
   static double Q=0.000000009957;       //系统噪声
-  static double R=0.02;      //测量噪声         
+  static double R=0.01286;      //测量噪声         
   
   static double IAE_st[50];    //记录的新息
   double Cr=0;                //新息的方差

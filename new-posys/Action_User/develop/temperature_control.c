@@ -116,7 +116,7 @@ int TempErgodic(int reset){
 }
 #else 
 /*单位是秒*/
-#define TIME_BEAR	10
+#define TIME_BEAR	20
 /*每隔TIME_BEAR秒判断一次，而不是时时刻刻都和前一分钟温度判断（那样的话会加得很快）
 如果一分钟之间温度小于0.1°，那就改变PWM
 这么做是为了不控温，控温会造成不稳定，时滞效果会增大，卡尔曼滤波滞后也会增大*/
@@ -124,7 +124,7 @@ int TempErgodic(int reset){
   
   static uint32_t success=0;
   static int direction=1;
-  static float PWM=0.1f;
+  static float PWM=0.f;
   static float temp_last;
   static uint32_t time = 0;
 	if(reset) success=0;
@@ -154,13 +154,21 @@ int TempErgodic(int reset){
       if((temp_icm-temp_last)<=0.1f)
       {
         if(PWM<99.9f)
-          PWM+=0.1f;
+				{
+					if(temp_icm>TempTable_min)
+						PWM+=0.1f;
+					else
+						PWM+=0.5f;
+				}
         else
           PWM=100.f;
         break;
       }
     }
     temp_last=temp_icm;
+//		USART_OUT_F(temp_icm);
+//		USART_OUT_F(PWM);
+//		USART_Enter();	
   }
   if(temp_icm>TempTable_max) 
     direction=-1;

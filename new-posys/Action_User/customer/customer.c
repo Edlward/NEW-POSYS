@@ -176,6 +176,7 @@ void AT_CMD_Handle(void){
 			break;
 		case 7:
 			heatPower=0;
+			USART_OUT(USART1,"OK\r\n");
 			if(buffer[9]<='9'&&buffer[9]>='0')
 				heatPower+=(buffer[9]-'0')*10;
 			if(buffer[10]<='9'&&buffer[10]>='0')

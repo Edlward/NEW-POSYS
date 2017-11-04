@@ -109,6 +109,18 @@ int CalculateCrAndMean(float stdCr[3],float mean[3]){
 	return 1;
 }
 
+int WaitForSlowDrift(void)
+{
+	static uint32_t time=0;
+	time++;
+	if(time<200*60*30)
+		return 0;
+	else
+	{
+		time=200*60*31;
+		return 1;
+	}
+}
 
 int UpdateVDoffTable(void)
 {
@@ -123,6 +135,9 @@ int UpdateVDoffTable(void)
   static float stdCr[3]={0.f};                //新息的标准差
   static float mean[3]={0.f};
 	
+	if(!WaitForSlowDrift())
+		return 0;
+	
 	/*三σ法则*/
 	if(!CalculateCrAndMean(stdCr,mean))
 		return 0;
@@ -135,11 +150,9 @@ int UpdateVDoffTable(void)
 	}
 	else
 	{	
-		USART_OUT_F(temp_icm);
-//		USART_OUT_F(gyr_icm.No1.x);
-//		USART_OUT_F(gyr_icm.No1.y);
-		USART_OUT_F(gyr_icm.No1.z);
-		USART_Enter();	
+//		USART_OUT_F(temp_icm);
+//		USART_OUT_F(gyr_icm.No1.z);
+//		USART_Enter();	
 	}		
 	/*不返回的0结束函数的话，最小二乘样本实际总值会少*/
 	if((double)temp_icm>=TempTable_min&&(double)temp_icm<TempTable_max-0.06){
@@ -178,6 +191,15 @@ int UpdateVDoffTable(void)
 				paraY[1]=paraY[1]+temp_w[1][i];
 				paraY[2]=paraY[2]+temp_w[2][i];
 				sum=sum+temp_count[i];
+				
+				temp_w[0][i]=temp_w[0][i]/temp_count[i];
+				temp_w[1][i]=temp_w[1][i]/temp_count[i];
+				temp_w[2][i]=temp_w[2][i]/temp_count[i];
+				USART_OUT_F(TempTable_min+i/10.0);
+				USART_OUT_F(temp_w[0][i]);
+				USART_OUT_F(temp_w[1][i]);
+				USART_OUT_F(temp_w[2][i]);
+				USART_Enter();	
 				delay_us(200);
 			}else{
 				temp_count[i]=0;

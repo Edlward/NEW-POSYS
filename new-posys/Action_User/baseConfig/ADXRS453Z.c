@@ -142,6 +142,27 @@ void SpiFunction(unsigned char OutputBuff[],unsigned char InputBuff[])
    }
 }
 
+// Function for sending and receiving data through SPI
+//void SpiFunction(unsigned char OutputBuff[],unsigned char InputBuff[])
+//{	
+//	 int i;
+//	 unsigned short int temp;
+//   for(i=0;i<2;i++)
+//   {
+//		 temp=(OutputBuff[i*2]<<8)|OutputBuff[i*2+1];
+//		 while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET){}		  //等待发送区空  
+//		 SPI_I2S_SendData(SPI1, OutputBuff[i]); 																	//通过外设SPIx发送一个byte  数据
+//   }
+//   for(i=0;i<2;i++)
+//   {
+//		 while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET){} 	  //等待接收完一个byte  
+//		 temp=SPI_I2S_ReceiveData(SPI1);	
+//		 SPI_I2S_ClearFlag(SPI1,SPI_I2S_FLAG_RXNE);
+//		 InputBuff[i*2]=(unsigned char)(temp>>8);
+//		 InputBuff[i*2+1]=(unsigned char)temp;
+//   }
+//}
+
 /*******************************************************************
   @brief void ADXRS453StartUp(void)
          recommended start-up sequence

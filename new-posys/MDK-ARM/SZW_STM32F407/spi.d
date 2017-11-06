@@ -1,8 +1,9 @@
 .\szw_stm32f407\spi.o: ..\Action_User\hardware\spi.c
 .\szw_stm32f407\spi.o: ..\Action_User\hardware\spi.h
+.\szw_stm32f407\spi.o: ..\Action_User\baseConfig\config.h
+.\szw_stm32f407\spi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\szw_stm32f407\spi.o: ..\Libraries\CMSIS\stm32f4xx.h
 .\szw_stm32f407\spi.o: ..\Libraries\CMSIS\core_cm4.h
-.\szw_stm32f407\spi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\szw_stm32f407\spi.o: ..\Libraries\CMSIS\core_cmInstr.h
 .\szw_stm32f407\spi.o: ..\Libraries\CMSIS\core_cmFunc.h
 .\szw_stm32f407\spi.o: ..\Libraries\CMSIS\core_cm4_simd.h
@@ -12,4 +13,3 @@
 .\szw_stm32f407\spi.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h
 .\szw_stm32f407\spi.o: ..\Action_User\hardware\timer.h
 .\szw_stm32f407\spi.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h
-.\szw_stm32f407\spi.o: ..\Action_User\baseConfig\config.h

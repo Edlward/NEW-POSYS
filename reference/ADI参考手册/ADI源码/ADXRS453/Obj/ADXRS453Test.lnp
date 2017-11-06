@@ -10,6 +10,6 @@
 ".\obj\urtlib.o"
 ".\obj\wdtlib.o"
 --strict --scatter ".\Obj\ADXRS453Test.sct"
---summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\Lst\ADXRS453Test.map" -o .\Obj\ADXRS453Test.axf

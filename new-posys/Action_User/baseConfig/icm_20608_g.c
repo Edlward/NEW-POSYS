@@ -5,6 +5,7 @@
 #include "usart.h"
 #include "figureAngle.h"
 
+#ifndef ADXRS453Z
 extern uint8_t   *scaleMode;
 
 void ICM20608G_init(void)
@@ -208,3 +209,6 @@ void icm_update_AccRad(double accInit[3],three_axis *rad)
 	(*rad).y= safe_atan2( X_G , -Z_G);
   (*rad).x=-safe_atan2( Y_G , X_G/sin((*rad).y));
 }
+
+#endif
+

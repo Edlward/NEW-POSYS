@@ -140,7 +140,7 @@ void AT_CMD_Judge(void){
   
   bufferInit();
 }
-extern gyro_t gyr_icm;
+extern gyro_t gyr_data;
 extern float  temp_icm;
 void AT_CMD_Handle(void){
 	float value=0.0f;
@@ -165,9 +165,9 @@ void AT_CMD_Handle(void){
 			break;
 		case 5:
 			USART_OUT_F(temp_icm);
-			USART_OUT_F(gyr_icm.No1.x);
-			USART_OUT_F(gyr_icm.No1.y);
-			USART_OUT_F(gyr_icm.No1.z);
+			USART_OUT_F(gyr_data.No1.x);
+			USART_OUT_F(gyr_data.No1.y);
+			USART_OUT_F(gyr_data.No1.z);
 			USART_Enter();
 			break;
 		case 6:

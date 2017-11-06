@@ -68,7 +68,7 @@ void TempTablePrintf(void)
   
 }
 
-extern gyro_t gyr_icm;
+extern gyro_t gyr_data;
 extern float  temp_icm;
 int CalculateCrAndMean(float stdCr[3],float mean[3]){
 	static float IAE_st[3][200]={0.f};    //记录的新息
@@ -79,9 +79,9 @@ int CalculateCrAndMean(float stdCr[3],float mean[3]){
 	for(int i=0;i<3;i++){
 		memcpy(data[i],data[i]+1,796);
 	}
-	data[0][199]=gyr_icm.No1.x;
-	data[1][199]=gyr_icm.No1.y;
-	data[2][199]=gyr_icm.No1.z;
+	data[0][199]=gyr_data.No1.x;
+	data[1][199]=gyr_data.No1.y;
+	data[2][199]=gyr_data.No1.z;
   /* 新息的方差计算 */
 	for(int i=0;i<3;i++){
 		memcpy(IAE_st[i],IAE_st[i]+1,796);
@@ -90,9 +90,9 @@ int CalculateCrAndMean(float stdCr[3],float mean[3]){
 	{
 		mean[i]=mean[i]-data[i][0]/200+data[i][199]/200;
 	}
-	IAE_st[0][199]=gyr_icm.No1.x-mean[0];
-	IAE_st[1][199]=gyr_icm.No1.y-mean[1];
-	IAE_st[2][199]=gyr_icm.No1.z-mean[2];
+	IAE_st[0][199]=gyr_data.No1.x-mean[0];
+	IAE_st[1][199]=gyr_data.No1.y-mean[1];
+	IAE_st[2][199]=gyr_data.No1.z-mean[2];
 	
   if(ignore<400)
 		return 0;
@@ -142,16 +142,16 @@ int UpdateVDoffTable(void)
 	if(!CalculateCrAndMean(stdCr,mean))
 		return 0;
 	
-	if((fabs(gyr_icm.No1.x-mean[0])>stdCr[0]*5)||(fabs(gyr_icm.No1.y-mean[1])>stdCr[1]*5)||(fabs(gyr_icm.No1.z-mean[2])>stdCr[2]*5))
+	if((fabs(gyr_data.No1.x-mean[0])>stdCr[0]*5)||(fabs(gyr_data.No1.y-mean[1])>stdCr[1]*5)||(fabs(gyr_data.No1.z-mean[2])>stdCr[2]*5))
 	{
 //		USART_OUT_F(temp_icm);
-//		USART_OUT_F(gyr_icm.No1.z);
+//		USART_OUT_F(gyr_data.No1.z);
 		return 0;
 	}
 	else
 	{	
 //		USART_OUT_F(temp_icm);
-//		USART_OUT_F(gyr_icm.No1.z);
+//		USART_OUT_F(gyr_data.No1.z);
 //		USART_Enter();	
 	}		
 	/*不返回的0结束函数的话，最小二乘样本实际总值会少*/
@@ -161,15 +161,15 @@ int UpdateVDoffTable(void)
 		index=roundf(((double)temp_icm-TempTable_min)*10.0);
 		if(temp_count[index]>0){
 			/*求这一个温度上的角速度和*/
-			temp_w[0][index]+=gyr_icm.No1.x;
-			temp_w[1][index]+=gyr_icm.No1.y;
-			temp_w[2][index]+=gyr_icm.No1.z;
+			temp_w[0][index]+=gyr_data.No1.x;
+			temp_w[1][index]+=gyr_data.No1.y;
+			temp_w[2][index]+=gyr_data.No1.z;
 		}
 		else{
 			/*初始值*/
-			temp_w[0][index]=gyr_icm.No1.x;
-			temp_w[1][index]=gyr_icm.No1.y;
-			temp_w[2][index]=gyr_icm.No1.z;
+			temp_w[0][index]=gyr_data.No1.x;
+			temp_w[1][index]=gyr_data.No1.y;
+			temp_w[2][index]=gyr_data.No1.z;
 			temp_count[index]=0;
 		}
 			temp_count[index]++;

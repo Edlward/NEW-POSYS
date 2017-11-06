@@ -155,7 +155,7 @@ int TempErgodic(int reset){
       {
         if(PWM<99.9f)
 				{
-					if(temp_icm>TempTable_min)
+					if((double)temp_icm>TempTable_min)
 						PWM+=0.1f;
 					else
 						PWM+=0.5f;
@@ -170,9 +170,9 @@ int TempErgodic(int reset){
 //		USART_OUT_F(PWM);
 //		USART_Enter();	
   }
-  if(temp_icm>TempTable_max) 
+  if((double)temp_icm>TempTable_max) 
     direction=-1;
-  else if(temp_icm<TempTable_min)
+  else if((double)temp_icm<TempTable_min)
 	{
 		/*排除掉起始温度小于最小值的情况*/
 		if(direction==-1)

@@ -25,3 +25,4 @@
 .\szw_stm32f407\stm32f4xx_it.o: ..\Action_User\develop\buildExcel.h
 .\szw_stm32f407\stm32f4xx_it.o: ..\Action_User\hardware\spi.h
 .\szw_stm32f407\stm32f4xx_it.o: ..\Action_User\develop\figureAngle.h
+.\szw_stm32f407\stm32f4xx_it.o: ..\Action_User\baseConfig\ADXRS453Z.h

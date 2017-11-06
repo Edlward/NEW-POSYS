@@ -126,8 +126,8 @@ void calculatePos(void)
 	
 	AxisOriginConvert(0,0,45,getAngle().z,&(pos_temp[0]),&(pos_temp[1]));
 	
-	posx=pos_temp[0]/4096.0*R_wheel1*2.0*PI;
-	posy=pos_temp[1]/4096.0*R_wheel2*2.0*PI;
+	posx=(double)pos_temp[0]/4096.0*R_wheel1*2.0*(double)PI;
+	posy=(double)pos_temp[1]/4096.0*R_wheel2*2.0*(double)PI;
 	
 //	if(set_all==1)
 //	{		

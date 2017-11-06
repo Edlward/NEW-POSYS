@@ -25,28 +25,49 @@
 #include "customer.h"
 #include "config.h"
 #include "figurePos.h"
+#include "ADXRS453Z.h"
 #include <stdlib.h>
+
 void init(void)
 {
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
   /* 陀螺仪加热电阻PWM初始化--------------------------*/
   pwm_init(999, 83);//此时PWM的频率为84MHz/(83+1)/(999+1)=1KHz
   
-  /* SPI初始化---------------------------------------*/
-  //单轮模式时磁编码器的SPI初始化
-  SPI1_Init();
-  //单轮模式时陀螺仪的SPI初始化
-  SPI2_Init();
+	#ifdef ADXRS453Z
+		/* SPI初始化---------------------------------------*/
+		//单轮模式时磁编码器的SPI初始化
+		ADI_SPIInit();
+		//单轮模式时陀螺仪的SPI初始化
+		//SPI2_Init();
+	#else
+		/* SPI初始化---------------------------------------*/
+		//单轮模式时磁编码器的SPI初始化
+		ICM_SPIInit();
+		//单轮模式时陀螺仪的SPI初始化
+		SPI2_Init();
+	#endif
+	
   //片选的初始化
   CS_Config();
-#ifdef TEST_SUMMER
-  USART1_Init(921600);
-#else
-  USART1_Init(115200);
-#endif
+	
+	#ifdef TEST_SUMMER
+		USART1_Init(921600);
+	#else
+		USART1_Init(115200);
+	#endif
+
   /* ICM20608G模块初始化-----------------------------------*/
   Flash_Init();
-  ICM20608G_init();
+	
+	#ifdef ADXRS453Z
+		ADXRS453StartUp();
+	#else
+		ICM20608G_init();
+	#endif
+	
+  static unsigned int  ReadValueTemp;
+	ReadValueTemp=ADXRS453SingleRead(ADI_PID1);
 	
   ICM_HeatingPower(0);
   Delay_ms(100);//过滤开始时的错误数据

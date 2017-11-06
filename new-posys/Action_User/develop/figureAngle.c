@@ -62,7 +62,7 @@ int JudgeAcc(void);
 static three_axis_d gyr_act;			//原始的角速度和处理后的角速度
 static float gyr_AVER[3]={0.0};
 static three_axis acc_angle;        //加速度计测出的对应的角度
-extern gyro_t gyr_icm,acc_icm;
+extern gyro_t gyr_data,acc_data;
 extern float  temp_icm;
 static uint32_t count=0;
 static float acc_sum=0.f;
@@ -76,9 +76,9 @@ int RoughHandle(void)
   drift[1]=driftCoffecient[1]*(temp_icm/100.f);
   drift[2]=driftCoffecient[2]*(temp_icm/100.f);
   
-  gyr_act.x=(double)gyr_icm.No1.x-drift[0];
-  gyr_act.y=(double)gyr_icm.No1.y-drift[1];
-  gyr_act.z=(double)gyr_icm.No1.z-drift[2];
+  gyr_act.x=(double)gyr_data.No1.x-drift[0];
+  gyr_act.y=(double)gyr_data.No1.y-drift[1];
+  gyr_act.z=(double)gyr_data.No1.z-drift[2];
 	
 	
   gyr_act.x=KalmanFilterX(gyr_act.x);
@@ -96,8 +96,6 @@ int RoughHandle(void)
 //		if(sendPermit){
 //			USART_OUT_F(gyr_act.x);
 //			USART_OUT_F(gyr_act.y);
-//			USART_OUT_F(gyr_act.z);
-//			USART_Enter();
 //		}
 		#endif
     return 1;
@@ -114,9 +112,9 @@ void TemporaryHandle(void)
     gyr_AVER[0]=gyr_AVER[0]+gyr_act.x;
     gyr_AVER[1]=gyr_AVER[1]+gyr_act.y;
     gyr_AVER[2]=gyr_AVER[2]+gyr_act.z;
-    accInit[0]=accInit[0]+acc_icm.No1.x;
-    accInit[1]=accInit[1]+acc_icm.No1.y;
-    accInit[2]=accInit[2]+acc_icm.No1.z;
+    accInit[0]=accInit[0]+acc_data.No1.x;
+    accInit[1]=accInit[1]+acc_data.No1.y;
+    accInit[2]=accInit[2]+acc_data.No1.z;
   }
   else if(count==15*200){
     count++;
@@ -192,13 +190,13 @@ three_axis getAngle(void)
 
 int JudgeAcc(void)
 {
-  float sum=sqrt(acc_icm.No1.x*acc_icm.No1.x+acc_icm.No1.y*acc_icm.No1.y+acc_icm.No1.z*acc_icm.No1.z);
+  float sum=sqrt(acc_data.No1.x*acc_data.No1.x+acc_data.No1.y*acc_data.No1.y+acc_data.No1.z*acc_data.No1.z);
 
   float X_G,Y_G,Z_G;
   if(sum!=0.0f){
-		X_G=(acc_icm).No1.x/sum;
-		Y_G=(acc_icm).No1.y/sum;
-		Z_G=(acc_icm).No1.z/sum;
+		X_G=(acc_data).No1.x/sum;
+		Y_G=(acc_data).No1.y/sum;
+		Z_G=(acc_data).No1.z/sum;
 	}
   /*初始坐标为0,0,g,然后可以通过坐标变换公式轻易推导*/
 	acc_angle.y= safe_atan2( X_G , -Z_G);

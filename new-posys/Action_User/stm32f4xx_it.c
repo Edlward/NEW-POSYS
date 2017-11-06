@@ -36,25 +36,30 @@
 #include "buildExcel.h"
 #include "spi.h"
 #include "figureAngle.h"
+#include "ADXRS453Z.h"
+
 /*************定时器2******start************/
 //每1ms调用一次  用于读取编码器的值和计算坐标
 
 //int posx,posy;
 static uint32_t timeCount=0;
 static uint8_t timeFlag=0;
-gyro_t gyr_icm;
-gyro_t acc_icm;
+gyro_t gyr_data;
+gyro_t acc_data;
 float temp_icm;
 extern uint16_t data[2];
 static char readOrder=0;
 void TIM2_IRQHandler(void)
 {
+	
   gyro_t gyr_temp;
+	#ifndef ADXRS453Z
   gyro_t act_temp;
+  static gyro_t act_sum;
+	#endif
   float  temp_temp;
   static uint32_t timeCnt=0;
   static gyro_t gyro_sum;
-  static gyro_t act_sum;
   static float  temp_sum;
   if(TIM_GetITStatus(TIM2, TIM_IT_Update)==SET)
   {	
@@ -66,6 +71,19 @@ void TIM2_IRQHandler(void)
       timeCount=0;
       timeFlag=1;
     }
+		#ifdef ADXRS453Z
+			ADI_UpdateData(&gyr_temp,&temp_temp);
+      gyro_sum.No1.z=gyro_sum.No1.z+gyr_temp.No1.z;
+      if(timeCnt==5){
+				readOrder++;
+        timeCnt=0;
+        gyr_data.No1.z=gyro_sum.No1.z/5.f;
+				temp_icm=temp_sum/5.f;
+				temp_icm=KalmanFilterT(temp_icm);
+        gyro_sum.No1.z=0.f;
+				temp_sum=0.f;
+      }
+		#else
       icm_update_gyro_rate();
 			icm_update_temp();
 			icm_read_temp(&temp_temp);
@@ -82,9 +100,9 @@ void TIM2_IRQHandler(void)
       if(timeCnt==5){
 				readOrder++;
         timeCnt=0;
-        gyr_icm.No1.x=gyro_sum.No1.x/5.f;
-        gyr_icm.No1.y=gyro_sum.No1.y/5.f;
-        gyr_icm.No1.z=gyro_sum.No1.z/5.f;
+        gyr_data.No1.x=gyro_sum.No1.x/5.f;
+        gyr_data.No1.y=gyro_sum.No1.y/5.f;
+        gyr_data.No1.z=gyro_sum.No1.z/5.f;
 				temp_icm=temp_sum/5.f;
 				temp_icm=KalmanFilterT(temp_icm);
         gyro_sum.No1.x=0.f;
@@ -92,6 +110,7 @@ void TIM2_IRQHandler(void)
         gyro_sum.No1.z=0.f;
 				temp_sum=0.f;
       }
+		#endif
   }
 	else{
 		USART_OUT(USART1,"TIM2 error");

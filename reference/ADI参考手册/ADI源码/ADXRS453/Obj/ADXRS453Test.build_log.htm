@@ -3,69 +3,45 @@
 <pre>
 <h1>µVision Build Log</h1>
 <h2>Tool Versions:</h2>
-IDE-Version: ¦ÌVision V5.24.2.0
-Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: 123 Windows, HP Inc., LIC=ZB4HL-0UGQ3-30BNC-77U3B-DSA4R-Q9YXR
+IDE-Version: ¦ÌVision V5.21.1.0
+Copyright (C) 2016 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: summer Windows, HP Inc., LIC=GMZ9U-S1SUN-0NEAM-XAG6E-FK8DL-V8BC9
  
 Tool Versions:
-Toolchain:       MDK-ARM Plus  Version: 5.24.1
-Toolchain Path:  D:\Keil_v5\ARM\ARMCC\Bin
-C Compiler:      Armcc.exe V5.06 update 5 (build 528)
-Assembler:       Armasm.exe V5.06 update 5 (build 528)
-Linker/Locator:  ArmLink.exe V5.06 update 5 (build 528)
-Library Manager: ArmAr.exe V5.06 update 5 (build 528)
-Hex Converter:   FromElf.exe V5.06 update 5 (build 528)
-CPU DLL:         SARMCM3.DLL V5.24.1
-Dialog DLL:      DCM.DLL V1.16.0.0
-Target DLL:      Segger\JL2CM3.dll V2.99.15.0
-Dialog DLL:      TCM.DLL V1.32.0.0
+Toolchain:       MDK-ARM Plus  Version: 5.21a
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 3 (build 300)
+Assembler:       Armasm.exe V5.06 update 3 (build 300)
+Linker/Locator:  ArmLink.exe V5.06 update 3 (build 300)
+Library Manager: ArmAr.exe V5.06 update 3 (build 300)
+Hex Converter:   FromElf.exe V5.06 update 3 (build 300)
+CPU DLL:         SARMCM3.DLL V5.21a
+Dialog DLL:      DCM.DLL V1.13.8.0
+Target DLL:      Segger\JL2CM3.dll V2.99.23.0
+Dialog DLL:      TCM.DLL V1.14.14.0
  
 <h2>Project:</h2>
 F:\grow\git\new-posys\reference\ADI²Î¿¼ÊÖ²á\ADIÔ´Âë\ADXRS453\ADXRS453test.uvproj
-Project File Date:  10/23/2017
+Project File Date:  10/29/2017
 
 <h2>Output:</h2>
-*** Using Compiler 'V5.06 update 5 (build 528)', folder: 'D:\Keil_v5\ARM\ARMCC\Bin'
-Build target 'Target 1'
-compiling ClkLib.c...
-ClkLib.c(30): error:  #5: cannot open source input file "ADuCM360.h": No such file or directory
-  #include <ADuCM360.h>
-ClkLib.c: 0 warnings, 1 error
-compiling ADXRS453test.c...
-ADXRS453test.c(21): error:  #5: cannot open source input file "ADuCM360.h": No such file or directory
-  #include <ADuCM360.h>
-ADXRS453test.c: 0 warnings, 1 error
-compiling SpiLib.c...
-SpiLib.h(21): error:  #5: cannot open source input file "ADuCM360.h": No such file or directory
-  #include <ADuCM360.h>
-SpiLib.c: 0 warnings, 1 error
-compiling ADXRS453.c...
-ADXRS453.c(20): error:  #5: cannot open source input file "ADuCM360.h": No such file or directory
-  #include <ADuCM360.h>
-ADXRS453.c: 0 warnings, 1 error
-compiling ADuCM360Driver.c...
-ADuCM360Driver.c(14): error:  #5: cannot open source input file "ADuCM360.h": No such file or directory
-  #include "ADuCM360.h"
-ADuCM360Driver.c: 0 warnings, 1 error
-compiling DioLib.c...
-DioLib.c(26): error:  #5: cannot open source input file "ADuCM360.h": No such file or directory
-  #include "ADuCM360.h"
-DioLib.c: 0 warnings, 1 error
+*** Using Compiler 'V5.06 update 3 (build 300)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Rebuild target 'Target 1'
+assembling startup_ADuCM360.s...
 compiling IntLib.c...
-IntLib.c(24): error:  #5: cannot open source input file "ADuCM360.h": No such file or directory
-  #include <ADuCM360.h>
-IntLib.c: 0 warnings, 1 error
+compiling ADXRS453test.c...
+compiling ADuCM360Driver.c...
+compiling ClkLib.c...
+compiling DioLib.c...
+compiling SpiLib.c...
+compiling ADXRS453.c...
 compiling UrtLib.c...
-UrtLib.h(29): error:  #5: cannot open source input file "ADuCM360.h": No such file or directory
-  #include <ADuCM360.h>
-UrtLib.c: 0 warnings, 1 error
 compiling WdtLib.c...
-WdtLib.c(24): error:  #5: cannot open source input file "ADuCM360.h": No such file or directory
-  #include <ADuCM360.h>
-WdtLib.c: 0 warnings, 1 error
-".\Obj\ADXRS453Test.axf" - 9 Error(s), 0 Warning(s).
-Target not created.
-Build Time Elapsed:  00:00:01
+linking...
+Program Size: Code=2436 RO-data=256 RW-data=8 ZI-data=3632  
+FromELF: creating hex file...
+".\Obj\ADXRS453Test.axf" - 0 Error(s), 0 Warning(s).
+Build Time Elapsed:  00:00:05
 </pre>
 </body>
 </html>

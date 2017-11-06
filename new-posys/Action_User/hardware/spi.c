@@ -5,8 +5,148 @@
 #include "timer.h"
 #include "config.h"
 
+#ifdef ADXRS453Z
 
-void SPI1_Init(void)
+void ADI_SPIInit(void)
+{
+  GPIO_InitTypeDef GPIO_InitStructure;
+  SPI_InitTypeDef  SPI_InitStructure;
+  
+  /* 使能SPI和GPIO的时钟------------------------------------------*/
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+  
+  /* 引脚复用为SPI1----------------------------------------------*/
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource5, GPIO_AF_SPI1);
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource6, GPIO_AF_SPI1);
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource7, GPIO_AF_SPI1);
+  
+  /* 硬件SPI1引脚配置---------------------------------------------*/
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+  GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+	SPI_I2S_DeInit(SPI1);
+	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;				/* 双线双向全双工									*/
+	SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* 主SPI													*/
+	SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;											    /* SPI接收8位帧结构								*/
+	SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;																/* 串行同步时钟的空闲状态为低电平	*/
+	SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;															/* 第一个跳变沿数据被采样					*/
+	SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS由软件控制									*/
+	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_32;				/* 预分频													*/
+	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/* 数据从MSB位开始								*/
+	SPI_InitStructure.SPI_CRCPolynomial = 7;
+	SPI_Init(SPI1, &SPI_InitStructure);
+	SPI_Cmd(SPI1, ENABLE);
+}
+uint16_t SPI16_Read(SPI_TypeDef *SPIx,
+													 GPIO_TypeDef* GPIOx,
+													 uint16_t GPIO_Pin,
+													 uint8_t address)
+{
+	
+	uint16_t data=0x0000;
+  uint16_t data2=0x0000;
+	uint16_t checkbit=0x0000;
+	
+	uint16_t cmd_mo=0x0000;
+  /*看数据手册*/
+	cmd_mo=0x8000|((uint16_t)address<<1);
+	
+	/*奇校验*/
+	for(uint8_t i=0;i<16;i++)
+	{
+		if((cmd_mo>>i)&0x0001)
+			checkbit++;
+	}
+	checkbit=(uint16_t)(checkbit%2!=1);
+	SPI_Cmd(SPIx,ENABLE);		
+	GPIO_ResetBits(GPIOx,GPIO_Pin);
+	
+	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  //等待发送区空  
+	
+	SPI_I2S_SendData(SPIx, cmd_mo); 																		//通过外设SPIx发送一个byte  数据
+		
+  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  //等待接收完一个byte  
+ 
+	data =SPI_I2S_ReceiveData(SPIx); 																	        //返回通过SPIx最近接收的数据
+  
+	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  //等待发送区空  
+	
+	SPI_I2S_SendData(SPIx, checkbit); 																	//通过外设SPIx发送一个byte  数据
+		
+  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  //等待接收完一个byte  
+ 
+	data2 = SPI_I2S_ReceiveData(SPIx); 		
+		
+	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_BSY) == SET){}		
+	SPI_Cmd(SPIx,DISABLE);		
+	GPIO_SetBits(GPIOx,GPIO_Pin);
+	
+	data=(data<<11)|(data2>>5);	
+		
+	return data;
+}
+ uint16_t SPI16_Write(SPI_TypeDef *SPIx,
+									   GPIO_TypeDef* GPIOx,
+									   uint16_t GPIO_Pin,
+									   uint8_t address,
+                     uint16_t sdata)
+{
+	
+	uint16_t data=0x0000;
+  uint16_t data2=0x0000;
+	uint16_t checkbit=0x0000;
+	
+	uint16_t cmd_mo=0x0000;
+  
+	cmd_mo=0x4000|((uint16_t)address<<1);
+	
+	for(uint8_t i=0;i<16;i++)
+	{
+		if((cmd_mo>>i)&0x0001)
+			checkbit++;
+	}
+	for(uint8_t i=0;i<16;i++)
+	{
+		if((sdata>>i)&0x0001)
+			checkbit++;
+	}
+	checkbit=(uint16_t)(checkbit%2!=1);
+	SPI_Cmd(SPIx,ENABLE);	
+	
+	GPIO_ResetBits(GPIOx,GPIO_Pin);
+	
+	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  //等待发送区空  
+	
+	SPI_I2S_SendData(SPIx, cmd_mo|(sdata>>15)); 																		//通过外设SPIx发送一个byte  数据
+		
+  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  //等待接收完一个byte  
+ 
+	data =SPI_I2S_ReceiveData(SPIx); 																	        //返回通过SPIx最近接收的数据
+  
+	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  //等待发送区空  
+	
+	SPI_I2S_SendData(SPIx, ((uint16_t)checkbit)|((uint16_t)(sdata<<1))); 																	//通过外设SPIx发送一个byte  数据
+		
+  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  //等待接收完一个byte  
+ 
+	data2 = SPI_I2S_ReceiveData(SPIx); 		
+	
+  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_BSY) == SET){}	
+	SPI_Cmd(SPIx,DISABLE);		
+	GPIO_SetBits(GPIOx,GPIO_Pin);
+			
+	data=(data<<11)|(data2>>5);	
+		
+	return data;
+}
+
+#else
+void ICM_SPIInit(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
   SPI_InitTypeDef  SPI_InitStructure;
@@ -32,7 +172,7 @@ void SPI1_Init(void)
   SPI_I2S_DeInit(SPI1);
   SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;				/* 双线双向全双工									*/
   SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* 主SPI													*/
-  SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;													/* SPI接收8位帧结构								*/
+  SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;													/* SPI接收8位帧结构								*/
   SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;																/* 串行同步时钟的空闲状态为高电平	*/
   SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;															/* 第一个跳变沿数据被采样					*/
   SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS由软件控制									*/
@@ -82,39 +222,6 @@ void SPI2_Init(void)
   SPI_Cmd(SPI2, ENABLE);
 }
 
-
-
-/**
-* @brief  SPI的片选引脚配置
-*
-* @param  None
-* @retval None
-*/
-void CS_Config(void)
-{
-  GPIO_InitTypeDef GPIO_InitStructure;
-  
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE); 
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);	
-  
-  /* 配置片选引脚------------------------- */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4|GPIO_Pin_3;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  GPIO_Init(GPIOA, &GPIO_InitStructure);                 //ICM20608G
-  
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12|GPIO_Pin_15|GPIO_Pin_10;             
-  GPIO_Init(GPIOB, &GPIO_InitStructure);   
-  
-  /* Deselect : Chip Select high ---------*/
-  GPIO_SetBits(GPIOA, GPIO_Pin_4);
-  GPIO_SetBits(GPIOA, GPIO_Pin_3);
-  GPIO_SetBits(GPIOB, GPIO_Pin_12);
-  GPIO_SetBits(GPIOB, GPIO_Pin_15);
-  GPIO_SetBits(GPIOB, GPIO_Pin_10);
-}
 
 /**
 * @brief  SPI1的波特率预分频设置
@@ -284,5 +391,40 @@ uint16_t SPI_ReadAS5045(uint8_t num)
 	Delay_us(50);
 	
 	return (AS5045_Val>>12) & 0xffff;
+}
+
+
+#endif
+
+/**
+* @brief  SPI的片选引脚配置
+*
+* @param  None
+* @retval None
+*/
+void CS_Config(void)
+{
+  GPIO_InitTypeDef GPIO_InitStructure;
+  
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE); 
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);	
+  
+  /* 配置片选引脚------------------------- */
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4|GPIO_Pin_3;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+  GPIO_Init(GPIOA, &GPIO_InitStructure);                 //ICM20608G
+  
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12|GPIO_Pin_15|GPIO_Pin_10;             
+  GPIO_Init(GPIOB, &GPIO_InitStructure);   
+  
+  /* Deselect : Chip Select high ---------*/
+  GPIO_SetBits(GPIOA, GPIO_Pin_4);
+  GPIO_SetBits(GPIOA, GPIO_Pin_3);
+  GPIO_SetBits(GPIOB, GPIO_Pin_12);
+  GPIO_SetBits(GPIOB, GPIO_Pin_15);
+  GPIO_SetBits(GPIOB, GPIO_Pin_10);
 }
 

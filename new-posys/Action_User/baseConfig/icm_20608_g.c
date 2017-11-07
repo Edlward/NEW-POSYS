@@ -56,7 +56,7 @@ void ICM20608G_init(void)
       if(i>5)
       {
         i=1;
-        //USART_OUT(USART1,"init error");
+        //USART_OUT(USART6,"init error");
         //break;
       }
       data[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,registers[order*2]);

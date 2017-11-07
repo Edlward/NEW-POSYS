@@ -111,10 +111,10 @@ void USART_OUT_F(float value)
 {
   char s[10]={0};
   sprintf(s,"%f\t",value);
-  USART_OUT(USART1,s);
+  USART_OUT(USART6,s);
 }
 void USART_Enter(void){
-  USART_OUT(USART1,"\r\n");
+  USART_OUT(USART6,"\r\n");
 }
 /****************************************************************************
 * 名    称：void USART_OUT(USART_TypeDef* USARTx, uint8_t *Data,...)
@@ -124,10 +124,10 @@ Data：   发送数组
 ...:     不定参数
 * 出口参数：无
 * 说    明：格式化串口输出函数
-"\r"	回车符	   USART_OUT(USART1, "abcdefg\r")   
-"\n"	换行符	   USART_OUT(USART1, "abcdefg\r\n")
-"%s"	字符串	   USART_OUT(USART1, "字符串是：%s","abcdefg")
-"%d"	十进制	   USART_OUT(USART1, "a=%d",10)
+"\r"	回车符	   USART_OUT(USART6, "abcdefg\r")   
+"\n"	换行符	   USART_OUT(USART6, "abcdefg\r\n")
+"%s"	字符串	   USART_OUT(USART6, "字符串是：%s","abcdefg")
+"%d"	十进制	   USART_OUT(USART6, "a=%d",10)
 * 调用方法：无 
 ****************************************************************************/
 void USART_OUT(USART_TypeDef* USARTx,const char *Data,...){ 

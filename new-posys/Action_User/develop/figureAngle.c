@@ -81,13 +81,14 @@ int RoughHandle(void)
   gyr_act.z=(double)gyr_data.No1.z-drift[2];
 	
 	
-				USART_OUT_F(gyr_act.z);
   gyr_act.x=KalmanFilterX(gyr_act.x);
   gyr_act.y=KalmanFilterY(gyr_act.y);
   gyr_act.z=KalmanFilterZ(gyr_act.z);
 	
-				USART_OUT_F(gyr_act.z);
+//				USART_OUT_F(gyr_act.z);
   count++;
+				USART_OUT_F(temp_icm);
+				USART_Enter();
   if(count==(15*200+2)){
     count--;
     gyr_act.x=(double)(gyr_act.x-gyr_AVER[0]);
@@ -170,9 +171,10 @@ void updateAngle(void)
 	else if(euler.z<-180.0f)
 		euler.z+=360.0f;
 	
-				USART_OUT_F(gyr_act.z);
-				USART_OUT_F(euler.z);
-				USART_Enter();
+//				USART_OUT_F(gyr_act.z);
+//				USART_OUT_F(euler.z);
+//				USART_OUT_F(temp_icm);
+//				USART_Enter();
   /*弧度角度转换 */
 //  result_angle.x= euler.x/PI*180.0f;
 //  result_angle.y= euler.y/PI*180.0f;
@@ -249,10 +251,10 @@ void driftCoffecientInit(void){
 	driftCoffecient[2]=driftCoffecient[2]/selectCount;
 	
 #ifdef TEST_SUMMER
-	USART_OUT_F(driftCoffecient[0]);
-	USART_OUT_F(driftCoffecient[1]);
-	USART_OUT_F(driftCoffecient[2]);
-	USART_Enter();
+//	USART_OUT_F(driftCoffecient[0]);
+//	USART_OUT_F(driftCoffecient[1]);
+//	USART_OUT_F(driftCoffecient[2]);
+//	USART_Enter();
 #endif
 	
 }
@@ -262,19 +264,19 @@ float safe_asin(float v)
 if (isnan(v)) {
  
 	//为什么一直在进？
-//	USART_OUT(USART1,(uint8_t*)"zhang1\r\n");
+//	USART_OUT(USART6,(uint8_t*)"zhang1\r\n");
 return 0.0f;
  
 }
 if (v >= 1.0f) {
  
-//	USART_OUT(USART1,"2\r\n");
+//	USART_OUT(USART6,"2\r\n");
 return 3.1415926/2;
  
 }
 if (v <= -1.0f) {
  
-//	USART_OUT(USART1,"zhang3\r\n");
+//	USART_OUT(USART6,"zhang3\r\n");
 return -3.1415926/2;
  
 }
@@ -291,24 +293,24 @@ double safe_atan2(double x,double y)
 {
 	if (isnan(y)) 
 	{ 
-//	USART_OUT(USART1,"summer1\r\n");
+//	USART_OUT(USART6,"summer1\r\n");
    return 0.0f;
   }
 	
 	if(isnan(x/y))
 	{
 		if(x>0){
-//	USART_OUT(USART1,"summer2\r\n");
+//	USART_OUT(USART6,"summer2\r\n");
 		  return  3.1415926/2.0; 
 		}
 		
 		else if(x<0){
-//	USART_OUT(USART1,"summer3\r\n");
+//	USART_OUT(USART6,"summer3\r\n");
 			return -3.1415926/2.0;
 		}
 			
 		else {
-//	USART_OUT(USART1,"summer4\r\n");
+//	USART_OUT(USART6,"summer4\r\n");
 			return 0.0;
 		}
 	}

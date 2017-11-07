@@ -113,7 +113,7 @@ void TIM2_IRQHandler(void)
 		#endif
   }
 	else{
-		USART_OUT(USART1,"TIM2 error");
+		USART_OUT(USART6,"TIM2 error");
 	}
 }
 
@@ -240,13 +240,13 @@ void HardFault_Handler(void)
 		/*因为经历中断函数入栈之后，堆栈指针会减小0x10，所以平移回来（可能不具有普遍性）*/
 		r_sp = r_sp+0x10;
 		/*串口发数通知*/
-		USART_OUT(USART1,"HardFault");
+		USART_OUT(USART6,"HardFault");
   	char sPoint[2]={0};
-		USART_OUT(USART1,"%s","0x");
+		USART_OUT(USART6,"%s","0x");
 		/*获取出现异常时程序的地址*/
 		for(int i=3;i>=-28;i--){
 			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
-			USART_OUT(USART1,"%s",sPoint);
+			USART_OUT(USART6,"%s",sPoint);
 			if(i%4==0)
 				USART_Enter();
 		}

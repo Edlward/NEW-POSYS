@@ -207,8 +207,8 @@ void SetPosY(float in)
 //  if(vell[1]<-2048)
 //    vell[1]+=4096;
 //  
-//	USART_OUT(USART1,"%d\t",vell[0]);
-//	USART_OUT(USART1,"%d\r\n",vell[1]);
+//	USART_OUT(USART6,"%d\t",vell[0]);
+//	USART_OUT(USART6,"%d\r\n",vell[1]);
 
 //}
 

@@ -63,7 +63,7 @@ void DataSend(void)
   memcpy(tdata+22,valSend.data,4);
 	
 	for(i=0;i<28;i++)
-   USART_SendData(USART1,tdata[i]);	
+   USART_SendData(USART6,tdata[i]);	
 }
 
 static char buffer[20];
@@ -81,10 +81,10 @@ void bufferInit(void){
 void USART1_IRQHandler(void)
 {
   uint8_t data;
-  if(USART_GetITStatus(USART1,USART_IT_RXNE)==SET)
+  if(USART_GetITStatus(USART6,USART_IT_RXNE)==SET)
   {
-    USART_ClearITPendingBit( USART1,USART_IT_RXNE);
-    data=USART_ReceiveData(USART1);
+    USART_ClearITPendingBit( USART6,USART_IT_RXNE);
+    data=USART_ReceiveData(USART6);
     buffer[bufferI]=data;
     bufferI++;
     if(bufferI>1&&buffer[bufferI-1]=='\n'&&buffer[bufferI-2]=='\r'){
@@ -92,11 +92,11 @@ void USART1_IRQHandler(void)
     }else{
       if(buffer[0]!='A'){
         bufferInit();
-        USART_OUT(USART1,"NOT START WITH 'A'\r\n");
+        USART_OUT(USART6,"NOT START WITH 'A'\r\n");
       }
     }
   }else{
-    data=USART_ReceiveData(USART1);
+    data=USART_ReceiveData(USART6);
   }
 }
 static int heatPower=0;
@@ -148,19 +148,19 @@ void AT_CMD_Handle(void){
 		case 0:
 			break;
 		case 1:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART6,"OK\r\n");
 			break;
 		case 2:
 			SetCommand(ACCUMULATE);
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART6,"OK\r\n");
 			break;
 		case 3:
 			sendPermit=0;
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART6,"OK\r\n");
 			break;
 		case 4:
 			sendPermit=1;
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART6,"OK\r\n");
 			break;
 		case 5:
 			USART_OUT_F(temp_icm);
@@ -171,11 +171,11 @@ void AT_CMD_Handle(void){
 			break;
 		case 6:
 			SetCommand(~ACCUMULATE);
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART6,"OK\r\n");
 			break;
 		case 7:
 			heatPower=0;
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART6,"OK\r\n");
 			if(buffer[9]<='9'&&buffer[9]>='0')
 				heatPower+=(buffer[9]-'0')*10;
 			if(buffer[10]<='9'&&buffer[10]>='0')
@@ -185,18 +185,18 @@ void AT_CMD_Handle(void){
 			break;
 		case 8:
 			SetCommand(~CORRECT);
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART6,"OK\r\n");
 			break;
 		case 9:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART6,"OK\r\n");
 			TempTablePrintf();
 			break;
 		case 10:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART6,"OK\r\n");
 			SetCommand(STATIC);
 			break;
 		case 11:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART6,"OK\r\n");
 			union{
 			float   val;
 			uint8_t data[4];
@@ -218,11 +218,11 @@ void AT_CMD_Handle(void){
 			}
 			break;
 		case 12:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART6,"OK\r\n");
 			*minValue = atof(buffer+10);
-			USART_OUT(USART1,"writing\r\n");
+			USART_OUT(USART6,"writing\r\n");
 			Flash_Write(GetFlashArr(),TempTable_Num);
-			USART_OUT(USART1,"write finished\r\n");
+			USART_OUT(USART6,"write finished\r\n");
 			TempTablePrintf();
 			break;
 		case 13:
@@ -238,13 +238,13 @@ void AT_CMD_Handle(void){
 					*(varXYZ+2)=value;
 					break;
 			}		
-			USART_OUT(USART1,"writing\r\n");
+			USART_OUT(USART6,"writing\r\n");
 			Flash_Write(GetFlashArr(),TempTable_Num);
-			USART_OUT(USART1,"write finished\r\n");
+			USART_OUT(USART6,"write finished\r\n");
 			TempTablePrintf();
 			break;
 		case 14:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART6,"OK\r\n");
 			/*不结合之前的数据*/
 			if(buffer[8]=='1')
 				*chartMode=1;
@@ -252,44 +252,44 @@ void AT_CMD_Handle(void){
 			else if(buffer[8]=='0')
 				*chartMode=0;
 			else
-				USART_OUT(USART1,"mode command error\r\n");
-			USART_OUT(USART1,"writing\r\n");
+				USART_OUT(USART6,"mode command error\r\n");
+			USART_OUT(USART6,"writing\r\n");
 			Flash_Write(GetFlashArr(),TempTable_Num);
-			USART_OUT(USART1,"write finished\r\n");
+			USART_OUT(USART6,"write finished\r\n");
 			TempTablePrintf();
 			break;
 		case 15:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART6,"OK\r\n");
 			if(buffer[9]=='1')
 				*scaleMode=1;
 			else if(buffer[9]=='0')
 				*scaleMode=0;
 			else
-				USART_OUT(USART1,"scaleMode command error\r\n");
-			USART_OUT(USART1,"writing\r\n");
+				USART_OUT(USART6,"scaleMode command error\r\n");
+			USART_OUT(USART6,"writing\r\n");
 			Flash_Write(GetFlashArr(),TempTable_Num);
-			USART_OUT(USART1,"write finished\r\n");
+			USART_OUT(USART6,"write finished\r\n");
 			break;
 		case 16:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART6,"OK\r\n");
 			for(int i=10;i<15;i++){
 				if(buffer[i]=='1')
 					chartSelect[i-10]=1;
 				else if(buffer[i]=='0')
 					chartSelect[i-10]=0;
 				else
-					USART_OUT(USART1,"select %d error\r\n",i-10);
+					USART_OUT(USART6,"select %d error\r\n",i-10);
 			}
-			USART_OUT(USART1,"writing\r\n");
+			USART_OUT(USART6,"writing\r\n");
 			Flash_Write(GetFlashArr(),TempTable_Num);
-			USART_OUT(USART1,"write finished\r\n");
+			USART_OUT(USART6,"write finished\r\n");
 			break;
 		case 17:
 			break;
 		case 18:
 			break;
 		default:
-			USART_OUT(USART1,"error\r\n");
+			USART_OUT(USART6,"error\r\n");
 			break;
 	}
 	atCommand=0;

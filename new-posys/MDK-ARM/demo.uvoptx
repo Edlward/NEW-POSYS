@@ -164,7 +164,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>/</Name>
+          <Name>8J?勻?</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -198,7 +198,7 @@
           <Type>0</Type>
           <LineNumber>94</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134242556</Address>
+          <Address>134240376</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -214,52 +214,17 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>temp_w</ItemText>
+          <ItemText>temp_icm</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>temp_count,0x0A</ItemText>
+          <ItemText>data</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>temp_icm</ItemText>
-        </Ww>
-        <Ww>
-          <count>3</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>IAE_st</ItemText>
-        </Ww>
-        <Ww>
-          <count>4</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>data</ItemText>
-        </Ww>
-        <Ww>
-          <count>5</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>stdCr</ItemText>
-        </Ww>
-        <Ww>
-          <count>6</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>mean</ItemText>
-        </Ww>
-        <Ww>
-          <count>7</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>gyr_icm</ItemText>
-        </Ww>
-        <Ww>
-          <count>8</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>value</ItemText>
-        </Ww>
-        <Ww>
-          <count>9</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>buffer,0x10</ItemText>
+          <ItemText>gyr_data</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

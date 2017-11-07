@@ -43,24 +43,24 @@ void TempTablePrintf(void)
 {
   Flash_Read(GetFlashArr(),TempTable_Num);
   
-  USART_OUT(USART1,"chartWX:\r\n");
+  USART_OUT(USART6,"chartWX:\r\n");
   for(int i=0;i<5;i++)
     USART_OUT_F(*(chartWX+i));
   
-  USART_OUT(USART1,"\r\nchartWY:\r\n");
+  USART_OUT(USART6,"\r\nchartWY:\r\n");
   for(int i=0;i<5;i++)
     USART_OUT_F(*(chartWY+i));
   
-  USART_OUT(USART1,"\r\nchartWZ:\r\n");
+  USART_OUT(USART6,"\r\nchartWZ:\r\n");
   for(int i=0;i<5;i++)
     USART_OUT_F(*(chartWZ+i));
   
-  USART_OUT(USART1,"\r\nchartMode:\r\n%d",*chartMode);
-  USART_OUT(USART1,"\r\nchartSelect:\r\n%d\t%d\t%d\t%d\t%d\r\n",*chartSelect,*(chartSelect+1),*(chartSelect+2),*(chartSelect+3),*(chartSelect+4));
-  USART_OUT(USART1,"scaleMode: %d\r\n",*scaleMode);
-  USART_OUT(USART1,"minValue:\r\n");
+  USART_OUT(USART6,"\r\nchartMode:\r\n%d",*chartMode);
+  USART_OUT(USART6,"\r\nchartSelect:\r\n%d\t%d\t%d\t%d\t%d\r\n",*chartSelect,*(chartSelect+1),*(chartSelect+2),*(chartSelect+3),*(chartSelect+4));
+  USART_OUT(USART6,"scaleMode: %d\r\n",*scaleMode);
+  USART_OUT(USART6,"minValue:\r\n");
   USART_OUT_F(*(minValue));
-	USART_OUT(USART1,"\r\nvarXYZ:  ");
+	USART_OUT(USART6,"\r\nvarXYZ:  ");
   USART_OUT_F(*(varXYZ+0));
   USART_OUT_F(*(varXYZ+1));
   USART_OUT_F(*(varXYZ+2));
@@ -178,7 +178,7 @@ int UpdateVDoffTable(void)
 	
   if(TempErgodic(0)==3){
 		int32_t sum=0;
-		USART_OUT(USART1,"\r\nfinish\r\n");
+		USART_OUT(USART6,"\r\nfinish\r\n");
 		for(int i=0;i<(TempTable_max-TempTable_min)*10;i++)
 		{
 			if(temp_count[i]>500){
@@ -221,7 +221,7 @@ int UpdateVDoffTable(void)
     *chartWY=(sum*paraXY[1]-paraX*paraY[1])/(sum*paraX2-paraX*paraX);
     *chartWZ=(sum*paraXY[2]-paraX*paraY[2])/(sum*paraX2-paraX*paraX);
     Flash_Write(GetFlashArr(),TempTable_Num);
-    USART_OUT(USART1,"Flash Update end\r\n");
+    USART_OUT(USART6,"Flash Update end\r\n");
     TempTablePrintf();
 		{
 			for(int i=0;i<3;i++){

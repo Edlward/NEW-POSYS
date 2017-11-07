@@ -138,7 +138,6 @@ void AT_CMD_Judge(void){
   else 
     atCommand=666;
   
-  bufferInit();
 }
 extern gyro_t gyr_data;
 extern float  temp_icm;
@@ -294,6 +293,7 @@ void AT_CMD_Handle(void){
 			break;
 	}
 	atCommand=0;
+	bufferInit();
 }
 
 int getHeatPower(void){

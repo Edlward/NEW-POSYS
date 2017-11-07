@@ -32,7 +32,7 @@ void ADI_SPIInit(void)
 	SPI_I2S_DeInit(SPI1);
 	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;				/* 双线双向全双工									*/
 	SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* 主SPI													*/
-	SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;											    /* SPI接收8位帧结构								*/
+	SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;											    /* SPI接收8位帧结构								*/
 	SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;																/* 串行同步时钟的空闲状态为低电平	*/
 	SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;															/* 第一个跳变沿数据被采样					*/
 	SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS由软件控制									*/
@@ -172,9 +172,9 @@ void ICM_SPIInit(void)
   SPI_I2S_DeInit(SPI1);
   SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;				/* 双线双向全双工									*/
   SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* 主SPI													*/
-  SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;													/* SPI接收8位帧结构								*/
-  SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;																/* 串行同步时钟的空闲状态为高电平	*/
-  SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;															/* 第一个跳变沿数据被采样					*/
+	SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;													/* SPI接收8位帧结构								*/
+  SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;																/* 串行同步时钟的空闲状态为低电平	*/
+  SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;															/* 第一个跳变沿数据被采样					*/
   SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS由软件控制									*/
   SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16;				/* 预分频													*/
   SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/* 数据从MSB位开始								*/

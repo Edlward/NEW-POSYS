@@ -81,10 +81,12 @@ int RoughHandle(void)
   gyr_act.z=(double)gyr_data.No1.z-drift[2];
 	
 	
+				USART_OUT_F(gyr_act.z);
   gyr_act.x=KalmanFilterX(gyr_act.x);
   gyr_act.y=KalmanFilterY(gyr_act.y);
   gyr_act.z=KalmanFilterZ(gyr_act.z);
 	
+				USART_OUT_F(gyr_act.z);
   count++;
   if(count==(15*200+2)){
     count--;
@@ -94,8 +96,7 @@ int RoughHandle(void)
 		
 		#ifdef TEST_SUMMER
 //		if(sendPermit){
-//			USART_OUT_F(gyr_act.x);
-//			USART_OUT_F(gyr_act.y);
+
 //		}
 		#endif
     return 1;
@@ -108,7 +109,7 @@ int RoughHandle(void)
 void TemporaryHandle(void)
 {
   static double accInit[3]={0.0,0.0,0.0};
-  if(count>=12*200&&count<15*200){
+  if(count>=10*200&&count<15*200){
     gyr_AVER[0]=gyr_AVER[0]+gyr_act.x;
     gyr_AVER[1]=gyr_AVER[1]+gyr_act.y;
     gyr_AVER[2]=gyr_AVER[2]+gyr_act.z;
@@ -118,12 +119,12 @@ void TemporaryHandle(void)
   }
   else if(count==15*200){
     count++;
-    gyr_AVER[0]=gyr_AVER[0]/(3.f*200.f);
-    gyr_AVER[1]=gyr_AVER[1]/(3.f*200.f);
-    gyr_AVER[2]=gyr_AVER[2]/(3.f*200.f);
-    accInit[0]=accInit[0]/(3.f*200.f);
-    accInit[1]=accInit[1]/(3.f*200.f);
-    accInit[2]=accInit[2]/(3.f*200.f);
+    gyr_AVER[0]=gyr_AVER[0]/(5.f*200.f);
+    gyr_AVER[1]=gyr_AVER[1]/(5.f*200.f);
+    gyr_AVER[2]=gyr_AVER[2]/(5.f*200.f);
+    accInit[0]=accInit[0]/(5.f*200.f);
+    accInit[1]=accInit[1]/(5.f*200.f);
+    accInit[2]=accInit[2]/(5.f*200.f);
     acc_sum=sqrt(accInit[0]*accInit[0]+accInit[1]*accInit[1]+accInit[2]*accInit[2]);
     /* 读取加速度的值 */
     //icm_update_AccRad(accInit,&acc_angle);
@@ -133,36 +134,45 @@ void TemporaryHandle(void)
 
 void updateAngle(void)
 {	
-  static three_axis euler;            //欧垃角
+  static three_axis_d euler;            //欧垃角
 	float maxStaticValue=*minValue;
 	
   if((GetCommand()&STATIC)&&(gyr_act.z<0.2f)){
 		maxStaticValue=0.15f;
 	}
 	
-  if(fabs(gyr_act.x)<maxStaticValue)//单位 °/s
-    gyr_act.x=0.f;	
-  if(fabs(gyr_act.y)<maxStaticValue)//单位 °/s
-    gyr_act.y=0.f;	
-  if(fabs(gyr_act.z)<maxStaticValue)//单位 °/s
-    gyr_act.z=0.f;
+//  if(fabs(gyr_act.x)<maxStaticValue)//单位 °/s
+//    gyr_act.x=0.f;	
+//  if(fabs(gyr_act.y)<maxStaticValue)//单位 °/s
+//    gyr_act.y=0.f;	
+//  if(fabs(gyr_act.z)<maxStaticValue)//单位 °/s
+//    gyr_act.z=0.f;
 	
   /*角速度积分成四元数*/
-  quaternion=QuaternionInt(quaternion,gyr_act);
- // quaternion=QuaternionInt1(quaternion,gyr_act);
-  /* 四元数转换成欧垃角 */
-  euler=Quaternion_to_Euler(quaternion);
+//  quaternion=QuaternionInt(quaternion,gyr_act);
+// // quaternion=QuaternionInt1(quaternion,gyr_act);
+//  /* 四元数转换成欧垃角 */
+//  euler=Quaternion_to_Euler(quaternion);
 
 //  if(JudgeAcc()){
 //    euler.x=acc_angle.x;
 //		euler.y=acc_angle.y;
 //    quaternion=Euler_to_Quaternion(euler);
 //  }
-//		euler.z=euler.z+gyr_act.z*0.005;
+	static int timepp=0;
+	timepp++;
+	if(timepp<60*200*60)
+		euler.z=euler.z+gyr_act.z*0.005;
+	else
+		;
 	if(euler.z>180.0f)
 		euler.z-=360.0f;
 	else if(euler.z<-180.0f)
 		euler.z+=360.0f;
+	
+				USART_OUT_F(gyr_act.z);
+				USART_OUT_F(euler.z);
+				USART_Enter();
   /*弧度角度转换 */
 //  result_angle.x= euler.x/PI*180.0f;
 //  result_angle.y= euler.y/PI*180.0f;
@@ -208,7 +218,7 @@ int JudgeAcc(void)
     return 0;
 }	
 //测量值
-const double stdCoffeicent[3]={ 0.273632,0.513072, -0.041672 };
+const double stdCoffeicent[3]={ 0.973632,0.513072, 0.2672 };
 void driftCoffecientInit(void){
 	int selectCount=0;
 	switch(*chartMode){
@@ -239,10 +249,10 @@ void driftCoffecientInit(void){
 	driftCoffecient[2]=driftCoffecient[2]/selectCount;
 	
 #ifdef TEST_SUMMER
-//	USART_OUT_F(driftCoffecient[0]);
-//	USART_OUT_F(driftCoffecient[1]);
-//	USART_OUT_F(driftCoffecient[2]);
-//	USART_Enter();
+	USART_OUT_F(driftCoffecient[0]);
+	USART_OUT_F(driftCoffecient[1]);
+	USART_OUT_F(driftCoffecient[2]);
+	USART_Enter();
 #endif
 	
 }

@@ -66,9 +66,6 @@ void init(void)
 		ICM20608G_init();
 	#endif
 	
-  static unsigned int  ReadValueTemp;
-	ReadValueTemp=ADXRS453SingleRead(ADI_PID1);
-	
   ICM_HeatingPower(0);
   Delay_ms(100);//过滤开始时的错误数据
   driftCoffecientInit();

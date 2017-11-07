@@ -266,9 +266,6 @@ void ADI_UpdateData(gyro_t * gyr_temp,float * temp_temp)
 	gyr_temp->No1.z=(int16_t)(rawDataRead(0x02))/80.0f;
 	*temp_temp=(int16_t)(rawDataRead(0x0C))/64;
 	
-	USART_OUT_F(gyr_temp->No1.z);
-	USART_OUT_F(*temp_temp);
-	USART_Enter();
 }
 
 #endif

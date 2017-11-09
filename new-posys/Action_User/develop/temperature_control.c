@@ -14,17 +14,20 @@
 */
 
 extern float  temp_icm;
+float Kp_summer = 175.f;
 void temp_pid_ctr(float val_ex)
 {
   static float err;
   static float err_sum;
   static float err_last;
   static float err_v;
-  float Kp_summer = 13.0f;
-  float Ki_summer = 0.007f;
-  float Kd_summer = 0.00f;
+//  float Ki_summer = 0.007f;
+//  float Kd_summer = 0.02f;
+  float Ki_summer = 0.00f;
+  float Kd_summer = 0.0f;
   
   static double ctr;
+	
   /*误差*/
   err=val_ex-temp_icm;
   /*积分*/
@@ -33,8 +36,8 @@ void temp_pid_ctr(float val_ex)
   err_v=err-err_last;
   err_last=err;
   
-  if(val_ex-temp_icm>3)
-    Kp_summer=16;
+//  if(val_ex-temp_icm>3)
+//    Kp_summer=33;
   /*
 #define Kp  15.0f
 #define Ki  0.007f
@@ -55,13 +58,25 @@ void temp_pid_ctr(float val_ex)
     ctr=Kp_summer*err+Ki_summer*err_sum+Kd_summer*err_v;
   }
   /*调节上限*/
-  if(ctr>60)
+  if(ctr>100)
   {
-    ctr=60;
+    ctr=100;
   }
+	
+//	static int time=0;
+//	time++;	
+//	ctr=time/200.0+4;
+	
+//	ctr=15.0;
+	
+	
+	
   /*#define ICM_HeatingPower(a)  TIM_SetCompare3(TIM3,a/100.0*1000); */
   /*之所以最大值为1000,是因为该定时器的装载值为1000*/
   ICM_HeatingPower(ctr);
+	USART_OUT_F(ctr);
+	USART_OUT_F(temp_icm);
+  USART_Enter();
 }
 
 //uint32_t Heating(void){

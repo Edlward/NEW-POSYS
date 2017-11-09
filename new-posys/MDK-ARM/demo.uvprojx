@@ -386,19 +386,14 @@
               <FilePath>..\Action_User\main.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f4xx_it.c</FileName>
+              <FileName>figureAngle.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Action_User\stm32f4xx_it.c</FilePath>
+              <FilePath>..\Action_User\develop\figureAngle.c</FilePath>
             </File>
             <File>
               <FileName>buildExcel.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Action_User\develop\buildExcel.c</FilePath>
-            </File>
-            <File>
-              <FileName>figureAngle.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Action_User\develop\figureAngle.c</FilePath>
             </File>
             <File>
               <FileName>figurePos.c</FileName>
@@ -409,6 +404,11 @@
               <FileName>temperature_control.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Action_User\develop\temperature_control.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Action_User\stm32f4xx_it.c</FilePath>
             </File>
             <File>
               <FileName>customer.c</FileName>

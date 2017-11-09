@@ -87,8 +87,6 @@ int RoughHandle(void)
 	
 //				USART_OUT_F(gyr_act.z);
   count++;
-				USART_OUT_F(temp_icm);
-				USART_Enter();
   if(count==(15*200+2)){
     count--;
     gyr_act.x=(double)(gyr_act.x-gyr_AVER[0]);

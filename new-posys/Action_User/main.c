@@ -69,7 +69,11 @@ void init(void)
   ICM_HeatingPower(0);
   Delay_ms(100);//过滤开始时的错误数据
   driftCoffecientInit();
+	
+	//delay_ms(7000);
+	
   TIM_Init(TIM2,999,83,0,0);					//主周期定时5ms
+	
 }
 int main(void)
 {
@@ -80,6 +84,7 @@ int main(void)
   {
     while(getTimeFlag())
     {
+			
 			temp_pid_ctr(40.f);
 	//		GPIO_ResetBits(GPIOA,GPIO_Pin_1);
       //				uint8_t test[3];

@@ -1,10 +1,10 @@
 --cpu Cortex-M4.fp
 ".\szw_stm32f407\main.o"
-".\szw_stm32f407\stm32f4xx_it.o"
-".\szw_stm32f407\buildexcel.o"
 ".\szw_stm32f407\figureangle.o"
+".\szw_stm32f407\buildexcel.o"
 ".\szw_stm32f407\figurepos.o"
 ".\szw_stm32f407\temperature_control.o"
+".\szw_stm32f407\stm32f4xx_it.o"
 ".\szw_stm32f407\customer.o"
 ".\szw_stm32f407\icm_20608_g.o"
 ".\szw_stm32f407\adxrs453z.o"

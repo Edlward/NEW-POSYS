@@ -67,7 +67,7 @@ void init(void)
 	#endif
 	
   ICM_HeatingPower(0);
-  Delay_ms(100);//过滤开始时的错误数据
+  Delay_ms(7000);//过滤开始时的错误数据
   driftCoffecientInit();
   TIM_Init(TIM2,999,83,0,0);					//主周期定时5ms
 }
@@ -88,6 +88,8 @@ int main(void)
 			
 			//AT指令处理
 			AT_CMD_Handle();
+			
+			temp_pid_ctr(45.0f);
 			
       if(!(GetCommand()&CORRECT)){
         //计算角度 

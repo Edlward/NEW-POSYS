@@ -14,17 +14,23 @@
 */
 
 extern float  temp_icm;
+/*
+分别输入设备名称,期望温度,真实温度
+*/
+
+extern float  temp_icm;
 void temp_pid_ctr(float val_ex)
 {
   static float err;
   static float err_sum;
   static float err_last;
   static float err_v;
-  float Kp_summer = 13.0f;
-  float Ki_summer = 0.007f;
-  float Kd_summer = 0.00f;
+  float Kp_summer = 12.0f;
+  float Ki_summer = 0.00125f;
+  float Kd_summer = 900.0f;
   
   static double ctr;
+	
   /*误差*/
   err=val_ex-temp_icm;
   /*积分*/
@@ -33,19 +39,12 @@ void temp_pid_ctr(float val_ex)
   err_v=err-err_last;
   err_last=err;
   
-  if(val_ex-temp_icm>3)
-    Kp_summer=16;
-  /*
-#define Kp  15.0f
-#define Ki  0.007f
-#define Kd  0.02f
-  */
-  /*积分量的阈值*/
-  if(err_sum>70.0f/Ki_summer)
-    err_sum=70.0f/Ki_summer;
-  if(err_sum<-70.0f/Ki_summer)
-    err_sum=-70.0f/Ki_summer;
-  
+//  /*积分量的阈值为70*/
+//  if(err_sum>70.0f/Ki_summer)
+//    err_sum=70.0f/Ki_summer;
+//  if(err_sum<-70.0f/Ki_summer)
+//    err_sum=-70.0f/Ki_summer;
+//  
   if(ctr<0)
   {
     ctr=0;
@@ -53,15 +52,22 @@ void temp_pid_ctr(float val_ex)
   else
   {
     ctr=Kp_summer*err+Ki_summer*err_sum+Kd_summer*err_v;
+		/*调节上限*/
+		if(ctr>100)
+		{
+			ctr=100;
+		}
   }
-  /*调节上限*/
-  if(ctr>60)
-  {
-    ctr=60;
-  }
+	
   /*#define ICM_HeatingPower(a)  TIM_SetCompare3(TIM3,a/100.0*1000); */
   /*之所以最大值为1000,是因为该定时器的装载值为1000*/
   ICM_HeatingPower(ctr);
+	USART_OUT_F(Kp_summer*err);
+	USART_OUT_F(Ki_summer*err_sum);
+	USART_OUT_F(Kd_summer*err_v);
+	USART_OUT_F(ctr);
+	USART_OUT_F(temp_icm);
+  USART_Enter();
 }
 
 //uint32_t Heating(void){

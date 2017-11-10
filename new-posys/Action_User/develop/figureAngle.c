@@ -81,12 +81,12 @@ int RoughHandle(void)
   gyr_act.z=(double)gyr_data.No1.z-drift[2];
 	
 	
-				USART_OUT_F(gyr_act.z);
+	//			USART_OUT_F(gyr_act.z);
   gyr_act.x=KalmanFilterX(gyr_act.x);
   gyr_act.y=KalmanFilterY(gyr_act.y);
   gyr_act.z=KalmanFilterZ(gyr_act.z);
 	
-				USART_OUT_F(gyr_act.z);
+	//			USART_OUT_F(gyr_act.z);
   count++;
   if(count==(15*200+2)){
     count--;
@@ -170,9 +170,9 @@ void updateAngle(void)
 	else if(euler.z<-180.0f)
 		euler.z+=360.0f;
 	
-				USART_OUT_F(gyr_act.z);
-				USART_OUT_F(euler.z);
-				USART_Enter();
+		//		USART_OUT_F(gyr_act.z);
+	//			USART_OUT_F(euler.z);
+	//			USART_Enter();
   /*»¡¶È½Ç¶È×ª»» */
 //  result_angle.x= euler.x/PI*180.0f;
 //  result_angle.y= euler.y/PI*180.0f;
@@ -249,10 +249,10 @@ void driftCoffecientInit(void){
 	driftCoffecient[2]=driftCoffecient[2]/selectCount;
 	
 #ifdef TEST_SUMMER
-	USART_OUT_F(driftCoffecient[0]);
-	USART_OUT_F(driftCoffecient[1]);
-	USART_OUT_F(driftCoffecient[2]);
-	USART_Enter();
+//	USART_OUT_F(driftCoffecient[0]);
+//	USART_OUT_F(driftCoffecient[1]);
+//	USART_OUT_F(driftCoffecient[2]);
+//	USART_Enter();
 #endif
 	
 }

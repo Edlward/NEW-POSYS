@@ -76,18 +76,17 @@ int RoughHandle(void)
   drift[1]=driftCoffecient[1]*(temp_icm/100.f);
   drift[2]=driftCoffecient[2]*(temp_icm/100.f);
   
-  gyr_act.x=(double)gyr_data.No1.x-drift[0];
-  gyr_act.y=(double)gyr_data.No1.y-drift[1];
-  gyr_act.z=(double)gyr_data.No1.z-drift[2];
+//  gyr_act.x=(double)gyr_data.No1.x-drift[0];
+//  gyr_act.y=(double)gyr_data.No1.y-drift[1];
+//  gyr_act.z=(double)gyr_data.No1.z-drift[2];
 	
 	
-  gyr_act.x=KalmanFilterX(gyr_act.x);
-  gyr_act.y=KalmanFilterY(gyr_act.y);
-  gyr_act.z=KalmanFilterZ(gyr_act.z);
+  gyr_act.x=KalmanFilterX(gyr_data.No1.x);
+  gyr_act.y=KalmanFilterY(gyr_data.No1.y);
+  gyr_act.z=KalmanFilterZ(gyr_data.No1.z);
 	
-//				USART_OUT_F(gyr_act.z);
   count++;
-  if(count==(15*200+2)){
+  if(count==(25*200+2)){
     count--;
     gyr_act.x=(double)(gyr_act.x-gyr_AVER[0]);
     gyr_act.y=(double)(gyr_act.y-gyr_AVER[1]);
@@ -108,7 +107,7 @@ int RoughHandle(void)
 void TemporaryHandle(void)
 {
   static double accInit[3]={0.0,0.0,0.0};
-  if(count>=10*200&&count<15*200){
+  if(count>=20*200&&count<25*200){
     gyr_AVER[0]=gyr_AVER[0]+gyr_act.x;
     gyr_AVER[1]=gyr_AVER[1]+gyr_act.y;
     gyr_AVER[2]=gyr_AVER[2]+gyr_act.z;
@@ -116,7 +115,7 @@ void TemporaryHandle(void)
     accInit[1]=accInit[1]+acc_data.No1.y;
     accInit[2]=accInit[2]+acc_data.No1.z;
   }
-  else if(count==15*200){
+  else if(count==25*200){
     count++;
     gyr_AVER[0]=gyr_AVER[0]/(5.f*200.f);
     gyr_AVER[1]=gyr_AVER[1]/(5.f*200.f);
@@ -168,8 +167,9 @@ void updateAngle(void)
 		euler.z-=360.0f;
 	else if(euler.z<-180.0f)
 		euler.z+=360.0f;
+	USART_OUT_F(gyr_act.z);
+	USART_OUT_F(euler.z);
 	
-//				USART_OUT_F(gyr_act.z);
 //				USART_OUT_F(euler.z);
 //				USART_OUT_F(temp_icm);
 //				USART_Enter();
@@ -326,7 +326,7 @@ double KalmanFilterZ(double measureData)
   static double Kk;           //滤波增益系数
   
   static double Q=0.003;       //系统噪声        
-  double R=(double)varXYZ[2];      //测量噪声 
+  double R=0.003;      //测量噪声 
   static double IAE_st[50];    //记录的新息
   static double data=0.0;
   double Cr=0;                //新息的方差

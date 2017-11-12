@@ -83,7 +83,10 @@ int RoughHandle(void)
 	
   gyr_act.x=KalmanFilterX(gyr_data.No1.x);
   gyr_act.y=KalmanFilterY(gyr_data.No1.y);
+	USART_OUT_F(gyr_act.z);
   gyr_act.z=KalmanFilterZ(gyr_data.No1.z);
+	USART_OUT_F(gyr_act.z);
+  USART_Enter();
 	
   count++;
   if(count==(25*200+2)){

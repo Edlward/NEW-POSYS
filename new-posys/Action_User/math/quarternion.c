@@ -157,15 +157,15 @@
 #include "figureAngle.h"
 
 
-
+/*这是惯性导航上的算法，人家是  z  x  y 旋转的，所以x是-90到90*/
 /**
 * @brief  将四元数转换为欧拉角
 * @param  quaternion: 需要转换的四元数
 * @retval 四元数对应的欧拉角
 */
-three_axis Quaternion_to_Euler(Quarternion quaternion)
+three_axis_d Quaternion_to_Euler(Quarternion quaternion)
 {
-  three_axis Rad;
+  three_axis_d Rad;
   float q0,q1,q2,q3;
   float sum;
   
@@ -195,20 +195,10 @@ Quarternion Euler_to_Quaternion(three_axis Rad)
 {
   Quarternion quaternion;
   
-  quaternion.q0=0.5f*__sqrtf(1+arm_cos_f32(Rad.y)*arm_cos_f32(Rad.z)+arm_cos_f32(Rad.x)*arm_cos_f32(Rad.z)+arm_cos_f32(Rad.x)*arm_cos_f32(Rad.y)+arm_sin_f32(Rad.x)*arm_sin_f32(Rad.y)*arm_sin_f32(Rad.z));
-  if(quaternion.q0==0.0)
-  {
-    quaternion.q0=1.0;
-    quaternion.q1=0.0;
-    quaternion.q2=0.0;
-    quaternion.q3=0.0;
-  }
-  else
-  {
-    quaternion.q1=(arm_sin_f32(Rad.x)+arm_sin_f32(Rad.y)*arm_sin_f32(Rad.z)+arm_sin_f32(Rad.x)*arm_cos_f32(Rad.y)*arm_cos_f32(Rad.z))/4.f/quaternion.q0;
-    quaternion.q2=(arm_sin_f32(Rad.y)*arm_cos_f32(Rad.z)-arm_cos_f32(Rad.y)*arm_sin_f32(Rad.z)*arm_sin_f32(Rad.x)+arm_sin_f32(Rad.y)*arm_cos_f32(Rad.x))/4.f/quaternion.q0;
-    quaternion.q3=(-arm_cos_f32(Rad.y)*arm_sin_f32(Rad.z)+arm_sin_f32(Rad.y)*arm_cos_f32(Rad.z)*arm_sin_f32(Rad.x)-arm_sin_f32(Rad.z)*arm_cos_f32(Rad.x))/4.f/quaternion.q0;
-  }
+	quaternion.q0=arm_cos_f32(Rad.x/2)*arm_cos_f32(Rad.y/2)*arm_cos_f32(Rad.z/2)+arm_sin_f32(Rad.x/2)*arm_sin_f32(Rad.y/2)*arm_sin_f32(Rad.z/2);
+	quaternion.q1=arm_sin_f32(Rad.x/2)*arm_cos_f32(Rad.y/2)*arm_cos_f32(Rad.z/2)-arm_cos_f32(Rad.x/2)*arm_sin_f32(Rad.y/2)*arm_sin_f32(Rad.z/2);
+	quaternion.q2=arm_cos_f32(Rad.x/2)*arm_sin_f32(Rad.y/2)*arm_cos_f32(Rad.z/2)+arm_sin_f32(Rad.x/2)*arm_cos_f32(Rad.y/2)*arm_sin_f32(Rad.z/2);
+	quaternion.q3=-arm_cos_f32(Rad.x/2)*arm_cos_f32(Rad.y/2)*arm_sin_f32(Rad.z/2)-arm_sin_f32(Rad.x/2)*arm_sin_f32(Rad.y/2)*arm_cos_f32(Rad.z/2);
   
   return quaternion; 
 }

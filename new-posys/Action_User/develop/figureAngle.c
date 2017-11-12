@@ -80,11 +80,12 @@ int RoughHandle(void)
   gyr_act.y=(double)gyr_data.No1.y-drift[1];
   gyr_act.z=(double)gyr_data.No1.z-drift[2];
 	
-	
 	//			USART_OUT_F(gyr_act.z);
   gyr_act.x=KalmanFilterX(gyr_act.x);
   gyr_act.y=KalmanFilterY(gyr_act.y);
   gyr_act.z=KalmanFilterZ(gyr_act.z);
+	//			USART_OUT_F(gyr_act.z);
+	//			USART_Enter();
 	
 	//			USART_OUT_F(gyr_act.z);
   count++;
@@ -149,35 +150,24 @@ void updateAngle(void)
 //    gyr_act.z=0.f;
 	
   /*角速度积分成四元数*/
-//  quaternion=QuaternionInt(quaternion,gyr_act);
+  quaternion=QuaternionInt(quaternion,gyr_act);
 // // quaternion=QuaternionInt1(quaternion,gyr_act);
 //  /* 四元数转换成欧垃角 */
-//  euler=Quaternion_to_Euler(quaternion);
+  euler=Quaternion_to_Euler(quaternion);
 
 //  if(JudgeAcc()){
 //    euler.x=acc_angle.x;
 //		euler.y=acc_angle.y;
 //    quaternion=Euler_to_Quaternion(euler);
 //  }
-	static int timepp=0;
-	timepp++;
-	if(timepp<60*200*60)
-		euler.z=euler.z+gyr_act.z*0.005;
-	else
-		;
-	if(euler.z>180.0f)
-		euler.z-=360.0f;
-	else if(euler.z<-180.0f)
-		euler.z+=360.0f;
 	
 		//		USART_OUT_F(gyr_act.z);
-	//			USART_OUT_F(euler.z);
-	//			USART_Enter();
   /*弧度角度转换 */
 //  result_angle.x= euler.x/PI*180.0f;
 //  result_angle.y= euler.y/PI*180.0f;
 		result_angle.z=-euler.z;
 }
+
 void SetAngle(float angle){
 	three_axis euler;
 	euler.x=0.0f;
@@ -256,31 +246,54 @@ void driftCoffecientInit(void){
 #endif
 	
 }
+
 float safe_asin(float v)
 {
- 
-if (isnan(v)) {
- 
-	//为什么一直在进？
-//	USART_OUT(USART1,(uint8_t*)"zhang1\r\n");
-return 0.0f;
- 
+	int error=0;
+	if (isnan(v)) 
+		error=1;
+	else if (v >= 1.0f) 
+		error=2;
+	else if (v <= -1.0f) 
+		error=3;
+	
+	if(error!=0)
+	{
+		uint32_t r_sp ;
+			/*判断发生异常时使用MSP还是PSP*/		
+		if(__get_PSP()!=0x00) //获取SP的值
+			r_sp = __get_PSP(); 
+		else
+			r_sp = __get_MSP(); 
+		/*因为经历中断函数入栈之后，堆栈指针会减小0x10，所以平移回来（可能不具有普遍性）*/
+		r_sp = r_sp+0x10;
+		/*串口发数通知*/
+		USART_OUT(USART1,"sinFault %d",error);
+		char sPoint[2]={0};
+		USART_OUT(USART1,"%s","0x");
+		/*获取出现异常时程序的地址*/
+		for(int i=3;i>=-28;i--){
+			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
+			USART_OUT(USART1,"%s",sPoint);
+			if(i%4==0)
+				USART_Enter();
+		}
+		/*发送回车符*/
+		USART_Enter();
+		switch(error)
+		{
+			case 1:
+				return 0.0;
+			case 2:
+				return 3.1415926/2;
+			case 3:
+				return -3.1415926/2;
+		}
+	}else
+			return asin(v);
+	return asin(v);
 }
-if (v >= 1.0f) {
- 
-//	USART_OUT(USART1,"2\r\n");
-return 3.1415926/2;
- 
-}
-if (v <= -1.0f) {
- 
-//	USART_OUT(USART1,"zhang3\r\n");
-return -3.1415926/2;
- 
-}
-return asin(v);
- 
-}
+
 /**
   * @brief  优化后的反三角函数
   * @param  x: tan=x/y
@@ -288,31 +301,58 @@ return asin(v);
   * @retval 得到反正切的值
   */
 double safe_atan2(double x,double y)
-{
-	if (isnan(y)) 
+{	
+	int error=0;
+
+		if (isnan(y)) 
 	{ 
-//	USART_OUT(USART1,"summer1\r\n");
-   return 0.0f;
-  }
-	
-	if(isnan(x/y))
+		error=1;
+  }else if(isnan(x/y))
 	{
-		if(x>0){
-//	USART_OUT(USART1,"summer2\r\n");
-		  return  3.1415926/2.0; 
-		}
-		
-		else if(x<0){
-//	USART_OUT(USART1,"summer3\r\n");
-			return -3.1415926/2.0;
-		}
-			
-		else {
-//	USART_OUT(USART1,"summer4\r\n");
-			return 0.0;
-		}
+		if(x>0)
+			error=2;
+		else if(x<0)
+			error=3;
+		else 
+			error=4;
 	}
 	
+	if(error!=0)
+	{
+		uint32_t r_sp ;
+			/*判断发生异常时使用MSP还是PSP*/		
+		if(__get_PSP()!=0x00) //获取SP的值
+			r_sp = __get_PSP(); 
+		else
+			r_sp = __get_MSP(); 
+		/*因为经历中断函数入栈之后，堆栈指针会减小0x10，所以平移回来（可能不具有普遍性）*/
+		r_sp = r_sp+0x10;
+		/*串口发数通知*/
+		USART_OUT(USART1,"tanFault %d",error);
+		char sPoint[2]={0};
+		USART_OUT(USART1,"%s","0x");
+		/*获取出现异常时程序的地址*/
+		for(int i=3;i>=-28;i--){
+			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
+			USART_OUT(USART1,"%s",sPoint);
+			if(i%4==0)
+				USART_Enter();
+		}
+		/*发送回车符*/
+		USART_Enter();
+		switch(error)
+		{
+			case 1:
+				return 0.0f;
+			case 2:
+				return  3.1415926/2.0; 
+			case 3:
+				return -3.1415926/2.0;
+			case 4:
+				return 0.0;
+		}
+	}else
+		return atan2(x,y);
 	return atan2(x,y);
 }
 /*算法中 H,φ,Γ均为一*/

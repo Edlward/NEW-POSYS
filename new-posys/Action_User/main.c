@@ -34,19 +34,11 @@ void init(void)
   /* 陀螺仪加热电阻PWM初始化--------------------------*/
   pwm_init(999, 83);//此时PWM的频率为84MHz/(83+1)/(999+1)=1KHz
   
-	#ifdef ADXRS453Z
-		/* SPI初始化---------------------------------------*/
-		//单轮模式时磁编码器的SPI初始化
-		ADI_SPIInit();
-		//单轮模式时陀螺仪的SPI初始化
-		//SPI2_Init();
-	#else
 		/* SPI初始化---------------------------------------*/
 		//单轮模式时磁编码器的SPI初始化
 		ICM_SPIInit();
 		//单轮模式时陀螺仪的SPI初始化
 		SPI2_Init();
-	#endif
 	
   //片选的初始化
   CS_Config();
@@ -60,14 +52,9 @@ void init(void)
   /* ICM20608G模块初始化-----------------------------------*/
   Flash_Init();
 	
-	#ifdef ADXRS453Z
-		ADXRS453StartUp();
-	#else
-		ICM20608G_init();
-	#endif
+	ICM20608G_init();
 	
   ICM_HeatingPower(0);
-  Delay_ms(7000);//过滤开始时的错误数据
   driftCoffecientInit();
   TIM_Init(TIM2,999,83,0,0);					//主周期定时5ms
 }

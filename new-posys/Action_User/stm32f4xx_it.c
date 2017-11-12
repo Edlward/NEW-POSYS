@@ -71,19 +71,6 @@ void TIM2_IRQHandler(void)
       timeCount=0;
       timeFlag=1;
     }
-		#ifdef ADXRS453Z
-			ADI_UpdateData(&gyr_temp,&temp_temp);
-      gyro_sum.No1.z=gyro_sum.No1.z+gyr_temp.No1.z;
-      if(timeCnt==5){
-				readOrder++;
-        timeCnt=0;
-        gyr_data.No1.z=gyro_sum.No1.z/5.f;
-				temp_icm=temp_sum/5.f;
-				temp_icm=KalmanFilterT(temp_icm);
-        gyro_sum.No1.z=0.f;
-				temp_sum=0.f;
-      }
-		#else
       icm_update_gyro_rate();
 			icm_update_temp();
 			icm_read_temp(&temp_temp);
@@ -110,7 +97,6 @@ void TIM2_IRQHandler(void)
         gyro_sum.No1.z=0.f;
 				temp_sum=0.f;
       }
-		#endif
   }
 	else{
 		USART_OUT(USART1,"TIM2 error");

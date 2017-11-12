@@ -62,12 +62,6 @@ void temp_pid_ctr(float val_ex)
   /*#define ICM_HeatingPower(a)  TIM_SetCompare3(TIM3,a/100.0*1000); */
   /*之所以最大值为1000,是因为该定时器的装载值为1000*/
   ICM_HeatingPower(ctr);
-	USART_OUT_F(Kp_summer*err);
-	USART_OUT_F(Ki_summer*err_sum);
-	USART_OUT_F(Kd_summer*err_v);
-	USART_OUT_F(ctr);
-	USART_OUT_F(temp_icm);
-  USART_Enter();
 }
 
 //uint32_t Heating(void){

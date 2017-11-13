@@ -83,7 +83,7 @@ int RoughHandle(void)
 	
   gyr_act.x=KalmanFilterX(gyr_data.No1.x);
   gyr_act.y=KalmanFilterY(gyr_data.No1.y);
-	USART_OUT_F(gyr_act.z);
+	USART_OUT_F(gyr_data.No1.z);
   gyr_act.z=KalmanFilterZ(gyr_data.No1.z);
 	USART_OUT_F(gyr_act.z);
   USART_Enter();
@@ -170,8 +170,6 @@ void updateAngle(void)
 		euler.z-=360.0f;
 	else if(euler.z<-180.0f)
 		euler.z+=360.0f;
-	USART_OUT_F(gyr_act.z);
-	USART_OUT_F(euler.z);
 	
 //				USART_OUT_F(euler.z);
 //				USART_OUT_F(temp_icm);

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\SZW_STM32F407\demo.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\SZW_STM32F407\demo.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060300: Last Updated: Sun Nov 12 22:21:33 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060300: Last Updated: Sun Nov 12 22:26:01 2017
 <BR><P>
 <H3>Maximum Stack Usage =        488 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1233,7 +1233,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Init
 </UL>
 
-<P><STRONG><a name="[f0]"></a>RoughHandle</STRONG> (Thumb, 572 bytes, Stack size 40 bytes, figureangle.o(i.RoughHandle))
+<P><STRONG><a name="[f0]"></a>RoughHandle</STRONG> (Thumb, 554 bytes, Stack size 40 bytes, figureangle.o(i.RoughHandle))
 <BR><BR>[Stack]<UL><LI>Max Depth = 192 + Unknown Stack Size
 <LI>Call Chain = RoughHandle &rArr; USART_OUT_F &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
@@ -1684,7 +1684,6 @@ Global Symbols
 <LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TempTablePrintf
-<LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateAngle
 <LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UpdateVDoffTable
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RoughHandle
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AT_CMD_Handle
@@ -1707,8 +1706,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 344 + Unknown Stack Size
 <LI>Call Chain = UpdateVDoffTable &rArr; TempTablePrintf &rArr; USART_OUT_F &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wait
-<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_OUT
+<BR>[Calls]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_OUT
 <LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TempErgodic
 <LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetFlashArr
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Flash_Write
@@ -1717,6 +1715,7 @@ Global Symbols
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateCrAndMean
 <LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_OUT_F
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Enter
+<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wait
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdrcmple
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdcmple
@@ -2079,10 +2078,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM2_IRQHandler
 </UL>
 
-<P><STRONG><a name="[137]"></a>init</STRONG> (Thumb, 90 bytes, Stack size 8 bytes, main.o(i.init))
+<P><STRONG><a name="[137]"></a>init</STRONG> (Thumb, 96 bytes, Stack size 8 bytes, main.o(i.init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 116<LI>Call Chain = init &rArr; USART6_Init &rArr; USART_Init &rArr; RCC_GetClocksFreq
 </UL>
-<BR>[Calls]<UL><LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwm_init
+<BR>[Calls]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wait
+<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwm_init
 <LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;driftCoffecientInit
 <LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART6_Init
 <LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_SetCompare2
@@ -2155,12 +2155,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[13d]"></a>updateAngle</STRONG> (Thumb, 400 bytes, Stack size 24 bytes, figureangle.o(i.updateAngle))
-<BR><BR>[Stack]<UL><LI>Max Depth = 176 + Unknown Stack Size
-<LI>Call Chain = updateAngle &rArr; USART_OUT_F &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
+<P><STRONG><a name="[13d]"></a>updateAngle</STRONG> (Thumb, 332 bytes, Stack size 24 bytes, figureangle.o(i.updateAngle))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = updateAngle &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_OUT_F
-<LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetCommand
+<BR>[Calls]<UL><LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetCommand
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdrcmple
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdcmple
@@ -2174,6 +2172,7 @@ Global Symbols
 
 <P><STRONG><a name="[120]"></a>wait</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, timer.o(i.wait))
 <BR><BR>[Called By]<UL><LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UpdateVDoffTable
+<LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init
 </UL>
 
 <P><STRONG><a name="[7c]"></a>_get_lc_numeric</STRONG> (Thumb, 44 bytes, Stack size 8 bytes, lc_numeric_c.o(locale$$code))

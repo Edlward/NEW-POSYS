@@ -46,7 +46,7 @@
 /****************驱动器CAN1接口模块****start******************/
 
 static int32_t Vel=0;
-static uint32_t Pos=0;
+uint32_t Pos=0;
 union Position
 {
 	uint8_t  Data8[2];
@@ -233,21 +233,84 @@ void TIM4_IRQHandler(void)
 		TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
 	}
 }
-
+struct{
+	float anglex;
+	float angley;
+	float anglez;
+	float wx;
+	float wy;
+	float wz;
+}para_t;
 void UART5_IRQHandler(void)
 {
-  uint8_t data=0;
-  if (USART_GetFlagStatus(UART5, USART_FLAG_ORE) != RESET)
+	static uint8_t ch;
+	static union
   {
-    USART_ReceiveData(UART5);//通过读取DR，使RXNE清0
-  }else if(USART_GetITStatus(UART5, USART_IT_RXNE)==SET)   
-  {
-    USART_ClearITPendingBit( UART5,USART_IT_RXNE);
-    data=USART_ReceiveData(UART5);
-		USART_SendData(USART1,data);
-  }else{
-    USART_OUT(USART1,"error");
-  }
+	 uint8_t data[24];
+	 float ActVal[6];
+  }posture;
+	static uint8_t count=0;
+	static uint8_t i=0;
+
+	if(USART_GetITStatus(UART5, USART_IT_RXNE)==SET)   
+	{
+		USART_ClearITPendingBit(UART5,USART_IT_RXNE);
+		ch=USART_ReceiveData(UART5);
+		 switch(count)
+		 {
+			 case 0:
+				 if(ch==0x0d)
+					 count++;
+				 else
+					 count=0;
+				 break;
+				 
+			 case 1:
+				 if(ch==0x0a)
+				 {
+					 i=0;
+					 count++;
+				 }
+				 else if(ch==0x0d);
+				 else
+					 count=0;
+				 break;
+				 
+			 case 2:
+				 posture.data[i]=ch;
+			   i++;
+			   if(i>=24)
+				 {
+					 i=0;
+					 count++;
+				 }
+				 break;
+				 
+			 case 3:
+				 if(ch==0x0a)
+					 count++;
+				 else
+					 count=0;
+				 break;
+				 
+			 case 4:
+				 if(ch==0x0d)
+				 {
+  				 para_t.anglez = posture.ActVal[0];
+  				 para_t.anglex = posture.ActVal[1];
+  				 para_t.angley = posture.ActVal[2];
+			     para_t.wx = posture.ActVal[3];
+			     para_t.wy = posture.ActVal[4];
+					 para_t.wz = posture.ActVal[5];
+				 }
+			   count=0;
+				 break;
+			 
+			 default:
+				 count=0;
+			   break;		 
+		 }
+	 }
   
 }
 void AT_CMD_Handle(void);
@@ -289,6 +352,7 @@ void USART1_IRQHandler(void)
     data=USART_ReceiveData(USART1);
   }
 }
+extern uint32_t posInit;
 void AT_CMD_Handle(void){
   if((bufferI == 4) && strncmp(buffer, "AT\r\n", 4)==0)//AT
   {
@@ -297,11 +361,14 @@ void AT_CMD_Handle(void){
   else if((bufferI >= 8) && strncmp(buffer, "AT+begin", 8)==0)//AT    
   {
 		float value = atof(buffer+8);
-		if(abs(value)>15.0)
+		if(fabs(value)>15.0)
 			value=0;
-		VelCrl(2, value*4096.0f*10000.0f/360.0f);
+		VelCrl(2, value*4096.0*10000.0/360.0);
   }
-
+  else if((bufferI == 12) && strncmp(buffer, "AT+restart\r\n", 12)==0)//AT    
+  {
+		posInit=Pos;
+  }
   else 
     USART_OUT(USART1,"error\r\n");
   

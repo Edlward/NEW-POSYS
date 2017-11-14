@@ -1,11 +1,5 @@
-#include "temperature_control.h"
-#include "figureAngle.h"
-#include "timer.h"
-#include "stm32f4xx_gpio.h"
-#include "stm32f4xx_rcc.h"
+
 #include "config.h"
-#include "arm_math.h"
-#include "usart.h"
 
 
 
@@ -13,12 +7,11 @@
 分别输入设备名称,期望温度,真实温度
 */
 
-extern float  temp_icm;
+extern AllPara_t allPara;
 /*
 分别输入设备名称,期望温度,真实温度
 */
 
-extern float  temp_icm;
 void temp_pid_ctr(float val_ex)
 {
   static float err;
@@ -30,9 +23,8 @@ void temp_pid_ctr(float val_ex)
   float Kd_summer = 900.0f;
   
   static double ctr;
-	
   /*误差*/
-  err=val_ex-temp_icm;
+  err=val_ex-allPara.GYRO_Temperature;
   /*积分*/
   err_sum=err_sum+err;
   /*微分量*/
@@ -136,7 +128,7 @@ int TempErgodic(int reset){
     switch(direction)
     {
     case -1:
-      if((temp_icm-temp_last)>=-0.1f)
+      if((allPara.GYRO_Temperature-temp_last)>=-0.1f)
       {
         if(PWM>0.1f)
           PWM-=0.1f;
@@ -151,11 +143,11 @@ int TempErgodic(int reset){
       }
       break;
     case 1:
-      if((temp_icm-temp_last)<=0.1f)
+      if((allPara.GYRO_Temperature-temp_last)<=0.1f)
       {
         if(PWM<99.9f)
 				{
-					if((double)temp_icm>TempTable_min)
+					if((double)allPara.GYRO_Temperature>TempTable_min)
 						PWM+=0.1f;
 					else
 						PWM+=0.5f;
@@ -165,14 +157,14 @@ int TempErgodic(int reset){
         break;
       }
     }
-    temp_last=temp_icm;
-//		USART_OUT_F(temp_icm);
+    temp_last=allPara.GYRO_Temperature;
+//		USART_OUT_F(allPara.GYRO_Temperature);
 //		USART_OUT_F(PWM);
 //		USART_Enter();	
   }
-  if((double)temp_icm>TempTable_max) 
+  if((double)allPara.GYRO_Temperature>TempTable_max) 
     direction=-1;
-  else if((double)temp_icm<TempTable_min)
+  else if((double)allPara.GYRO_Temperature<TempTable_min)
 	{
 		/*排除掉起始温度小于最小值的情况*/
 		if(direction==-1)

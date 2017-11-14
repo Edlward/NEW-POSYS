@@ -13,11 +13,13 @@
 #include "arm_math.h"
 #include "stdlib.h"
 #include "stdio.h"
+uint32_t posInit=0;
+extern uint32_t Pos;
 void init(void)
 {
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);	
 	  
-	TIM_Init(TIM2,499,839,0,0);					//主周期定时10ms	
+	TIM_Init(TIM2,499,839,0,0);					//
 	
 	CAN_Config(CAN1,500,GPIOB,GPIO_Pin_9, GPIO_Pin_8);
 	
@@ -27,39 +29,56 @@ void init(void)
 	elmo_Init();
 	elmo_Enable(2);
 	Vel_cfg(2,300000,300000);
+	ReadActualPos(2);
+	delay_ms(500);
+	posInit=GetRealPos();
 }
 extern int posFlag;
+extern struct{
+	float anglex;
+	float angley;
+	float anglez;
+	float wx;
+	float wy;
+	float wz;
+}para_t;
+  float angle=0.f;
 int main(void)
 {
   uint32_t pos_old=0;
-	uint32_t pos=0;
-  float vel_real=0.0f;
-  uint8_t circle=0;
+  int64_t  delta_pos=0;
+	float vel_real=0.f;
 	init();
 	while(1)
 	{
 		while(getTimeFlag())
 		{
-			char buffer[10];
-			ReadActualPos(2);
-			pos=GetRealPos();
-			vel_real=pos-pos_old;
-			if(vel_real>20480000)
-				vel_real-=40960000;
-			if(vel_real<-20480000)
-				vel_real+=40960000;
-			vel_real=vel_real/40960000*360;
-			pos_old=pos;
-//			pos-=circle*40960000;
-//				if(pos_old<40960000&&pos>40960000){
-//				circle++;
-//				USART_SendData(USART3,'S');
-			}
+				char buffer[10];
+				ReadActualPos(2);
+			
+			  delta_pos=Pos-posInit;
+				if(delta_pos>0xffffffff/2)
+					delta_pos-=0xffffffff;
+				if(delta_pos<-0xffffffff/2)
+					delta_pos+=0xffffffff;
+				angle=delta_pos*360.0/40960000.0;
+				
+				delta_pos=Pos-pos_old;
+				if(delta_pos>20480000)
+					delta_pos-=40960000;
+				if(delta_pos<-20480000)
+					delta_pos+=40960000;
+				vel_real=delta_pos*360.0/40960000.0/PERIOD/5*1000;
+				pos_old=Pos;
+				if(fabs(angle)<=360.f){
+					USART_OUT_F(para_t.anglex);
+					USART_OUT_F(para_t.angley);
+					USART_OUT_F(para_t.anglez);
+					USART_OUT_F(para_t.wx);
+					USART_OUT_F(para_t.wy);
+					USART_OUT_F(para_t.wz);
+					USART_Enter();
+				}
 		}
 	}
-
-
-
-
-
-
+}

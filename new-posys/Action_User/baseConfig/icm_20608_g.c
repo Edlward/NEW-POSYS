@@ -1,12 +1,7 @@
-#include "icm_20608_g.h"
-#include "timer.h"
-#include "spi.h"
-#include "arm_math.h"
-#include "usart.h"
-#include "figureAngle.h"
+#include "config.h"
 
 #ifndef ADXRS453Z
-extern uint8_t   *scaleMode;
+extern flashData_t flashData;
 
 void ICM20608G_init(void)
 {
@@ -28,7 +23,7 @@ void ICM20608G_init(void)
     ICM20608G_INT_ENABLE,0,//不使用中断
     ICM20608G_ACCEL_INTEL_CTRL,0//不使能Wake-on-Motion detection logic
   };	
-  	switch(*scaleMode)
+  	switch(*(flashData.scaleMode))
 	{
 		/*250dps*/
 		case 0:
@@ -68,7 +63,7 @@ void ICM20608G_init(void)
 
 
 
-static gyro_t gyro;
+static float gyro[3];
 void icm_update_gyro_rate(void)
 {
   short data1[3] = {0,0,0};
@@ -86,22 +81,22 @@ void icm_update_gyro_rate(void)
   /*Y的原始角速度值*/
   data1[2] = (raw[4]<<8) | raw[5];
   
-	switch(*scaleMode)
+	switch(*(flashData.scaleMode))
 	{
 		case 0:
-			gyro.No1.x = -data1[1]/131.f;
-			gyro.No1.y = -data1[0]/131.f;
-			gyro.No1.z = -data1[2]/131.f;
+			gyro[0] = -data1[1]/131.f;
+			gyro[1] = -data1[0]/131.f;
+			gyro[2] = -data1[2]/131.f;
 			break;
 		case 1:
-			gyro.No1.x = -data1[1]/65.5f;
-			gyro.No1.y = -data1[0]/65.5f;
-			gyro.No1.z = -data1[2]/65.5f;
+			gyro[0] = -data1[1]/65.5f;
+			gyro[1] = -data1[0]/65.5f;
+			gyro[2] = -data1[2]/65.5f;
 			break;
 		default:
-			gyro.No1.x = -data1[1]/131.f;
-			gyro.No1.y = -data1[0]/131.f;
-			gyro.No1.z = -data1[2]/131.f;
+			gyro[0] = -data1[1]/131.f;
+			gyro[1] = -data1[0]/131.f;
+			gyro[2] = -data1[2]/131.f;
 			break;
   }
   //	SPI_MultiRead(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_GYRO_XOUT_H,raw,6);
@@ -112,23 +107,20 @@ void icm_update_gyro_rate(void)
   //	/*Y的原始角速度值*/
   //	data2[2] = (raw[4]<<8) | raw[5];
   
-  //	gyro.No2.x = -data2[1]/131.f;
-  //	gyro.No2.y = data2[0]/131.f;
-  //	gyro.No2.z = data2[2]/131.f;
+  //	gyro.No2[0] = -data2[1]/131.f;
+  //	gyro.No2[1] = data2[0]/131.f;
+  //	gyro.No2[2] = data2[2]/131.f;
 }
-void icm_read_gyro_rate(gyro_t *data)
+void icm_read_gyro_rate(float data[3])
 {
-  (*data).No1.x=gyro.No1.x;
-  (*data).No1.y=gyro.No1.y;
-  (*data).No1.z=gyro.No1.z;
+  (data)[0]=gyro[0];
+  (data)[1]=gyro[1];
+  (data)[2]=gyro[2];
   
   
-  (*data).No2.x=gyro.No2.x;
-  (*data).No2.y=gyro.No2.y;
-  (*data).No2.z=gyro.No2.z;
 }
 
-static gyro_t acc;
+static float acc[3];
 void icm_update_acc(void)
 {
   short data1[3] = {0,0,0};
@@ -148,9 +140,9 @@ void icm_update_acc(void)
   /*
   16384 LSB/g
   */
-  acc.No1.x = data1[1]/16384.0;
-  acc.No1.y = data1[0]/16384.0;
-  acc.No1.z = data1[2]/16384.0;
+  acc[0] = data1[1]/16384.0;
+  acc[1] = data1[0]/16384.0;
+  acc[2] = data1[2]/16384.0;
   
   //	SPI_MultiRead(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_ACCEL_XOUT_H,raw,6);
   //	/*X的原始角速度值*/
@@ -160,20 +152,20 @@ void icm_update_acc(void)
   //	/*Y的原始角速度值*/
   //	data2[2] = (raw[4]<<8) | raw[5];
   //	
-  //	acc.No2.x = -data2[0]/16384.0;
-  //	acc.No2.y = data2[1]/16384.0;
-  //	acc.No2.z = -data2[2]/16384.0;
+  //	acc.No2[0] = -data2[0]/16384.0;
+  //	acc.No2[1] = data2[1]/16384.0;
+  //	acc.No2[2] = -data2[2]/16384.0;
   
 }
-void icm_read_accel_acc(gyro_t *data)
+void icm_read_accel_acc(float data[3])
 {
-  (*data).No1.x=acc.No1.x;
-  (*data).No1.y=acc.No1.y;
-  (*data).No1.z=acc.No1.z;
+  (data)[0]=acc[0];
+  (data)[1]=acc[1];
+  (data)[2]=acc[2];
   
-  //	(*data).No2.x=acc.No2.x;
-  //	(*data).No2.y=acc.No2.y;
-  //	(*data).No2.z=acc.No2.z;
+  //	(*data).No2[0]=acc.No2[0];
+  //	(*data).No2[1]=acc.No2[1];
+  //	(*data).No2[2]=acc.No2[2];
 }
 
 static float temp;
@@ -197,7 +189,7 @@ void icm_read_temp(float *data)
   *data=temp;
 }
 
-void icm_update_AccRad(double accInit[3],three_axis *rad)
+void icm_update_AccRad(double accInit[2],float *rad)
 {
   double sum=sqrt(accInit[0]*accInit[0]+accInit[1]*accInit[1]+accInit[2]*accInit[2]);
   float X_G,Y_G,Z_G;
@@ -206,8 +198,8 @@ void icm_update_AccRad(double accInit[3],three_axis *rad)
   Y_G=accInit[1]/sum;
   Z_G=accInit[2]/sum;
   /*初始坐标为0,0,g,然后可以通过坐标变换公式轻易推导*/
-	(*rad).y= safe_atan2( X_G , -Z_G);
-  (*rad).x=-safe_atan2( Y_G , X_G/sin((*rad).y));
+	(rad)[1]= safe_atan2( X_G , -Z_G);
+  (rad)[0]=-safe_atan2( Y_G , X_G/sin((rad)[1]));
 }
 
 #endif

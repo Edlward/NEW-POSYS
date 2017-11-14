@@ -25,14 +25,7 @@
 #define FLASH_USER_ADDRESS 0x08040000   //FLASH起始地址
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-double    *chartWX;
-double    *chartWY;
-double    *chartWZ;
-uint8_t 	*chartMode;
-uint8_t 	*chartSelect;
-uint8_t   *scaleMode;
-float  		*minValue;
-float     *varXYZ;
+flashData_t flashData;
 static uint8_t  flashdata[TempTable_Num];  //5个double 存储的是随温度变化的斜率 最后一个int存储的是选几个做平均数
 /**
 * @brief  从FLASH里得到的数据分两个部分，第一部分为数据区，第二部分为
@@ -161,14 +154,14 @@ void Flash_Init(void)
   //static uint8_t  flashdata[160*(TempTable_max-TempTable_min)];  //从flash中取出的数据
   Flash_Read(flashdata,TempTable_Num);  
   /* 分割数据段，将零漂值与计数值分开 */
-  chartWX=(double *)flashdata;
-  chartWY=(double *)flashdata+5;
-  chartWZ=(double *)flashdata+10;
-  chartMode=(uint8_t *)flashdata+120;
-  chartSelect=(uint8_t *)(flashdata)+121;
-  scaleMode=(uint8_t *)(flashdata)+126;
-	minValue=(float *)((uint8_t *)flashdata+128);
-	varXYZ=(float *)((uint8_t *)flashdata+132);
+  (flashData.chartWX)=(double *)flashdata;
+  (flashData.chartWY)=(double *)flashdata+5;
+  (flashData.chartWZ)=(double *)flashdata+10;
+  (flashData.chartMode)=(uint8_t *)flashdata+120;
+  (flashData.chartSelect)=(uint8_t *)(flashdata)+121;
+  (flashData.scaleMode)=(uint8_t *)(flashdata)+126;
+	(flashData.minValue)=(float *)((uint8_t *)flashdata+128);
+	(flashData.varXYZ)=(float *)((uint8_t *)flashdata+132);
   /* 保护Flash数据 */
   Flash_Encryp();
 }

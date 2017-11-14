@@ -14,17 +14,12 @@
 ******************************************************************************
 */ 
 /* Includes -------------------------------------------------------------------*/
-#include "customer.h"
-#include "figureAngle.h"
-#include "figurePos.h"
-#include "string.h"
-#include "stm32f4xx_usart.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include "usart.h"
-#include "buildExcel.h"
-#include "flash.h"
+
+#include "config.h"
+
+extern AllPara_t allPara;
+extern flashData_t flashData;
+
 void AT_CMD_Judge(void);
 
 void DataSend(void)
@@ -32,47 +27,43 @@ void DataSend(void)
 	 	int i;
 	uint8_t 
 	tdata[28];
-	three_axis angle;
+	float angle[3];
   union{
 		float   val;
 		uint8_t data[4];
 	}valSend;
-	angle=getAngle();
+	getAngle(angle);
 	
   tdata[0]=0x0d;
   tdata[1]=0x0a;
   tdata[26]=0x0a;
   tdata[27]=0x0d;
 	
-	valSend.val=-angle.z;
+	valSend.val=angle[2];
   memcpy(tdata+2,valSend.data,4);
 	
-	valSend.val=angle.x;
+	valSend.val=angle[0];
   memcpy(tdata+6,valSend.data,4);
 	
-	valSend.val=angle.y;
+	valSend.val=angle[1];
   memcpy(tdata+10,valSend.data,4);
 	
-	valSend.val=getPosX();
+	valSend.val=allPara.GYRO_Real[0];
   memcpy(tdata+14,valSend.data,4);
 	 
-	valSend.val=getPosY();
+	valSend.val=allPara.GYRO_Real[1];
   memcpy(tdata+18,valSend.data,4);
 	 
-	valSend.val=getActIcm();
+	valSend.val=allPara.GYRO_Real[2];
   memcpy(tdata+22,valSend.data,4);
 	
 	for(i=0;i<28;i++)
-   USART_SendData(USART1,tdata[i]);	
+   USART_SendData(USART1,tdata[i]);
 }
 
 static char buffer[20];
 static int bufferI=0;
-extern uint8_t* 	chartMode;
-extern uint8_t 	*chartSelect; 
-extern uint8_t  *scaleMode;
-extern float    *minValue;
-extern float    *varXYZ;
+extern flashData_t flashData;
 void bufferInit(void){
   bufferI=0;
   for(int i=0;i<20;i++)
@@ -139,8 +130,7 @@ void AT_CMD_Judge(void){
     atCommand=666;
   
 }
-extern gyro_t gyr_data;
-extern float  temp_icm;
+
 void AT_CMD_Handle(void){
 	float value=0.0f;
 	switch(atCommand)
@@ -163,10 +153,10 @@ void AT_CMD_Handle(void){
 			USART_OUT(USART1,"OK\r\n");
 			break;
 		case 5:
-			USART_OUT_F(temp_icm);
-			USART_OUT_F(gyr_data.No1.x);
-			USART_OUT_F(gyr_data.No1.y);
-			USART_OUT_F(gyr_data.No1.z);
+			USART_OUT_F(allPara.GYRO_Temperature);
+			USART_OUT_F(allPara.GYRO_Aver[0]);
+			USART_OUT_F(allPara.GYRO_Aver[1]);
+			USART_OUT_F(allPara.GYRO_Aver[2]);
 			USART_Enter();
 			break;
 		case 6:
@@ -219,7 +209,7 @@ void AT_CMD_Handle(void){
 			break;
 		case 12:
 			USART_OUT(USART1,"OK\r\n");
-			*minValue = atof(buffer+10);
+			*(flashData.minValue) = atof(buffer+10);
 			USART_OUT(USART1,"writing\r\n");
 			Flash_Write(GetFlashArr(),TempTable_Num);
 			USART_OUT(USART1,"write finished\r\n");
@@ -229,13 +219,13 @@ void AT_CMD_Handle(void){
 		  value = atof(buffer+10);
 			switch(buffer[9]){
 				case 'x':
-					*varXYZ=value;
+					*(flashData.varXYZ)=value;
 					break;
 				case 'y':
-					*(varXYZ+1)=value;
+					*((flashData.varXYZ)+1)=value;
 					break;
 				case 'z':
-					*(varXYZ+2)=value;
+					*((flashData.varXYZ)+2)=value;
 					break;
 			}		
 			USART_OUT(USART1,"writing\r\n");
@@ -247,10 +237,10 @@ void AT_CMD_Handle(void){
 			USART_OUT(USART1,"OK\r\n");
 			/*不结合之前的数据*/
 			if(buffer[8]=='1')
-				*chartMode=1;
+				*(flashData.chartMode)=1;
 			/*结合之前的数据*/
 			else if(buffer[8]=='0')
-				*chartMode=0;
+				*(flashData.chartMode)=0;
 			else
 				USART_OUT(USART1,"mode command error\r\n");
 			USART_OUT(USART1,"writing\r\n");
@@ -261,11 +251,11 @@ void AT_CMD_Handle(void){
 		case 15:
 			USART_OUT(USART1,"OK\r\n");
 			if(buffer[9]=='1')
-				*scaleMode=1;
+				*(flashData.scaleMode)=1;
 			else if(buffer[9]=='0')
-				*scaleMode=0;
+				*(flashData.scaleMode)=0;
 			else
-				USART_OUT(USART1,"scaleMode command error\r\n");
+				USART_OUT(USART1,"(flashData.scaleMode) command error\r\n");
 			USART_OUT(USART1,"writing\r\n");
 			Flash_Write(GetFlashArr(),TempTable_Num);
 			USART_OUT(USART1,"write finished\r\n");
@@ -274,9 +264,9 @@ void AT_CMD_Handle(void){
 			USART_OUT(USART1,"OK\r\n");
 			for(int i=10;i<15;i++){
 				if(buffer[i]=='1')
-					chartSelect[i-10]=1;
+					(flashData.chartSelect)[i-10]=1;
 				else if(buffer[i]=='0')
-					chartSelect[i-10]=0;
+					(flashData.chartSelect)[i-10]=0;
 				else
 					USART_OUT(USART1,"select %d error\r\n",i-10);
 			}

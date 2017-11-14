@@ -1,11 +1,5 @@
 #include "config.h"
-#include "ADXRS453Z.h"
-#include "timer.h"
-#include "spi.h"
-#include "stm32f4xx_spi.h"
-#include "stm32f4xx_gpio.h"
-#include "arm_math.h"
-#include "usart.h"
+
 #ifdef ADXRS453Z
 
 void ADXRS453Z_init(void)
@@ -259,11 +253,11 @@ int ADXRS453SingleRead(unsigned char Address)
     return(ReceiveValue);
 }
 
-void ADI_UpdateData(gyro_t * gyr_temp,float * temp_temp)
+void ADI_UpdateData(float * gyr_temp,float * temp_temp)
 {
 	
 	rawDataRead(0x00);
-	gyr_temp->No1.z=(int16_t)(rawDataRead(0x02))/80.0f;
+	gyr_temp->No1[2]=(int16_t)(rawDataRead(0x02))/80.0f;
 	*temp_temp=(int16_t)(rawDataRead(0x0C))/64;
 	
 }

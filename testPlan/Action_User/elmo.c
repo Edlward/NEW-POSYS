@@ -127,7 +127,8 @@ void VelCrl(uint8_t ElmoNum,int vel)
 	TxMessage.IDE=CAN_Id_Standard ;			 // type of identifier for the message is Standard
 	TxMessage.RTR=CAN_RTR_Data  ;			 // the type of frame for the message that will be transmitted
 	TxMessage.DLC=8;
-	data[0][1]= vel;							 
+	data[0][1]= vel;			
+							
 	for(i=0;i<2;i++)
 	{	    
 	    //msg[4].data=*(unsigned long long*)&data[i];	  	

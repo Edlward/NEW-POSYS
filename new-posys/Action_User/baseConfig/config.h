@@ -20,6 +20,27 @@
 #define __CONFIG_H
 
 #include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include "stm32f4xx_it.h"
+#include "stm32f4xx.h"
+#include "flash.h"
+#include "icm_20608_g.h"
+#include "buildExcel.h"
+#include "spi.h"
+#include "figureAngle.h"
+#include "ADXRS453Z.h"
+#include "customer.h"
+#include "timer.h"
+#include "usart.h"
+#include "temperature_control.h"
+#include "arm_math.h"
+#include "string.h"
+#include "stm32f4xx_gpio.h"
+#include "stm32f4xx_rcc.h"
+#include "figurePos.h"
+#include "quarternion.h"
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 
@@ -28,7 +49,7 @@
 
 /* Exported constants --------------------------------------------------------*/
 
-#define TEST_SUMMER
+//#define TEST_SUMMER
 
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
@@ -119,37 +140,42 @@
 #define I3G_WHO_AM_I 									  0x00
 
 /* Exported functions ------------------------------------------------------- */
-typedef struct{
-	float x;
-	float y;
-	float z;
-}three_axis;
 
 typedef struct{
-	three_axis No1;
-	three_axis No2;
-	three_axis Real;
-}gyro_t;
-
-typedef struct{
-	double x;
-	double y;
-	double z;
-}three_axis_d;
-
-typedef struct{
-	float pitch;
-	float roll;
-	float yaw;
-}euler_angles;
-
-typedef struct{
-	double q0;
-	double q1;
-	double q2;
-	double q3;
-}Quarternion;
-
+	
+	/*用于角度积分的四元数*/
+	double quarternion[4];
+	
+	/*陀螺仪原始数据*/
+	float GYRO_Raw1[3];
+	float GYRO_Raw2[3];
+	float GYRO_Raw3[3];
+	float GYRO_Aver[3];
+	
+	
+	/*陀螺仪原始数据*/
+	float ACC_Raw1[3];
+	float ACC_Raw2[3];
+	float ACC_Raw3[3];
+	float ACC_Aver[3];
+	
+	/*陀螺仪处理后的数据*/
+	float GYRO_Real[3];
+	
+	/*陀螺仪温度*/
+	float GYRO_Temperature;
+	
+	/*陀螺仪角度*/
+	float GYRO_Angle[3];
+	
+	/*加速度计的角度 只有X Y轴角度*/
+	float ACC_Angle[2];
+	
+	/*最终确定的三轴角度*/
+	float Result_Angle[3];
+	
+	
+}AllPara_t;
 
 
 typedef enum{FALSE = 0,TRUE = !FALSE}BOOL;

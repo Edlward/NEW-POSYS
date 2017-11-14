@@ -14,14 +14,8 @@
 ******************************************************************************
 */ 
 /* Includes -------------------------------------------------------------------*/
-#include "figurePos.h"
-#include "stdint.h"
-#include "figureAngle.h"
+
 #include "config.h"
-#include "math.h"
-#include "usart.h"
-#include "spi.h"
-#include "arm_math.h"
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
@@ -69,7 +63,7 @@ void calculatePos(void)
 	int16_t vell[2];
 	
 	float zangle;
-	static float last_ang=0.0f;
+//	static float last_ang=0.0f;
 	
 	if(flag<=5)
 	{
@@ -98,9 +92,9 @@ void calculatePos(void)
 	if(vell[1]<-2048)
 		vell[1]+=4096;
 	
-	zangle=getAngle().z;
-	zangle=(zangle+last_ang)/2.0f;
-	last_ang=getAngle().z;
+//	zangle=;
+//	zangle=(zangle+last_ang)/2.0f;
+//	last_ang=getAngle()[2];
 	
 	
 	//直角坐标系和非直角坐标系的转换
@@ -124,7 +118,7 @@ void calculatePos(void)
 //    	pos_temp[1]=pos[1]*cos(0.2/180.0f*PI)+pos[0]*sin(0.2/180.0f*PI);
 //	
 	
-	AxisOriginConvert(0,0,45,getAngle().z,&(pos_temp[0]),&(pos_temp[1]));
+	AxisOriginConvert(0,0,45,0,&(pos_temp[0]),&(pos_temp[1]));
 	
 	posx=(double)pos_temp[0]/4096.0*R_wheel1*2.0*(double)PI;
 	posy=(double)pos_temp[1]/4096.0*R_wheel2*2.0*(double)PI;
@@ -140,11 +134,6 @@ void calculatePos(void)
 //		setPosX_Y(set_x,set_y);
 //		set_d=0;
 //	}
-	#ifdef TEST_SUMMER
-//		USART_OUT_F(posx);
-//		USART_OUT_F(posy);
-//		USART_Enter();
-	#endif
 }
 float getPosX(void)
 {

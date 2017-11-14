@@ -14,62 +14,44 @@
 ******************************************************************************
 */ 
 /* Includes -------------------------------------------------------------------*/
-#include "buildExcel.h"
-#include "stdint.h"
-#include "flash.h"
+
 #include "config.h"
-#include "timer.h"
-#include "usart.h"
-#include "temperature_control.h"
-#include "icm_20608_g.h"
-#include "arm_math.h"
-#include "string.h"
-#include "stm32f4xx_it.h"
-#include "customer.h"
-#include <stdlib.h>
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-extern double *chartWX;
-extern double *chartWY;
-extern double *chartWZ;
-extern uint8_t 	*chartMode;
-extern uint8_t 	*chartSelect;
-extern uint8_t  *scaleMode;
-extern float    *minValue;
-extern float    *varXYZ;
+
+extern flashData_t flashData;
+extern AllPara_t allPara;
 void TempTablePrintf(void)
 {
   Flash_Read(GetFlashArr(),TempTable_Num);
   
-  USART_OUT(USART1,"chartWX:\r\n");
+  USART_OUT(USART1,"\r\nchartWX:\r\n");
   for(int i=0;i<5;i++)
-    USART_OUT_F(*(chartWX+i));
+    USART_OUT_F(*(flashData.chartWX+i));
   
   USART_OUT(USART1,"\r\nchartWY:\r\n");
   for(int i=0;i<5;i++)
-    USART_OUT_F(*(chartWY+i));
+    USART_OUT_F(*((flashData.chartWY)+i));
   
   USART_OUT(USART1,"\r\nchartWZ:\r\n");
   for(int i=0;i<5;i++)
-    USART_OUT_F(*(chartWZ+i));
+    USART_OUT_F(*((flashData.chartWZ)+i));
   
-  USART_OUT(USART1,"\r\nchartMode:\r\n%d",*chartMode);
-  USART_OUT(USART1,"\r\nchartSelect:\r\n%d\t%d\t%d\t%d\t%d\r\n",*chartSelect,*(chartSelect+1),*(chartSelect+2),*(chartSelect+3),*(chartSelect+4));
-  USART_OUT(USART1,"scaleMode: %d\r\n",*scaleMode);
-  USART_OUT(USART1,"minValue:\r\n");
-  USART_OUT_F(*(minValue));
+  USART_OUT(USART1,"\r\nchartMode:\r\n%d",*(flashData.chartMode));
+  USART_OUT(USART1,"\r\nchartSelect:\r\n%d\t%d\t%d\t%d\t%d\r\n",*(flashData.chartSelect),*((flashData.chartSelect)+1),*((flashData.chartSelect)+2),*((flashData.chartSelect)+3),*((flashData.chartSelect)+4));
+  USART_OUT(USART1,"(flashData.scaleMode): %d\r\n",*(flashData.scaleMode));
+  USART_OUT(USART1,"(flashData.minValue):\r\n");
+  USART_OUT_F(*((flashData.minValue)));
 	USART_OUT(USART1,"\r\nvarXYZ:  ");
-  USART_OUT_F(*(varXYZ+0));
-  USART_OUT_F(*(varXYZ+1));
-  USART_OUT_F(*(varXYZ+2));
+  USART_OUT_F(*((flashData.varXYZ)+0));
+  USART_OUT_F(*((flashData.varXYZ)+1));
+  USART_OUT_F(*((flashData.varXYZ)+2));
 	USART_Enter();
   
 }
 
-extern gyro_t gyr_data;
-extern float  temp_icm;
 int CalculateCrAndMean(float stdCr[3],float mean[3]){
 	static float IAE_st[3][200]={0.f};    //记录的新息
 	static float data[3][200]={0.f};    	//数据列
@@ -79,9 +61,9 @@ int CalculateCrAndMean(float stdCr[3],float mean[3]){
 	for(int i=0;i<3;i++){
 		memcpy(data[i],data[i]+1,796);
 	}
-	data[0][199]=gyr_data.No1.x;
-	data[1][199]=gyr_data.No1.y;
-	data[2][199]=gyr_data.No1.z;
+	data[0][199]=allPara.GYRO_Aver[0];
+	data[1][199]=allPara.GYRO_Aver[1];
+	data[2][199]=allPara.GYRO_Aver[2];
   /* 新息的方差计算 */
 	for(int i=0;i<3;i++){
 		memcpy(IAE_st[i],IAE_st[i]+1,796);
@@ -90,9 +72,9 @@ int CalculateCrAndMean(float stdCr[3],float mean[3]){
 	{
 		mean[i]=mean[i]-data[i][0]/200+data[i][199]/200;
 	}
-	IAE_st[0][199]=gyr_data.No1.x-mean[0];
-	IAE_st[1][199]=gyr_data.No1.y-mean[1];
-	IAE_st[2][199]=gyr_data.No1.z-mean[2];
+	IAE_st[0][199]=allPara.GYRO_Aver[0]-mean[0];
+	IAE_st[1][199]=allPara.GYRO_Aver[1]-mean[1];
+	IAE_st[2][199]=allPara.GYRO_Aver[2]-mean[2];
 	
   if(ignore<400)
 		return 0;
@@ -130,7 +112,7 @@ int UpdateVDoffTable(void)
   long double paraX    = 0.0 ;
   long double paraY[3] ={0.0};
   long double paraX2   = 0.0 ;
-  long double temp_temp=temp_icm/100.f;
+  long double temp_temp=allPara.GYRO_Temperature/100.f;
   int index=0;
   static float stdCr[3]={0.f};                //新息的标准差
   static float mean[3]={0.f};
@@ -142,34 +124,34 @@ int UpdateVDoffTable(void)
 	if(!CalculateCrAndMean(stdCr,mean))
 		return 0;
 	
-	if((fabs(gyr_data.No1.x-mean[0])>stdCr[0]*5)||(fabs(gyr_data.No1.y-mean[1])>stdCr[1]*5)||(fabs(gyr_data.No1.z-mean[2])>stdCr[2]*5))
+	if((fabs(allPara.GYRO_Aver[0]-mean[0])>stdCr[0]*5)||(fabs(allPara.GYRO_Aver[1]-mean[1])>stdCr[1]*5)||(fabs(allPara.GYRO_Aver[2]-mean[2])>stdCr[2]*5))
 	{
-//		USART_OUT_F(temp_icm);
-//		USART_OUT_F(gyr_data.No1.z);
+//		USART_OUT_F(allPara.GYRO_Temperature);
+//		USART_OUT_F(allPara.GYRO_Aver[2]);
 		return 0;
 	}
 	else
 	{	
-//		USART_OUT_F(temp_icm);
-//		USART_OUT_F(gyr_data.No1.z);
+//		USART_OUT_F(allPara.GYRO_Temperature);
+//		USART_OUT_F(allPara.GYRO_Aver[2]);
 //		USART_Enter();	
 	}		
 	/*不返回的0结束函数的话，最小二乘样本实际总值会少*/
-	if((double)temp_icm>=TempTable_min&&(double)temp_icm<TempTable_max-0.06){
+	if((double)allPara.GYRO_Temperature>=TempTable_min&&(double)allPara.GYRO_Temperature<TempTable_max-0.06){
 	
 		/*确定温度索引号,如果不减0.5可能会出现index=200的情况*/
-		index=roundf(((double)temp_icm-TempTable_min)*10.0);
+		index=roundf(((double)allPara.GYRO_Temperature-TempTable_min)*10.0);
 		if(temp_count[index]>0){
 			/*求这一个温度上的角速度和*/
-			temp_w[0][index]+=gyr_data.No1.x;
-			temp_w[1][index]+=gyr_data.No1.y;
-			temp_w[2][index]+=gyr_data.No1.z;
+			temp_w[0][index]+=allPara.GYRO_Aver[0];
+			temp_w[1][index]+=allPara.GYRO_Aver[1];
+			temp_w[2][index]+=allPara.GYRO_Aver[2];
 		}
 		else{
 			/*初始值*/
-			temp_w[0][index]=gyr_data.No1.x;
-			temp_w[1][index]=gyr_data.No1.y;
-			temp_w[2][index]=gyr_data.No1.z;
+			temp_w[0][index]=allPara.GYRO_Aver[0];
+			temp_w[1][index]=allPara.GYRO_Aver[1];
+			temp_w[2][index]=allPara.GYRO_Aver[2];
 			temp_count[index]=0;
 		}
 			temp_count[index]++;
@@ -211,15 +193,15 @@ int UpdateVDoffTable(void)
 			}
 		}
     for(int i=4;i>0;i--){
-      *(chartWX+i)=*(chartWX+i-1);
-      *(chartWY+i)=*(chartWY+i-1);
-      *(chartWZ+i)=*(chartWZ+i-1);
+      *((flashData.chartWX)+i)=*((flashData.chartWX)+i-1);
+      *((flashData.chartWY)+i)=*((flashData.chartWY)+i-1);
+      *((flashData.chartWZ)+i)=*((flashData.chartWZ)+i-1);
     }
 		TempErgodic(1);
 		//2*60/0.005=24000
-    *chartWX=(sum*paraXY[0]-paraX*paraY[0])/(sum*paraX2-paraX*paraX);
-    *chartWY=(sum*paraXY[1]-paraX*paraY[1])/(sum*paraX2-paraX*paraX);
-    *chartWZ=(sum*paraXY[2]-paraX*paraY[2])/(sum*paraX2-paraX*paraX);
+    *(flashData.chartWX)=(sum*paraXY[0]-paraX*paraY[0])/(sum*paraX2-paraX*paraX);
+    *(flashData.chartWY)=(sum*paraXY[1]-paraX*paraY[1])/(sum*paraX2-paraX*paraX);
+    *(flashData.chartWZ)=(sum*paraXY[2]-paraX*paraY[2])/(sum*paraX2-paraX*paraX);
     Flash_Write(GetFlashArr(),TempTable_Num);
     USART_OUT(USART1,"Flash Update end\r\n");
     TempTablePrintf();

@@ -28,39 +28,28 @@
 */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx_it.h"
-#include "stm32f4xx.h"
-#include "flash.h"
+
 #include "config.h"
-#include "icm_20608_g.h"
-#include "buildExcel.h"
-#include "spi.h"
-#include "figureAngle.h"
-#include "ADXRS453Z.h"
 
 /*************定时器2******start************/
 //每1ms调用一次  用于读取编码器的值和计算坐标
 
 //int posx,posy;
+extern AllPara_t allPara;
 static uint32_t timeCount=0;
 static uint8_t timeFlag=0;
-gyro_t gyr_data;
-gyro_t acc_data;
-float temp_icm;
-extern uint16_t data[2];
 static char readOrder=0;
+extern uint16_t data[2];
 void TIM2_IRQHandler(void)
 {
 	
-  gyro_t gyr_temp;
-	#ifndef ADXRS453Z
-  gyro_t act_temp;
-  static gyro_t act_sum;
-	#endif
+  float gyr_temp[3];
+  float acc_temp[3];
   float  temp_temp;
-  static uint32_t timeCnt=0;
-  static gyro_t gyro_sum;
+  static float gyro_sum[3];
+  static float acc_sum[3];
   static float  temp_sum;
+  static uint32_t timeCnt=0;
   if(TIM_GetITStatus(TIM2, TIM_IT_Update)==SET)
   {	
     TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
@@ -73,28 +62,39 @@ void TIM2_IRQHandler(void)
     }
       icm_update_gyro_rate();
 			icm_update_temp();
+			icm_update_acc();
 			icm_read_temp(&temp_temp);
-      icm_read_gyro_rate(&gyr_temp);
-      gyro_sum.No1.x=gyro_sum.No1.x+gyr_temp.No1.x;
-      gyro_sum.No1.y=gyro_sum.No1.y+gyr_temp.No1.y;
-      gyro_sum.No1.z=gyro_sum.No1.z+gyr_temp.No1.z;
+      icm_read_gyro_rate(gyr_temp);
+			icm_read_accel_acc(acc_temp);
+      gyro_sum[0]=gyro_sum[0]+gyr_temp[0];
+      gyro_sum[1]=gyro_sum[1]+gyr_temp[1];
+      gyro_sum[2]=gyro_sum[2]+gyr_temp[2];
+      acc_sum[0]=acc_sum[0]+acc_temp[0];
+      acc_sum[1]=acc_sum[1]+acc_temp[1];
+      acc_sum[2]=acc_sum[2]+acc_temp[2];
       temp_sum=temp_sum+temp_temp;
-			if(timeCnt==4){
-				//放到中断里
-				data[0]=SPI_ReadAS5045(0);
-				data[1]=SPI_ReadAS5045(1);
-			}
+//			if(timeCnt==4){
+//				//放到中断里
+//				data[0]=SPI_ReadAS5045(0);
+//				data[1]=SPI_ReadAS5045(1);
+//			}
       if(timeCnt==5){
 				readOrder++;
         timeCnt=0;
-        gyr_data.No1.x=gyro_sum.No1.x/5.f;
-        gyr_data.No1.y=gyro_sum.No1.y/5.f;
-        gyr_data.No1.z=gyro_sum.No1.z/5.f;
-				temp_icm=temp_sum/5.f;
-				temp_icm=KalmanFilterT(temp_icm);
-        gyro_sum.No1.x=0.f;
-        gyro_sum.No1.y=0.f;
-        gyro_sum.No1.z=0.f;
+        allPara.GYRO_Aver[0]=gyro_sum[0]/5.f;
+        allPara.GYRO_Aver[1]=gyro_sum[1]/5.f;
+        allPara.GYRO_Aver[2]=gyro_sum[2]/5.f;
+        allPara.ACC_Aver[0]=acc_sum[0]/5.f;
+        allPara.ACC_Aver[1]=acc_sum[1]/5.f;
+        allPara.ACC_Aver[2]=acc_sum[2]/5.f;
+				allPara.GYRO_Temperature=temp_sum/5.f;
+				allPara.GYRO_Temperature=KalmanFilterT(allPara.GYRO_Temperature);
+        gyro_sum[0]=0.f;
+        gyro_sum[1]=0.f;
+        gyro_sum[2]=0.f;
+        acc_sum[0]=0.f;
+        acc_sum[1]=0.f;
+        acc_sum[2]=0.f;
 				temp_sum=0.f;
       }
   }

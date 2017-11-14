@@ -14,31 +14,16 @@
 ******************************************************************************
 */ 
 /* Includes -------------------------------------------------------------------*/
-#include "figureAngle.h"
-#include "string.h"
-#include "usart.h"
-#include "timer.h"
-#include "flash.h"
-#include "temperature_control.h"
-#include "buildExcel.h"
-#include "customer.h"
-#include "arm_math.h"
-#include "quarternion.h"
-#include "leastSquare.h"
-#include "stm32f4xx_it.h"
+
+#include "config.h"
+
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-extern double *chartWX;
-extern double *chartWY;
-extern double *chartWZ;
-extern uint8_t 	*chartMode;
-extern uint8_t 	*chartSelect;
-extern float  		*minValue;
-extern float     *varXYZ;
-static three_axis result_angle={0,0,0};
-static Quarternion quaternion={1,0,0,0};
+
+extern flashData_t flashData;
+extern AllPara_t allPara;
 /* Extern   variables ---------------------------------------------------------*/
 /*  全局变量  */
 float K_acc=1;
@@ -59,11 +44,7 @@ int JudgeAcc(void);
 * @retval 初始化完成的标志位
 */
 
-static three_axis_d gyr_act;			//原始的角速度和处理后的角速度
 static float gyr_AVER[3]={0.0};
-static three_axis acc_angle;        //加速度计测出的对应的角度
-extern gyro_t gyr_data,acc_data;
-extern float  temp_icm;
 static uint32_t count=0;
 static float acc_sum=0.f;
 static double driftCoffecient[3]={0.0};
@@ -72,34 +53,25 @@ int RoughHandle(void)
 {
   double drift[3]={0.0,0.0,0.0};
   
-  drift[0]=driftCoffecient[0]*(temp_icm/100.f);
-  drift[1]=driftCoffecient[1]*(temp_icm/100.f);
-  drift[2]=driftCoffecient[2]*(temp_icm/100.f);
+  drift[0]=driftCoffecient[0]*(allPara.GYRO_Temperature/100.f);
+  drift[1]=driftCoffecient[1]*(allPara.GYRO_Temperature/100.f);
+  drift[2]=driftCoffecient[2]*(allPara.GYRO_Temperature/100.f);
   
-  gyr_act.x=(double)gyr_data.No1.x-drift[0];
-  gyr_act.y=(double)gyr_data.No1.y-drift[1];
-  gyr_act.z=(double)gyr_data.No1.z-drift[2];
+  allPara.GYRO_Real[0]=(double)allPara.GYRO_Aver[0];//-drift[0];
+  allPara.GYRO_Real[1]=(double)allPara.GYRO_Aver[1];//-drift[1];
+  allPara.GYRO_Real[2]=(double)allPara.GYRO_Aver[2];//-drift[2];
 	
-	//			USART_OUT_F(gyr_act.z);
-  gyr_act.x=KalmanFilterX(gyr_act.x);
-  gyr_act.y=KalmanFilterY(gyr_act.y);
-  gyr_act.z=KalmanFilterZ(gyr_act.z);
-	//			USART_OUT_F(gyr_act.z);
-	//			USART_Enter();
-	
-	//			USART_OUT_F(gyr_act.z);
+//  allPara.GYRO_Real[0]=KalmanFilterX(allPara.GYRO_Real[0]);
+//  allPara.GYRO_Real[1]=KalmanFilterY(allPara.GYRO_Real[1]);
+//  allPara.GYRO_Real[2]=KalmanFilterZ(allPara.GYRO_Real[2]);
   count++;
+	
   if(count==(15*200+2)){
     count--;
-    gyr_act.x=(double)(gyr_act.x-gyr_AVER[0]);
-    gyr_act.y=(double)(gyr_act.y-gyr_AVER[1]);
-    gyr_act.z=(double)(gyr_act.z-gyr_AVER[2]);
+    allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-gyr_AVER[0]);
+    allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-gyr_AVER[1]);
+    allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-gyr_AVER[2]);
 		
-		#ifdef TEST_SUMMER
-//		if(sendPermit){
-
-//		}
-		#endif
     return 1;
   }
   
@@ -111,12 +83,12 @@ void TemporaryHandle(void)
 {
   static double accInit[3]={0.0,0.0,0.0};
   if(count>=10*200&&count<15*200){
-    gyr_AVER[0]=gyr_AVER[0]+gyr_act.x;
-    gyr_AVER[1]=gyr_AVER[1]+gyr_act.y;
-    gyr_AVER[2]=gyr_AVER[2]+gyr_act.z;
-    accInit[0]=accInit[0]+acc_data.No1.x;
-    accInit[1]=accInit[1]+acc_data.No1.y;
-    accInit[2]=accInit[2]+acc_data.No1.z;
+    gyr_AVER[0]=gyr_AVER[0]+allPara.GYRO_Real[0];
+    gyr_AVER[1]=gyr_AVER[1]+allPara.GYRO_Real[1];
+    gyr_AVER[2]=gyr_AVER[2]+allPara.GYRO_Real[2];
+    accInit[0]=accInit[0]+allPara.ACC_Aver[0];
+    accInit[1]=accInit[1]+allPara.ACC_Aver[1];
+    accInit[2]=accInit[2]+allPara.ACC_Aver[2];
   }
   else if(count==15*200){
     count++;
@@ -128,79 +100,78 @@ void TemporaryHandle(void)
     accInit[2]=accInit[2]/(5.f*200.f);
     acc_sum=sqrt(accInit[0]*accInit[0]+accInit[1]*accInit[1]+accInit[2]*accInit[2]);
     /* 读取加速度的值 */
-    //icm_update_AccRad(accInit,&acc_angle);
-   //quaternion=Euler_to_Quaternion(acc_angle);
+    icm_update_AccRad(accInit,allPara.ACC_Angle);
+    Euler_to_Quaternion(allPara.ACC_Angle,allPara.quarternion);
   }
 }
 
 void updateAngle(void)
 {	
-  static three_axis_d euler;            //欧垃角
-	float maxStaticValue=*minValue;
+  static float euler[3];            //欧垃角
+	float maxStaticValue=*(flashData.minValue);
 	
-  if((GetCommand()&STATIC)&&(gyr_act.z<0.2f)){
+  if((GetCommand()&STATIC)&&(allPara.GYRO_Real[2]<0.2f)){
 		maxStaticValue=0.15f;
 	}
 	
-//  if(fabs(gyr_act.x)<maxStaticValue)//单位 °/s
-//    gyr_act.x=0.f;	
-//  if(fabs(gyr_act.y)<maxStaticValue)//单位 °/s
-//    gyr_act.y=0.f;	
-//  if(fabs(gyr_act.z)<maxStaticValue)//单位 °/s
-//    gyr_act.z=0.f;
+//  if(fabs(allPara.GYRO_Real[0])<maxStaticValue)//单位 °/s
+//    allPara.GYRO_Real[0]=0.f;	
+//  if(fabs(allPara.GYRO_Real[1])<maxStaticValue)//单位 °/s
+//    allPara.GYRO_Real[1]=0.f;	
+//  if(fabs(allPara.GYRO_Real[2])<maxStaticValue)//单位 °/s
+//    allPara.GYRO_Real[2]=0.f;
 	
   /*角速度积分成四元数*/
-  quaternion=QuaternionInt(quaternion,gyr_act);
-// // quaternion=QuaternionInt1(quaternion,gyr_act);
-//  /* 四元数转换成欧垃角 */
-  euler=Quaternion_to_Euler(quaternion);
+  QuaternionInt(allPara.quarternion,allPara.GYRO_Real);
+  /* 四元数转换成欧垃角 */
+  Quaternion_to_Euler(allPara.quarternion,euler);
 
 //  if(JudgeAcc()){
-//    euler.x=acc_angle.x;
-//		euler.y=acc_angle.y;
+//    euler[0]=allPara.ACC_Angle[0];
+//		euler[1]=allPara.ACC_Angle[1];
 //    quaternion=Euler_to_Quaternion(euler);
 //  }
 	
-		//		USART_OUT_F(gyr_act.z);
   /*弧度角度转换 */
-//  result_angle.x= euler.x/PI*180.0f;
-//  result_angle.y= euler.y/PI*180.0f;
-		result_angle.z=-euler.z;
+//  allPara.Result_Angle[0]= euler[0]/PI*180.0f;
+//  allPara.Result_Angle[1]= euler[1]/PI*180.0f;
+		allPara.Result_Angle[2]=-euler[2]/PI*180.0f;
 }
 
 void SetAngle(float angle){
-	three_axis euler;
-	euler.x=0.0f;
-	euler.y=0.0f;
-	euler.z=angle/180.f*PI;
-	quaternion=Euler_to_Quaternion(euler);
+	float euler[3];
+	euler[0]=0.0f;
+	euler[1]=0.0f;
+	euler[2]=angle/180.f*PI;
+	Euler_to_Quaternion(euler,allPara.quarternion);
 }
 float getActIcm(void){
-	return (float)gyr_act.z;
+	return (float)allPara.GYRO_Aver[2];
 }
 /**
 * @brief  得到计算出的角度
 * @param  none
 * @retval 计算的角度
 */
-three_axis getAngle(void)
+void getAngle(float angle[3])
 {
-  return result_angle;
+	for(int i=0;i<3;i++)
+		angle[i]=allPara.Result_Angle[i];
 }
 
 int JudgeAcc(void)
 {
-  float sum=sqrt(acc_data.No1.x*acc_data.No1.x+acc_data.No1.y*acc_data.No1.y+acc_data.No1.z*acc_data.No1.z);
+  float sum=sqrt(allPara.ACC_Aver[0]*allPara.ACC_Aver[0]+allPara.ACC_Aver[1]*allPara.ACC_Aver[1]+allPara.ACC_Aver[2]*allPara.ACC_Aver[2]);
 
   float X_G,Y_G,Z_G;
   if(sum!=0.0f){
-		X_G=(acc_data).No1.x/sum;
-		Y_G=(acc_data).No1.y/sum;
-		Z_G=(acc_data).No1.z/sum;
+		X_G=(allPara.ACC_Aver)[0]/sum;
+		Y_G=(allPara.ACC_Aver)[1]/sum;
+		Z_G=(allPara.ACC_Aver)[2]/sum;
 	}
   /*初始坐标为0,0,g,然后可以通过坐标变换公式轻易推导*/
-	acc_angle.y= safe_atan2( X_G , -Z_G);
-  acc_angle.x=-safe_atan2( Y_G , X_G/sin(acc_angle.y));
+	allPara.ACC_Angle[1]= safe_atan2( X_G , -Z_G);
+  allPara.ACC_Angle[0]=-safe_atan2( Y_G , X_G/sin(allPara.ACC_Angle[1]));
 	
   if(fabs(sum-acc_sum)<0.001)
     return 1;
@@ -211,7 +182,7 @@ int JudgeAcc(void)
 const double stdCoffeicent[3]={ 0.973632,0.513072, 0.2672 };
 void driftCoffecientInit(void){
 	int selectCount=0;
-	switch(*chartMode){
+	switch(*(flashData.chartMode)){
 		//结合之前测得的标准数据
 		case 0:
 			selectCount++;
@@ -227,11 +198,11 @@ void driftCoffecientInit(void){
 
 	for(int i=0;i<5;i++)
 	{
-		if(chartSelect[i]){
+		if((flashData.chartSelect)[i]){
 			selectCount++;
-			driftCoffecient[0]=driftCoffecient[0]+chartWX[i];
-			driftCoffecient[1]=driftCoffecient[1]+chartWY[i];
-			driftCoffecient[2]=driftCoffecient[2]+chartWZ[i];
+			driftCoffecient[0]=driftCoffecient[0]+(flashData.chartWX)[i];
+			driftCoffecient[1]=driftCoffecient[1]+(flashData.chartWY)[i];
+			driftCoffecient[2]=driftCoffecient[2]+(flashData.chartWZ)[i];
 		}
 	}	
 	driftCoffecient[0]=driftCoffecient[0]/selectCount;
@@ -366,7 +337,7 @@ double KalmanFilterZ(double measureData)
   static double Kk;           //滤波增益系数
   
   static double Q=0.003;       //系统噪声        
-  double R=(double)varXYZ[2];      //测量噪声 
+  double R=(double)(flashData.varXYZ)[2];      //测量噪声 
   static double IAE_st[50];    //记录的新息
   static double data=0.0;
   double Cr=0;                //新息的方差
@@ -427,7 +398,7 @@ double KalmanFilterX(double measureData)
   static double Kk;           //滤波增益系数
   
   static double Q=0.00000000002514;       //系统噪声         
-  double R=(double)varXYZ[0];      //测量噪声 
+  double R=(double)(flashData.varXYZ)[0];      //测量噪声 
   static double IAE_st[50];    //记录的新息
   static double data=0.0;
   double Cr=0;                //新息的方差
@@ -489,7 +460,7 @@ double KalmanFilterY(double measureData)
   static double Kk;           //滤波增益系数
   
   static double Q=0.00000000002514;       //系统噪声         
-  double R=(double)varXYZ[1];      //测量噪声 
+  double R=(double)(flashData.varXYZ)[1];      //测量噪声 
   static double IAE_st[50];    //记录的新息
   static double data=0.0;
   double Cr=0;                //新息的方差

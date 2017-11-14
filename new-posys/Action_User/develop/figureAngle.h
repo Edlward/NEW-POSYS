@@ -34,7 +34,7 @@ int RoughHandle(void);
 void TemporaryHandle(void);
 void updateAngle(void);
 double safe_atan2(double x,double y);			
-three_axis getAngle(void);
+void getAngle(float angle[3]);
 void setAngle(float zAngle);
 float safe_asin(float v);
 float getActIcm(void);

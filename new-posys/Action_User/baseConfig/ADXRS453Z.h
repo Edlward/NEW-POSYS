@@ -25,7 +25,7 @@
 #define   ADI_SN0     0x11
 
 void ADXRS453Z_init(void);
-void ADI_UpdateData(gyro_t * gyr_temp,float * temp_temp);
+void ADI_UpdateData(float * gyr_temp,float * temp_temp);
 void ADXRS453StartUp(void);
 int ADXRS453SingleRead(unsigned char Address);
 int  ADXRS453SensorData(void);

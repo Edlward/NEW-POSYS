@@ -10,23 +10,8 @@
 * Summer is the most handsome man !
 *
 **/
-#include "usart.h"
 #include "misc.h"
-#include "timer.h"
-#include "gpio.h"
-#include "misc.h"
-#include "stm32f4xx_it.h"
-#include "temperature_control.h"
-#include "spi.h"
-#include "flash.h"
-#include "icm_20608_g.h"
-#include "figureAngle.h"
-#include "buildExcel.h"
-#include "customer.h"
 #include "config.h"
-#include "figurePos.h"
-#include "ADXRS453Z.h"
-#include <stdlib.h>
 
 void init(void)
 {
@@ -46,7 +31,7 @@ void init(void)
 	#ifdef TEST_SUMMER
 		USART1_Init(921600);
 	#else
-		USART1_Init(115200);
+		USART1_Init(921600);
 	#endif
 
   /* ICM20608G模块初始化-----------------------------------*/
@@ -58,6 +43,9 @@ void init(void)
   driftCoffecientInit();
   TIM_Init(TIM2,999,83,0,0);					//主周期定时5ms
 }
+
+AllPara_t allPara;
+
 int main(void)
 {
   init();
@@ -75,8 +63,6 @@ int main(void)
 			
 			//AT指令处理
 			AT_CMD_Handle();
-			
-			temp_pid_ctr(45.0f);
 			
       if(!(GetCommand()&CORRECT)){
         //计算角度 

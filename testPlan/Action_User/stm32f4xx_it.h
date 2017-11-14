@@ -65,7 +65,7 @@ int GetRealVel(void);
 void SetRealPos(uint32_t val);
 uint32_t GetRealPos(void);
 /* Exported constants --------------------------------------------------------*/
-#define PERIOD 5
+#define PERIOD 1
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 

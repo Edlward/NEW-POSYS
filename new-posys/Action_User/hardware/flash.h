@@ -32,6 +32,20 @@ void Flash_Read(uint8_t *data,uint32_t len);
 void Flash_Init(void);
 uint8_t  *GetFlashArr(void);
 void Flash_Return(void);
+
+
+typedef struct{
+	double    *chartWX;
+	double    *chartWY;
+	double    *chartWZ;
+	uint8_t 	*chartMode;
+	uint8_t 	*chartSelect;
+	uint8_t   *scaleMode;
+	float  		*minValue;
+	float     *varXYZ;
+}flashData_t;
+
+
 #endif
 
 /******************* (C) COPYRIGHT 2015 ACTION *****END OF FILE****/

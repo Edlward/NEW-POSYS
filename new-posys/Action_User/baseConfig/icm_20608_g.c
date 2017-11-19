@@ -35,45 +35,53 @@ void ICM20608G_init(void)
 			break;
   }
   Delay_ms(100);																					//Start-up time from power-up for register read/write  max 100
-  SPI_Write(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_PWR_MGMT_1,0x80);
-  //SPI_Write(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_PWR_MGMT_1,0x80);
-  Delay_ms(1);
-  Delay_ms(5);																				  	//Start-up time from sleep for register read/write  max 5
+  ICM_Write(ICM20608G_PWR_MGMT_1,0x80);
+  Delay_ms(6);																				  	//Start-up time from sleep for register read/write  max 5
   
   for(order=0;order<REGISTERS/2;order++){
     uint8_t i=0;
-    uint8_t data[2]={0xFF,0XFF};
+    uint8_t data[3]={0xFF,0XFF,0XFF};
     do{
       i++;
-      SPI_Write(SPI1,GPIOA,GPIO_Pin_4,registers[order*2],registers[order*2+1]);
-      //SPI_Write(SPI2,GPIOB,GPIO_Pin_10,registers[order*2],registers[order*2+1]);
+      ICM_Write(registers[order*2],registers[order*2+1]);
       Delay_ms(i);
       if(i>5)
-      {
         i=1;
-        //USART_OUT(USART1,"init error");
-        //break;
-      }
-      data[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,registers[order*2]);
-    //  data[1]=SPI_Read(SPI2,GPIOB,GPIO_Pin_10,registers[order*2]);
-    }while(data[0]!=registers[order*2+1]);//||data[1]!=registers[order*2+1]);
+      data[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_1,registers[order*2]);
+      data[1]=SPI_Read(SPI1,GPIOA,GPIO_Pin_2,registers[order*2]);
+      data[2]=SPI_Read(SPI1,GPIOC,GPIO_Pin_6,registers[order*2]);
+    }while(data[0]!=registers[order*2+1]||data[1]!=registers[order*2+1]||data[2]!=registers[order*2+1]);//||data[1]!=registers[order*2+1]);
   }
-  
 }
 
-
+void ICM_Write(uint8_t address,uint8_t value)
+{
+  SPI_Write(SPI1,GPIOA,GPIO_Pin_1,address,value);
+  SPI_Write(SPI1,GPIOA,GPIO_Pin_2,address,value);
+  SPI_Write(SPI1,GPIOC,GPIO_Pin_6,address,value);
+}
 
 static float gyro[3];
-void icm_update_gyro_rate(void)
+void icm_update_gyro_rate(int gyroNum)
 {
   short data1[3] = {0,0,0};
-  //	short data2[3] = {0,0,0};
   unsigned char raw[6];
   /*
   raw从低地址到高地址依次是
   X高八位,X第八位,Y高八位,Y第八位,Z高八位,Z第八位
   */
-  SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_GYRO_XOUT_H,raw,6);
+	switch(gyroNum)
+	{
+		case 1:
+			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_1,ICM20608G_GYRO_XOUT_H,raw,6);
+		break;
+		case 2:
+			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_2,ICM20608G_GYRO_XOUT_H,raw,6);
+		break;
+		case 3:
+			SPI_MultiRead(SPI1,GPIOC,GPIO_Pin_6,ICM20608G_GYRO_XOUT_H,raw,6);
+		break;
+	}
   /*X的原始角速度值*/
   data1[0] = (raw[0]<<8) | raw[1];
   /*Y的原始角速度值*/
@@ -99,17 +107,6 @@ void icm_update_gyro_rate(void)
 			gyro[2] = -data1[2]/131.f;
 			break;
   }
-  //	SPI_MultiRead(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_GYRO_XOUT_H,raw,6);
-  //	/*X的原始角速度值*/
-  //	data2[0] = (raw[0]<<8) | raw[1];
-  //	/*Y的原始角速度值*/
-  //	data2[1] = (raw[2]<<8) | raw[3];
-  //	/*Y的原始角速度值*/
-  //	data2[2] = (raw[4]<<8) | raw[5];
-  
-  //	gyro.No2[0] = -data2[1]/131.f;
-  //	gyro.No2[1] = data2[0]/131.f;
-  //	gyro.No2[2] = data2[2]/131.f;
 }
 void icm_read_gyro_rate(float data[3])
 {
@@ -121,7 +118,7 @@ void icm_read_gyro_rate(float data[3])
 }
 
 static float acc[3];
-void icm_update_acc(void)
+void icm_update_acc(int gyroNum)
 {
   short data1[3] = {0,0,0};
   //	short data2[3] = {0,0,0};
@@ -129,8 +126,19 @@ void icm_update_acc(void)
   /*
   raw从低地址到高地址依次是
   X高八位,X第八位,Y高八位,Y第八位,Z高八位,Z第八位
-  */
-  SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_ACCEL_XOUT_H,raw,6);
+  */	
+	switch(gyroNum)
+	{
+		case 1:
+			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_1,ICM20608G_ACCEL_XOUT_H,raw,6);
+		break;
+		case 2:
+			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_2,ICM20608G_ACCEL_XOUT_H,raw,6);
+		break;
+		case 3:
+			SPI_MultiRead(SPI1,GPIOC,GPIO_Pin_6,ICM20608G_ACCEL_XOUT_H,raw,6);
+		break;
+	}
   /*X的原始角速度值*/
   data1[0] = (raw[0]<<8) | raw[1];
   /*Y的原始角速度值*/
@@ -169,20 +177,31 @@ void icm_read_accel_acc(float data[3])
 }
 
 static float temp;
-void icm_update_temp(void)
+void icm_update_temp(int gyroNum)
 {
-  short raw;
-  uint8_t data[2];
+  short data;
+  uint8_t byte[2];
   
-  SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_TEMP_OUT_H,data,2);
+	switch(gyroNum)
+	{
+		case 1:
+			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_1,ICM20608G_TEMP_OUT_H,byte,2);
+		break;
+		case 2:
+			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_2,ICM20608G_TEMP_OUT_H,byte,2);
+		break;
+		case 3:
+			SPI_MultiRead(SPI1,GPIOC,GPIO_Pin_6,ICM20608G_TEMP_OUT_H,byte,2);
+		break;
+	}
   
-  raw = (data[0] << 8) | data[1];
+  data = (byte[0] << 8) | byte[1];
   /*
   326.8f LSB/℃
   TEMP_degC = ((TEMP_OUT –
   RoomTemp_Offset)/Temp_Sensitivity) + 25degC
   */
-  temp = 25.f + (float)raw / 326.8f;
+  temp = 25.f + (float)data / 326.8f;
 }
 void icm_read_temp(float *data)
 {

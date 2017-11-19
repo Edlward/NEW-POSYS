@@ -29,6 +29,7 @@ void init(void)
 	elmo_Init();
 	elmo_Enable(2);
 	Vel_cfg(2,300000,300000);
+	Pos_cfg(2,300000,300000,1000);
 	ReadActualPos(2);
 	delay_ms(500);
 	posInit=GetRealPos();
@@ -49,6 +50,7 @@ int main(void)
   int64_t  delta_pos=0;
 	float vel_real=0.f;
 	init();
+				VelCrl(2, 0.0*4096.0*10000.0/360.0);
 	while(1)
 	{
 		while(getTimeFlag())
@@ -61,8 +63,7 @@ int main(void)
 					delta_pos-=0xffffffff;
 				if(delta_pos<-0xffffffff/2)
 					delta_pos+=0xffffffff;
-				angle=delta_pos*360.0/40960000.0;
-				
+				angle=delta_pos/40960000.0*360.0;
 				delta_pos=Pos-pos_old;
 				if(delta_pos>20480000)
 					delta_pos-=40960000;
@@ -71,8 +72,8 @@ int main(void)
 				vel_real=delta_pos*360.0/40960000.0/PERIOD/5*1000;
 				pos_old=Pos;
 				if(fabs(angle)<=360.f){
-					USART_OUT_F(para_t.anglex);
-					USART_OUT_F(para_t.angley);
+
+					USART_OUT_F(angle);
 					USART_OUT_F(para_t.anglez);
 					USART_OUT_F(para_t.wx);
 					USART_OUT_F(para_t.wy);

@@ -1,26 +1,26 @@
-function [ result ] = kalmanEFK( data)
+function [ result ] = kalmanEFK( data,n)
 %UNTITLED 此处显示有关此函数的摘要
 %   此处显示详细说明
-R=0.003;
-Q=0.003;
+R=var(data);
+Q=var(data);
 P_last=0.01;
-t=[1:1:49]';
-y=polyfit(t,data(1:49),1);%1x2的行向量
-for j=1:50
+t=[1:1:n-1]';
+y=polyfit(t,data(1:n-1),1);%1x2的行向量
+for j=1:n
     IAE_st(j)=data(j)-y(1)*j-y(2);
-    result(j)=0;
+    result(j)=mean(data(1:n));
 end
-for j=50:length(data)
-    y=polyfit(t,data(j-49:j-1),1);%1x2的行向量
-	predict=y(1)*50+y(2);
+for j=n:length(data)
+    y=polyfit(t,data(j-(n-1):j-1),1);%1x2的行向量
+	predict=y(1)*n+y(2);
 	%相当于数组的左移
-	for i=1:49
+	for i=1:n-1
         IAE_st(i)=IAE_st(i+1);
     end
-	IAE_st(50)=data(j)-predict;
+	IAE_st(n)=data(j)-predict;
 	
 	% 新息的方差计算 
-	Cr=sum(IAE_st(1:50).^2)/50;		%样本方差（不知道对不对，还要看原公式）
+	Cr=sum(IAE_st(1:n).^2)/n;		%样本方差（不知道对不对，还要看原公式）
 	
 	% 预测本次的预测误差 
 	P_mid=P_last+Q;

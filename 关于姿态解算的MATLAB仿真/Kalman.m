@@ -1,12 +1,12 @@
 function [ result ] = kalman( data)
 %UNTITLED 此处显示有关此函数的摘要
 %   此处显示详细说明
-R=0.003;
-Q=0.003;
+R=var(data);
+Q=var(data);
 P_last=0.01;
 for j=1:50
     IAE_st(j)=data(j)-mean(data(1:50));
-    result(j)=0;
+    result(j)=mean(data(1:50));
 end
 act_value=mean(data(1:50));
 for j=50:length(data)

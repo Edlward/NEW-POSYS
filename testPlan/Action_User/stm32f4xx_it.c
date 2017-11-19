@@ -363,7 +363,9 @@ void AT_CMD_Handle(void){
 		float value = atof(buffer+8);
 		if(fabs(value)>15.0)
 			value=0;
-		VelCrl(2, value*4096.0*10000.0/360.0);
+		//VelCrl(2, value*4096.0*10000.0/360.0);
+		Pos_cfg(2,300000,300000,value*4096.0*10000.0/360.0);
+		PosCrl(2,1,40960000);
   }
   else if((bufferI == 12) && strncmp(buffer, "AT+restart\r\n", 12)==0)//AT    
   {

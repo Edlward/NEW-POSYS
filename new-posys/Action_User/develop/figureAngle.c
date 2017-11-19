@@ -108,11 +108,11 @@ void TemporaryHandle(void)
 void updateAngle(void)
 {	
   static float euler[3];            //Å·À¬½Ç
-	float maxStaticValue=*(flashData.minValue);
+	//float maxStaticValue=*(flashData.minValue);
 	
-  if((GetCommand()&STATIC)&&(allPara.GYRO_Real[2]<0.2f)){
-		maxStaticValue=0.15f;
-	}
+//  if((GetCommand()&STATIC)&&(allPara.GYRO_Real[2]<0.2f)){
+//		maxStaticValue=0.15f;
+//	}
 	
 //  if(fabs(allPara.GYRO_Real[0])<maxStaticValue)//µ¥Î» ¡ã/s
 //    allPara.GYRO_Real[0]=0.f;	

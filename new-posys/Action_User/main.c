@@ -19,20 +19,16 @@ void init(void)
   /* 陀螺仪加热电阻PWM初始化--------------------------*/
   pwm_init(999, 83);//此时PWM的频率为84MHz/(83+1)/(999+1)=1KHz
   
-		/* SPI初始化---------------------------------------*/
-		//单轮模式时磁编码器的SPI初始化
-		ICM_SPIInit();
-		//单轮模式时陀螺仪的SPI初始化
-		SPI2_Init();
+	/* SPI初始化---------------------------------------*/
+	//单轮模式时磁编码器的SPI初始化
+	ICM_SPIInit();
+	//单轮模式时陀螺仪的SPI初始化
+	SPI2_Init();
 	
   //片选的初始化
   CS_Config();
 	
-	#ifdef TEST_SUMMER
-		USART1_Init(921600);
-	#else
-		USART1_Init(921600);
-	#endif
+	USART1_Init(921600);
 
   /* ICM20608G模块初始化-----------------------------------*/
   Flash_Init();
@@ -55,8 +51,8 @@ int main(void)
   {
     while(getTimeFlag())
     {
-      //				uint8_t test[3];
-      //				test[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
+//      				uint8_t test[3];
+//      				test[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
 			//使数据能够同步，但是不同步情况很少
 			while(readOrderLast==getReadOrder());
 			readOrderLast=getReadOrder();

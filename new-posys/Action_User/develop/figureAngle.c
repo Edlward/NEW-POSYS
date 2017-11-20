@@ -51,11 +51,7 @@ static double driftCoffecient[3]={0.0};
 uint8_t sendPermit=1;
 int RoughHandle(void)
 {
-  double drift[3]={0.0,0.0,0.0};
   
-  drift[0]=driftCoffecient[0]*(allPara.GYRO_Temperature/100.f);
-  drift[1]=driftCoffecient[1]*(allPara.GYRO_Temperature/100.f);
-  drift[2]=driftCoffecient[2]*(allPara.GYRO_Temperature/100.f);
   
   allPara.GYRO_Real[0]=(double)allPara.GYRO_Aver[0];//-drift[0];
   allPara.GYRO_Real[1]=(double)allPara.GYRO_Aver[1];//-drift[1];
@@ -178,36 +174,57 @@ int JudgeAcc(void)
   else
     return 0;
 }	
-//测量值
-const double stdCoffeicent[3]={ 0.973632,0.513072, 0.2672 };
-void driftCoffecientInit(void){
-	int selectCount=0;
-	switch(*(flashData.chartMode)){
-		//结合之前测得的标准数据
-		case 0:
-			selectCount++;
-			driftCoffecient[0]=stdCoffeicent[0];
-			driftCoffecient[1]=stdCoffeicent[1];
-			driftCoffecient[2]=stdCoffeicent[2];
-			break;
-		//不结合之前测得的标准数据
-		case 1:
-			
-			break;
-	}
+/*
+chartMode方式  
+陀螺仪1（X轴  Y轴  Z轴）
+陀螺仪2（X轴  Y轴  Z轴）
+陀螺仪3（X轴  Y轴  Z轴）
 
-	for(int i=0;i<5;i++)
+chartMode+陀螺仪序号（0-2）*3+轴号（0-2）
+*/
+
+//#define GYRO_NUMBER    									
+//#define AXIS_NUMBER    									
+//#define TEMP_SAMPLE_NUMBER    					
+
+/*
+chartSelect方式  
+陀螺仪1（X轴（TEMP_SAMPLE_NUMBER个结果）Y轴（TEMP_SAMPLE_NUMBER个结果）Z轴（TEMP_SAMPLE_NUMBER个结果））
+陀螺仪2（X轴（TEMP_SAMPLE_NUMBER个结果）Y轴（TEMP_SAMPLE_NUMBER个结果）Z轴（TEMP_SAMPLE_NUMBER个结果））
+陀螺仪3（X轴（TEMP_SAMPLE_NUMBER个结果）Y轴（TEMP_SAMPLE_NUMBER个结果）Z轴（TEMP_SAMPLE_NUMBER个结果））
+
+chartSelect+陀螺仪序号（0-(GYRO_NUMBER-1）*AXIS_NUMBER*+轴号（0-(AXIS_NUMBER-1）*TEMP_SAMPLE_NUMBER+结果号（0-(TEMP_SAMPLE_NUMBER-1)）
+*/
+const double stdCoffeicent[GYRO_NUMBER][AXIS_NUMBER]={ 0.973632,0.513072, 0.2672 };
+void driftCoffecientInit(void){
+	int selectCount[GYRO_NUMBER][AXIS_NUMBER]={0};
+	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
 	{
-		if((flashData.chartSelect)[i]){
-			selectCount++;
-			driftCoffecient[0]=driftCoffecient[0]+(flashData.chartWX)[i];
-			driftCoffecient[1]=driftCoffecient[1]+(flashData.chartWY)[i];
-			driftCoffecient[2]=driftCoffecient[2]+(flashData.chartWZ)[i];
+		for(int axis=0;axis<AXIS_NUMBER;axis++)
+		{
+			switch(*(flashData.chartMode+gyro*AXIS_NUMBER+axis))
+			{
+				//结合之前测得的标准数据
+				case 0:
+					selectCount[gyro][axis]++;
+					allPara.driftCoffecient[gyro][axis]=stdCoffeicent[gyro][axis];
+					break;
+				//不结合之前测得的标准数据
+				case 1:
+					
+					break;
+			}
+			for(int sample=0;sample<TEMP_SAMPLE_NUMBER;sample++)
+			{
+				if(*( flashData.chartSelect+gyro*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+axis*TEMP_SAMPLE_NUMBER+sample) )
+				{
+					selectCount[gyro][axis]++;
+					allPara.driftCoffecient[gyro][axis]=allPara.driftCoffecient[gyro][axis]+*(flashData.chartW+gyro*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+axis*TEMP_SAMPLE_NUMBER+sample);
+				}
+			}
+			allPara.driftCoffecient[gyro][axis]=allPara.driftCoffecient[gyro][axis]/selectCount[gyro][axis];	
 		}
-	}	
-	driftCoffecient[0]=driftCoffecient[0]/selectCount;
-	driftCoffecient[1]=driftCoffecient[1]/selectCount;
-	driftCoffecient[2]=driftCoffecient[2]/selectCount;
+	}
 	
 #ifdef TEST_SUMMER
 //	USART_OUT_F(driftCoffecient[0]);
@@ -511,7 +528,7 @@ double KalmanFilterY(double measureData)
   return act_value;
 }
 
-float KalmanFilterT(double measureData)
+float KalmanFilterT_1(double measureData)
 {
   static double act_value=0;  //实际值
   double predict;             //预测值
@@ -520,7 +537,7 @@ float KalmanFilterT(double measureData)
   static double P_mid;        //对预测误差的预测
   static double Kk;           //滤波增益系数
   
-  static double Q=0.000000009957;       //系统噪声
+  static double Q=0.01286;       //系统噪声
   static double R=0.01286;      //测量噪声         
   
   static double IAE_st[50];    //记录的新息
@@ -541,16 +558,14 @@ float KalmanFilterT(double measureData)
   Cr=Cr/50.0f;
   static uint32_t ignore=0;
   ignore++;
-  if(ignore<100){
+  if(ignore<50){
     data+=measureData;
     return 0.0;
   }
-  else if(ignore==100){
-    predict=data/99.0;
-    //USART_OUT_F(predict);
-    //	USART_Enter();
+  else if(ignore==50){
+    predict=data/49.0;
   }else
-    ignore=101;
+    ignore=51;
   
   /* 预测本次的预测误差 */
   P_mid=P_last+Q;
@@ -573,7 +588,125 @@ float KalmanFilterT(double measureData)
   return act_value;
 }
 
+float KalmanFilterT_2(double measureData)
+{
+  static double act_value=0;  //实际值
+  double predict;             //预测值
+  
+  static double P_last=0.00001505;   //上一次的预测误差
+  static double P_mid;        //对预测误差的预测
+  static double Kk;           //滤波增益系数
+  
+  static double Q=0.01286;       //系统噪声
+  static double R=0.01286;      //测量噪声         
+  
+  static double IAE_st[50];    //记录的新息
+  double Cr=0;                //新息的方差
+  static double data=0.0;
+  
+  predict=act_value;
+  
+  /* 新息的方差计算 */
+  memcpy(IAE_st,IAE_st+1,392);
+  IAE_st[49]=measureData-predict;
+  
+  Cr=0;
+  for(int i=0;i<50;i++)
+  {
+    Cr=Cr+IAE_st[i]*IAE_st[i];
+  }
+  Cr=Cr/50.0f;
+  static uint32_t ignore=0;
+  ignore++;
+  if(ignore<50){
+    data+=measureData;
+    return 0.0;
+  }
+  else if(ignore==50){
+    predict=data/49.0;
+  }else
+    ignore=51;
+  
+  /* 预测本次的预测误差 */
+  P_mid=P_last+Q;
+  
+  /* 计算系数，求得输出值 */
+  Kk=P_mid/(P_mid+R);
+  
+  act_value=predict+Kk*(measureData-predict);
+  
+  /* 更新预测误差 */
+  P_last=(1-Kk)*P_mid;
+  
+  /* 计算并调整系统噪声 */
+  Q=Kk*Kk*Cr;
+  
+  /* 为提高滤波器的响应速度，减小滞后而设下的阈值 */
+  if(Kk>0.5)
+    act_value=measureData;
+  
+  return act_value;
+}
 
+float KalmanFilterT_3(double measureData)
+{
+  static double act_value=0;  //实际值
+  double predict;             //预测值
+  
+  static double P_last=0.00001505;   //上一次的预测误差
+  static double P_mid;        //对预测误差的预测
+  static double Kk;           //滤波增益系数
+  
+  static double Q=0.01286;       //系统噪声
+  static double R=0.01286;      //测量噪声         
+  
+  static double IAE_st[50];    //记录的新息
+  double Cr=0;                //新息的方差
+  static double data=0.0;
+  
+  predict=act_value;
+  
+  /* 新息的方差计算 */
+  memcpy(IAE_st,IAE_st+1,392);
+  IAE_st[49]=measureData-predict;
+  
+  Cr=0;
+  for(int i=0;i<50;i++)
+  {
+    Cr=Cr+IAE_st[i]*IAE_st[i];
+  }
+  Cr=Cr/50.0f;
+  static uint32_t ignore=0;
+  ignore++;
+  if(ignore<50){
+    data+=measureData;
+    return 0.0;
+  }
+  else if(ignore==50){
+    predict=data/49.0;
+  }else
+    ignore=51;
+  
+  /* 预测本次的预测误差 */
+  P_mid=P_last+Q;
+  
+  /* 计算系数，求得输出值 */
+  Kk=P_mid/(P_mid+R);
+  
+  act_value=predict+Kk*(measureData-predict);
+  
+  /* 更新预测误差 */
+  P_last=(1-Kk)*P_mid;
+  
+  /* 计算并调整系统噪声 */
+  Q=Kk*Kk*Cr;
+  
+  /* 为提高滤波器的响应速度，减小滞后而设下的阈值 */
+  if(Kk>0.5)
+    act_value=measureData;
+  
+  return act_value;
+}
 
 
 /************************ (C) COPYRIGHT 2016 ACTION *****END OF FILE****/

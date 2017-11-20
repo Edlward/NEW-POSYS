@@ -52,42 +52,46 @@ void TempTablePrintf(void)
   
 }
 
-int CalculateCrAndMean(float stdCr[3],float mean[3]){
-	static float IAE_st[3][200]={0.f};    //记录的新息
-	static float data[3][200]={0.f};    	//数据列
+int CalculateCrAndMean(float stdCr[GYRO_NUMBER][AXIS_NUMBER],float mean[GYRO_NUMBER][AXIS_NUMBER]){
+	static float IAE_st[GYRO_NUMBER][AXIS_NUMBER][200]={0.f};    //记录的新息
+	static float data[GYRO_NUMBER][AXIS_NUMBER][200]={0.f};    	//数据列
 	static int ignore=0;
 	ignore++;
   /* 数据列表 */
-	for(int i=0;i<3;i++){
-		memcpy(data[i],data[i]+1,796);
-	}
-	data[0][199]=allPara.GYRO_Aver[0];
-	data[1][199]=allPara.GYRO_Aver[1];
-	data[2][199]=allPara.GYRO_Aver[2];
+	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+		for(int axis=0;axis<AXIS_NUMBER;axis++)
+			memcpy(data[gyro][axis],data[gyro][axis]+1,796);
+		
+	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+		for(int axis=0;axis<AXIS_NUMBER;axis++)
+			data[gyro][axis][199]=allPara.GYROWithoutRemoveDrift[gyro][axis];
+	
   /* 新息的方差计算 */
-	for(int i=0;i<3;i++){
-		memcpy(IAE_st[i],IAE_st[i]+1,796);
-	}
-	for(int i=0;i<3;i++)
-	{
-		mean[i]=mean[i]-data[i][0]/200+data[i][199]/200;
-	}
-	IAE_st[0][199]=allPara.GYRO_Aver[0]-mean[0];
-	IAE_st[1][199]=allPara.GYRO_Aver[1]-mean[1];
-	IAE_st[2][199]=allPara.GYRO_Aver[2]-mean[2];
+	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+		for(int axis=0;axis<AXIS_NUMBER;axis++)
+		{
+			memcpy(IAE_st[gyro][axis],IAE_st[gyro][axis]+1,796);
+			mean[gyro][axis]=mean[gyro][axis]-data[gyro][axis][199]/200+data[gyro][axis][199]/200;
+		}
+	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+		for(int axis=0;axis<AXIS_NUMBER;axis++)
+			IAE_st[gyro][axis][199]=allPara.GYROWithoutRemoveDrift[gyro][axis]-mean[gyro][axis];
 	
   if(ignore<400)
 		return 0;
 	else
 		ignore=400;
-	for(int j=0;j<3;j++){
-		stdCr[j]=0;
-		for(int i=0;i<200;i++)
-		{
-			stdCr[j]=stdCr[j]+IAE_st[j][i]*IAE_st[j][i];
-		}
-		stdCr[j]=__sqrtf(stdCr[j]/200.0f);
+	
+	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+		for(int axis=0;axis<AXIS_NUMBER;axis++){
+			stdCr[gyro][axis]=0;
+			for(int i=0;i<200;i++)
+			{
+				stdCr[gyro][axis]=stdCr[gyro][axis]+IAE_st[gyro][axis][i]*IAE_st[gyro][axis][i];
+			}
+			stdCr[gyro][axis]=__sqrtf(stdCr[gyro][axis]/200.0f);
 	}
+	
 	return 1;
 }
 
@@ -103,19 +107,29 @@ int WaitForSlowDrift(void)
 		return 1;
 	}
 }
+/*
+chartMode方式  
+陀螺仪1（X轴  Y轴  Z轴）
+陀螺仪2（X轴  Y轴  Z轴）
+陀螺仪3（X轴  Y轴  Z轴）
 
+chartMode+陀螺仪序号（0-2）*3+轴号（0-2）
+*/
+
+//#define GYRO_NUMBER    									
+//#define AXIS_NUMBER    									
+//#define TEMP_SAMPLE_NUMBER    
 int UpdateVDoffTable(void)
 {
-	static uint32_t temp_count[(int)(TempTable_max-TempTable_min)*10]={0u};
-	static long double temp_w[3][(int)(TempTable_max-TempTable_min)*10]={0.0};
-  long double paraXY[3]={0.0};
-  long double paraX    = 0.0 ;
-  long double paraY[3] ={0.0};
-  long double paraX2   = 0.0 ;
-  long double temp_temp=allPara.GYRO_Temperature/100.f;
+	static uint32_t temp_count[GYRO_NUMBER][(int)(TempTable_max-TempTable_min)*10]={0u};
+	static long double temp_w[GYRO_NUMBER][AXIS_NUMBER][(int)(TempTable_max-TempTable_min)*10]={0.0};
+  long double paraXY[GYRO_NUMBER][AXIS_NUMBER]={0.0};
+  long double paraX[GYRO_NUMBER]    = {0.0};
+  long double paraY[GYRO_NUMBER][AXIS_NUMBER] ={0.0};
+  long double paraX2[GYRO_NUMBER]   = {0.0};
   int index=0;
-  static float stdCr[3]={0.f};                //新息的标准差
-  static float mean[3]={0.f};
+  static float stdCr[GYRO_NUMBER][AXIS_NUMBER]={0.f};                //新息的标准差
+  static float mean[GYRO_NUMBER][AXIS_NUMBER]={0.f};
 	
 	if(!WaitForSlowDrift())
 		return 0;
@@ -126,35 +140,30 @@ int UpdateVDoffTable(void)
 	
 	if((fabs(allPara.GYRO_Aver[0]-mean[0])>stdCr[0]*5)||(fabs(allPara.GYRO_Aver[1]-mean[1])>stdCr[1]*5)||(fabs(allPara.GYRO_Aver[2]-mean[2])>stdCr[2]*5))
 	{
-//		USART_OUT_F(allPara.GYRO_Temperature);
-//		USART_OUT_F(allPara.GYRO_Aver[2]);
 		return 0;
 	}
 	else
 	{	
-//		USART_OUT_F(allPara.GYRO_Temperature);
-//		USART_OUT_F(allPara.GYRO_Aver[2]);
-//		USART_Enter();	
 	}		
-	/*不返回的0结束函数的话，最小二乘样本实际总值会少*/
-	if((double)allPara.GYRO_Temperature>=TempTable_min&&(double)allPara.GYRO_Temperature<TempTable_max-0.06){
 	
-		/*确定温度索引号,如果不减0.5可能会出现index=200的情况*/
-		index=roundf(((double)allPara.GYRO_Temperature-TempTable_min)*10.0);
-		if(temp_count[index]>0){
-			/*求这一个温度上的角速度和*/
-			temp_w[0][index]+=allPara.GYRO_Aver[0];
-			temp_w[1][index]+=allPara.GYRO_Aver[1];
-			temp_w[2][index]+=allPara.GYRO_Aver[2];
+	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+	{
+		if((double)(allPara.GYRO_Temperature[gyro])>=TempTable_min&&(double)(allPara.GYRO_Temperature[gyro])<TempTable_max-0.006){
+			/*确定温度索引号,如果不减0.006可能会出现index=200的情况*/
+			index=roundf(((double)(allPara.GYRO_Temperature[gyro])-TempTable_min)*100.0);
+			if(temp_count[gyro][index]>0){
+				/*求这一个温度上的角速度和*/
+				for(int axis=0;axis<AXIS_NUMBER;axis++)
+					temp_w[gyro][axis][index]+=allPara.GYROWithoutRemoveDrift[gyro][axis];
+			}
+			else{
+				/*初始值*/
+				for(int axis=0;axis<AXIS_NUMBER;axis++)
+					temp_w[gyro][axis][index]=allPara.GYROWithoutRemoveDrift[gyro][axis];
+				temp_count[gyro][index]=0;
+			}
+				temp_count[gyro][index]++;
 		}
-		else{
-			/*初始值*/
-			temp_w[0][index]=allPara.GYRO_Aver[0];
-			temp_w[1][index]=allPara.GYRO_Aver[1];
-			temp_w[2][index]=allPara.GYRO_Aver[2];
-			temp_count[index]=0;
-		}
-			temp_count[index]++;
 	}
 	
 	

@@ -154,14 +154,18 @@ void Flash_Init(void)
   //static uint8_t  flashdata[160*(TempTable_max-TempTable_min)];  //从flash中取出的数据
   Flash_Read(flashdata,TempTable_Num);  
   /* 分割数据段，将零漂值与计数值分开 */
-  (flashData.chartWX)=(double *)flashdata;
-  (flashData.chartWY)=(double *)flashdata+5;
-  (flashData.chartWZ)=(double *)flashdata+10;
-  (flashData.chartMode)=(uint8_t *)flashdata+120;
-  (flashData.chartSelect)=(uint8_t *)(flashdata)+121;
-  (flashData.scaleMode)=(uint8_t *)(flashdata)+126;
-	(flashData.minValue)=(float *)((uint8_t *)flashdata+128);
-	(flashData.varXYZ)=(float *)((uint8_t *)flashdata+132);
+	/*45个float 180位*/
+  (flashData.chartW)=(float *)flashdata;
+	/*9个float 36位*/
+	(flashData.minValue)=(float *)((uint8_t *)flashdata+180);
+	/*9个float 36位*/
+	(flashData.varXYZ)=(float *)((uint8_t *)flashdata+216);
+	/*9个无符号字符*/
+  (flashData.chartMode)=(uint8_t *)flashdata+252;
+	/*45个无符号字符*/
+  (flashData.chartSelect)=(uint8_t *)(flashdata)+261;
+	/*9个无符号字符*/
+  (flashData.scaleMode)=(uint8_t *)(flashdata)+306;
   /* 保护Flash数据 */
   Flash_Encryp();
 }

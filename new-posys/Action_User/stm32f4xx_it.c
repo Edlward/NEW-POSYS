@@ -43,12 +43,12 @@ extern uint16_t data[2];
 void TIM2_IRQHandler(void)
 {
 	
-  float gyr_temp[3][3];
-  float acc_temp[3][3];
-  float  temp_temp[3];
-  static float gyro_sum[3][3];
-  static float acc_sum[3][3];
-  static float  temp_sum[3];
+  float gyr_temp[GYRO_NUMBER][AXIS_NUMBER];
+  float acc_temp[GYRO_NUMBER][AXIS_NUMBER];
+  float  temp_temp[GYRO_NUMBER];
+  static float gyro_sum[GYRO_NUMBER][AXIS_NUMBER];
+  static float acc_sum[GYRO_NUMBER][AXIS_NUMBER];
+  static float  temp_sum[GYRO_NUMBER];
   static uint32_t timeCnt=0;
   if(TIM_GetITStatus(TIM2, TIM_IT_Update)==SET)
   {	
@@ -60,20 +60,20 @@ void TIM2_IRQHandler(void)
       timeCount=0;
       timeFlag=1;
     }
-		for(int i=1;i<4;i++)
+		for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
 		{
-      icm_update_gyro_rate(i);
-			icm_update_temp(i);
-			icm_update_acc(i);
-			icm_read_temp(&temp_temp[i-1]);
-      icm_read_gyro_rate(gyr_temp[i-1]);
-			icm_read_accel_acc(acc_temp[i-1]);
-			for(int j=0;j<3;j++)
+      icm_update_gyro_rate(gyro);
+			icm_update_temp(gyro);
+			icm_update_acc(gyro);
+			icm_read_temp(&temp_temp[gyro]);
+      icm_read_gyro_rate(gyr_temp[gyro]);
+			icm_read_accel_acc(acc_temp[gyro]);
+			for(int axis=0;axis<AXIS_NUMBER;axis++)
 			{
-				gyro_sum[i-1][j]=gyro_sum[i-1][j]+gyr_temp[i-1][j];
-				acc_sum[i-1][j]=acc_sum[i-1][j]+acc_temp[i-1][j];
+				gyro_sum[gyro][axis]=gyro_sum[gyro][axis]+gyr_temp[gyro][axis];
+				acc_sum[gyro][axis]=acc_sum[gyro][axis]+acc_temp[gyro][axis];
 			}
-      temp_sum[i-1]=temp_sum[i-1]+temp_temp[i-1];
+      temp_sum[gyro]=temp_sum[gyro]+temp_temp[gyro];
 		}
 //			if(timeCnt==4){
 //				//放到中断里
@@ -83,22 +83,34 @@ void TIM2_IRQHandler(void)
       if(timeCnt==5){
 				readOrder++;
         timeCnt=0;
-				for(int i=0;i<3;i++)
+				
+				for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
 				{
-					allPara.GYRO_Aver[i]=(gyro_sum[0][i]+gyro_sum[1][i]+gyro_sum[2][i])/15.f;
-					allPara.ACC_Aver[i]=(acc_sum[0][i]+acc_sum[1][i]+acc_sum[2][i])/15.f;
-				}
-				allPara.GYRO_Temperature=(temp_sum[0]+temp_sum[1]+temp_sum[2])/15.f;
-				allPara.GYRO_Temperature=KalmanFilterT(allPara.GYRO_Temperature);
-				for(int i=0;i<3;i++)
-				{
-					temp_sum[i]=0.f;
-					for(int j=0;j<3;j++)
+					allPara.GYRO_Temperature[gyro]=temp_sum[gyro]/5.f;
+					for(int axis=0;axis<AXIS_NUMBER;axis++)
 					{
-						gyro_sum[i][j]=0.f;
-						acc_sum[i][j]=0.f;
+						allPara.GYROWithoutRemoveDrift[gyro][axis]=gyro_sum[gyro][axis]/5.f;
+						allPara.ACC_Aver[gyro][axis]=acc_sum[gyro][axis]/5.f;
 					}
 				}
+				
+				allPara.GYRO_Temperature[0]=KalmanFilterT_1(allPara.GYRO_Temperature[0])/100.f;
+				allPara.GYRO_Temperature[1]=KalmanFilterT_2(allPara.GYRO_Temperature[1])/100.f;
+				allPara.GYRO_Temperature[2]=KalmanFilterT_3(allPara.GYRO_Temperature[2])/100.f;
+				
+				
+				for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+				{
+					temp_sum[gyro]=0.f;
+					for(int axis=0;axis<AXIS_NUMBER;axis++)
+					{
+						allPara.GYRORemoveDrift[gyro][axis]=allPara.GYROWithoutRemoveDrift[gyro][axis]-allPara.driftCoffecient[gyro][axis]*(allPara.GYRO_Temperature[gyro]);
+						gyro_sum[gyro][axis]=0.f;
+						acc_sum[gyro][axis]=0.f;
+					}
+					allPara.GYRO_Aver[gyro]=(allPara.GYRORemoveDrift[gyro][0]+allPara.GYRORemoveDrift[gyro][1]+allPara.GYRORemoveDrift[gyro][2])/3.f;
+				}
+				
       }
   }
 	else{

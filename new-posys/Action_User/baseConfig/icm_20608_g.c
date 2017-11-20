@@ -72,13 +72,13 @@ void icm_update_gyro_rate(int gyroNum)
   */
 	switch(gyroNum)
 	{
-		case 1:
+		case 0:
 			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_1,ICM20608G_GYRO_XOUT_H,raw,6);
 		break;
-		case 2:
+		case 1:
 			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_2,ICM20608G_GYRO_XOUT_H,raw,6);
 		break;
-		case 3:
+		case 2:
 			SPI_MultiRead(SPI1,GPIOC,GPIO_Pin_6,ICM20608G_GYRO_XOUT_H,raw,6);
 		break;
 	}
@@ -129,13 +129,13 @@ void icm_update_acc(int gyroNum)
   */	
 	switch(gyroNum)
 	{
-		case 1:
+		case 0:
 			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_1,ICM20608G_ACCEL_XOUT_H,raw,6);
 		break;
-		case 2:
+		case 1:
 			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_2,ICM20608G_ACCEL_XOUT_H,raw,6);
 		break;
-		case 3:
+		case 2:
 			SPI_MultiRead(SPI1,GPIOC,GPIO_Pin_6,ICM20608G_ACCEL_XOUT_H,raw,6);
 		break;
 	}
@@ -184,13 +184,13 @@ void icm_update_temp(int gyroNum)
   
 	switch(gyroNum)
 	{
-		case 1:
+		case 0:
 			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_1,ICM20608G_TEMP_OUT_H,byte,2);
 		break;
-		case 2:
+		case 1:
 			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_2,ICM20608G_TEMP_OUT_H,byte,2);
 		break;
-		case 3:
+		case 2:
 			SPI_MultiRead(SPI1,GPIOC,GPIO_Pin_6,ICM20608G_TEMP_OUT_H,byte,2);
 		break;
 	}

@@ -39,8 +39,14 @@ void setAngle(float zAngle);
 float safe_asin(float v);
 float getActIcm(void);
 void SetAngle(float angle);
-float KalmanFilterT(double measureData);
 void driftCoffecientInit(void);
+
+float KalmanFilterT_1(double measureData);
+float KalmanFilterT_2(double measureData);
+float KalmanFilterT_3(double measureData);
+
+
+
 #endif
 
 /******************* (C) COPYRIGHT 2015 ACTION *****END OF FILE****/

@@ -60,9 +60,13 @@
 #define R_wheel2        25.42820678
 #define LEASTNUM			 	50
 
-#define TempTable_min  25.0
-#define TempTable_max  40.0
+#define TempTable_min  25.0/10.0
+#define TempTable_max  40.0/10.0
 #define HEATTIME	   	 30.0
+
+#define DOUBLE_SIZE											8
+#define FLOAT_SIZE											4
+#define UINT8_SIZE											1
 /*
 第一位 陀螺仪是否矫正  1代表矫正
 第二位 陀螺仪
@@ -139,7 +143,9 @@
 /* ICM20608G 陀螺仪寄存器地址--------------*/
 #define I3G_WHO_AM_I 									  0x00
 
-/* Exported functions ------------------------------------------------------- */
+#define GYRO_NUMBER    									3
+#define AXIS_NUMBER    									3
+#define TEMP_SAMPLE_NUMBER    					5
 
 typedef struct{
 	
@@ -147,32 +153,32 @@ typedef struct{
 	double quarternion[4];
 	
 	/*陀螺仪原始数据*/
-	float GYRO_Raw1[3];
-	float GYRO_Raw2[3];
-	float GYRO_Raw3[3];
-	float GYRO_Aver[3];
+	float GYRO_Raw[GYRO_NUMBER][AXIS_NUMBER];
+	float GYROWithoutRemoveDrift[GYRO_NUMBER][AXIS_NUMBER];
+	float GYRORemoveDrift[GYRO_NUMBER][AXIS_NUMBER];
+	float GYRO_Aver[AXIS_NUMBER];
+	/*陀螺仪处理后的数据*/
+	float GYRO_Real[AXIS_NUMBER];
 	
 	
 	/*陀螺仪原始数据*/
-	float ACC_Raw1[3];
-	float ACC_Raw2[3];
-	float ACC_Raw3[3];
-	float ACC_Aver[3];
-	
-	/*陀螺仪处理后的数据*/
-	float GYRO_Real[3];
+	float ACC_Raw[GYRO_NUMBER][AXIS_NUMBER];
+	float ACC_Aver[GYRO_NUMBER][AXIS_NUMBER];
 	
 	/*陀螺仪温度*/
-	float GYRO_Temperature;
+	float GYRO_Temperature[GYRO_NUMBER];
+	
+	/*三个陀螺仪三个轴随温度变化的系数*/
+	float driftCoffecient[GYRO_NUMBER][AXIS_NUMBER];
 	
 	/*陀螺仪角度*/
-	float GYRO_Angle[3];
+	float GYRO_Angle[AXIS_NUMBER];
 	
 	/*加速度计的角度 只有X Y轴角度*/
-	float ACC_Angle[2];
+	float ACC_Angle[AXIS_NUMBER-1];
 	
 	/*最终确定的三轴角度*/
-	float Result_Angle[3];
+	float Result_Angle[AXIS_NUMBER];
 	
 	
 }AllPara_t;

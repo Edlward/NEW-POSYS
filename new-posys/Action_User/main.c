@@ -34,8 +34,11 @@ void init(void)
   Flash_Init();
 	
 	ICM20608G_init();
+	/*初始时不加热*/
+  ICM_1_HeatingPower(0);
+  ICM_2_HeatingPower(0);
+  ICM_3_HeatingPower(0);
 	
-  ICM_HeatingPower(0);
   driftCoffecientInit();
   TIM_Init(TIM2,999,83,0,0);					//主周期定时5ms
 }

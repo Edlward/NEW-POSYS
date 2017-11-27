@@ -73,10 +73,10 @@ int main(void)
 				pos_old=Pos;
 				if(fabs(angle)<=360.f){
 
-					USART_OUT_F(angle);
-					USART_OUT_F(para_t.anglez);
+//					USART_OUT_F(angle);
+//					USART_OUT_F(para_t.anglez);
 					USART_OUT_F(para_t.wx);
-					USART_OUT_F(para_t.wy);
+//					USART_OUT_F(para_t.wy);
 					USART_OUT_F(para_t.wz);
 					USART_Enter();
 				}

@@ -208,15 +208,6 @@ void readSensorData(void){
 				USART_OUT_CHAR("\r\n");
 			}
 			
-//			USART_OUTF(vell[0]);
-//			USART_OUTF(vell[1]);
-//			USART_OUTF(vell[2]);
-//			USART_OUTF(totalDistance[0]);
-//			USART_OUTF(totalDistance[1]);
-//			USART_OUTF(totalDistance[2]);
-//			USART_OUT_CHAR("\r\n");
-			
-				
 	#endif
 	
 	iForStartErrorOfVell++;

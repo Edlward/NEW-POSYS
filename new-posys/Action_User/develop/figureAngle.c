@@ -46,58 +46,70 @@ int JudgeAcc(void);
 
 static float gyr_AVER[3]={0.0};
 static uint32_t count=0;
-static float acc_sum=0.f;
-static double driftCoffecient[3]={0.0};
 uint8_t sendPermit=1;
 int RoughHandle(void)
 {
-  
-  
-  allPara.GYRO_Real[0]=(double)allPara.GYRO_Aver[0];//-drift[0];
-  allPara.GYRO_Real[1]=(double)allPara.GYRO_Aver[1];//-drift[1];
-  allPara.GYRO_Real[2]=(double)allPara.GYRO_Aver[2];//-drift[2];
-	
-//  allPara.GYRO_Real[0]=KalmanFilterX(allPara.GYRO_Real[0]);
-//  allPara.GYRO_Real[1]=KalmanFilterY(allPara.GYRO_Real[1]);
-//  allPara.GYRO_Real[2]=KalmanFilterZ(allPara.GYRO_Real[2]);
+		USART_OUT_F(allPara.GYRO_Real[2]);
+		USART_Enter();
+  allPara.GYRO_Real[0]=KalmanFilterX(allPara.GYRO_Aver[0]);
+  allPara.GYRO_Real[1]=KalmanFilterY(allPara.GYRO_Aver[1]);
+  allPara.GYRO_Real[2]=KalmanFilterZ(allPara.GYRO_Aver[2]);
+//  allPara.GYRO_Real[0]=(allPara.GYRORemoveDrift[0][0]);
+//  allPara.GYRO_Real[1]=(allPara.GYRORemoveDrift[0][1]);
+//  allPara.GYRO_Real[2]=(allPara.GYRORemoveDrift[0][2]);
   count++;
-	
+		
   if(count==(15*200+2)){
     count--;
     allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-gyr_AVER[0]);
     allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-gyr_AVER[1]);
     allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-gyr_AVER[2]);
-		
     return 1;
-  }
+  }else{
+		return 0;
+	}
   
-  return 0;
 }
 
 //30℃到49.9℃   重新矫正温飘  30 -- 0  30.1 -- 1
 void TemporaryHandle(void)
 {
-  static double accInit[3]={0.0,0.0,0.0};
+  static float accInit[GYRO_NUMBER][AXIS_NUMBER]={
+	2.0,0.7,0.05,
+	0.3,0.3,-0.05,
+	0.3,0.3,-0.05
+	};
+	int gyro=0;
+	int axis=0;
+	
   if(count>=10*200&&count<15*200){
-    gyr_AVER[0]=gyr_AVER[0]+allPara.GYRO_Real[0];
-    gyr_AVER[1]=gyr_AVER[1]+allPara.GYRO_Real[1];
-    gyr_AVER[2]=gyr_AVER[2]+allPara.GYRO_Real[2];
-    accInit[0]=accInit[0]+allPara.ACC_Aver[0];
-    accInit[1]=accInit[1]+allPara.ACC_Aver[1];
-    accInit[2]=accInit[2]+allPara.ACC_Aver[2];
+		for(axis=0;axis<AXIS_NUMBER;axis++)
+		{
+			gyr_AVER[axis]=gyr_AVER[axis]+allPara.GYRO_Real[axis];
+			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
+			{
+				accInit[gyro][axis]=accInit[gyro][axis]+allPara.ACC_Aver[gyro][axis];
+			}
+		}
   }
   else if(count==15*200){
     count++;
-    gyr_AVER[0]=gyr_AVER[0]/(5.f*200.f);
-    gyr_AVER[1]=gyr_AVER[1]/(5.f*200.f);
-    gyr_AVER[2]=gyr_AVER[2]/(5.f*200.f);
-    accInit[0]=accInit[0]/(5.f*200.f);
-    accInit[1]=accInit[1]/(5.f*200.f);
-    accInit[2]=accInit[2]/(5.f*200.f);
-    acc_sum=sqrt(accInit[0]*accInit[0]+accInit[1]*accInit[1]+accInit[2]*accInit[2]);
+		for(axis=0;axis<AXIS_NUMBER;axis++)
+		{
+			gyr_AVER[axis]=gyr_AVER[axis]/(5.f*200.f);
+			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
+			{
+				accInit[gyro][axis]=accInit[gyro][axis]/(5.f*200.f);
+			}
+		}
+    allPara.ACC_InitSum=0;
+		for(gyro=0;gyro<GYRO_NUMBER;gyro++)
+			for(axis=0;axis<AXIS_NUMBER;axis++)
+				allPara.ACC_InitSum=allPara.ACC_InitSum+accInit[gyro][axis]*accInit[gyro][axis];
+		
     /* 读取加速度的值 */
-    icm_update_AccRad(accInit,allPara.ACC_Angle);
-    Euler_to_Quaternion(allPara.ACC_Angle,allPara.quarternion);
+    icm_update_AccRad(accInit);
+    Euler_to_Quaternion(allPara.ACC_RealAngle,allPara.quarternion);
   }
 }
 
@@ -157,23 +169,32 @@ void getAngle(float angle[3])
 
 int JudgeAcc(void)
 {
-  float sum=sqrt(allPara.ACC_Aver[0]*allPara.ACC_Aver[0]+allPara.ACC_Aver[1]*allPara.ACC_Aver[1]+allPara.ACC_Aver[2]*allPara.ACC_Aver[2]);
-
-  float X_G,Y_G,Z_G;
-  if(sum!=0.0f){
-		X_G=(allPara.ACC_Aver)[0]/sum;
-		Y_G=(allPara.ACC_Aver)[1]/sum;
-		Z_G=(allPara.ACC_Aver)[2]/sum;
+	float sum[GYRO_NUMBER]={0.f};
+	float accInitSum=0.f;
+	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+	{
+		float X_G,Y_G,Z_G;
+		sum[gyro]=sqrt(allPara.ACC_Aver[gyro][0]*allPara.ACC_Aver[gyro][0]+allPara.ACC_Aver[gyro][1]*allPara.ACC_Aver[gyro][1]+allPara.ACC_Aver[gyro][2]*allPara.ACC_Aver[gyro][2]);
+		
+		X_G=allPara.ACC_Aver[gyro][0]/sum[gyro];
+		Y_G=allPara.ACC_Aver[gyro][1]/sum[gyro];
+		Z_G=allPara.ACC_Aver[gyro][2]/sum[gyro];
+		/*初始坐标为0,0,g,然后可以通过坐标变换公式轻易推导*/
+		allPara.ACC_Angle[gyro][1]= safe_atan2( X_G , -Z_G);
+		allPara.ACC_Angle[gyro][0]=-safe_atan2( Y_G , X_G/sin(allPara.ACC_Angle[gyro][1]));
 	}
-  /*初始坐标为0,0,g,然后可以通过坐标变换公式轻易推导*/
-	allPara.ACC_Angle[1]= safe_atan2( X_G , -Z_G);
-  allPara.ACC_Angle[0]=-safe_atan2( Y_G , X_G/sin(allPara.ACC_Angle[1]));
+	allPara.ACC_RealAngle[0]=(allPara.ACC_Angle[0][0]+allPara.ACC_Angle[1][0]+allPara.ACC_Angle[2][0])/3.f;
+	allPara.ACC_RealAngle[1]=(allPara.ACC_Angle[0][1]+allPara.ACC_Angle[1][1]+allPara.ACC_Angle[2][1])/3.f;
 	
-  if(fabs(sum-acc_sum)<0.001)
+	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+		for(int axis=0;axis<AXIS_NUMBER;axis++)
+			accInitSum=accInitSum+allPara.ACC_Aver[gyro][axis]*allPara.ACC_Aver[gyro][axis];
+  if(fabs(accInitSum-allPara.ACC_InitSum)<0.003)
     return 1;
   else
     return 0;
 }	
+
 /*
 chartMode方式  
 陀螺仪1（X轴  Y轴  Z轴）
@@ -195,7 +216,8 @@ chartSelect方式
 
 chartSelect+陀螺仪序号（0-(GYRO_NUMBER-1）*AXIS_NUMBER*+轴号（0-(AXIS_NUMBER-1）*TEMP_SAMPLE_NUMBER+结果号（0-(TEMP_SAMPLE_NUMBER-1)）
 */
-const double stdCoffeicent[GYRO_NUMBER][AXIS_NUMBER]={ 0.973632,0.513072, 0.2672 };
+const double stdCoffeicent[GYRO_NUMBER][AXIS_NUMBER]={ 0.0,0.0, 0.0 };
+
 void driftCoffecientInit(void){
 	int selectCount[GYRO_NUMBER][AXIS_NUMBER]={0};
 	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
@@ -227,12 +249,7 @@ void driftCoffecientInit(void){
 	}
 	
 #ifdef TEST_SUMMER
-//	USART_OUT_F(driftCoffecient[0]);
-//	USART_OUT_F(driftCoffecient[1]);
-//	USART_OUT_F(driftCoffecient[2]);
-//	USART_Enter();
 #endif
-	
 }
 
 float safe_asin(float v)
@@ -343,6 +360,8 @@ double safe_atan2(double x,double y)
 		return atan2(x,y);
 	return atan2(x,y);
 }
+
+
 /*算法中 H,φ,Γ均为一*/
 double KalmanFilterZ(double measureData)
 {
@@ -469,23 +488,23 @@ double KalmanFilterX(double measureData)
 /*算法中 H,φ,Γ均为一*/
 double KalmanFilterY(double measureData)
 {
-  static double act_value=0;  //实际值
+   static double act_value=0;  //实际值
   double predict;             //预测值
   
-  static double P_last=0.0000003169;   //上一次的预测误差
+  static double P_last=0.01;   //上一次的预测误差
   static double P_mid;        //对预测误差的预测
   static double Kk;           //滤波增益系数
   
-  static double Q=0.00000000002514;       //系统噪声         
+  static double Q=0.003;       //系统噪声        
   double R=(double)(flashData.varXYZ)[1];      //测量噪声 
   static double IAE_st[50];    //记录的新息
   static double data=0.0;
   double Cr=0;                //新息的方差
-  
+  //令预测值为上一次的真实值
   predict=act_value;
   
   /* 新息的方差计算 */
-  memcpy(IAE_st,IAE_st+1,392);
+  memcpy(IAE_st,IAE_st+1,196);
   IAE_st[49]=measureData-predict;
   
   Cr=0;
@@ -506,186 +525,6 @@ double KalmanFilterY(double measureData)
     //USART_Enter();
   }else
     ignore=101;
-  
-  /* 预测本次的预测误差 */
-  P_mid=P_last+Q;
-  
-  /* 计算系数，求得输出值 */
-  Kk=P_mid/(P_mid+R);
-  
-  act_value=predict+Kk*(measureData-predict);
-  
-  /* 更新预测误差 */
-  P_last=(1-Kk)*P_mid;
-  
-  /* 计算并调整系统噪声 */
-  Q=Kk*Kk*Cr;
-  
-  /* 为提高滤波器的响应速度，减小滞后而设下的阈值 */
-  if(Kk>0.5)
-    act_value=measureData;
-  
-  return act_value;
-}
-
-float KalmanFilterT_1(double measureData)
-{
-  static double act_value=0;  //实际值
-  double predict;             //预测值
-  
-  static double P_last=0.00001505;   //上一次的预测误差
-  static double P_mid;        //对预测误差的预测
-  static double Kk;           //滤波增益系数
-  
-  static double Q=0.01286;       //系统噪声
-  static double R=0.01286;      //测量噪声         
-  
-  static double IAE_st[50];    //记录的新息
-  double Cr=0;                //新息的方差
-  static double data=0.0;
-  
-  predict=act_value;
-  
-  /* 新息的方差计算 */
-  memcpy(IAE_st,IAE_st+1,392);
-  IAE_st[49]=measureData-predict;
-  
-  Cr=0;
-  for(int i=0;i<50;i++)
-  {
-    Cr=Cr+IAE_st[i]*IAE_st[i];
-  }
-  Cr=Cr/50.0f;
-  static uint32_t ignore=0;
-  ignore++;
-  if(ignore<50){
-    data+=measureData;
-    return 0.0;
-  }
-  else if(ignore==50){
-    predict=data/49.0;
-  }else
-    ignore=51;
-  
-  /* 预测本次的预测误差 */
-  P_mid=P_last+Q;
-  
-  /* 计算系数，求得输出值 */
-  Kk=P_mid/(P_mid+R);
-  
-  act_value=predict+Kk*(measureData-predict);
-  
-  /* 更新预测误差 */
-  P_last=(1-Kk)*P_mid;
-  
-  /* 计算并调整系统噪声 */
-  Q=Kk*Kk*Cr;
-  
-  /* 为提高滤波器的响应速度，减小滞后而设下的阈值 */
-  if(Kk>0.5)
-    act_value=measureData;
-  
-  return act_value;
-}
-
-float KalmanFilterT_2(double measureData)
-{
-  static double act_value=0;  //实际值
-  double predict;             //预测值
-  
-  static double P_last=0.00001505;   //上一次的预测误差
-  static double P_mid;        //对预测误差的预测
-  static double Kk;           //滤波增益系数
-  
-  static double Q=0.01286;       //系统噪声
-  static double R=0.01286;      //测量噪声         
-  
-  static double IAE_st[50];    //记录的新息
-  double Cr=0;                //新息的方差
-  static double data=0.0;
-  
-  predict=act_value;
-  
-  /* 新息的方差计算 */
-  memcpy(IAE_st,IAE_st+1,392);
-  IAE_st[49]=measureData-predict;
-  
-  Cr=0;
-  for(int i=0;i<50;i++)
-  {
-    Cr=Cr+IAE_st[i]*IAE_st[i];
-  }
-  Cr=Cr/50.0f;
-  static uint32_t ignore=0;
-  ignore++;
-  if(ignore<50){
-    data+=measureData;
-    return 0.0;
-  }
-  else if(ignore==50){
-    predict=data/49.0;
-  }else
-    ignore=51;
-  
-  /* 预测本次的预测误差 */
-  P_mid=P_last+Q;
-  
-  /* 计算系数，求得输出值 */
-  Kk=P_mid/(P_mid+R);
-  
-  act_value=predict+Kk*(measureData-predict);
-  
-  /* 更新预测误差 */
-  P_last=(1-Kk)*P_mid;
-  
-  /* 计算并调整系统噪声 */
-  Q=Kk*Kk*Cr;
-  
-  /* 为提高滤波器的响应速度，减小滞后而设下的阈值 */
-  if(Kk>0.5)
-    act_value=measureData;
-  
-  return act_value;
-}
-
-float KalmanFilterT_3(double measureData)
-{
-  static double act_value=0;  //实际值
-  double predict;             //预测值
-  
-  static double P_last=0.00001505;   //上一次的预测误差
-  static double P_mid;        //对预测误差的预测
-  static double Kk;           //滤波增益系数
-  
-  static double Q=0.01286;       //系统噪声
-  static double R=0.01286;      //测量噪声         
-  
-  static double IAE_st[50];    //记录的新息
-  double Cr=0;                //新息的方差
-  static double data=0.0;
-  
-  predict=act_value;
-  
-  /* 新息的方差计算 */
-  memcpy(IAE_st,IAE_st+1,392);
-  IAE_st[49]=measureData-predict;
-  
-  Cr=0;
-  for(int i=0;i<50;i++)
-  {
-    Cr=Cr+IAE_st[i]*IAE_st[i];
-  }
-  Cr=Cr/50.0f;
-  static uint32_t ignore=0;
-  ignore++;
-  if(ignore<50){
-    data+=measureData;
-    return 0.0;
-  }
-  else if(ignore==50){
-    predict=data/49.0;
-  }else
-    ignore=51;
   
   /* 预测本次的预测误差 */
   P_mid=P_last+Q;

@@ -22,115 +22,23 @@ Dialog DLL:      TCM.DLL V1.14.14.0
  
 <h2>Project:</h2>
 F:\grow\git\new-posys\new-posys\MDK-ARM\demo.uvprojx
-Project File Date:  11/19/2017
+Project File Date:  11/20/2017
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 3 (build 300)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'ACTION'
 compiling figureAngle.c...
-..\Action_User\develop\figureAngle.c(199): error:  #136: struct "<unnamed>" has no field "chartWX"
-  			driftCoffecient[0]=driftCoffecient[0]+(flashData.chartWX)[i];
-..\Action_User\develop\figureAngle.c(200): error:  #136: struct "<unnamed>" has no field "chartWY"
-  			driftCoffecient[1]=driftCoffecient[1]+(flashData.chartWY)[i];
-..\Action_User\develop\figureAngle.c(201): error:  #136: struct "<unnamed>" has no field "chartWZ"
-  			driftCoffecient[2]=driftCoffecient[2]+(flashData.chartWZ)[i];
-..\Action_User\develop\figureAngle.c(336): error:  #142: expression must have pointer-to-object type
-    double R=(double)(flashData.varXYZ)[2];      //??Á¿???? 
-..\Action_User\develop\figureAngle.c(397): error:  #142: expression must have pointer-to-object type
-    double R=(double)(flashData.varXYZ)[0];      //??Á¿???? 
-..\Action_User\develop\figureAngle.c(459): error:  #142: expression must have pointer-to-object type
-    double R=(double)(flashData.varXYZ)[1];      //??Á¿???? 
-..\Action_User\develop\figureAngle.c: 0 warnings, 6 errors
-compiling stm32f4xx_it.c...
-..\Action_User\stm32f4xx_it.c(98): error:  #20: identifier "driftCoffecient" is undefined
-  				allPara.drift1[0]=driftCoffecient[0]*(allPara.GYRO1_Temperature/100.f);
-..\Action_User\stm32f4xx_it.c: 0 warnings, 1 error
-compiling buildExcel.c...
-..\Action_User\develop\buildExcel.c(32): error:  #136: struct "<unnamed>" has no field "chartWX"
-      USART_OUT_F(*(flashData.chartWX+i));
-..\Action_User\develop\buildExcel.c(36): error:  #136: struct "<unnamed>" has no field "chartWY"
-      USART_OUT_F(*((flashData.chartWY)+i));
-..\Action_User\develop\buildExcel.c(40): error:  #136: struct "<unnamed>" has no field "chartWZ"
-      USART_OUT_F(*((flashData.chartWZ)+i));
-..\Action_User\develop\buildExcel.c(46): error:  #167: argument of type "float *" is incompatible with parameter of type "float"
-    USART_OUT_F(*((flashData.minValue)));
-..\Action_User\develop\buildExcel.c(48): error:  #75: operand of "*" must be a pointer
-    USART_OUT_F(*((flashData.varXYZ)+0));
-..\Action_User\develop\buildExcel.c(49): error:  #75: operand of "*" must be a pointer
-    USART_OUT_F(*((flashData.varXYZ)+1));
-..\Action_User\develop\buildExcel.c(50): error:  #75: operand of "*" must be a pointer
-    USART_OUT_F(*((flashData.varXYZ)+2));
-..\Action_User\develop\buildExcel.c(115): error:  #136: struct "<unnamed>" has no field "GYRO_Temperature"
-    long double temp_temp=allPara.GYRO_Temperature/100.f;
-..\Action_User\develop\buildExcel.c(140): error:  #136: struct "<unnamed>" has no field "GYRO_Temperature"
-  	if((double)allPara.GYRO_Temperature>=TempTable_min&&(double)allPara.GYRO_Temperature<TempTable_max-0.06){
-..\Action_User\develop\buildExcel.c(140): error:  #136: struct "<unnamed>" has no field "GYRO_Temperature"
-  	if((double)allPara.GYRO_Temperature>=
-empTable_min&&(double)allPara.GYRO_Temperature<TempTable_max-0.06){
-..\Action_User\develop\buildExcel.c(143): error:  #136: struct "<unnamed>" has no field "GYRO_Temperature"
-  		index=roundf(((double)allPara.GYRO_Temperature-TempTable_min)*10.0);
-..\Action_User\develop\buildExcel.c(196): error:  #136: struct "<unnamed>" has no field "chartWX"
-        *((flashData.chartWX)+i)=*((flashData.chartWX)+i-1);
-..\Action_User\develop\buildExcel.c(196): error:  #136: struct "<unnamed>" has no field "chartWX"
-        *((flashData.chartWX)+i)=*((flashData.chartWX)+i-1);
-..\Action_User\develop\buildExcel.c(197): error:  #136: struct "<unnamed>" has no field "chartWY"
-        *((flashData.chartWY)+i)=*((flashData.chartWY)+i-1);
-..\Action_User\develop\buildExcel.c(197): error:  #136: struct "<unnamed>" has no field "chartWY"
-        *((flashData.chartWY)+i)=*((flashData.chartWY)+i-1);
-..\Action_User\develop\buildExcel.c(198): error:  #136: struct "<unnamed>" has no field "chartWZ"
-        *((flashData.chartWZ)+i)=*((flashData.chartWZ)+i-1);
-..\Action_User\develop\buildExcel.c(198): error:  #136: struct "<unnamed>" has no field "chartWZ"
-        *((flashData.chartWZ)+i)=*((flashData.chartWZ)+i-1);
-..\Action_User\develop\buildExcel.c(202): error:  #136: struct "<unnamed>" has no field "chartWX"
-      *(flashData.chartWX)=(sum*paraXY[0]-paraX*paraY[0])/(sum*paraX2-paraX*paraX);
-..\Action_User\develop\buildExcel.c(203): error:  #136: struct "<unnamed>" has no field "chartWY"
-      *(flashData.chartWY)=(sum*paraXY[1]-paraX*paraY[1])/(sum*paraX2-paraX*paraX);
-..\Action_User\develop\buildExcel.c(204): error:  #136: struct "<unnamed>" has no field "chartWZ"
-      *(flashData.chartWZ)=(sum*paraXY[2]-paraX*paraY[2])/(sum*paraX2-paraX*paraX);
-..\Action_User\develop\buildExcel.c: 0 warnings, 20 errors
-compiling temperature_control.c...
-..\Action_User\develop\temperature_control.c(27): error:  #136: struct "<unnamed>" has no field "GYRO_Temperature"
-    err=val_ex-allPara.GYRO_Temperature;
-..\Action_User\develop\temperature_control.c(56): warning:  #223-D: function "ICM_HeatingPower" declared implicitly
-    ICM_HeatingPower(ctr);
-..\Action_User\develop\temperature_control.c: 1 warning, 1 error
-compiling customer.c...
-..\Action_User\customer\customer.c(156): error:  #136: struct "<unnamed>" has no field "GYRO_Temperature"
-  			USART_OUT_F(allPara.GYRO_Temperature);
-..\Action_User\customer\customer.c(212): error:  #137: expression must be a modifiable lvalue
-  			*(flashData.minValue) = atof(buffer+10);
-..\Action_User\customer\customer.c(222): error:  #75: operand of "*" must be a pointer
-  					*(flashData.varXYZ)=value;
-..\Action_User\customer\customer.c(225): error:  #75: operand of "*" must be a pointer
-  					*((flashData.varXYZ)+1)=value;
-..\Action_User\customer\customer.c(228): error:  #75: operand of "*" must be a pointer
-  					*((flashData.varXYZ)+2)=value;
-..\Action_User\customer\customer.c: 0 warnings, 5 errors
-compiling flash.c...
-..\Action_User\hardware\flash.c(161): error:  #137: expression must be a modifiable lvalue
-  	(flashData.minValue)=(float *)((uint8_t *)flashdata+128);
-..\Action_User\hardware\flash.c(162): error:  #513: a value of type "float **" cannot be assigned to an entity of type "float"
-  	(flashData.varXYZ)=(float **)((uint8_t *)flashdata+132);
-..\Action_User\hardware\flash.c: 0 warnings, 2 errors
-compiling figurePos.c...
-compiling main.c...
-..\Action_User\main.c(51): warning:  #550-D: variable "cpuUsage" was set but never used
-    static uint32_t cpuUsage;
-..\Action_User\main.c: 1 warning, 0 errors
-compiling ADXRS453Z.c...
-compiling icm_20608_g.c...
-compiling usart.c...
-compiling spi.c...
-compiling quarternion.c...
-".\SZW_STM32F407\demo.axf" - 35 Error(s), 2 Warning(s).
+linking...
+Program Size: Code=44856 RO-data=3648 RW-data=11152 ZI-data=36400  
+FromELF: creating hex file...
+".\SZW_STM32F407\demo.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   F:\grow\git\new-posys\new-posys\MDK-ARM\RTE
   C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include
 
 <h2>Collection of Component Files used:</h2>
-Target not created.
-Build Time Elapsed:  00:00:04
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

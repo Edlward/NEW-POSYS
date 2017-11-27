@@ -151,21 +151,20 @@ void Flash_Read(uint8_t *data,uint32_t len)
 void Flash_Init(void)
 {
   /* 读取FLASH中保存的数据，并将其存到内存(RAM)里 */
-  //static uint8_t  flashdata[160*(TempTable_max-TempTable_min)];  //从flash中取出的数据
   Flash_Read(flashdata,TempTable_Num);  
   /* 分割数据段，将零漂值与计数值分开 */
 	/*45个float 180位*/
   (flashData.chartW)=(float *)flashdata;
-	/*9个float 36位*/
+	/*3个float 12位*/
 	(flashData.minValue)=(float *)((uint8_t *)flashdata+180);
-	/*9个float 36位*/
-	(flashData.varXYZ)=(float *)((uint8_t *)flashdata+216);
+	/*3个float 12位*/
+	(flashData.varXYZ)=(float *)((uint8_t *)flashdata+192);
 	/*9个无符号字符*/
-  (flashData.chartMode)=(uint8_t *)flashdata+252;
+  (flashData.chartMode)=(uint8_t *)flashdata+204;
 	/*45个无符号字符*/
-  (flashData.chartSelect)=(uint8_t *)(flashdata)+261;
-	/*9个无符号字符*/
-  (flashData.scaleMode)=(uint8_t *)(flashdata)+306;
+  (flashData.chartSelect)=(uint8_t *)(flashdata)+213;
+	/*3个无符号字符*/
+  (flashData.scaleMode)=(uint8_t *)(flashdata)+258;
   /* 保护Flash数据 */
   Flash_Encryp();
 }

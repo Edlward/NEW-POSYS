@@ -386,6 +386,11 @@
               <FilePath>..\Action_User\main.c</FilePath>
             </File>
             <File>
+              <FileName>icm_20608_g.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Action_User\baseConfig\icm_20608_g.c</FilePath>
+            </File>
+            <File>
               <FileName>stm32f4xx_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Action_User\stm32f4xx_it.c</FilePath>
@@ -414,11 +419,6 @@
               <FileName>customer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Action_User\customer\customer.c</FilePath>
-            </File>
-            <File>
-              <FileName>icm_20608_g.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Action_User\baseConfig\icm_20608_g.c</FilePath>
             </File>
             <File>
               <FileName>ADXRS453Z.c</FileName>

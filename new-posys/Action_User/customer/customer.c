@@ -1,4 +1,4 @@
-/**
+ /**
 ******************************************************************************
 * @file     
 * @author  lxy
@@ -21,6 +21,7 @@ extern AllPara_t allPara;
 extern flashData_t flashData;
 
 void AT_CMD_Judge(void);
+void SetParaDefault(void);
 
 void DataSend(void)
 {
@@ -48,7 +49,7 @@ void DataSend(void)
 	valSend.val=angle[1];
   memcpy(tdata+10,valSend.data,4);
 	
-	valSend.val=allPara.GYRO_Real[0];
+	valSend.val=allPara.GYRO_Temperature[0];
   memcpy(tdata+14,valSend.data,4);
 	 
 	valSend.val=allPara.GYRO_Real[1];
@@ -90,7 +91,6 @@ void USART1_IRQHandler(void)
     data=USART_ReceiveData(USART1);
   }
 }
-static int heatPower=0;
 extern uint8_t sendPermit;
 static int atCommand=0;
 void AT_CMD_Judge(void){
@@ -106,7 +106,7 @@ void AT_CMD_Judge(void){
     atCommand=5;
   else if((bufferI == 9) && strncmp(buffer, "AT+stop\r\n", 9)==0)//AT    
     atCommand=6;
-  else if((bufferI == 13) && strncmp(buffer, "AT+reset=\r\n", 9)==0)//AT    
+  else if((bufferI == 10) && strncmp(buffer, "AT+reset\r\n", 10)==0)//AT    
     atCommand=7;
   else if((bufferI == 8) && strncmp(buffer, "AT+set\r\n", 8)==0)//AT    
     atCommand=8;
@@ -116,16 +116,22 @@ void AT_CMD_Judge(void){
     atCommand=10;
   else if((bufferI == 14) && strncmp(buffer, "AT+set", 6)==0)//AT    
     atCommand=11;
-  else if((bufferI >= 10) && strncmp(buffer, "AT+setmin=", 10)==0)//AT    
+  else if((bufferI >= 10) && strncmp(buffer, "AT+setmin", 9)==0)//AT    
     atCommand=12;
-	else if((bufferI >= 10) && strncmp(buffer, "AT+setvar", 9)==0)//AT    
+	else if((bufferI >= 10) && strncmp(buffer, "AT+setvar", 9)==0)//设置方差
     atCommand=13;
-  else if((bufferI == 11) && strncmp(buffer, "AT+mode=", 8)==0)//AT    
+  else if((bufferI == 10) && strncmp(buffer, "AT+G", 4)==0)//设置陀螺仪是否用标准的温飘数据 如AT+G1A11
     atCommand=14;
-  else if((bufferI == 12) && strncmp(buffer, "AT+scale=", 9)==0)//AT    
+  else if((bufferI == 8) && strncmp(buffer, "AT+G", 4)==0)//设置陀螺仪测量范围 如AT+G10    
     atCommand=15;
-  else if((bufferI == 17) && strncmp(buffer, "AT+select=", 10)==0)//AT    
+  else if((bufferI == 14) && strncmp(buffer, "AT+G", 4)==0)//设置温度系数选择范围 如AT+G1A111111
     atCommand=16;
+  else if((bufferI == 12) && strncmp(buffer, "AT+default\r\n", 12)==0)//AT    
+    atCommand=17;
+  else if((bufferI == 9) && strncmp(buffer, "AT+heat\r\n", 12)==0)//AT    
+    atCommand=18;
+  else if((bufferI == 11) && strncmp(buffer, "AT+noheat\r\n", 12)==0)//AT    
+    atCommand=19;
   else 
     atCommand=666;
   
@@ -153,7 +159,9 @@ void AT_CMD_Handle(void){
 			USART_OUT(USART1,"OK\r\n");
 			break;
 		case 5:
-			USART_OUT_F(allPara.GYRO_Temperature);
+			USART_OUT_F(allPara.GYRO_Temperature[0]);
+			USART_OUT_F(allPara.GYRO_Temperature[1]);
+			USART_OUT_F(allPara.GYRO_Temperature[0]);
 			USART_OUT_F(allPara.GYRO_Aver[0]);
 			USART_OUT_F(allPara.GYRO_Aver[1]);
 			USART_OUT_F(allPara.GYRO_Aver[2]);
@@ -164,13 +172,7 @@ void AT_CMD_Handle(void){
 			USART_OUT(USART1,"OK\r\n");
 			break;
 		case 7:
-			heatPower=0;
 			USART_OUT(USART1,"OK\r\n");
-			if(buffer[9]<='9'&&buffer[9]>='0')
-				heatPower+=(buffer[9]-'0')*10;
-			if(buffer[10]<='9'&&buffer[10]>='0')
-				heatPower+=(buffer[10]-'0');
-				
 			SetCommand(CORRECT);
 			break;
 		case 8:
@@ -207,14 +209,26 @@ void AT_CMD_Handle(void){
 					break;
 			}
 			break;
+		//设置最小阈值
 		case 12:
-			USART_OUT(USART1,"OK\r\n");
-			*(flashData.minValue) = atof(buffer+10);
+		  value = atof(buffer+10);
+			switch(buffer[9]){
+				case 'x':
+					*(flashData.minValue)=value;
+					break;
+				case 'y':
+					*((flashData.minValue)+1)=value;
+					break;
+				case 'z':
+					*((flashData.minValue)+2)=value;
+					break;
+			}		
 			USART_OUT(USART1,"writing\r\n");
 			Flash_Write(GetFlashArr(),TempTable_Num);
 			USART_OUT(USART1,"write finished\r\n");
-			TempTablePrintf();
+			PrintMinValue();
 			break;
+		//设置方差
 		case 13:
 		  value = atof(buffer+10);
 			switch(buffer[9]){
@@ -231,52 +245,65 @@ void AT_CMD_Handle(void){
 			USART_OUT(USART1,"writing\r\n");
 			Flash_Write(GetFlashArr(),TempTable_Num);
 			USART_OUT(USART1,"write finished\r\n");
-			TempTablePrintf();
+			PrintVarXYZ();
 			break;
+			//设置陀螺仪是否用标准的温飘数据 如AT+G1A11
 		case 14:
 			USART_OUT(USART1,"OK\r\n");
 			/*不结合之前的数据*/
-			if(buffer[8]=='1')
-				*(flashData.chartMode)=1;
+			if(buffer[7]=='1')
+				*(flashData.chartMode+(buffer[4]-'1')*AXIS_NUMBER+(buffer[6]-'1'))=1;
 			/*结合之前的数据*/
-			else if(buffer[8]=='0')
-				*(flashData.chartMode)=0;
+			else if(buffer[7]=='0')
+				*(flashData.chartMode+(buffer[4]-'1')*AXIS_NUMBER+(buffer[6]-'1'))=0;
 			else
 				USART_OUT(USART1,"mode command error\r\n");
-			USART_OUT(USART1,"writing\r\n");
+			USART_OUT(USART1,"writing \r\n");
 			Flash_Write(GetFlashArr(),TempTable_Num);
 			USART_OUT(USART1,"write finished\r\n");
-			TempTablePrintf();
+			PrintChartMode();
 			break;
+			//设置陀螺仪测量范围 如AT+G10
 		case 15:
 			USART_OUT(USART1,"OK\r\n");
-			if(buffer[9]=='1')
-				*(flashData.scaleMode)=1;
-			else if(buffer[9]=='0')
-				*(flashData.scaleMode)=0;
+			if(buffer[5]=='1')
+				*(flashData.scaleMode+buffer[4]-'1')=1;
+			else if(buffer[5]=='0')
+				*(flashData.scaleMode+buffer[4]-'1')=0;
 			else
 				USART_OUT(USART1,"(flashData.scaleMode) command error\r\n");
 			USART_OUT(USART1,"writing\r\n");
 			Flash_Write(GetFlashArr(),TempTable_Num);
 			USART_OUT(USART1,"write finished\r\n");
+			PrintScaleMode();
 			break;
+		//	AT+G =  设置温度系数选择范围
 		case 16:
 			USART_OUT(USART1,"OK\r\n");
-			for(int i=10;i<15;i++){
+			for(int i=7;i<12;i++){
 				if(buffer[i]=='1')
-					(flashData.chartSelect)[i-10]=1;
+					*(flashData.chartSelect+(buffer[4]-'1')*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+(buffer[6]-'1')*TEMP_SAMPLE_NUMBER+i-7)=1;
 				else if(buffer[i]=='0')
-					(flashData.chartSelect)[i-10]=0;
+					*(flashData.chartSelect+(buffer[4]-'1')*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+(buffer[6]-'1')*TEMP_SAMPLE_NUMBER+i-7)=0;
 				else
 					USART_OUT(USART1,"select %d error\r\n",i-10);
 			}
 			USART_OUT(USART1,"writing\r\n");
 			Flash_Write(GetFlashArr(),TempTable_Num);
 			USART_OUT(USART1,"write finished\r\n");
+			PrintchartSelect();
 			break;
 		case 17:
+			USART_OUT(USART1,"OK\r\n");
+			SetParaDefault();
 			break;
 		case 18:
+			USART_OUT(USART1,"OK\r\n");
+			SetCommand(HEATING);
+			break;
+		case 19:
+			USART_OUT(USART1,"OK\r\n");
+			SetCommand(~HEATING);
 			break;
 		default:
 			USART_OUT(USART1,"error\r\n");
@@ -284,10 +311,6 @@ void AT_CMD_Handle(void){
 	}
 	atCommand=0;
 	bufferInit();
-}
-
-int getHeatPower(void){
-	return heatPower;
 }
 
 static uint8_t command=0;
@@ -302,6 +325,9 @@ void SetCommand(int val){
   case STATIC:
     command|=STATIC;
     break;
+	case HEATING:
+    command|=HEATING;
+		break;
   case ~CORRECT:
     command&=~CORRECT;
     break;
@@ -311,8 +337,46 @@ void SetCommand(int val){
   case ~STATIC:
     command&=~STATIC;
     break;
+  case ~HEATING:
+    command&=~HEATING;
+    break;
   }
 }
 uint8_t GetCommand(void){
   return command;
 }
+
+void SetParaDefault(void)
+{
+	int gyro=0;
+  int axis=0;
+  
+  for(gyro=0;gyro<GYRO_NUMBER;gyro++)
+  {
+    for(axis=0;axis<AXIS_NUMBER;axis++)
+    {
+      *(flashData.chartMode+gyro*AXIS_NUMBER+axis)=1;
+      for(int sample=0;sample<TEMP_SAMPLE_NUMBER;sample++)
+      {
+        *(flashData.chartSelect+gyro*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+axis*TEMP_SAMPLE_NUMBER+sample)=1;
+      }
+    }
+  }
+  for(gyro=0;gyro<GYRO_NUMBER;gyro++)
+  {
+    *(flashData.scaleMode+gyro)=0;
+  }
+  
+  for(int axis=0;axis<AXIS_NUMBER;axis++)
+  {
+    *(flashData.minValue+axis)=0.1;
+  }
+  
+  for(int axis=0;axis<AXIS_NUMBER;axis++)
+  {
+    *(flashData.varXYZ+axis)=0.003;
+  }
+	Flash_Write(GetFlashArr(),TempTable_Num);
+	TempTablePrintf();
+}
+

@@ -8,7 +8,7 @@
 .\szw_stm32f407\quarternion.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\szw_stm32f407\quarternion.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\szw_stm32f407\quarternion.o: ..\Action_User\develop\figureAngle.h
-.\szw_stm32f407\quarternion.o: ..\Action_User\baseConfig\config.h
+.\szw_stm32f407\quarternion.o: ..\Action_User\config.h
 .\szw_stm32f407\quarternion.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\szw_stm32f407\quarternion.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\szw_stm32f407\quarternion.o: ..\Action_User\stm32f4xx_it.h
@@ -24,14 +24,14 @@
 .\szw_stm32f407\quarternion.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h
 .\szw_stm32f407\quarternion.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h
 .\szw_stm32f407\quarternion.o: ..\Action_User\hardware\flash.h
-.\szw_stm32f407\quarternion.o: ..\Action_User\baseConfig\icm_20608_g.h
-.\szw_stm32f407\quarternion.o: ..\Action_User\baseConfig\config.h
 .\szw_stm32f407\quarternion.o: ..\Action_User\develop\buildExcel.h
 .\szw_stm32f407\quarternion.o: ..\Action_User\hardware\spi.h
+.\szw_stm32f407\quarternion.o: ..\Action_User\config.h
 .\szw_stm32f407\quarternion.o: ..\Action_User\develop\figureAngle.h
 .\szw_stm32f407\quarternion.o: ..\Action_User\baseConfig\ADXRS453Z.h
 .\szw_stm32f407\quarternion.o: ..\Action_User\customer\customer.h
-.\szw_stm32f407\quarternion.o: ..\Action_User\develop\temperature_control.h
 .\szw_stm32f407\quarternion.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h
 .\szw_stm32f407\quarternion.o: ..\Action_User\develop\figurePos.h
 .\szw_stm32f407\quarternion.o: ..\Action_User\math\quarternion.h
+.\szw_stm32f407\quarternion.o: ..\Action_User\baseConfig\icm_20608_g.h
+.\szw_stm32f407\quarternion.o: ..\Action_User\develop\temperature_control.h

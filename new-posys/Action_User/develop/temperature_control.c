@@ -1,8 +1,6 @@
 
 #include "config.h"
 
-
-
 /*
 分别输入设备名称,期望温度,真实温度
 */
@@ -12,75 +10,90 @@ extern AllPara_t allPara;
 分别输入设备名称,期望温度,真实温度
 */
 
-void temp_pid_ctr(float val_ex)
+void ICM_HeatingPower(int gyroNum,int value)
 {
-  static float err;
-  static float err_sum;
-  static float err_last;
-  static float err_v;
-  float Kp_summer = 12.0f;
-  float Ki_summer = 0.00125f;
-  float Kd_summer = 900.0f;
-  
-  static double ctr;
-  /*误差*/
-  err=val_ex-allPara.GYRO_Temperature;
-  /*积分*/
-  err_sum=err_sum+err;
-  /*微分量*/
-  err_v=err-err_last;
-  err_last=err;
-  
-//  /*积分量的阈值为70*/
-//  if(err_sum>70.0f/Ki_summer)
-//    err_sum=70.0f/Ki_summer;
-//  if(err_sum<-70.0f/Ki_summer)
-//    err_sum=-70.0f/Ki_summer;
-//  
-  if(ctr<0)
-  {
-    ctr=0;
-  }
-  else
-  {
-    ctr=Kp_summer*err+Ki_summer*err_sum+Kd_summer*err_v;
-		/*调节上限*/
-		if(ctr>100)
-		{
-			ctr=100;
-		}
-  }
+	switch(gyroNum)
+	{
+		case 0:
+			TIM_SetCompare3(TIM2,(uint32_t)((double)value/100.0*1000));
+		break;
+		case 1:
+			TIM_SetCompare4(TIM2,(uint32_t)((double)value/100.0*1000));
+		break;
+		case 2:
+			TIM_SetCompare2(TIM3,(uint32_t)((double)value/100.0*1000));
+		break;
+	}
+}
+static int tempInitSuces=0;
+int HeatingInit(float temp_temp[GYRO_NUMBER])
+{
+	static int time=0;
+	time++;
 	
-  /*#define ICM_HeatingPower(a)  TIM_SetCompare3(TIM3,a/100.0*1000); */
-  /*之所以最大值为1000,是因为该定时器的装载值为1000*/
-  ICM_HeatingPower(ctr);
+		for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+		{
+			allPara.GYRO_Temperature[gyro]=LowPassFilter(temp_temp[gyro],gyro)/100.f;
+		}
+	if(time==101)
+	{
+		for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+		{
+			allPara.GYRO_TemperatureAim[gyro]=allPara.GYRO_Temperature[gyro]+0.05f;
+//			USART_OUT_F(allPara.GYRO_TemperatureAim[gyro]);
+		}
+//		USART_Enter();
+//		USART_Enter();
+//		USART_Enter();
+		tempInitSuces=1;
+		return 1;
+	}
+	return 0;
 }
 
-//uint32_t Heating(void){
-//  float icm_temp;
-//	static float temp_init=0.0f;
-//	static int ignore=0;
-//	static double sum=0.0;
-//	
-//	icm_update_temp();
-//	icm_read_temp(&icm_temp);
-//	ignore++;
-//	if(ignore<101){
-//		temp_init+=icm_temp;
-//		return 0u;
-//	}
-//	else if(ignore==101){
-//		temp_init/=100.f;
-//	}else 
-//		ignore=101;
-//	
-//	temp_pid_ctr(temp_init+2,icm_temp);
-//	
-//	if(icm_temp>temp_init+2){
-//		return 1u;
-//	}else
-//		return 0u;
-//}
+int getTempInitSuces(void)
+{
+	return tempInitSuces;
+}
+
+void temp_pid_ctr(int gyro,float val_ex)
+{
+  static float err[GYRO_NUMBER];
+  static float err_sum[GYRO_NUMBER];
+  static float err_last[GYRO_NUMBER];
+  static float err_v[GYRO_NUMBER];
+  float Kp_summer[GYRO_NUMBER] = { 2550.0f , 2550.0f ,2550.0f };
+  float Ki_summer[GYRO_NUMBER] = { 0.75f , 0.75f ,0.75f };
+  float Kd_summer[GYRO_NUMBER] = { 0.0f , 0.0f ,0.0f };
+  
+  static double ctr[GYRO_NUMBER];
+	
+		/*误差*/
+		err[gyro]=val_ex-allPara.GYRO_Temperature[gyro];
+		/*积分*/
+		err_sum[gyro]=err_sum[gyro]+err[gyro];
+		/*微分量*/
+		err_v[gyro]=err[gyro]-err_last[gyro];
+		err_last[gyro]=err[gyro];
+
+			ctr[gyro]=Kp_summer[gyro]*err[gyro]+Ki_summer[gyro]*err_sum[gyro]+Kd_summer[gyro]*err_v[gyro];
+			/*调节上限*/
+			if(ctr[gyro]>50)
+			{
+				ctr[gyro]=100;
+			}
+			if(ctr[gyro]<0)
+			{
+				ctr[gyro]=0;
+			}
+		
+		/*#define ICM_HeatingPower(a)  TIM_SetCompare3(TIM3,a/100.0*1000); */
+		/*之所以最大值为1000,是因为该定时器的装载值为1000*/
+		ICM_HeatingPower(gyro,ctr[gyro]);
+	
+}
+
+
 //#define MODE_ONE
 #ifdef MODE_ONE
 int TempErgodic(int reset){
@@ -96,7 +109,7 @@ int TempErgodic(int reset){
     circle_count--;
     break;
   }
-  temp_pid_ctr(TempTable_min+(TempTable_max-TempTable_min)*circle_count*PERIOD/(float)HEATTIME/60.f);
+  temp_pid_ctr(TempTable_min*100.0+(TempTable_max*100.0-TempTable_min*100.0)*circle_count*PERIOD/(float)HEATTIME/60.f);
   if(circle_count==(int)(HEATTIME*60.f/PERIOD)){
     flag=1;
     //USART_OUT(USART1,"finish rise\r\n");
@@ -108,74 +121,118 @@ int TempErgodic(int reset){
 }
 #else 
 /*单位是秒*/
-#define TIME_BEAR	20
-/*每隔TIME_BEAR秒判断一次，而不是时时刻刻都和前一分钟温度判断（那样的话会加得很快）
+#define TIME_BEAR	15
+/*每隔TIME_BEAR秒判一次，而不是时时刻刻都和前一分钟温度判断（那样的话会加得很快）
 如果一分钟之间温度小于0.1°，那就改变PWM
 这么做是为了不控温，控温会造成不稳定，时滞效果会增大，卡尔曼滤波滞后也会增大*/
-int TempErgodic(int reset){
-  
-  static uint32_t success=0;
-  static int direction=1;
-  static float PWM=0.f;
-  static float temp_last;
-  static uint32_t time = 0;
-	if(reset) success=0;
+int TempErgodic(int gyroNum,int reset){
+  static uint32_t success[GYRO_NUMBER];
+  static int direction[GYRO_NUMBER]={1,1,1};
+  static float PWM[GYRO_NUMBER]={0.f,0.f,0.f};
+  static float temp_last[GYRO_NUMBER];
+  static uint32_t time[GYRO_NUMBER] = { 0 };
+	if(reset) success[gyroNum]=0;
   /*200/s,12000/min*/
-  time++;
+  time[gyroNum]++;
   /*每隔TIME_BEAR秒判断一次*/
-  if(time%(TIME_BEAR*200)==0)
+  if(time[gyroNum]%(int)(TIME_BEAR*200)==0)
   {
-    switch(direction)
+    switch(direction[gyroNum])
     {
     case -1:
-      if((allPara.GYRO1_Temperature-temp_last)>=-0.1f)
+      if((allPara.GYRO_Temperature[gyroNum]-temp_last[gyroNum])>=-0.1f)
       {
-        if(PWM>0.1f)
-          PWM-=0.1f;
-        else if(PWM>0.f)
-          PWM=0.f;
-        else if(PWM==0.f)
+        if(PWM[gyroNum]>0.1f)
+          PWM[gyroNum]-=0.1f;
+        else if(PWM[gyroNum]>0.f)
+          PWM[gyroNum]=0.f;
+        else if(PWM[gyroNum]==0.f)
 				{
-          direction=1;
-					PWM+=0.1f;
-					success=3;
+          direction[gyroNum]=1;
+					PWM[gyroNum]+=0.1f;
+					success[gyroNum]=3;
 				}
       }
       break;
     case 1:
-      if((allPara.GYRO1_Temperature-temp_last)<=0.1f)
+      if((allPara.GYRO_Temperature[gyroNum]-temp_last[gyroNum])<=0.1f)
       {
-        if(PWM<99.9f)
+        if(PWM[gyroNum]<99.9f)
 				{
-					if((double)allPara.GYRO1_Temperature>TempTable_min)
-						PWM+=0.1f;
+					if((double)allPara.GYRO_Temperature[gyroNum]>TempTable_min)
+						PWM[gyroNum]+=0.1f;
 					else
-						PWM+=0.5f;
+						PWM[gyroNum]+=0.5f;
 				}
         else
-          PWM=100.f;
+          PWM[gyroNum]=100.f;
         break;
       }
     }
-    temp_last=allPara.GYRO1_Temperature;
+    temp_last[gyroNum]=allPara.GYRO_Temperature[gyroNum];
   }
-  if((double)allPara.GYRO1_Temperature>TempTable_max) 
-    direction=-1;
-  else if((double)allPara.GYRO1_Temperature<TempTable_min)
+  if((double)allPara.GYRO_Temperature[gyroNum]>TempTable_max) 
+    direction[gyroNum]=-1;
+  else if((double)allPara.GYRO_Temperature[gyroNum]<TempTable_min)
 	{
 		/*排除掉起始温度小于最小值的情况*/
-		if(direction==-1)
-			success=3;
+		if(direction[gyroNum]==-1)
+			success[gyroNum]=3;
 		
-    direction=1;
+    direction[gyroNum]=1;
 	}
-  ICM_1_HeatingPower(PWM);
-  ICM_2_HeatingPower(PWM);
-  ICM_3_HeatingPower(PWM);
-  return success;
+  ICM_HeatingPower(gyroNum,PWM[gyroNum]);
+  return success[gyroNum];
 }
 #endif
 
+#define THRESHOLD_TEMP 		 0.01f
+#define THRESHOLD_COUNT  	 100
+#define STD_VALUE					 0.2f
+float LowPassFilter(float newValue,int gyro)
+{
+	static uint8_t Dr_flagLst[GYRO_NUMBER] = { 0 };
+	static uint8_t Dr_flag[GYRO_NUMBER] = { 0 };
+	static uint8_t F_count[GYRO_NUMBER] = { 0 };
+	static float coeff[GYRO_NUMBER] = { 0.f };
+	static float valueLast[GYRO_NUMBER] = { 0.f };
+	float diffValue[GYRO_NUMBER] = { 0.f };
+	if(valueLast[gyro]>newValue)
+	{
+		diffValue[gyro] = valueLast[gyro] - newValue;
+    Dr_flag[gyro] = 0;
+	}
+	else
+	{
+    diffValue[gyro] = newValue - valueLast[gyro];
+    Dr_flag[gyro] = 1;
+	}		
+  if (!(Dr_flag[gyro]^Dr_flagLst[gyro]))    //前后数据变化方向一致
+	{
+    F_count[gyro]=F_count[gyro]+2;
+    if (diffValue[gyro] >= THRESHOLD_TEMP)
+		{
+			F_count[gyro]=F_count[gyro]+4;
+		}
+    if (F_count[gyro] >= THRESHOLD_COUNT)
+      F_count[gyro] = THRESHOLD_COUNT;
+    coeff[gyro] = STD_VALUE * F_count[gyro];
+	}
+  else{
+    coeff[gyro] = STD_VALUE;
+    F_count[gyro] = 0;
+  }
+  //一阶滤波算法
+  if (Dr_flag[gyro] == 0)     //当前值小于前一个值
+    newValue = valueLast[gyro] - coeff[gyro]*(valueLast[gyro] - newValue) / 256;
+  else
+		newValue = valueLast[gyro] + coeff[gyro]*(newValue - valueLast[gyro]) / 256;
+	
+  valueLast[gyro]=newValue;
+  Dr_flagLst[gyro] = Dr_flag[gyro];
+	
+	return newValue;
+}
 
 
 

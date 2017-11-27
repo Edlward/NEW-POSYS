@@ -1,15 +1,16 @@
+#include "icm_20608_g.h"
 #include "config.h"
 
-#ifndef ADXRS453Z
 extern flashData_t flashData;
+extern AllPara_t allPara;
 
-void ICM20608G_init(void)
+void ICM20608G_init(int gyroNum)
 {
   uint8_t order=0;
   uint8_t registers[REGISTERS]={
     ICM20608G_PWR_MGMT_1,0,/*10011 Wake up chip from sleep mode,enable temperature sensor,select pll	*/
     ICM20608G_PWR_MGMT_2,0,/*disable FIFO,enable gyr and accel*/
-    ICM20608G_GYRO_CONFIG,8,/* gyro range:±500dps, Used to bypass DLPF				*/
+    ICM20608G_GYRO_CONFIG,0,/* gyro range:±500dps, Used to bypass DLPF				*/
     ICM20608G_CONFIG,0,/*  DLPF低通滤波器的设置	低通滤波器截止频率为176Hz 根据↓*/
     ICM20608G_SMPLRT_DIV,7,/* 设置采样速率为1kHz		*/
     ICM20608G_ACCEL_CONFIG,0,/* accel:2g																	*/
@@ -23,43 +24,64 @@ void ICM20608G_init(void)
     ICM20608G_INT_ENABLE,0,//不使用中断
     ICM20608G_ACCEL_INTEL_CTRL,0//不使能Wake-on-Motion detection logic
   };	
-  	switch(*(flashData.scaleMode))
-	{
-		/*250dps*/
-		case 0:
-			registers[5]=0;
-			break;
-		/*500dps*/
-		case 1:
-			registers[5]=8;
-			break;
-  }
+
   Delay_ms(100);																					//Start-up time from power-up for register read/write  max 100
-  ICM_Write(ICM20608G_PWR_MGMT_1,0x80);
+	switch(gyroNum)
+	{
+		case 0:
+		SPI_Write(SPI1,GPIOA,GPIO_Pin_1,ICM20608G_PWR_MGMT_1,0x80);
+		break;
+		case 1:
+		SPI_Write(SPI1,GPIOA,GPIO_Pin_2,ICM20608G_PWR_MGMT_1,0x80);
+		break;
+		case 2:
+		SPI_Write(SPI1,GPIOC,GPIO_Pin_6,ICM20608G_PWR_MGMT_1,0x80);
+		break;
+	}
   Delay_ms(6);																				  	//Start-up time from sleep for register read/write  max 5
   
   for(order=0;order<REGISTERS/2;order++){
     uint8_t i=0;
-    uint8_t data[3]={0xFF,0XFF,0XFF};
+    uint8_t data=0xFF;
     do{
       i++;
-      ICM_Write(registers[order*2],registers[order*2+1]);
-      Delay_ms(i);
+			switch(*(flashData.scaleMode+gyroNum))
+			{
+				/*250dps*/
+				case 0:
+					registers[5]=0;
+					break;
+				/*500dps*/
+				case 1:
+					registers[5]=8;
+					break;
+			}
+			switch(gyroNum)
+			{
+				case 0:
+					SPI_Write(SPI1,GPIOA,GPIO_Pin_1,registers[order*2],registers[order*2+1]);
+					Delay_ms(i);
+					data=SPI_Read(SPI1,GPIOA,GPIO_Pin_1,registers[order*2]);
+					break;
+				case 1:
+					SPI_Write(SPI1,GPIOA,GPIO_Pin_2,registers[order*2],registers[order*2+1]);
+					Delay_ms(i);
+					data=SPI_Read(SPI1,GPIOA,GPIO_Pin_2,registers[order*2]);
+					break;
+				case 2:
+					SPI_Write(SPI1,GPIOC,GPIO_Pin_6,registers[order*2],registers[order*2+1]);
+					Delay_ms(i);
+					data=SPI_Read(SPI1,GPIOC,GPIO_Pin_6,registers[order*2]);
+					break;
+			}
       if(i>5)
-        i=1;
-      data[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_1,registers[order*2]);
-      data[1]=SPI_Read(SPI1,GPIOA,GPIO_Pin_2,registers[order*2]);
-      data[2]=SPI_Read(SPI1,GPIOC,GPIO_Pin_6,registers[order*2]);
-    }while(data[0]!=registers[order*2+1]||data[1]!=registers[order*2+1]||data[2]!=registers[order*2+1]);//||data[1]!=registers[order*2+1]);
+        break;
+			//i=;
+    }while(data!=registers[order*2+1]);//||data[1]!=registers[order*2+1]);
   }
 }
 
-void ICM_Write(uint8_t address,uint8_t value)
-{
-  SPI_Write(SPI1,GPIOA,GPIO_Pin_1,address,value);
-  SPI_Write(SPI1,GPIOA,GPIO_Pin_2,address,value);
-  SPI_Write(SPI1,GPIOC,GPIO_Pin_6,address,value);
-}
+
 
 static float gyro[3];
 void icm_update_gyro_rate(int gyroNum)
@@ -89,7 +111,7 @@ void icm_update_gyro_rate(int gyroNum)
   /*Y的原始角速度值*/
   data1[2] = (raw[4]<<8) | raw[5];
   
-	switch(*(flashData.scaleMode))
+	switch(*(flashData.scaleMode+gyroNum))
 	{
 		case 0:
 			gyro[0] = -data1[1]/131.f;
@@ -107,14 +129,26 @@ void icm_update_gyro_rate(int gyroNum)
 			gyro[2] = -data1[2]/131.f;
 			break;
   }
+	float middlePerson = 0.f;
+	switch(gyroNum)
+	{
+		case 0:
+			middlePerson = gyro[0];
+			gyro[0] = gyro[1];
+			gyro[1] = -middlePerson;
+			break;
+		case 2:
+			middlePerson = gyro[0];
+			gyro[0] = gyro[1];
+			gyro[1] = -middlePerson;
+			break;
+	}
 }
-void icm_read_gyro_rate(float data[3])
+void icm_read_gyro_rate(float data[GYRO_NUMBER])
 {
   (data)[0]=gyro[0];
   (data)[1]=gyro[1];
   (data)[2]=gyro[2];
-  
-  
 }
 
 static float acc[3];
@@ -152,28 +186,27 @@ void icm_update_acc(int gyroNum)
   acc[1] = data1[0]/16384.0;
   acc[2] = data1[2]/16384.0;
   
-  //	SPI_MultiRead(SPI2,GPIOB,GPIO_Pin_10,ICM20608G_ACCEL_XOUT_H,raw,6);
-  //	/*X的原始角速度值*/
-  //	data2[0] = (raw[0]<<8) | raw[1];
-  //	/*Y的原始角速度值*/
-  //	data2[1] = (raw[2]<<8) | raw[3];
-  //	/*Y的原始角速度值*/
-  //	data2[2] = (raw[4]<<8) | raw[5];
-  //	
-  //	acc.No2[0] = -data2[0]/16384.0;
-  //	acc.No2[1] = data2[1]/16384.0;
-  //	acc.No2[2] = -data2[2]/16384.0;
-  
+	float middlePerson = 0.f;
+	switch(gyroNum)
+	{
+		case 0:
+			middlePerson = acc[0];
+			acc[0] = acc[1];
+			acc[1] = -middlePerson;
+			break;
+		case 2:
+			middlePerson = acc[0];
+			acc[0] = acc[1];
+			acc[1] = -middlePerson;
+			break;
+	}
+	
 }
-void icm_read_accel_acc(float data[3])
+void icm_read_accel_acc(float data[GYRO_NUMBER])
 {
   (data)[0]=acc[0];
   (data)[1]=acc[1];
   (data)[2]=acc[2];
-  
-  //	(*data).No2[0]=acc.No2[0];
-  //	(*data).No2[1]=acc.No2[1];
-  //	(*data).No2[2]=acc.No2[2];
 }
 
 static float temp;
@@ -208,18 +241,23 @@ void icm_read_temp(float *data)
   *data=temp;
 }
 
-void icm_update_AccRad(double accInit[2],float *rad)
+void icm_update_AccRad(float ACC_Init[GYRO_NUMBER][AXIS_NUMBER])
 {
-  double sum=sqrt(accInit[0]*accInit[0]+accInit[1]*accInit[1]+accInit[2]*accInit[2]);
-  float X_G,Y_G,Z_G;
-  
-  X_G=accInit[0]/sum;
-  Y_G=accInit[1]/sum;
-  Z_G=accInit[2]/sum;
-  /*初始坐标为0,0,g,然后可以通过坐标变换公式轻易推导*/
-	(rad)[1]= safe_atan2( X_G , -Z_G);
-  (rad)[0]=-safe_atan2( Y_G , X_G/sin((rad)[1]));
+	float sum[GYRO_NUMBER]={0.f};
+	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+	{
+		float X_G,Y_G,Z_G;
+		sum[gyro]=sqrt(ACC_Init[gyro][0]*ACC_Init[gyro][0]+ACC_Init[gyro][1]*ACC_Init[gyro][1]+ACC_Init[gyro][2]*ACC_Init[gyro][2]);
+		
+		X_G=ACC_Init[gyro][0]/sum[gyro];
+		Y_G=ACC_Init[gyro][1]/sum[gyro];
+		Z_G=ACC_Init[gyro][2]/sum[gyro];
+		/*初始坐标为0,0,g,然后可以通过坐标变换公式轻易推导*/
+		allPara.ACC_Angle[gyro][1]= safe_atan2( X_G , -Z_G);
+		allPara.ACC_Angle[gyro][0]=-safe_atan2( Y_G , X_G/sin(allPara.ACC_Angle[gyro][1]));
+	}
+	allPara.ACC_RealAngle[0]=(allPara.ACC_Angle[0][0]+allPara.ACC_Angle[1][0]+allPara.ACC_Angle[2][0])/3.f;
+	allPara.ACC_RealAngle[1]=(allPara.ACC_Angle[0][1]+allPara.ACC_Angle[1][1]+allPara.ACC_Angle[2][1])/3.f;
 }
 
-#endif
 

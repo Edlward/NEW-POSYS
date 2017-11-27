@@ -27,7 +27,6 @@
 void DataSend(void);
 unsigned char GetCommand(void);
 void SetCommand(int val);
-int getHeatPower(void);
 void AT_CMD_Handle(void);
 #endif
 

@@ -22,7 +22,6 @@
 #define QUATER
 /* Includes ------------------------------------------------------------------*/
 #include "config.h"
-#include "icm_20608_g.h"
 /* Exported types ------------------------------------------------------------*/
 
 
@@ -40,10 +39,6 @@ float safe_asin(float v);
 float getActIcm(void);
 void SetAngle(float angle);
 void driftCoffecientInit(void);
-
-float KalmanFilterT_1(double measureData);
-float KalmanFilterT_2(double measureData);
-float KalmanFilterT_3(double measureData);
 
 
 

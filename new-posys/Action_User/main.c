@@ -13,6 +13,8 @@
 #include "misc.h"
 #include "config.h"
 
+AllPara_t allPara;
+
 void init(void)
 {
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
@@ -30,20 +32,24 @@ void init(void)
 	
 	USART1_Init(921600);
 
-  /* ICM20608G模块初始化-----------------------------------*/
   Flash_Init();
 	
-	ICM20608G_init();
-	/*初始时不加热*/
-  ICM_1_HeatingPower(0);
-  ICM_2_HeatingPower(0);
-  ICM_3_HeatingPower(0);
+	for(int gyro;gyro<GYRO_NUMBER;gyro++)
+	{
+		/*ICM20608G模块初始化*/
+		ICM20608G_init(gyro);
+		/*初始时不加热*/
+		ICM_HeatingPower(gyro,0);
+	}
 	
+	SetCommand(HEATING);
   driftCoffecientInit();
   TIM_Init(TIM2,999,83,0,0);					//主周期定时5ms
+	
+	while(!getTempInitSuces());
+	
 }
 
-AllPara_t allPara;
 
 int main(void)
 {
@@ -64,6 +70,17 @@ int main(void)
 			AT_CMD_Handle();
 			
       if(!(GetCommand()&CORRECT)){
+				
+				if(GetCommand()&HEATING)
+				{
+					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+						temp_pid_ctr(gyro,allPara.GYRO_TemperatureAim[gyro]);
+				}
+				else
+				{
+					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+						temp_pid_ctr(gyro,allPara.GYRO_TemperatureAim[gyro]-0.5f);
+				}
         //计算角度 
         if(!RoughHandle())
           TemporaryHandle();
@@ -74,7 +91,7 @@ int main(void)
             calculatePos();	
 						#ifndef TEST_SUMMER
 						//串口被中断打断依然能正常发送（试验了几分钟）
-						DataSend();
+					//	 DataSend();
 						#endif
           }
         }

@@ -23,3 +23,6 @@
 .\szw_stm32f407\main.o: ..\Action_User\config.h
 .\szw_stm32f407\main.o: ..\Action_User\dma.h
 .\szw_stm32f407\main.o: ..\Action_User\spi.h
+.\szw_stm32f407\main.o: ..\Action_User\can.h
+.\szw_stm32f407\main.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_can.h
+.\szw_stm32f407\main.o: ..\Action_User\elmo.h

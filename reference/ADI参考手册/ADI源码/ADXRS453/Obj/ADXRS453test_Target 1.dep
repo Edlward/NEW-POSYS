@@ -1,95 +1,0 @@
-Dependencies for Project 'ADXRS453test', Target 'Target 1': (DO NOT MODIFY !)
-F (.\startup_ADuCM360.s)(0x59F5B487)(--cpu Cortex-M3 -g --apcs=interwork -IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\Inc\ADI--pd "__UVISION_VERSION SETA 521"--list .\lst\startup_aducm360.lst --xref -o .\obj\startup_aducm360.o --depend .\obj\startup_aducm360.d)
-F (.\ADXRS453test.c)(0x59F5B487)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include -I ..\ADXRS453-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\Inc\ADI-D__UVISION_VERSION="521"-o .\obj\adxrs453test.o --omf_browse .\obj\adxrs453test.crf --depend .\obj\adxrs453test.d)
-I (C:\Keil_v5\ARM\Inc\ADI\ADuCM360.h)(0x570F422A)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cm3.h)(0x570F4548)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h)(0x570F4548)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h)(0x570F4548)
-I (C:\Keil_v5\ARM\Inc\ADI\system_ADUCM360.h)(0x570F422A)
-I (UrtLib.h)(0x59F5B487)
-I (ClkLib.h)(0x59F5B487)
-I (WdtLib.h)(0x59F5B487)
-I (IntLib.h)(0x59F5B487)
-I (DioLib.h)(0x59F5B487)
-I (SpiLib.h)(0x59F5B487)
-I (ADXRS453.h)(0x59F5B487)
-I (ADuCM360Driver.h)(0x59F5B487)
-F (.\ADXRS453.c)(0x59F5B487)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include -I ..\ADXRS453-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\Inc\ADI-D__UVISION_VERSION="521"-o .\obj\adxrs453.o --omf_browse .\obj\adxrs453.crf --depend .\obj\adxrs453.d)
-I (C:\Keil_v5\ARM\Inc\ADI\ADuCM360.h)(0x570F422A)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cm3.h)(0x570F4548)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h)(0x570F4548)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h)(0x570F4548)
-I (C:\Keil_v5\ARM\Inc\ADI\system_ADUCM360.h)(0x570F422A)
-I (UrtLib.h)(0x59F5B487)
-I (ClkLib.h)(0x59F5B487)
-I (WdtLib.h)(0x59F5B487)
-I (IntLib.h)(0x59F5B487)
-I (DioLib.h)(0x59F5B487)
-I (SpiLib.h)(0x59F5B487)
-I (ADXRS453.h)(0x59F5B487)
-I (ADuCM360Driver.h)(0x59F5B487)
-F (.\ADuCM360Driver.c)(0x59F5B487)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include -I ..\ADXRS453-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\Inc\ADI-D__UVISION_VERSION="521"-o .\obj\aducm360driver.o --omf_browse .\obj\aducm360driver.crf --depend .\obj\aducm360driver.d)
-I (C:\Keil_v5\ARM\Inc\ADI\ADuCM360.h)(0x570F422A)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cm3.h)(0x570F4548)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h)(0x570F4548)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h)(0x570F4548)
-I (C:\Keil_v5\ARM\Inc\ADI\system_ADUCM360.h)(0x570F422A)
-I (ADuCM360Driver.h)(0x59F5B487)
-I (DioLib.h)(0x59F5B487)
-I (ClkLib.h)(0x59F5B487)
-I (WdtLib.h)(0x59F5B487)
-I (spilib.h)(0x59F5B487)
-I (UrtLib.h)(0x59F5B487)
-F (.\ClkLib.c)(0x59F5B487)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include -I ..\ADXRS453-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\Inc\ADI-D__UVISION_VERSION="521"-o .\obj\clklib.o --omf_browse .\obj\clklib.crf --depend .\obj\clklib.d)
-I (ClkLib.h)(0x59F5B487)
-I (C:\Keil_v5\ARM\Inc\ADI\ADuCM360.h)(0x570F422A)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cm3.h)(0x570F4548)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h)(0x570F4548)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h)(0x570F4548)
-I (C:\Keil_v5\ARM\Inc\ADI\system_ADUCM360.h)(0x570F422A)
-F (.\DioLib.c)(0x59F5B487)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include -I ..\ADXRS453-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\Inc\ADI-D__UVISION_VERSION="521"-o .\obj\diolib.o --omf_browse .\obj\diolib.crf --depend .\obj\diolib.d)
-I (C:\Keil_v5\ARM\Inc\ADI\ADuCM360.h)(0x570F422A)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cm3.h)(0x570F4548)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h)(0x570F4548)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h)(0x570F4548)
-I (C:\Keil_v5\ARM\Inc\ADI\system_ADUCM360.h)(0x570F422A)
-I (DioLib.h)(0x59F5B487)
-F (.\IntLib.c)(0x59F5B487)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include -I ..\ADXRS453-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\Inc\ADI-D__UVISION_VERSION="521"-o .\obj\intlib.o --omf_browse .\obj\intlib.crf --depend .\obj\intlib.d)
-I (IntLib.h)(0x59F5B487)
-I (C:\Keil_v5\ARM\Inc\ADI\ADuCM360.h)(0x570F422A)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cm3.h)(0x570F4548)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h)(0x570F4548)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h)(0x570F4548)
-I (C:\Keil_v5\ARM\Inc\ADI\system_ADUCM360.h)(0x570F422A)
-F (.\SpiLib.c)(0x59F5B487)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include -I ..\ADXRS453-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\Inc\ADI-D__UVISION_VERSION="521"-o .\obj\spilib.o --omf_browse .\obj\spilib.crf --depend .\obj\spilib.d)
-I (SpiLib.h)(0x59F5B487)
-I (C:\Keil_v5\ARM\Inc\ADI\ADuCM360.h)(0x570F422A)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cm3.h)(0x570F4548)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h)(0x570F4548)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h)(0x570F4548)
-I (C:\Keil_v5\ARM\Inc\ADI\system_ADUCM360.h)(0x570F422A)
-I (DmaLib.h)(0x59F5B487)
-F (.\UrtLib.c)(0x59F5B487)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include -I ..\ADXRS453-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\Inc\ADI-D__UVISION_VERSION="521"-o .\obj\urtlib.o --omf_browse .\obj\urtlib.crf --depend .\obj\urtlib.d)
-I (UrtLib.h)(0x59F5B487)
-I (C:\Keil_v5\ARM\Inc\ADI\ADuCM360.h)(0x570F422A)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cm3.h)(0x570F4548)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h)(0x570F4548)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h)(0x570F4548)
-I (C:\Keil_v5\ARM\Inc\ADI\system_ADUCM360.h)(0x570F422A)
-I (DmaLib.h)(0x59F5B487)
-F (.\WdtLib.c)(0x59F5B487)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\include -I ..\ADXRS453-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\Inc\ADI-D__UVISION_VERSION="521"-o .\obj\wdtlib.o --omf_browse .\obj\wdtlib.crf --depend .\obj\wdtlib.d)
-I (WdtLib.h)(0x59F5B487)
-I (C:\Keil_v5\ARM\Inc\ADI\ADuCM360.h)(0x570F422A)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cm3.h)(0x570F4548)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h)(0x570F4548)
-I (C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h)(0x570F4548)
-I (C:\Keil_v5\ARM\Inc\ADI\system_ADUCM360.h)(0x570F422A)

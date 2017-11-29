@@ -13,21 +13,31 @@
 #include "config.h"
 #include "dma.h"
 #include "spi.h"
+#include "can.h"
+#include "elmo.h"
+
+
+
+Robot_t gRobot;
 void init(void)
 {
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);	
 	  
 	TIM_Init(TIM2,99,83,0,0);				
 	
-	SPI1_Init();
-	SPI2_Init();
-	SPI3_Init();
-	CS_Config();
+	GYR_Init(115200);
+	DebugBLE_Init(921600);
+//	while(!gRobot.posSystemReady);
 	
-	USART1_DMA_INIT();
+	CAN_Config(CAN1,500,GPIOB,GPIO_Pin_8, GPIO_Pin_9);
 	
-
+	ElmoInit(CAN1);
+	MotorOff(CAN1,1);
+	MotorOff(CAN1,2);
+	MotorOff(CAN1,3);
+	MotorOff(CAN1,4);
 }
+
 static uint8_t CPUUsage=0;
 int main(void)
 {
@@ -35,15 +45,16 @@ int main(void)
 	
 	while(1)
 	{
-		while(getTimeFlag())
 		{
 			readSensorData();
-			#ifndef CORRECT
 			run();
-			#endif
-			debugMode();
 			CPUUsage=getTimeCount();
 		}
 	}
 }
+
+
+
+
+
 

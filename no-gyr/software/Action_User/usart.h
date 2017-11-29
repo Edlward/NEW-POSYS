@@ -6,8 +6,11 @@
 
 void USART_OUT(USART_TypeDef* USARTx,const uint8_t *Data,...);
 char *itoa(int value, char *string, int radix);
+
+
+void GYR_Init(uint32_t BaudRate);
+void DebugBLE_Init(uint32_t BaudRate);
 void USART_OUT_F(float value);
-void GyroscopeUsartInit(uint32_t BaudRate);
-void WirelessBluetoothUsartInit(uint32_t BaudRate);
+void USART_Enter(void);
 #endif
 

@@ -105,6 +105,7 @@ void TIM2_IRQHandler(void)
 					}
 				}
 
+	//	USART_OUT_F(allPara.GYRO_Temperature[0]/100);
 					for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 						allPara.GYRO_Temperature[gyro]=LowPassFilter(allPara.GYRO_Temperature[gyro],gyro)/100.f;
 				

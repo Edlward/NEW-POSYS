@@ -70,7 +70,6 @@ int main(void)
 			AT_CMD_Handle();
 			
       if(!(GetCommand()&CORRECT)){
-				
 				if(GetCommand()&HEATING)
 				{
 					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
@@ -83,17 +82,17 @@ int main(void)
 				}
         //计算角度 
         if(!RoughHandle())
-          TemporaryHandle();
+				  TemporaryHandle();
         else {
-         // if(GetCommand()&ACCUMULATE)
+          if(GetCommand()&ACCUMULATE)
 					{
             updateAngle();
             calculatePos();	
+          }
 						#ifndef TEST_SUMMER
 						//串口被中断打断依然能正常发送（试验了几分钟）
 					//	 DataSend();
 						#endif
-          }
         }
       }
       else{

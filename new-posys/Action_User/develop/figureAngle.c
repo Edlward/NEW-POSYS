@@ -34,7 +34,6 @@ double KalmanFilterZ(double measureData);
 double KalmanFilterY(double measureData);
 double KalmanFilterX(double measureData);
 int JudgeAcc(void);
-
 /**
 * @brief  更新角度值
 *
@@ -49,21 +48,23 @@ static uint32_t count=0;
 uint8_t sendPermit=1;
 int RoughHandle(void)
 {
-		USART_OUT_F(allPara.GYRO_Real[2]);
-		USART_Enter();
   allPara.GYRO_Real[0]=KalmanFilterX(allPara.GYRO_Aver[0]);
   allPara.GYRO_Real[1]=KalmanFilterY(allPara.GYRO_Aver[1]);
   allPara.GYRO_Real[2]=KalmanFilterZ(allPara.GYRO_Aver[2]);
+	
 //  allPara.GYRO_Real[0]=(allPara.GYRORemoveDrift[0][0]);
 //  allPara.GYRO_Real[1]=(allPara.GYRORemoveDrift[0][1]);
 //  allPara.GYRO_Real[2]=(allPara.GYRORemoveDrift[0][2]);
-  count++;
-		
-  if(count==(15*200+2)){
+	if(count!=15*200)
+		count++;
+  if(count==(15*200+4)&&(GetCommand()&ACCUMULATE)){
     count--;
     allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-gyr_AVER[0]);
     allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-gyr_AVER[1]);
     allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-gyr_AVER[2]);
+		USART_OUT_F(allPara.GYRO_TemperatureDif[0]);
+		USART_OUT_F( allPara.GYRO_Real[2]);
+		USART_Enter();
     return 1;
   }else{
 		return 0;
@@ -93,10 +94,15 @@ void TemporaryHandle(void)
 		}
   }
   else if(count==15*200){
-    count++;
+    
 		for(axis=0;axis<AXIS_NUMBER;axis++)
 		{
-			gyr_AVER[axis]=gyr_AVER[axis]/(5.f*200.f);
+			//gyr_AVER[axis]=gyr_AVER[axis]/(5.f*200.f);
+			if(GetCommand()&ACCUMULATE)
+			{
+				count++;
+				gyr_AVER[axis]=allPara.GYRO_Real[axis];
+			}
 			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 			{
 				accInit[gyro][axis]=accInit[gyro][axis]/(5.f*200.f);
@@ -112,6 +118,7 @@ void TemporaryHandle(void)
     Euler_to_Quaternion(allPara.ACC_RealAngle,allPara.quarternion);
   }
 }
+
 
 void updateAngle(void)
 {	
@@ -361,6 +368,67 @@ double safe_atan2(double x,double y)
 	return atan2(x,y);
 }
 
+/*算法中 H,φ,Γ均为一*/
+double KalmanFilterZ1(double measureData)
+{
+  static double act_value=0;  //实际值
+  double predict;             //预测值
+  
+  static double P_last=0.01;   //上一次的预测误差
+  static double P_mid;        //对预测误差的预测
+  static double Kk;           //滤波增益系数
+  
+  static double Q=0.003;       //系统噪声        
+  double R=(double)(flashData.varXYZ)[2];      //测量噪声 
+  static double IAE_st[50];    //记录的新息
+  static double data=0.0;
+  double Cr=0;                //新息的方差
+  //令预测值为上一次的真实值
+  predict=act_value;
+  
+  /* 新息的方差计算 */
+  memcpy(IAE_st,IAE_st+1,196);
+  IAE_st[49]=measureData-predict;
+  
+  Cr=0;
+  for(int i=0;i<50;i++)
+  {
+    Cr=Cr+IAE_st[i]*IAE_st[i];
+  }
+  Cr=Cr/50.0f;
+  static uint32_t ignore=0;
+  ignore++;
+  if(ignore<100){
+    data+=measureData;
+    return 0.0;
+  }
+  else if(ignore==100){
+    predict=data/99.0;
+    //USART_OUT_F(predict);
+    //USART_Enter();
+  }else
+    ignore=101;
+  
+  /* 预测本次的预测误差 */
+  P_mid=P_last+Q;
+  
+  /* 计算系数，求得输出值 */
+  Kk=P_mid/(P_mid+R);
+  
+  act_value=predict+Kk*(measureData-predict);
+  
+  /* 更新预测误差 */
+  P_last=(1-Kk)*P_mid;
+  
+  /* 计算并调整系统噪声 */
+  Q=Kk*Kk*Cr;
+  
+  /* 为提高滤波器的响应速度，减小滞后而设下的阈值 */
+  if(Kk>0.5)
+    act_value=measureData;
+  
+  return act_value;
+}
 
 /*算法中 H,φ,Γ均为一*/
 double KalmanFilterZ(double measureData)

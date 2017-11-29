@@ -174,6 +174,7 @@ typedef struct{
 	
 	float GYRO_TemperatureAim[GYRO_NUMBER];
 	
+	float GYRO_TemperatureDif[GYRO_NUMBER];
 	/*三个陀螺仪三个轴随温度变化的系数*/
 	float driftCoffecient[GYRO_NUMBER][AXIS_NUMBER];
 	

@@ -55,13 +55,14 @@ int getTempInitSuces(void)
 {
 	return tempInitSuces;
 }
-
+//有时间的话可以把这个改成随环境变化的（把上一次稳定参数存下来）但是测试的时候可能就不能那么玩
 void temp_pid_ctr(int gyro,float val_ex)
 {
   static float err[GYRO_NUMBER];
   static float err_sum[GYRO_NUMBER];
   static float err_last[GYRO_NUMBER];
   static float err_v[GYRO_NUMBER];
+	static int justforfirst[3]={1,1,1};
   float Kp_summer[GYRO_NUMBER] = { 2550.0f , 2550.0f ,2550.0f };
   float Ki_summer[GYRO_NUMBER] = { 0.75f , 0.75f ,0.75f };
   float Kd_summer[GYRO_NUMBER] = { 0.0f , 0.0f ,0.0f };
@@ -70,6 +71,8 @@ void temp_pid_ctr(int gyro,float val_ex)
 	
 		/*误差*/
 		err[gyro]=val_ex-allPara.GYRO_Temperature[gyro];
+	
+		allPara.GYRO_TemperatureDif[gyro]=err[gyro]*100;
 		/*积分*/
 		err_sum[gyro]=err_sum[gyro]+err[gyro];
 		/*微分量*/
@@ -78,15 +81,19 @@ void temp_pid_ctr(int gyro,float val_ex)
 
 			ctr[gyro]=Kp_summer[gyro]*err[gyro]+Ki_summer[gyro]*err_sum[gyro]+Kd_summer[gyro]*err_v[gyro];
 			/*调节上限*/
-			if(ctr[gyro]>50)
+			if(ctr[gyro]>20)
 			{
 				ctr[gyro]=100;
-			}
-			if(ctr[gyro]<0)
+			}else if(ctr[gyro]<0)
 			{
 				ctr[gyro]=0;
+			}else{
+				if(justforfirst[gyro]==1){
+					//有时间的话可以把这个改成随环境变化的（把上一次稳定参数存下来）
+					err_sum[gyro]=8.874924/Ki_summer[gyro];
+					justforfirst[gyro]=0;
+				}
 			}
-		
 		/*#define ICM_HeatingPower(a)  TIM_SetCompare3(TIM3,a/100.0*1000); */
 		/*之所以最大值为1000,是因为该定时器的装载值为1000*/
 		ICM_HeatingPower(gyro,ctr[gyro]);

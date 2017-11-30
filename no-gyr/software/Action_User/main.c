@@ -25,7 +25,7 @@ void init(void)
 	  
 	TIM_Init(TIM2,99,83,0,0);				
 	
-	GYR_Init(115200);
+	GYR_Init(921600);
 	DebugBLE_Init(921600);
 //	while(!gRobot.posSystemReady);
 	
@@ -46,8 +46,8 @@ int main(void)
 	while(1)
 	{
 		{
-			readSensorData();
-			run();
+			//readSensorData();
+			//run();
 			CPUUsage=getTimeCount();
 		}
 	}

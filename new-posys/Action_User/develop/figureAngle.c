@@ -48,6 +48,10 @@ static uint32_t count=0;
 uint8_t sendPermit=1;
 int RoughHandle(void)
 {
+		USART_OUT_F( allPara.GYRO_Aver[0]);
+		USART_OUT_F( allPara.GYRO_Aver[1]);
+		USART_OUT_F( allPara.GYRO_Aver[2]);
+		USART_Enter();
   allPara.GYRO_Real[0]=KalmanFilterX(allPara.GYRO_Aver[0]);
   allPara.GYRO_Real[1]=KalmanFilterY(allPara.GYRO_Aver[1]);
   allPara.GYRO_Real[2]=KalmanFilterZ(allPara.GYRO_Aver[2]);
@@ -62,9 +66,7 @@ int RoughHandle(void)
     allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-gyr_AVER[0]);
     allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-gyr_AVER[1]);
     allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-gyr_AVER[2]);
-		USART_OUT_F(allPara.GYRO_TemperatureDif[0]);
-		USART_OUT_F( allPara.GYRO_Real[2]);
-		USART_Enter();
+		//USART_OUT_F(allPara.GYRO_TemperatureDif[0]);
     return 1;
   }else{
 		return 0;
@@ -114,7 +116,7 @@ void TemporaryHandle(void)
 				allPara.ACC_InitSum=allPara.ACC_InitSum+accInit[gyro][axis]*accInit[gyro][axis];
 		
     /* 读取加速度的值 */
-    icm_update_AccRad(accInit);
+    //icm_update_AccRad(accInit);
     Euler_to_Quaternion(allPara.ACC_RealAngle,allPara.quarternion);
   }
 }

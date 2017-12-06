@@ -83,7 +83,7 @@ void ICM20608G_init(int gyroNum)
 
 
 
-static float gyro[3];
+static double gyro[3];
 void icm_update_gyro_rate(int gyroNum)
 {
   short data1[3] = {0,0,0};
@@ -114,9 +114,9 @@ void icm_update_gyro_rate(int gyroNum)
 	switch(*(flashData.scaleMode+gyroNum))
 	{
 		case 0:
-			gyro[0] = -data1[1]/131.f;
-			gyro[1] = -data1[0]/131.f;
-			gyro[2] = -data1[2]/131.f;
+			gyro[0] = -data1[1]/131.170291536093;
+			gyro[1] = -data1[0]/131.170291536093;
+			gyro[2] = -data1[2]/131.170291536093;
 			break;
 		case 1:
 			gyro[0] = -data1[1]/65.5f;
@@ -124,9 +124,9 @@ void icm_update_gyro_rate(int gyroNum)
 			gyro[2] = -data1[2]/65.5f;
 			break;
 		default:
-			gyro[0] = -data1[1]/131.f;
-			gyro[1] = -data1[0]/131.f;
-			gyro[2] = -data1[2]/131.f;
+			gyro[0] = -data1[1]/131.170291536093;
+			gyro[1] = -data1[0]/131.170291536093;
+			gyro[2] = -data1[2]/131.170291536093;
 			break;
   }
 	float middlePerson = 0.f;
@@ -144,7 +144,7 @@ void icm_update_gyro_rate(int gyroNum)
 			break;
 	}
 }
-void icm_read_gyro_rate(float data[GYRO_NUMBER])
+void icm_read_gyro_rate(double data[GYRO_NUMBER])
 {
   (data)[0]=gyro[0];
   (data)[1]=gyro[1];

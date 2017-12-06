@@ -164,7 +164,7 @@ uint32_t getTimeCount(void)
 {
 	return timeCount;
 }
-
+int ready=0;
 
 /****************陀螺仪串口接收中断****start****************/
 void USART3_IRQHandler(void)
@@ -183,6 +183,8 @@ void USART3_IRQHandler(void)
 		USART_ClearITPendingBit(USART3,USART_IT_RXNE);
 		ch=USART_ReceiveData(USART3);
 		USART_SendData(USART1,ch);
+		if(ch=='O')
+					 ready=1;
 		 switch(count)
 		 {
 			 case 0:

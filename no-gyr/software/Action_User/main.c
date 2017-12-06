@@ -19,6 +19,7 @@
 
 
 Robot_t gRobot;
+extern int ready;
 void init(void)
 {
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);	
@@ -29,13 +30,20 @@ void init(void)
 	DebugBLE_Init(921600);
 //	while(!gRobot.posSystemReady);
 	
-	CAN_Config(CAN1,500,GPIOB,GPIO_Pin_8, GPIO_Pin_9);
+//	CAN_Config(CAN1,500,GPIOB,GPIO_Pin_8, GPIO_Pin_9);
+//	
+//	ElmoInit(CAN1);
+//	MotorOff(CAN1,1);
+//	MotorOff(CAN1,2);
+//	MotorOff(CAN1,3);
+//	MotorOff(CAN1,4);
 	
-	ElmoInit(CAN1);
-	MotorOff(CAN1,1);
-	MotorOff(CAN1,2);
-	MotorOff(CAN1,3);
-	MotorOff(CAN1,4);
+		Delay_ms(1000);
+	while(ready==0)
+	{
+		Delay_ms(5);
+		USART_OUT(USART3,"AT+begin\r\n");
+	}
 }
 
 static uint8_t CPUUsage=0;

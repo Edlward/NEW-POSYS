@@ -65,10 +65,8 @@ int main(void)
 			//使数据能够同步，但是不同步情况很少
 			while(readOrderLast==getReadOrder());
 			readOrderLast=getReadOrder();
-			
 			//AT指令处理
 			AT_CMD_Handle();
-			
       if(!(GetCommand()&CORRECT)){
 				if(GetCommand()&HEATING)
 				{

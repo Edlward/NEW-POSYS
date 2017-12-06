@@ -1,8 +1,18 @@
-function [ result ] = kalmanEFK( data,n)
+function [ result ] = kalmanEFK( data,n,axis)
 %UNTITLED 此处显示有关此函数的摘要
 %   此处显示详细说明
-R=var(data);
-Q=var(data);
+if axis==1
+R=0.001663456966435;
+Q=0.001663456966435;
+end
+if axis==2
+R=0.001184112746198;
+Q=0.001184112746198;
+end
+if axis==3
+R=0.000770426491094;
+Q=0.000770426491094;
+end
 P_last=0.01;
 t=[1:1:n-1]';
 y=polyfit(t,data(1:n-1),1);%1x2的行向量

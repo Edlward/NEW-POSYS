@@ -153,11 +153,11 @@ typedef struct{
 	double quarternion[4];
 	
 	/*陀螺仪原始数据*/
-	float GYROWithoutRemoveDrift[GYRO_NUMBER][AXIS_NUMBER];
-	float GYRORemoveDrift[GYRO_NUMBER][AXIS_NUMBER];
-	float GYRO_Aver[AXIS_NUMBER];
+	double GYROWithoutRemoveDrift[GYRO_NUMBER][AXIS_NUMBER];
+	double GYRORemoveDrift[GYRO_NUMBER][AXIS_NUMBER];
+	double GYRO_Aver[AXIS_NUMBER];
 	/*陀螺仪处理后的数据*/
-	float GYRO_Real[AXIS_NUMBER];
+	double GYRO_Real[AXIS_NUMBER];
 	
 	
 	/*陀螺仪原始数据*/
@@ -183,7 +183,7 @@ typedef struct{
 	
 	
 	/*最终确定的三轴角度*/
-	float Result_Angle[AXIS_NUMBER];
+	double Result_Angle[AXIS_NUMBER];
 	
 	
 }AllPara_t;

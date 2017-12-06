@@ -40,6 +40,10 @@ int HeatingInit(float temp_temp[GYRO_NUMBER])
 		for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
 		{
 			allPara.GYRO_TemperatureAim[gyro]=allPara.GYRO_Temperature[gyro]+0.05f;
+			if(allPara.GYRO_TemperatureAim[gyro]>0.42f)
+			{
+				allPara.GYRO_TemperatureAim[gyro]=0.42f;
+			}
 //			USART_OUT_F(allPara.GYRO_TemperatureAim[gyro]);
 		}
 //		USART_Enter();
@@ -90,7 +94,7 @@ void temp_pid_ctr(int gyro,float val_ex)
 			}else{
 				if(justforfirst[gyro]==1){
 					//有时间的话可以把这个改成随环境变化的（把上一次稳定参数存下来）
-					err_sum[gyro]=8.874924/Ki_summer[gyro];
+					err_sum[gyro]=8.874924f/Ki_summer[gyro];
 					justforfirst[gyro]=0;
 				}
 			}

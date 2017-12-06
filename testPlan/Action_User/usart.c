@@ -286,10 +286,10 @@ void USART_OUT_F(float value)
 {
   char s[10]={0};
   sprintf(s,"%f\t",value);
-  USART_OUT(USART1,s);
+  USART_OUT(UART5,s);
 }
 void USART_Enter(void){
-  USART_OUT(USART1,"\r\n");
+  USART_OUT(UART5,"\r\n");
 }
  /****************************************************************************
 * Ãû    ³Æ£ºvoid USART_OUT(USART_TypeDef* USARTx, uint8_t *Data,...)

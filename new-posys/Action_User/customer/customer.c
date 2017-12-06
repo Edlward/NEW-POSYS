@@ -62,6 +62,56 @@ void DataSend(void)
    USART_SendData(USART1,tdata[i]);
 }
 
+void debugsend(float a,float b,float c,float d,float e,float f)
+{
+	#define ADAD
+	#ifdef ADAD
+	 	int i;
+	uint8_t 
+	tdata[28];
+	float angle[3];
+  union{
+		float   val;
+		uint8_t data[4];
+	}valSend;
+	getAngle(angle);
+	
+  tdata[0]=0x0d;
+  tdata[1]=0x0a;
+  tdata[26]=0x0a;
+  tdata[27]=0x0d;
+	
+	valSend.val=a;
+  memcpy(tdata+2,valSend.data,4);
+	
+	valSend.val=b;
+  memcpy(tdata+6,valSend.data,4);
+	
+	valSend.val=c;
+  memcpy(tdata+10,valSend.data,4);
+	
+	valSend.val=d;
+  memcpy(tdata+14,valSend.data,4);
+	 
+	valSend.val=e;
+  memcpy(tdata+18,valSend.data,4);
+	 
+	valSend.val=f;
+  memcpy(tdata+22,valSend.data,4);
+	
+	for(i=0;i<28;i++)
+   USART_SendData(USART1,tdata[i]);
+	#else
+	USART_OUT_F(a);
+	USART_OUT_F(b);
+	USART_OUT_F(c);
+	USART_OUT_F(d);
+	USART_OUT_F(e);
+	USART_OUT_F(f);
+	USART_Enter();
+	#endif
+}
+
 static char buffer[20];
 static int bufferI=0;
 extern flashData_t flashData;
@@ -79,6 +129,8 @@ void USART1_IRQHandler(void)
     data=USART_ReceiveData(USART1);
     buffer[bufferI]=data;
     bufferI++;
+		if(bufferI==20)
+			bufferI=0;
     if(bufferI>1&&buffer[bufferI-1]=='\n'&&buffer[bufferI-2]=='\r'){
       AT_CMD_Judge();
     }else{

@@ -15,7 +15,7 @@
 
 void ICM20608G_init(int gyroNum);
 
-void icm_read_gyro_rate(float data[GYRO_NUMBER]);
+void icm_read_gyro_rate(double data[GYRO_NUMBER]);
 void icm_read_accel_acc(float data[GYRO_NUMBER]);
 void icm_read_temp(float *data);
 

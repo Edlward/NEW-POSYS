@@ -241,7 +241,7 @@ struct{
 	float wy;
 	float wz;
 }para_t;
-void UART5_IRQHandler(void)
+void USART1_IRQHandler(void)
 {
 	static uint8_t ch;
 	static union
@@ -252,10 +252,10 @@ void UART5_IRQHandler(void)
 	static uint8_t count=0;
 	static uint8_t i=0;
 
-	if(USART_GetITStatus(UART5, USART_IT_RXNE)==SET)   
+	if(USART_GetITStatus(USART1, USART_IT_RXNE)==SET)   
 	{
-		USART_ClearITPendingBit(UART5,USART_IT_RXNE);
-		ch=USART_ReceiveData(UART5);
+		USART_ClearITPendingBit(USART1,USART_IT_RXNE);
+		ch=USART_ReceiveData(USART1);
 		 switch(count)
 		 {
 			 case 0:
@@ -296,9 +296,9 @@ void UART5_IRQHandler(void)
 			 case 4:
 				 if(ch==0x0d)
 				 {
-  				 para_t.anglez = posture.ActVal[0];
-  				 para_t.anglex = posture.ActVal[1];
-  				 para_t.angley = posture.ActVal[2];
+  				 para_t.anglex = posture.ActVal[0];
+  				 para_t.angley = posture.ActVal[1];
+  				 para_t.anglez = posture.ActVal[2];
 			     para_t.wx = posture.ActVal[3];
 			     para_t.wy = posture.ActVal[4];
 					 para_t.wz = posture.ActVal[5];
@@ -330,14 +330,13 @@ void bufferInit(void){
   for(int i=0;i<20;i++)
     buffer[i]=0;
 }
-void USART1_IRQHandler(void)
+void UART5_IRQHandler(void)
 {
   uint8_t data;
-  if(USART_GetITStatus(USART1,USART_IT_RXNE)==SET)
+  if(USART_GetITStatus(UART5,USART_IT_RXNE)==SET)
   {
-    USART_ClearITPendingBit( USART1,USART_IT_RXNE);
-    data=USART_ReceiveData(USART1);
-		USART_SendData(UART5,data);
+    USART_ClearITPendingBit( UART5,USART_IT_RXNE);
+    data=USART_ReceiveData(UART5);
     buffer[bufferI]=data;
     bufferI++;
     if(bufferI>1&&buffer[bufferI-1]=='\n'&&buffer[bufferI-2]=='\r'){

@@ -158,8 +158,7 @@ typedef struct{
 	double GYRO_Aver[AXIS_NUMBER];
 	/*陀螺仪处理后的数据*/
 	double GYRO_Real[AXIS_NUMBER];
-	
-	
+
 	/*陀螺仪原始数据*/
 	float ACC_Raw[GYRO_NUMBER][AXIS_NUMBER];
 	float ACC_Aver[GYRO_NUMBER][AXIS_NUMBER];
@@ -181,10 +180,12 @@ typedef struct{
 	/*陀螺仪角度*/
 	float GYRO_Angle[AXIS_NUMBER];
 	
-	
 	/*最终确定的三轴角度*/
 	double Result_Angle[AXIS_NUMBER];
 	
+	double posx;
+	
+	double posy;
 	
 }AllPara_t;
 

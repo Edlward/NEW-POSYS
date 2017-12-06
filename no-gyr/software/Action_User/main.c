@@ -38,12 +38,12 @@ void init(void)
 //	MotorOff(CAN1,3);
 //	MotorOff(CAN1,4);
 	
-		Delay_ms(1000);
-	while(ready==0)
-	{
-		Delay_ms(5);
-		USART_OUT(USART3,"AT+begin\r\n");
-	}
+//		Delay_ms(1000);
+//	while(ready==0)
+//	{
+//		Delay_ms(5);
+//		USART_OUT(USART3,"AT+begin\r\n");
+//	}
 }
 
 static uint8_t CPUUsage=0;
@@ -56,6 +56,12 @@ int main(void)
 		{
 			//readSensorData();
 			//run();
+//		USART_OUT_F(gRobot.walk_t.data1);
+//		USART_OUT_F(gRobot.walk_t.data2);
+//		USART_OUT_F(gRobot.walk_t.w1);
+//		USART_OUT_F(gRobot.walk_t.w2);
+//		USART_OUT_F(gRobot.walk_t.w3);
+//		USART_Enter();
 			CPUUsage=getTimeCount();
 		}
 	}

@@ -25,12 +25,13 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
+
 void calculatePos(void);
-float getPosX(void);
-float getPosY(void);
-void SetPosX(float in);
-void SetPosY(float in);
-void CorrectManufacturingErrors(void);
+
+void SetPosX(double in);
+void SetPosY(double in);
+
+
 #endif
 
 /******************* (C) COPYRIGHT 2015 ACTION *****END OF FILE****/

@@ -25,56 +25,58 @@ void SetParaDefault(void);
 
 void DataSend(void)
 {
-	 	int i;
-	uint8_t 
-	tdata[28];
-	float angle[3];
+	int i;
+	uint8_t tdata[28];
   union{
 		float   val;
 		uint8_t data[4];
 	}valSend;
-	getAngle(angle);
 	
   tdata[0]=0x0d;
   tdata[1]=0x0a;
   tdata[26]=0x0a;
   tdata[27]=0x0d;
 	
-	valSend.val=angle[2];
+	valSend.val=(float)allPara.GYRO_Angle[2];
   memcpy(tdata+2,valSend.data,4);
 	
-	valSend.val=angle[0];
+	valSend.val=(float)allPara.GYRO_Angle[0];
   memcpy(tdata+6,valSend.data,4);
 	
-	valSend.val=angle[1];
+	valSend.val=(float)allPara.GYRO_Angle[1];
   memcpy(tdata+10,valSend.data,4);
 	
-	valSend.val=allPara.GYRO_Temperature[0];
+	valSend.val=(float)allPara.posx;
   memcpy(tdata+14,valSend.data,4);
 	 
-	valSend.val=allPara.GYRO_Real[1];
+	valSend.val=(float)allPara.posy;
   memcpy(tdata+18,valSend.data,4);
 	 
-	valSend.val=allPara.GYRO_Real[2];
+	valSend.val=(float)allPara.GYRO_Real[2];
   memcpy(tdata+22,valSend.data,4);
 	
 	for(i=0;i<28;i++)
    USART_SendData(USART1,tdata[i]);
 }
-
+void debugsend2(float a,float b,float c,float d,float e)
+{
+	USART_OUT_F(a);
+	USART_OUT_F(b);
+	USART_OUT_F(c);
+	USART_OUT_F(d);
+	USART_OUT_F(e);
+	USART_Enter();
+}
 void debugsend(float a,float b,float c,float d,float e,float f)
 {
 	#define ADAD
 	#ifdef ADAD
-	 	int i;
-	uint8_t 
-	tdata[28];
-	float angle[3];
+	int i;
+	uint8_t tdata[28];
   union{
 		float   val;
 		uint8_t data[4];
 	}valSend;
-	getAngle(angle);
 	
   tdata[0]=0x0d;
   tdata[1]=0x0a;

@@ -156,19 +156,6 @@ void SetAngle(float angle){
 	euler[2]=angle/180.f*PI;
 	Euler_to_Quaternion(euler,allPara.quarternion);
 }
-float getActIcm(void){
-	return (float)allPara.GYRO_Aver[2];
-}
-/**
-* @brief  得到计算出的角度
-* @param  none
-* @retval 计算的角度
-*/
-void getAngle(float angle[3])
-{
-	for(int i=0;i<3;i++)
-		angle[i]=allPara.Result_Angle[i];
-}
 
 int JudgeAcc(void)
 {

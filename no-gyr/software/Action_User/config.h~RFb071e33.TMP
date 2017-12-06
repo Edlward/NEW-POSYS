@@ -27,11 +27,6 @@ typedef struct{
 		float angle;
 		float x;
 		float y;
-		float data1;
-		float data2;
-		float w1;
-		float w2;
-		float w3;
 	}walk_t;
 	
 	uint16_t gasMotionFlag;

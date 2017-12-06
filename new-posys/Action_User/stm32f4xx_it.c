@@ -90,7 +90,8 @@ void TIM2_IRQHandler(void)
 			
 				data[0]=SPI_ReadAS5045(0);
 				data[1]=SPI_ReadAS5045(1);
-			//	debugsend(data[0],data[1],(gyr_temp[0][2]+gyr_temp[1][2]+gyr_temp[2][2]/3),0,0,0);
+			
+				debugsend2(data[0],data[1],gyr_temp[0][2],gyr_temp[1][2],gyr_temp[2][2]);
 			if(timeCnt==5){
 				readOrder++;
         timeCnt=0;

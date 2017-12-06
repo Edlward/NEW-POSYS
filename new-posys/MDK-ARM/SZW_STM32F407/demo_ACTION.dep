@@ -1,5 +1,5 @@
 Dependencies for Project 'demo', Target 'ACTION': (DO NOT MODIFY !)
-F (..\Action_User\main.c)(0x5A2791DB)(--c99 -c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib -I ..\Action_User\hardware -I ..\Action_User\baseConfig -I ..\Action_User\develop -I ..\Action_User\customer -I ..\Action_User\math --exceptions-IF:\grow\git\new-posys\new-posys\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F40_41xxx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM-o .\szw_stm32f407\main.o --omf_browse .\szw_stm32f407\main.crf --depend .\szw_stm32f407\main.d)
+F (..\Action_User\main.c)(0x5A27B522)(--c99 -c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib -I ..\Action_User\hardware -I ..\Action_User\baseConfig -I ..\Action_User\develop -I ..\Action_User\customer -I ..\Action_User\math --exceptions-IF:\grow\git\new-posys\new-posys\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F40_41xxx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM-o .\szw_stm32f407\main.o --omf_browse .\szw_stm32f407\main.crf --depend .\szw_stm32f407\main.d)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5A1BF508)
 I (..\Libraries\CMSIS\stm32f4xx.h)(0x5A1BF508)
 I (..\Libraries\CMSIS\core_cm4.h)(0x5A1BF508)
@@ -8,7 +8,7 @@ I (..\Libraries\CMSIS\core_cmInstr.h)(0x5A1BF508)
 I (..\Libraries\CMSIS\core_cmFunc.h)(0x5A1BF508)
 I (..\Libraries\CMSIS\core_cm4_simd.h)(0x5A1BF508)
 I (..\Libraries\CMSIS\system_stm32f4xx.h)(0x5A1BF508)
-I (..\Action_User\config.h)(0x5A2697A8)
+I (..\Action_User\config.h)(0x5A27AF0B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x574E3E26)
@@ -26,17 +26,17 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x5A1BF508)
 I (..\Action_User\hardware\flash.h)(0x5A1FE96F)
 I (..\Action_User\develop\buildExcel.h)(0x5A1FE96F)
 I (..\Action_User\hardware\spi.h)(0x5A1BF508)
-I (..\Action_User\develop\figureAngle.h)(0x5A1FE96F)
+I (..\Action_User\develop\figureAngle.h)(0x5A27B02F)
 I (..\Action_User\baseConfig\ADXRS453Z.h)(0x5A1BF508)
-I (..\Action_User\customer\customer.h)(0x5A24F6EA)
+I (..\Action_User\customer\customer.h)(0x5A27B522)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x5A1BF508)
-I (..\Action_User\develop\figurePos.h)(0x5A1BF508)
+I (..\Action_User\develop\figurePos.h)(0x5A27B02F)
 I (..\Action_User\math\quarternion.h)(0x5A1BF508)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x5A269364)
 I (..\Action_User\develop\temperature_control.h)(0x5A1FE96F)
 F (..\Action_User\baseConfig\icm_20608_g.c)(0x5A269786)(--c99 -c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib -I ..\Action_User\hardware -I ..\Action_User\baseConfig -I ..\Action_User\develop -I ..\Action_User\customer -I ..\Action_User\math --exceptions-IF:\grow\git\new-posys\new-posys\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F40_41xxx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM-o .\szw_stm32f407\icm_20608_g.o --omf_browse .\szw_stm32f407\icm_20608_g.crf --depend .\szw_stm32f407\icm_20608_g.d)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x5A269364)
-I (..\Action_User\config.h)(0x5A2697A8)
+I (..\Action_User\config.h)(0x5A27AF0B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x574E3E26)
@@ -61,15 +61,15 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x5A1BF508)
 I (..\Action_User\hardware\flash.h)(0x5A1FE96F)
 I (..\Action_User\develop\buildExcel.h)(0x5A1FE96F)
 I (..\Action_User\hardware\spi.h)(0x5A1BF508)
-I (..\Action_User\develop\figureAngle.h)(0x5A1FE96F)
+I (..\Action_User\develop\figureAngle.h)(0x5A27B02F)
 I (..\Action_User\baseConfig\ADXRS453Z.h)(0x5A1BF508)
-I (..\Action_User\customer\customer.h)(0x5A24F6EA)
+I (..\Action_User\customer\customer.h)(0x5A27B522)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x5A1BF508)
-I (..\Action_User\develop\figurePos.h)(0x5A1BF508)
+I (..\Action_User\develop\figurePos.h)(0x5A27B02F)
 I (..\Action_User\math\quarternion.h)(0x5A1BF508)
 I (..\Action_User\develop\temperature_control.h)(0x5A1FE96F)
-F (..\Action_User\stm32f4xx_it.c)(0x5A26AB86)(--c99 -c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib -I ..\Action_User\hardware -I ..\Action_User\baseConfig -I ..\Action_User\develop -I ..\Action_User\customer -I ..\Action_User\math --exceptions-IF:\grow\git\new-posys\new-posys\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F40_41xxx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM-o .\szw_stm32f407\stm32f4xx_it.o --omf_browse .\szw_stm32f407\stm32f4xx_it.crf --depend .\szw_stm32f407\stm32f4xx_it.d)
-I (..\Action_User\config.h)(0x5A2697A8)
+F (..\Action_User\stm32f4xx_it.c)(0x5A27B888)(--c99 -c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib -I ..\Action_User\hardware -I ..\Action_User\baseConfig -I ..\Action_User\develop -I ..\Action_User\customer -I ..\Action_User\math --exceptions-IF:\grow\git\new-posys\new-posys\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F40_41xxx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM-o .\szw_stm32f407\stm32f4xx_it.o --omf_browse .\szw_stm32f407\stm32f4xx_it.crf --depend .\szw_stm32f407\stm32f4xx_it.d)
+I (..\Action_User\config.h)(0x5A27AF0B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x574E3E26)
@@ -94,16 +94,16 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x5A1BF508)
 I (..\Action_User\hardware\flash.h)(0x5A1FE96F)
 I (..\Action_User\develop\buildExcel.h)(0x5A1FE96F)
 I (..\Action_User\hardware\spi.h)(0x5A1BF508)
-I (..\Action_User\develop\figureAngle.h)(0x5A1FE96F)
+I (..\Action_User\develop\figureAngle.h)(0x5A27B02F)
 I (..\Action_User\baseConfig\ADXRS453Z.h)(0x5A1BF508)
-I (..\Action_User\customer\customer.h)(0x5A24F6EA)
+I (..\Action_User\customer\customer.h)(0x5A27B522)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x5A1BF508)
-I (..\Action_User\develop\figurePos.h)(0x5A1BF508)
+I (..\Action_User\develop\figurePos.h)(0x5A27B02F)
 I (..\Action_User\math\quarternion.h)(0x5A1BF508)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x5A269364)
 I (..\Action_User\develop\temperature_control.h)(0x5A1FE96F)
 F (..\Action_User\develop\buildExcel.c)(0x5A1FE96F)(--c99 -c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib -I ..\Action_User\hardware -I ..\Action_User\baseConfig -I ..\Action_User\develop -I ..\Action_User\customer -I ..\Action_User\math --exceptions-IF:\grow\git\new-posys\new-posys\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F40_41xxx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM-o .\szw_stm32f407\buildexcel.o --omf_browse .\szw_stm32f407\buildexcel.crf --depend .\szw_stm32f407\buildexcel.d)
-I (..\Action_User\config.h)(0x5A2697A8)
+I (..\Action_User\config.h)(0x5A27AF0B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x574E3E26)
@@ -128,16 +128,16 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x5A1BF508)
 I (..\Action_User\hardware\flash.h)(0x5A1FE96F)
 I (..\Action_User\develop\buildExcel.h)(0x5A1FE96F)
 I (..\Action_User\hardware\spi.h)(0x5A1BF508)
-I (..\Action_User\develop\figureAngle.h)(0x5A1FE96F)
+I (..\Action_User\develop\figureAngle.h)(0x5A27B02F)
 I (..\Action_User\baseConfig\ADXRS453Z.h)(0x5A1BF508)
-I (..\Action_User\customer\customer.h)(0x5A24F6EA)
+I (..\Action_User\customer\customer.h)(0x5A27B522)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x5A1BF508)
-I (..\Action_User\develop\figurePos.h)(0x5A1BF508)
+I (..\Action_User\develop\figurePos.h)(0x5A27B02F)
 I (..\Action_User\math\quarternion.h)(0x5A1BF508)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x5A269364)
 I (..\Action_User\develop\temperature_control.h)(0x5A1FE96F)
-F (..\Action_User\develop\figureAngle.c)(0x5A2792AB)(--c99 -c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib -I ..\Action_User\hardware -I ..\Action_User\baseConfig -I ..\Action_User\develop -I ..\Action_User\customer -I ..\Action_User\math --exceptions-IF:\grow\git\new-posys\new-posys\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F40_41xxx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM-o .\szw_stm32f407\figureangle.o --omf_browse .\szw_stm32f407\figureangle.crf --depend .\szw_stm32f407\figureangle.d)
-I (..\Action_User\config.h)(0x5A2697A8)
+F (..\Action_User\develop\figureAngle.c)(0x5A27B02F)(--c99 -c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib -I ..\Action_User\hardware -I ..\Action_User\baseConfig -I ..\Action_User\develop -I ..\Action_User\customer -I ..\Action_User\math --exceptions-IF:\grow\git\new-posys\new-posys\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F40_41xxx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM-o .\szw_stm32f407\figureangle.o --omf_browse .\szw_stm32f407\figureangle.crf --depend .\szw_stm32f407\figureangle.d)
+I (..\Action_User\config.h)(0x5A27AF0B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x574E3E26)
@@ -162,16 +162,16 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x5A1BF508)
 I (..\Action_User\hardware\flash.h)(0x5A1FE96F)
 I (..\Action_User\develop\buildExcel.h)(0x5A1FE96F)
 I (..\Action_User\hardware\spi.h)(0x5A1BF508)
-I (..\Action_User\develop\figureAngle.h)(0x5A1FE96F)
+I (..\Action_User\develop\figureAngle.h)(0x5A27B02F)
 I (..\Action_User\baseConfig\ADXRS453Z.h)(0x5A1BF508)
-I (..\Action_User\customer\customer.h)(0x5A24F6EA)
+I (..\Action_User\customer\customer.h)(0x5A27B522)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x5A1BF508)
-I (..\Action_User\develop\figurePos.h)(0x5A1BF508)
+I (..\Action_User\develop\figurePos.h)(0x5A27B02F)
 I (..\Action_User\math\quarternion.h)(0x5A1BF508)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x5A269364)
 I (..\Action_User\develop\temperature_control.h)(0x5A1FE96F)
-F (..\Action_User\develop\figurePos.c)(0x5A278722)(--c99 -c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib -I ..\Action_User\hardware -I ..\Action_User\baseConfig -I ..\Action_User\develop -I ..\Action_User\customer -I ..\Action_User\math --exceptions-IF:\grow\git\new-posys\new-posys\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F40_41xxx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM-o .\szw_stm32f407\figurepos.o --omf_browse .\szw_stm32f407\figurepos.crf --depend .\szw_stm32f407\figurepos.d)
-I (..\Action_User\config.h)(0x5A2697A8)
+F (..\Action_User\develop\figurePos.c)(0x5A27B351)(--c99 -c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib -I ..\Action_User\hardware -I ..\Action_User\baseConfig -I ..\Action_User\develop -I ..\Action_User\customer -I ..\Action_User\math --exceptions-IF:\grow\git\new-posys\new-posys\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F40_41xxx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM-o .\szw_stm32f407\figurepos.o --omf_browse .\szw_stm32f407\figurepos.crf --depend .\szw_stm32f407\figurepos.d)
+I (..\Action_User\config.h)(0x5A27AF0B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x574E3E26)
@@ -196,16 +196,16 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x5A1BF508)
 I (..\Action_User\hardware\flash.h)(0x5A1FE96F)
 I (..\Action_User\develop\buildExcel.h)(0x5A1FE96F)
 I (..\Action_User\hardware\spi.h)(0x5A1BF508)
-I (..\Action_User\develop\figureAngle.h)(0x5A1FE96F)
+I (..\Action_User\develop\figureAngle.h)(0x5A27B02F)
 I (..\Action_User\baseConfig\ADXRS453Z.h)(0x5A1BF508)
-I (..\Action_User\customer\customer.h)(0x5A24F6EA)
+I (..\Action_User\customer\customer.h)(0x5A27B522)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x5A1BF508)
-I (..\Action_User\develop\figurePos.h)(0x5A1BF508)
+I (..\Action_User\develop\figurePos.h)(0x5A27B02F)
 I (..\Action_User\math\quarternion.h)(0x5A1BF508)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x5A269364)
 I (..\Action_User\develop\temperature_control.h)(0x5A1FE96F)
 F (..\Action_User\develop\temperature_control.c)(0x5A269413)(--c99 -c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib -I ..\Action_User\hardware -I ..\Action_User\baseConfig -I ..\Action_User\develop -I ..\Action_User\customer -I ..\Action_User\math --exceptions-IF:\grow\git\new-posys\new-posys\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F40_41xxx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM-o .\szw_stm32f407\temperature_control.o --omf_browse .\szw_stm32f407\temperature_control.crf --depend .\szw_stm32f407\temperature_control.d)
-I (..\Action_User\config.h)(0x5A2697A8)
+I (..\Action_User\config.h)(0x5A27AF0B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x574E3E26)
@@ -230,16 +230,16 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x5A1BF508)
 I (..\Action_User\hardware\flash.h)(0x5A1FE96F)
 I (..\Action_User\develop\buildExcel.h)(0x5A1FE96F)
 I (..\Action_User\hardware\spi.h)(0x5A1BF508)
-I (..\Action_User\develop\figureAngle.h)(0x5A1FE96F)
+I (..\Action_User\develop\figureAngle.h)(0x5A27B02F)
 I (..\Action_User\baseConfig\ADXRS453Z.h)(0x5A1BF508)
-I (..\Action_User\customer\customer.h)(0x5A24F6EA)
+I (..\Action_User\customer\customer.h)(0x5A27B522)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x5A1BF508)
-I (..\Action_User\develop\figurePos.h)(0x5A1BF508)
+I (..\Action_User\develop\figurePos.h)(0x5A27B02F)
 I (..\Action_User\math\quarternion.h)(0x5A1BF508)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x5A269364)
 I (..\Action_User\develop\temperature_control.h)(0x5A1FE96F)
-F (..\Action_User\customer\customer.c)(0x5A2796A7)(--c99 -c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib -I ..\Action_User\hardware -I ..\Action_User\baseConfig -I ..\Action_User\develop -I ..\Action_User\customer -I ..\Action_User\math --exceptions-IF:\grow\git\new-posys\new-posys\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F40_41xxx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM-o .\szw_stm32f407\customer.o --omf_browse .\szw_stm32f407\customer.crf --depend .\szw_stm32f407\customer.d)
-I (..\Action_User\config.h)(0x5A2697A8)
+F (..\Action_User\customer\customer.c)(0x5A27B56A)(--c99 -c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib -I ..\Action_User\hardware -I ..\Action_User\baseConfig -I ..\Action_User\develop -I ..\Action_User\customer -I ..\Action_User\math --exceptions-IF:\grow\git\new-posys\new-posys\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F40_41xxx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM-o .\szw_stm32f407\customer.o --omf_browse .\szw_stm32f407\customer.crf --depend .\szw_stm32f407\customer.d)
+I (..\Action_User\config.h)(0x5A27AF0B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x574E3E26)
@@ -264,16 +264,16 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x5A1BF508)
 I (..\Action_User\hardware\flash.h)(0x5A1FE96F)
 I (..\Action_User\develop\buildExcel.h)(0x5A1FE96F)
 I (..\Action_User\hardware\spi.h)(0x5A1BF508)
-I (..\Action_User\develop\figureAngle.h)(0x5A1FE96F)
+I (..\Action_User\develop\figureAngle.h)(0x5A27B02F)
 I (..\Action_User\baseConfig\ADXRS453Z.h)(0x5A1BF508)
-I (..\Action_User\customer\customer.h)(0x5A24F6EA)
+I (..\Action_User\customer\customer.h)(0x5A27B522)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x5A1BF508)
-I (..\Action_User\develop\figurePos.h)(0x5A1BF508)
+I (..\Action_User\develop\figurePos.h)(0x5A27B02F)
 I (..\Action_User\math\quarternion.h)(0x5A1BF508)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x5A269364)
 I (..\Action_User\develop\temperature_control.h)(0x5A1FE96F)
 F (..\Action_User\baseConfig\ADXRS453Z.c)(0x5A1BF508)(--c99 -c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib -I ..\Action_User\hardware -I ..\Action_User\baseConfig -I ..\Action_User\develop -I ..\Action_User\customer -I ..\Action_User\math --exceptions-IF:\grow\git\new-posys\new-posys\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F40_41xxx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM-o .\szw_stm32f407\adxrs453z.o --omf_browse .\szw_stm32f407\adxrs453z.crf --depend .\szw_stm32f407\adxrs453z.d)
-I (..\Action_User\config.h)(0x5A2697A8)
+I (..\Action_User\config.h)(0x5A27AF0B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x574E3E26)
@@ -298,11 +298,11 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x5A1BF508)
 I (..\Action_User\hardware\flash.h)(0x5A1FE96F)
 I (..\Action_User\develop\buildExcel.h)(0x5A1FE96F)
 I (..\Action_User\hardware\spi.h)(0x5A1BF508)
-I (..\Action_User\develop\figureAngle.h)(0x5A1FE96F)
+I (..\Action_User\develop\figureAngle.h)(0x5A27B02F)
 I (..\Action_User\baseConfig\ADXRS453Z.h)(0x5A1BF508)
-I (..\Action_User\customer\customer.h)(0x5A24F6EA)
+I (..\Action_User\customer\customer.h)(0x5A27B522)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x5A1BF508)
-I (..\Action_User\develop\figurePos.h)(0x5A1BF508)
+I (..\Action_User\develop\figurePos.h)(0x5A27B02F)
 I (..\Action_User\math\quarternion.h)(0x5A1BF508)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x5A269364)
 I (..\Action_User\develop\temperature_control.h)(0x5A1FE96F)
@@ -317,7 +317,7 @@ I (..\Libraries\CMSIS\core_cmFunc.h)(0x5A1BF508)
 I (..\Libraries\CMSIS\core_cm4_simd.h)(0x5A1BF508)
 I (..\Libraries\CMSIS\system_stm32f4xx.h)(0x5A1BF508)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x574E3E26)
-I (..\Action_User\config.h)(0x5A2697A8)
+I (..\Action_User\config.h)(0x5A27AF0B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x574E3E26)
 I (..\Action_User\stm32f4xx_it.h)(0x5A1BF508)
@@ -333,11 +333,11 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h)(0x5A1BF508)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x5A1BF508)
 I (..\Action_User\develop\buildExcel.h)(0x5A1FE96F)
 I (..\Action_User\hardware\spi.h)(0x5A1BF508)
-I (..\Action_User\develop\figureAngle.h)(0x5A1FE96F)
+I (..\Action_User\develop\figureAngle.h)(0x5A27B02F)
 I (..\Action_User\baseConfig\ADXRS453Z.h)(0x5A1BF508)
-I (..\Action_User\customer\customer.h)(0x5A24F6EA)
+I (..\Action_User\customer\customer.h)(0x5A27B522)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x5A1BF508)
-I (..\Action_User\develop\figurePos.h)(0x5A1BF508)
+I (..\Action_User\develop\figurePos.h)(0x5A27B02F)
 I (..\Action_User\math\quarternion.h)(0x5A1BF508)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x5A269364)
 I (..\Action_User\develop\temperature_control.h)(0x5A1FE96F)
@@ -354,7 +354,7 @@ I (..\Libraries\CMSIS\system_stm32f4xx.h)(0x5A1BF508)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x5A1BF508)
 F (..\Action_User\hardware\spi.c)(0x5A255286)(--c99 -c --cpu Cortex-M4.fp -g -O0 -Otime --apcs=interwork --split_sections -I ..\ -I ..\Action_User -I ..\Libraries\CMSIS -I ..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\MDK-ARM -I ..\MAA -I ..\MAA\AHRS -I ..\MAA\MAA_Driver -I ..\Libraries\dsplib\Include -I ..\Libraries\dsplib -I ..\Action_User\hardware -I ..\Action_User\baseConfig -I ..\Action_User\develop -I ..\Action_User\customer -I ..\Action_User\math --exceptions-IF:\grow\git\new-posys\new-posys\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F40_41xxx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__FPU_PRESENT="1" -D__FPU_USED="1" -DARM_MATH_CM4 -D__CC_ARM-o .\szw_stm32f407\spi.o --omf_browse .\szw_stm32f407\spi.crf --depend .\szw_stm32f407\spi.d)
 I (..\Action_User\hardware\spi.h)(0x5A1BF508)
-I (..\Action_User\config.h)(0x5A2697A8)
+I (..\Action_User\config.h)(0x5A27AF0B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x574E3E26)
@@ -378,11 +378,11 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h)(0x5A1BF508)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x5A1BF508)
 I (..\Action_User\hardware\flash.h)(0x5A1FE96F)
 I (..\Action_User\develop\buildExcel.h)(0x5A1FE96F)
-I (..\Action_User\develop\figureAngle.h)(0x5A1FE96F)
+I (..\Action_User\develop\figureAngle.h)(0x5A27B02F)
 I (..\Action_User\baseConfig\ADXRS453Z.h)(0x5A1BF508)
-I (..\Action_User\customer\customer.h)(0x5A24F6EA)
+I (..\Action_User\customer\customer.h)(0x5A27B522)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x5A1BF508)
-I (..\Action_User\develop\figurePos.h)(0x5A1BF508)
+I (..\Action_User\develop\figurePos.h)(0x5A27B02F)
 I (..\Action_User\math\quarternion.h)(0x5A1BF508)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x5A269364)
 I (..\Action_User\develop\temperature_control.h)(0x5A1FE96F)
@@ -418,7 +418,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h)(0x5A1BF508)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x5A1BF508)
 I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x574E3E26)
-I (..\Action_User\config.h)(0x5A2697A8)
+I (..\Action_User\config.h)(0x5A27AF0B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x574E3E26)
 I (..\Action_User\stm32f4xx_it.h)(0x5A1BF508)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x5A1BF508)
@@ -429,10 +429,10 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x5A1BF508)
 I (..\Action_User\hardware\flash.h)(0x5A1FE96F)
 I (..\Action_User\develop\buildExcel.h)(0x5A1FE96F)
 I (..\Action_User\hardware\spi.h)(0x5A1BF508)
-I (..\Action_User\develop\figureAngle.h)(0x5A1FE96F)
+I (..\Action_User\develop\figureAngle.h)(0x5A27B02F)
 I (..\Action_User\baseConfig\ADXRS453Z.h)(0x5A1BF508)
-I (..\Action_User\customer\customer.h)(0x5A24F6EA)
-I (..\Action_User\develop\figurePos.h)(0x5A1BF508)
+I (..\Action_User\customer\customer.h)(0x5A27B522)
+I (..\Action_User\develop\figurePos.h)(0x5A27B02F)
 I (..\Action_User\math\quarternion.h)(0x5A1BF508)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x5A269364)
 I (..\Action_User\develop\temperature_control.h)(0x5A1FE96F)
@@ -446,8 +446,8 @@ I (..\Libraries\CMSIS\core_cmFunc.h)(0x5A1BF508)
 I (..\Libraries\CMSIS\core_cm4_simd.h)(0x5A1BF508)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x574E3E26)
-I (..\Action_User\develop\figureAngle.h)(0x5A1FE96F)
-I (..\Action_User\config.h)(0x5A2697A8)
+I (..\Action_User\develop\figureAngle.h)(0x5A27B02F)
+I (..\Action_User\config.h)(0x5A27AF0B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x574E3E26)
 I (..\Action_User\stm32f4xx_it.h)(0x5A1BF508)
@@ -465,9 +465,9 @@ I (..\Action_User\hardware\flash.h)(0x5A1FE96F)
 I (..\Action_User\develop\buildExcel.h)(0x5A1FE96F)
 I (..\Action_User\hardware\spi.h)(0x5A1BF508)
 I (..\Action_User\baseConfig\ADXRS453Z.h)(0x5A1BF508)
-I (..\Action_User\customer\customer.h)(0x5A24F6EA)
+I (..\Action_User\customer\customer.h)(0x5A27B522)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x5A1BF508)
-I (..\Action_User\develop\figurePos.h)(0x5A1BF508)
+I (..\Action_User\develop\figurePos.h)(0x5A27B02F)
 I (..\Action_User\math\quarternion.h)(0x5A1BF508)
 I (..\Action_User\baseConfig\icm_20608_g.h)(0x5A269364)
 I (..\Action_User\develop\temperature_control.h)(0x5A1FE96F)

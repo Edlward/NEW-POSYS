@@ -60,44 +60,44 @@ int main(void)
   {
     while(getTimeFlag())
     {
-//      				uint8_t test[3];
-//      				test[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
-			//使数据能够同步，但是不同步情况很少
-			while(readOrderLast==getReadOrder());
-			readOrderLast=getReadOrder();
-			//AT指令处理
-			AT_CMD_Handle();
-      if(!(GetCommand()&CORRECT)){
-				if(GetCommand()&HEATING)
-				{
-					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-						temp_pid_ctr(gyro,allPara.GYRO_TemperatureAim[gyro]);
-				}
-				else
-				{
-					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-						temp_pid_ctr(gyro,allPara.GYRO_TemperatureAim[gyro]-0.5f);
-				}
-        //计算角度 
-        if(!RoughHandle())
-				  TemporaryHandle();
-        else {
-          if(GetCommand()&ACCUMULATE)
-					{
-            updateAngle();
-            calculatePos();	
-          }
-						#ifndef TEST_SUMMER
-						//串口被中断打断依然能正常发送（试验了几分钟）
-					//	 DataSend();
-						#endif
-        }
-      }
-      else{
-        UpdateVDoffTable();
-			}
-      //真实的占空比会等于cpuUsage或大于其一个单位
-      cpuUsage=getTimeCount();
+////      				uint8_t test[3];
+////      				test[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
+//			//使数据能够同步，但是不同步情况很少
+//			while(readOrderLast==getReadOrder());
+//			readOrderLast=getReadOrder();
+//			//AT指令处理
+//			AT_CMD_Handle();
+//      if(!(GetCommand()&CORRECT)){
+//				if(GetCommand()&HEATING)
+//				{
+//					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+//						temp_pid_ctr(gyro,allPara.GYRO_TemperatureAim[gyro]);
+//				}
+//				else
+//				{
+//					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+//						temp_pid_ctr(gyro,allPara.GYRO_TemperatureAim[gyro]-0.5f);
+//				}
+//        //计算角度 
+//        if(!RoughHandle())
+//				  TemporaryHandle();
+//        else {
+//          if(GetCommand()&ACCUMULATE)
+//					{
+//            updateAngle();
+//            calculatePos();	
+//          }
+//						#ifndef TEST_SUMMER
+//						//串口被中断打断依然能正常发送（试验了几分钟）
+//					//	 DataSend();
+//						#endif
+//        }
+//      }
+//      else{
+//        UpdateVDoffTable();
+//			}
+//      //真实的占空比会等于cpuUsage或大于其一个单位
+//      cpuUsage=getTimeCount();
     }
   }
 }

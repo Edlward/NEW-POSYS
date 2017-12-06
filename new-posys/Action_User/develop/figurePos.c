@@ -20,38 +20,10 @@
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-static float posx=0,posy=0;
-static float pos[2];
- float set_x,set_y,set_angle;	 
-/* Extern   variables ---------------------------------------------------------*/
-/* Extern   function prototypes -----------------------------------------------*/
-/* Private  function prototypes -----------------------------------------------*/
-/* Private  functions ---------------------------------------------------------*/
-static void AxisOriginConvert(float rel_x,float rel_y,float angle,
-	                            float act_angle,float *posx,float *posy)
-{
-	float convert_X;
-	float convert_Y;
-  float rel_angle;
-  float rel_sum;  
-	
-	rel_sum=sqrt(rel_x*rel_x+rel_y*rel_y);
-	rel_angle=atan2(rel_y,rel_x);
-	
-	angle=angle/180.0f*PI;
-	act_angle=act_angle/180.0f*PI;
-	
-	convert_X=+(*posx)*cos(angle)+(*posy)*sin(angle)+rel_sum*cos(act_angle+rel_angle)-rel_sum*cos(rel_angle);
-	convert_Y=-(*posx)*sin(angle)+(*posy)*cos(angle)+rel_sum*sin(act_angle+rel_angle)-rel_sum*sin(rel_angle);
-	
-	(*posx)=convert_X;
-	(*posy)=convert_Y;
-}
-
-/* Exported function prototypes ---------------------------Ò»ÂÖ 25.177966283089273 ¶þÂÖ°ë¾¶25.196754764450382--------------------*/
-/* Exported functions ---------------------------------------------------------*/
-uint16_t data[2];
 extern AllPara_t allPara;
+static double pos[2];
+float set_x,set_y,set_angle;	 
+uint16_t data[2];
 void calculatePos(void)
 {
 	static uint16_t data_last[2]={0,0};
@@ -117,88 +89,25 @@ void calculatePos(void)
 	pos_temp[0]=pos[0]*1.000004752846005;
   pos_temp[1]=pos[1]*1.000004752846005;
 	
-	float convert_X;
-	float convert_Y;
+	double convert_X;
+	double convert_Y;
 	
 	convert_X=pos_temp[0]*0.707106781186548+pos_temp[1]*0.707106781186548;
 	convert_Y=pos_temp[0]*0.707106781186548-pos_temp[1]*0.707106781186548;
 	
 	//1/4096*wheelR*2*pi
-	posx=convert_X*0.038622517085838;
-	posy=convert_Y*0.038651337725656;
+	allPara.posx=convert_X*0.038622517085838;
+	allPara.posy=convert_Y*0.038651337725656;
 	
-	USART_OUT_F(last_ang);
-	USART_OUT_F(posx);
-	USART_OUT_F(posy);
-	USART_OUT_F(zangle);
-	USART_OUT_F(vell[0]);
-	USART_OUT_F(vell[1]);
-	USART_Enter();
-}
-float getPosX(void)
-{
-	return posx;
-}
-float getPosY(void)
-{
-	return posy;
 }
 
-void SetPosX(float in)
+void SetPosX(double in)
 {
-  posx=in;
+  allPara.posx=in;
 }
-void SetPosY(float in)
+void SetPosY(double in)
 {
-  posy=in;
+  allPara.posy=in;
 }
-
-//void CorrectManufacturingErrors(void){
-//	  static uint32_t data_last[2]={0,0};
-//  static uint32_t flag=0;
-//  
-//  static double pos[2];
-//  double  pos_temp[2]={0,0};
-//  
-//  uint32_t data[2];
-//  int32_t vell[2];
-//  
-//  float zangle;
-//  static float last_ang=0.0f;
-//  
-//  data[0]=SPI_ReadAS5045(0);
-//  data[1]=SPI_ReadAS5045(1);
-//  
-//  if(flag<=5)
-//  {
-//    data_last[0]=data[0];
-//    data_last[1]=data[1];
-//    vell[0]=0;
-//    vell[1]=0;
-//    flag++;
-//  }
-//  else
-//  {
-//    vell[0]= (data[0]-data_last[0]);
-//    vell[1]= (data[1]-data_last[1]);
-//    
-//    data_last[0]=data[0];
-//    data_last[1]=data[1];
-//  }
-//  
-//  if(vell[0]>2048)
-//    vell[0]-=4096;
-//  if(vell[0]<-2048)
-//    vell[0]+=4096;
-//  
-//  if(vell[1]>2048)
-//    vell[1]-=4096;
-//  if(vell[1]<-2048)
-//    vell[1]+=4096;
-//  
-//	USART_OUT(USART1,"%d\t",vell[0]);
-//	USART_OUT(USART1,"%d\r\n",vell[1]);
-
-//}
 
 /************************ (C) COPYRIGHT 2016 ACTION *****END OF FILE****/

@@ -29,6 +29,7 @@ unsigned char GetCommand(void);
 void SetCommand(int val);
 void AT_CMD_Handle(void);
 void debugsend(float a,float b,float c,float d,float e,float f);
+void debugsend2(float a,float b,float c,float d,float e);
 #endif
 
 /******************* (C) COPYRIGHT 2015 ACTION *****END OF FILE****/

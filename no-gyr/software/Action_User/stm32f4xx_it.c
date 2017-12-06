@@ -181,7 +181,7 @@ void USART3_IRQHandler(void)
 	if(USART_GetITStatus(USART3, USART_IT_RXNE)==SET)   
 	{
 		USART_ClearITPendingBit(USART3,USART_IT_RXNE);
-		ch=USART_ReceiveData(USART3);
+		ch=USART_ReceiveData(USART3);;
 		USART_SendData(USART1,ch);
 		if(ch=='O')
 					 ready=1;
@@ -225,9 +225,11 @@ void USART3_IRQHandler(void)
 			 case 4:
 				 if(ch==0x0d)
 				 {
-  				 gRobot.walk_t.angle = posture.ActVal[0];
-			     gRobot.walk_t.x = -posture.ActVal[3];
-			     gRobot.walk_t.y = -posture.ActVal[4];
+  				 gRobot.walk_t.data1 = posture.ActVal[0];
+			     gRobot.walk_t.data2 = posture.ActVal[1];
+			     gRobot.walk_t.w1 = posture.ActVal[2];
+			     gRobot.walk_t.w2 = posture.ActVal[3];
+			     gRobot.walk_t.w3 = posture.ActVal[4];
 
 					 gRobot.posSystemReady=1;
 				 }

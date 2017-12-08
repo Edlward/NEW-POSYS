@@ -33,6 +33,7 @@ float K_acc=1;
 double KalmanFilterZ(double measureData);
 double KalmanFilterY(double measureData);
 double KalmanFilterX(double measureData);
+int CalculateRealCrAndMean(float stdCr[AXIS_NUMBER],float mean[AXIS_NUMBER]);
 int JudgeAcc(void);
 /**
 * @brief  更新角度值
@@ -43,111 +44,102 @@ int JudgeAcc(void);
 * @retval 初始化完成的标志位
 */
 
-static double gyr_AVER[3]={0.0};
-static uint32_t count=0;
-uint8_t sendPermit=1;
 int RoughHandle(void)
 {
-//  allPara.GYRO_Real[0]=KalmanFilterX(allPara.GYRO_Aver[0]);
-//  allPara.GYRO_Real[1]=KalmanFilterY(allPara.GYRO_Aver[1]);
-//  allPara.GYRO_Real[2]=KalmanFilterZ(allPara.GYRO_Aver[2]);
+  static int ignore=0;
+  static double data[AXIS_NUMBER][7*200]={0.f};    	//数据列
+  static float stdCr[AXIS_NUMBER]={0.f};                //新息的标准差
+  static float mean[AXIS_NUMBER]={0.f};
 	
   allPara.GYRO_Real[0]=(allPara.GYRO_Aver[0]);
   allPara.GYRO_Real[1]=(allPara.GYRO_Aver[1]);
   allPara.GYRO_Real[2]=(allPara.GYRO_Aver[2]);
 	
-	if(count!=15*200)
-		count++;
-  if(count==(15*200+4)&&(GetCommand()&ACCUMULATE)){
-    count--;
-    allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-gyr_AVER[0]);
-    allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-gyr_AVER[1]);
-    allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-gyr_AVER[2]);
-		//USART_OUT_F(allPara.GYRO_TemperatureDif[0]);
+  if((GetCommand()&ACCUMULATE)&&ignore>8*200){
+    allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.GYRO_Bais[0]);
+    allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.GYRO_Bais[1]);
+    allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.GYRO_Bais[2]);
+		
     return 1;
   }else{
-		return 0;
+		 /*三σ法则*/
+		if(!CalculateRealCrAndMean(stdCr,mean))
+			return 0;
+		for(char axis=0;axis<AXIS_NUMBER;axis++)
+    {
+      if(fabs(allPara.GYRO_Real[axis]-mean[axis])>stdCr[axis]*3)
+			return 0;
+    }
+		ignore++;
+		for(int axis=0;axis<AXIS_NUMBER;axis++)
+		{
+			allPara.GYRO_Bais[axis]-=data[axis][0]/7.0/200.0;
+			memcpy(data[axis],data[axis]+1,(7*200-1)*8);
+			data[axis][7*200-1]=allPara.GYRO_Real[axis];
+			allPara.GYRO_Bais[axis]+=data[axis][7*200-1]/7.0/200.0;
+		}
+		 return 0;
 	}
-  
 }
 
-//30℃到49.9℃   重新矫正温飘  30 -- 0  30.1 -- 1
-void TemporaryHandle(void)
-{
-//  static float accInit[GYRO_NUMBER][AXIS_NUMBER]={
-//	2.0,0.7,0.05,
-//	0.3,0.3,-0.05,
-//	0.3,0.3,-0.05
-//	};
-//	int gyro=0;
-	int axis=0;
-	
-  if(count>=10*200&&count<15*200){
-		for(axis=0;axis<AXIS_NUMBER;axis++)
-		{
-			gyr_AVER[axis]=gyr_AVER[axis]+allPara.GYRO_Real[axis];
-//			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
-//			{
-//				accInit[gyro][axis]=accInit[gyro][axis]+allPara.ACC_Aver[gyro][axis];
-//			}
-		}
-  }
-  else if(count==15*200){
-    
-		for(axis=0;axis<AXIS_NUMBER;axis++)
-		{
-			if(GetCommand()&ACCUMULATE)
-			{
-				count++;
-				gyr_AVER[axis]=gyr_AVER[axis]/(5.f*200.f);
-			}
-//			if(GetCommand()&ACCUMULATE)
-//			{
-//				count++;
-//				gyr_AVER[axis]=allPara.GYRO_Real[axis];
-//			}
-//			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
-//			{
-//				accInit[gyro][axis]=accInit[gyro][axis]/(5.f*200.f);
-//			}
-		}
-//    allPara.ACC_InitSum=0;
-//		for(gyro=0;gyro<GYRO_NUMBER;gyro++)
-//			for(axis=0;axis<AXIS_NUMBER;axis++)
-//				allPara.ACC_InitSum=allPara.ACC_InitSum+accInit[gyro][axis]*accInit[gyro][axis];
-//		
-//    /* 读取加速度的值 */
-//    //icm_update_AccRad(accInit);
-//    Euler_to_Quaternion(allPara.ACC_RealAngle,allPara.quarternion);
-  }
-}
 
 
 void updateAngle(void)
 {	
-	float maxStaticValue=*(flashData.minValue);
+//	float maxStaticValue=*(flashData.minValue);
+//	
+//  if((GetCommand()&STATIC)&&(allPara.GYRO_Real[2]<0.2f)){
+//		maxStaticValue=0.15f;
+//	}
 	
-  if((GetCommand()&STATIC)&&(allPara.GYRO_Real[2]<0.2f)){
-		maxStaticValue=0.15f;
-	}
-	
-  if(fabs(allPara.GYRO_Real[0])<maxStaticValue)//单位 °/s
-    allPara.GYRO_Real[0]=0.f;	
-  if(fabs(allPara.GYRO_Real[1])<maxStaticValue)//单位 °/s
-    allPara.GYRO_Real[1]=0.f;	
-  if(fabs(allPara.GYRO_Real[2])<maxStaticValue)//单位 °/s
+  if(fabs(allPara.GYRO_Real[2])<0.02f)//单位 °/s
     allPara.GYRO_Real[2]=0.f;
 	
-	
-		allPara.Result_Angle[2]+=allPara.GYRO_Real[2]*0.005;
+	allPara.Result_Angle[2]+=allPara.GYRO_Real[2]*0.005;
 	
 	if(allPara.Result_Angle[2]>180.0)
 		allPara.Result_Angle[2]-=360.0;
 	else if(allPara.Result_Angle[2]<-180.0)
 		allPara.Result_Angle[2]+=360.0;
 	
-	
 }
+
+int CalculateRealCrAndMean(float stdCr[AXIS_NUMBER],float mean[AXIS_NUMBER]){
+  static float IAE_st[AXIS_NUMBER][200]={0.f};    //记录的新息
+  static float data[AXIS_NUMBER][200]={0.f};    	//数据列
+  static int ignore=0;
+  ignore++;
+  
+  int axis=0;
+  
+  /* 新息的方差计算 */
+    for(axis=0;axis<AXIS_NUMBER;axis++)
+    {
+      mean[axis]=mean[axis]-data[axis][0]/200;
+      memcpy(data[axis],data[axis]+1,796);
+      data[axis][199]=allPara.GYRO_Real[axis];
+      memcpy(IAE_st[axis],IAE_st[axis]+1,796);
+      mean[axis]=mean[axis]+data[axis][199]/200;
+      IAE_st[axis][199]=allPara.GYRO_Real[axis]-mean[axis];
+    }
+  
+  if(ignore<400)
+    return 0;
+  else
+    ignore=400;
+  
+    for(axis=0;axis<AXIS_NUMBER;axis++){
+      stdCr[axis]=0;
+      for(int i=0;i<200;i++)
+      {
+        stdCr[axis]=stdCr[axis]+IAE_st[axis][i]*IAE_st[axis][i];
+      }
+      stdCr[axis]=__sqrtf(stdCr[axis]/200.0f);
+    }
+  
+  return 1;
+}
+
 
 void SetAngle(float angle){
 	float euler[3];

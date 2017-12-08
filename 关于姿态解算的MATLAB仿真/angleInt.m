@@ -2,7 +2,7 @@ function [ angle ,temporaryAngle] = angleInt( static,motion,mode )
 %UNTITLED 此处显示有关此函数的摘要
 %   此处显示详细说明
 if mode==1
-    data=motion(:,3)-mean(static(:,3));
+    data=motion-mean(static);
     data(find(abs(data)<0.01))=0;
     angle=sum(data*0.005);
     for i=1:length(data)

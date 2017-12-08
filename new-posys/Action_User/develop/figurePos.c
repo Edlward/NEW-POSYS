@@ -23,7 +23,6 @@
 extern AllPara_t allPara;
 static double pos[2];
 float set_x,set_y,set_angle;	 
-uint16_t data[2];
 void calculatePos(void)
 {
 	static uint16_t data_last[2]={0,0};
@@ -32,25 +31,26 @@ void calculatePos(void)
 	double  pos_temp[2]={0,0};
 	
 	int16_t vell[2];
+	double real[2];
 	
 	double zangle;
 	static double last_ang=0.0;
 	
 	if(flag<=5)
 	{
-		data_last[0]=data[0];
-		data_last[1]=data[1];
+		data_last[0]=allPara.codeData[0];
+		data_last[1]=allPara.codeData[1];
 		vell[0]=0;
 		vell[1]=0;
 		flag++;
 	}
 	else
 	{
-		vell[0]= (data[0]-data_last[0]);
-		vell[1]= (data[1]-data_last[1]);
+		vell[0]= (allPara.codeData[0]-data_last[0]);
+		vell[1]= (allPara.codeData[1]-data_last[1]);
 		
-		data_last[0]=data[0];
-		data_last[1]=data[1];
+		data_last[0]=allPara.codeData[0];
+		data_last[1]=allPara.codeData[1];
 	}
 	
 	if(vell[0]>2048)
@@ -77,17 +77,18 @@ void calculatePos(void)
 	
 	last_ang=allPara.Result_Angle[2];
 	
-	//直角坐标系和非直角坐标系的转换
-
-	pos[0]+=-sin(-zangle*0.017453292519943)*vell[1]+cos(-zangle*0.017453292519943)*vell[0];
-	pos[1]+=+cos(-zangle*0.017453292519943)*vell[1]+sin(-zangle*0.017453292519943)*vell[0];
+	//直角坐标系和非直角坐标系的转换  一定要注意坐标系的正方向和角度正方向一样！
+	allPara.Result_Angle[0]=vell[0];
+	allPara.Result_Angle[1]=vell[1];
+	
+	real[0]=1.00001425869615*vell[0]-0.0030831778541919*vell[1];
+  real[1]=-0.0030831778541919*vell[0]+1.00001425869615*vell[1];
+	
+	pos[0]+=sin(zangle*0.017453292519943)*vell[1]+cos(zangle*0.017453292519943)*vell[0];
+	pos[1]+=cos(zangle*0.017453292519943)*vell[1]-sin(zangle*0.017453292519943)*vell[0];
 	
 	pos_temp[0]=pos[0];
 	pos_temp[1]=pos[1];
-	
-// 1/cos(a/2)
-	pos_temp[0]=pos[0]*1.000004752846005;
-  pos_temp[1]=pos[1]*1.000004752846005;
 	
 	double convert_X;
 	double convert_Y;

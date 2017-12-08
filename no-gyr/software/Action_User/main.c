@@ -19,6 +19,7 @@
 
 
 Robot_t gRobot;
+extern int aaa;
 extern int ready;
 void init(void)
 {
@@ -26,7 +27,7 @@ void init(void)
 	  
 	TIM_Init(TIM2,99,83,0,0);				
 	
-	GYR_Init(921600);
+	GYR_Init(115200);
 	DebugBLE_Init(921600);
 //	while(!gRobot.posSystemReady);
 	
@@ -37,13 +38,16 @@ void init(void)
 //	MotorOff(CAN1,2);
 //	MotorOff(CAN1,3);
 //	MotorOff(CAN1,4);
-	
-//		Delay_ms(1000);
-//	while(ready==0)
-//	{
-//		Delay_ms(5);
-//		USART_OUT(USART3,"AT+begin\r\n");
-//	}
+
+	while(!aaa);
+	while(ready==0)
+	{
+		Delay_ms(10);
+		USART_SendData(USART3,'A');
+		USART_SendData(USART3,'T');
+		USART_SendData(USART3,'\r');
+		USART_SendData(USART3,'\n');
+	}
 }
 
 static uint8_t CPUUsage=0;
@@ -53,15 +57,16 @@ int main(void)
 	
 	while(1)
 	{
+		while(getTimeFlag())
 		{
 			//readSensorData();
 			//run();
-//		USART_OUT_F(gRobot.walk_t.data1);
-//		USART_OUT_F(gRobot.walk_t.data2);
-//		USART_OUT_F(gRobot.walk_t.w1);
-//		USART_OUT_F(gRobot.walk_t.w2);
-//		USART_OUT_F(gRobot.walk_t.w3);
-//		USART_Enter();
+		USART_OUT_F(gRobot.walk_t.angle);
+		USART_OUT_F(gRobot.walk_t.x);
+		USART_OUT_F(gRobot.walk_t.y);
+		USART_OUT_F(gRobot.walk_t.w1);
+		USART_OUT_F(gRobot.walk_t.w2);
+		USART_Enter();
 			CPUUsage=getTimeCount();
 		}
 	}

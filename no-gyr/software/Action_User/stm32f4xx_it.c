@@ -176,15 +176,19 @@ void USART3_IRQHandler(void)
 	 float ActVal[6];
   }posture;
 	static uint8_t count=0;
+	static uint8_t count1=0;
 	static uint8_t i=0;
 
 	if(USART_GetITStatus(USART3, USART_IT_RXNE)==SET)   
 	{
 		USART_ClearITPendingBit(USART3,USART_IT_RXNE);
-		ch=USART_ReceiveData(USART3);;
-		USART_SendData(USART1,ch);
-		if(ch=='O')
-					 ready=1;
+		ch=USART_ReceiveData(USART3);
+		if(ch=='K')
+		{
+			ready=1;
+		}
+		else
+			count1=0;
 		 switch(count)
 		 {
 			 case 0:
@@ -225,11 +229,11 @@ void USART3_IRQHandler(void)
 			 case 4:
 				 if(ch==0x0d)
 				 {
-  				 gRobot.walk_t.data1 = posture.ActVal[0];
-			     gRobot.walk_t.data2 = posture.ActVal[1];
-			     gRobot.walk_t.w1 = posture.ActVal[2];
-			     gRobot.walk_t.w2 = posture.ActVal[3];
-			     gRobot.walk_t.w3 = posture.ActVal[4];
+  				 gRobot.walk_t.angle = posture.ActVal[0];
+  				 gRobot.walk_t.w1 = posture.ActVal[1];
+  				 gRobot.walk_t.w2 = posture.ActVal[2];
+			     gRobot.walk_t.x = posture.ActVal[3];
+			     gRobot.walk_t.y = posture.ActVal[4];
 
 					 gRobot.posSystemReady=1;
 				 }
@@ -241,6 +245,9 @@ void USART3_IRQHandler(void)
 			   break;		 
 		 }
 	 }
+	else{
+		USART_ReceiveData(USART3);
+	}
 }
 
 
@@ -317,14 +324,16 @@ void USART2_IRQHandler(void)
 	}
 	 
 }
-
+int aaa=0;
 void USART1_IRQHandler(void)
 {
-	//uint8_t data = 0;
+	uint8_t data = 0;
 	if(USART_GetITStatus(USART1, USART_IT_RXNE)==SET)   
 	{
 		USART_ClearITPendingBit( USART1,USART_IT_RXNE);
-		//data=USART_ReceiveData(USART1);
+		data=USART_ReceiveData(USART1);
+		if(data=='A')
+			aaa=1;
 	}
 	else{
 		USART_ReceiveData(USART1);

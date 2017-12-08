@@ -37,13 +37,13 @@ void DataSend(void)
   tdata[26]=0x0a;
   tdata[27]=0x0d;
 	
-	valSend.val=(float)allPara.GYRO_Angle[2];
+	valSend.val=(float)allPara.Result_Angle[2];
   memcpy(tdata+2,valSend.data,4);
 	
-	valSend.val=(float)allPara.GYRO_Angle[0];
+	valSend.val=(float)allPara.Result_Angle[0];
   memcpy(tdata+6,valSend.data,4);
 	
-	valSend.val=(float)allPara.GYRO_Angle[1];
+	valSend.val=(float)allPara.Result_Angle[1];
   memcpy(tdata+10,valSend.data,4);
 	
 	valSend.val=(float)allPara.posx;
@@ -138,23 +138,23 @@ void USART1_IRQHandler(void)
     }else{
       if(buffer[0]!='A'){
         bufferInit();
-        USART_OUT(USART1,"NOT START WITH 'A'\r\n");
+        USART_OUT(USART1,"NO A\r\n");
       }
     }
   }else{
     data=USART_ReceiveData(USART1);
   }
 }
-extern uint8_t sendPermit;
+
 static int atCommand=0;
 void AT_CMD_Judge(void){
   if((bufferI == 4) && strncmp(buffer, "AT\r\n", 4)==0)//AT    
-    atCommand=1;
+    atCommand=2;
   else if((bufferI == 10) && strncmp(buffer, "AT+begin\r\n", 10)==0)//AT    
     atCommand=2;
-	else if((bufferI == 13) && strncmp(buffer, "AT+stopSend\r\n", 13)==0)
+	else if((bufferI == 13) && strncmp(buffer, "AT+stopSend\r\n", 13)==0)//none
     atCommand=3;
-	else if((bufferI == 14) && strncmp(buffer, "AT+beginSend\r\n", 14)==0)
+	else if((bufferI == 14) && strncmp(buffer, "AT+beginSend\r\n", 14)==0)//none
     atCommand=4;
 	else if((bufferI == 14) && strncmp(buffer, "AT+printData\r\n", 14)==0)
     atCommand=5;
@@ -205,11 +205,9 @@ void AT_CMD_Handle(void){
 			USART_OUT(USART1,"OK\r\n");
 			break;
 		case 3:
-			sendPermit=0;
 			USART_OUT(USART1,"OK\r\n");
 			break;
 		case 4:
-			sendPermit=1;
 			USART_OUT(USART1,"OK\r\n");
 			break;
 		case 5:

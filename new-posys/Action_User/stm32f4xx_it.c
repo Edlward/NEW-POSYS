@@ -39,15 +39,12 @@ extern AllPara_t allPara;
 static uint32_t timeCount=0;
 static uint8_t timeFlag=0;
 static char readOrder=0;
-extern uint16_t data[2];
 void TIM2_IRQHandler(void)
 {
 	
   double gyr_temp[GYRO_NUMBER][AXIS_NUMBER];
-//  float acc_temp[GYRO_NUMBER][AXIS_NUMBER];
   float  temp_temp[GYRO_NUMBER];
   static double gyro_sum[GYRO_NUMBER][AXIS_NUMBER];
-//  static float acc_sum[GYRO_NUMBER][AXIS_NUMBER];
   static float  temp_sum[GYRO_NUMBER];
   static uint32_t timeCnt=0;
 
@@ -64,66 +61,69 @@ void TIM2_IRQHandler(void)
       timeCount=0;
       timeFlag=1;
     }
+		/*读取角速度，温度的数据，并进行累加*/
 		for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 		{
       icm_update_gyro_rate(gyro);
 			icm_update_temp(gyro);
-			//icm_update_acc(gyro);
 			icm_read_temp(&(temp_temp[gyro]));
       icm_read_gyro_rate(gyr_temp[gyro]);
-			//icm_read_accel_acc(acc_temp[gyro]);
 			for(axis=0;axis<AXIS_NUMBER;axis++)
 			{
 				gyro_sum[gyro][axis]=gyro_sum[gyro][axis]+gyr_temp[gyro][axis];
-				//acc_sum[gyro][axis]=acc_sum[gyro][axis]+acc_temp[gyro][axis];
 			}
       temp_sum[gyro]=temp_sum[gyro]+temp_temp[gyro];
 		}
-			if(!getTempInitSuces())
+		/*确定加热温度*/
+		if(!getTempInitSuces())
+			HeatingInit(temp_temp);
+			
+		
+//		static int timecont=0;
+//		timecont++;
+//		static double aaa=0.0;
+//			aaa+=(gyr_temp[0][2]+gyr_temp[1][2]+gyr_temp[2][2])/3.0;
+//		if(timecont==2)
+//		{
+//			timecont=0;
+//			allPara.lll=aaa/2.0;
+//			aaa=0.0;
+//			
+//		}
+		
+	  if(timeCnt==5)
+		{
+			readOrder++;
+      timeCnt=0;
+			allPara.codeData[0]=SPI_ReadAS5045(0);
+			allPara.codeData[1]=SPI_ReadAS5045(1);
+			//取得5ms的原始数据总和的平均数
+			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 			{
-				HeatingInit(temp_temp);
+				allPara.GYRO_Temperature[gyro]=temp_sum[gyro]/5.f;
+				for(axis=0;axis<AXIS_NUMBER;axis++)
+					allPara.GYROWithoutRemoveDrift[gyro][axis]=gyro_sum[gyro][axis]/5.0;	
 			}
-//			if(timeCnt==4){
-//				//放到中断里
-
-//			}
-			
-				data[0]=SPI_ReadAS5045(0);
-				data[1]=SPI_ReadAS5045(1);
-			
-				debugsend2(data[0],data[1],gyr_temp[0][2],gyr_temp[1][2],gyr_temp[2][2]);
-			if(timeCnt==5){
-				readOrder++;
-        timeCnt=0;
-			
-				for(gyro=0;gyro<GYRO_NUMBER;gyro++)
-				{
-					allPara.GYRO_Temperature[gyro]=temp_sum[gyro]/5.f;
-					for(axis=0;axis<AXIS_NUMBER;axis++)
-					{
-						allPara.GYROWithoutRemoveDrift[gyro][axis]=gyro_sum[gyro][axis]/5.0;
-						//allPara.ACC_Aver[gyro][axis]=acc_sum[gyro][axis]/5.f;
-					}
-				}
-					for(gyro=0;gyro<GYRO_NUMBER;gyro++)
-						allPara.GYRO_Temperature[gyro]=LowPassFilter(allPara.GYRO_Temperature[gyro],gyro)/100.f;
-				
-				for(gyro=0;gyro<GYRO_NUMBER;gyro++)
-				{
-					temp_sum[gyro]=0.f;
-					for(axis=0;axis<AXIS_NUMBER;axis++)
-					{
-						allPara.GYRORemoveDrift[gyro][axis]=allPara.GYROWithoutRemoveDrift[gyro][axis]-allPara.driftCoffecient[gyro][axis]*(allPara.GYRO_Temperature[gyro]);
-						gyro_sum[gyro][axis]=0.0;
-						//acc_sum[gyro][axis]=0.f;
-					}
-				}
-				
+			//温度进行低通滤波
+			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
+				allPara.GYRO_Temperature[gyro]=LowPassFilter(allPara.GYRO_Temperature[gyro],gyro)/100.f;
+			//去除温飘
+			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
+			{
+				temp_sum[gyro]=0.f;
 				for(axis=0;axis<AXIS_NUMBER;axis++)
 				{
-					allPara.GYRO_Aver[axis]=(allPara.GYRORemoveDrift[0][axis]+allPara.GYRORemoveDrift[1][axis]+allPara.GYRORemoveDrift[2][axis])/3.0;
+					allPara.GYRORemoveDrift[gyro][axis]=allPara.GYROWithoutRemoveDrift[gyro][axis]-allPara.driftCoffecient[gyro][axis]*(allPara.GYRO_Temperature[gyro]);
+					gyro_sum[gyro][axis]=0.0;
 				}
-      }
+			}
+			//对三个陀螺仪的数据取平均数
+			for(axis=0;axis<AXIS_NUMBER;axis++)
+			{
+				/*根据不同标准差给权数*/
+				allPara.GYRO_Aver[axis]=allPara.GYRORemoveDrift[0][axis]*0.303308112702582+allPara.GYRORemoveDrift[1][axis]*0.354083283815664+allPara.GYRORemoveDrift[2][axis]*0.342608603481754;
+			}
+    }
   }
 	else{
 		USART_OUT(USART1,"TIM2 error");

@@ -92,7 +92,7 @@ void updateAngle(void)
 //		maxStaticValue=0.15f;
 //	}
 	
-  if(fabs(allPara.GYRO_Real[2])<0.02f)//单位 °/s
+  if(fabs(allPara.GYRO_Real[2])<0.3f)//单位 °/s
     allPara.GYRO_Real[2]=0.f;
 	
 	allPara.Result_Angle[2]+=allPara.GYRO_Real[2]*0.005;

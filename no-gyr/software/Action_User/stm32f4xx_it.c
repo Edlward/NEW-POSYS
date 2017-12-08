@@ -183,6 +183,7 @@ void USART3_IRQHandler(void)
 	{
 		USART_ClearITPendingBit(USART3,USART_IT_RXNE);
 		ch=USART_ReceiveData(USART3);
+		//USART_SendData(USART1,ch);
 		if(ch=='K')
 		{
 			ready=1;
@@ -234,6 +235,7 @@ void USART3_IRQHandler(void)
   				 gRobot.walk_t.w2 = posture.ActVal[2];
 			     gRobot.walk_t.x = posture.ActVal[3];
 			     gRobot.walk_t.y = posture.ActVal[4];
+			     gRobot.walk_t.w3 = posture.ActVal[5];
 
 					 gRobot.posSystemReady=1;
 				 }

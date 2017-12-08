@@ -90,7 +90,6 @@ void TIM2_IRQHandler(void)
 //			aaa=0.0;
 //			
 //		}
-		
 	  if(timeCnt==5)
 		{
 			readOrder++;

@@ -66,6 +66,7 @@ int main(void)
 		USART_OUT_F(gRobot.walk_t.y);
 		USART_OUT_F(gRobot.walk_t.w1);
 		USART_OUT_F(gRobot.walk_t.w2);
+		USART_OUT_F(gRobot.walk_t.w3);
 		USART_Enter();
 			CPUUsage=getTimeCount();
 		}

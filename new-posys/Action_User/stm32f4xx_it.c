@@ -60,7 +60,9 @@ void TIM2_IRQHandler(void)
     {
       timeCount=0;
       timeFlag=1;
+			allPara.cpuUsage++;
     }
+	
 		/*读取角速度，温度的数据，并进行累加*/
 		for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 		{
@@ -103,6 +105,7 @@ void TIM2_IRQHandler(void)
 				for(axis=0;axis<AXIS_NUMBER;axis++)
 					allPara.GYROWithoutRemoveDrift[gyro][axis]=gyro_sum[gyro][axis]/5.0;	
 			}
+			
 			//温度进行低通滤波
 			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 				allPara.GYRO_Temperature[gyro]=LowPassFilter(allPara.GYRO_Temperature[gyro],gyro)/100.f;
@@ -112,16 +115,14 @@ void TIM2_IRQHandler(void)
 				temp_sum[gyro]=0.f;
 				for(axis=0;axis<AXIS_NUMBER;axis++)
 				{
-					allPara.GYRORemoveDrift[gyro][axis]=allPara.GYROWithoutRemoveDrift[gyro][axis]-allPara.driftCoffecient[gyro][axis]*(allPara.GYRO_Temperature[gyro]);
+					allPara.GYRORemoveDrift[gyro][axis]=allPara.GYROWithoutRemoveDrift[gyro][axis];//-allPara.driftCoffecient[gyro][axis]*(allPara.GYRO_Temperature[gyro]);
 					gyro_sum[gyro][axis]=0.0;
 				}
 			}
 			//对三个陀螺仪的数据取平均数
-			for(axis=0;axis<AXIS_NUMBER;axis++)
-			{
-				/*根据不同标准差给权数*/
-				allPara.GYRO_Aver[axis]=allPara.GYRORemoveDrift[0][axis]*0.303308112702582+allPara.GYRORemoveDrift[1][axis]*0.354083283815664+allPara.GYRORemoveDrift[2][axis]*0.342608603481754;
-			}
+			allPara.GYRO_Aver[0]=allPara.GYRORemoveDrift[0][0]*0.2213592813724+allPara.GYRORemoveDrift[1][0]*0.39736449174351+allPara.GYRORemoveDrift[2][0]*0.38127622688409;
+			allPara.GYRO_Aver[1]=allPara.GYRORemoveDrift[0][1]*0.308463467667503+allPara.GYRORemoveDrift[1][1]*0.351315105732058+allPara.GYRORemoveDrift[2][1]*0.340221426600438;
+			allPara.GYRO_Aver[2]=allPara.GYRORemoveDrift[0][2]*0.343476611095766+allPara.GYRORemoveDrift[1][2]*0.306446153485871 +allPara.GYRORemoveDrift[2][2]*0.350077235418363;
     }
   }
 	else{
@@ -252,7 +253,7 @@ void HardFault_Handler(void)
 		/*因为经历中断函数入栈之后，堆栈指针会减小0x10，所以平移回来（可能不具有普遍性）*/
 		r_sp = r_sp+0x10;
 		/*串口发数通知*/
-		USART_OUT(USART1,"HardFault");
+		USART_OUT(USART1,"\r\nHardFault");
   	char sPoint[2]={0};
 		USART_OUT(USART1,"%s","0x");
 		/*获取出现异常时程序的地址*/
@@ -267,6 +268,19 @@ void HardFault_Handler(void)
   /* Go to infinite loop when Hard Fault exception occurs */
   while (1)
   {
+		/*串口发数通知*/
+		USART_OUT(USART1,"\r\nHardFault");
+  	char sPoint[2]={0};
+		USART_OUT(USART1,"%s","0x");
+		/*获取出现异常时程序的地址*/
+		for(int i=3;i>=-28;i--){
+			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
+			USART_OUT(USART1,"%s",sPoint);
+			if(i%4==0)
+				USART_Enter();
+		}
+		/*发送回车符*/
+		USART_Enter();
   }
 }
 

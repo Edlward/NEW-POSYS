@@ -82,7 +82,10 @@ void ICM20608G_init(int gyroNum)
 }
 
 
-
+/**
+自动车131.170291536093
+手动车131.524243090403
+*/
 static double gyro[3];
 void icm_update_gyro_rate(int gyroNum)
 {
@@ -114,9 +117,9 @@ void icm_update_gyro_rate(int gyroNum)
 	switch(*(flashData.scaleMode+gyroNum))
 	{
 		case 0:
-			gyro[0] = -data1[1]/131.170291536093;
-			gyro[1] = -data1[0]/131.170291536093;
-			gyro[2] = -data1[2]/131.170291536093;
+			gyro[0] = -data1[1]/131.524243090403;
+			gyro[1] = -data1[0]/131.524243090403;
+			gyro[2] = -data1[2]/131.524243090403;
 			break;
 		case 1:
 			gyro[0] = -data1[1]/65.5f;
@@ -124,9 +127,9 @@ void icm_update_gyro_rate(int gyroNum)
 			gyro[2] = -data1[2]/65.5f;
 			break;
 		default:
-			gyro[0] = -data1[1]/131.170291536093;
-			gyro[1] = -data1[0]/131.170291536093;
-			gyro[2] = -data1[2]/131.170291536093;
+			gyro[0] = -data1[1]/131.524243090403;
+			gyro[1] = -data1[0]/131.524243090403;
+			gyro[2] = -data1[2]/131.524243090403;
 			break;
   }
 	float middlePerson = 0.f;

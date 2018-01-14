@@ -23,6 +23,27 @@
 extern AllPara_t allPara;
 static double pos[2];
 float set_x,set_y,set_angle;	 
+/*
+自动车  
+	//1/4096*wheelR*2*pi
+	allPara.posx=convert_X*0.038622517085838;
+	allPara.posy=convert_Y*0.038651337725656;
+	a=0.3533/2/180*pi;测得到的误差角
+  real=[ cos(a)/(2*cos(a)^2 - 1), sin(a)/(2*sin(a)^2 - 1);sin(a)/(2*sin(a)^2 - 1), cos(a)/(2*cos(a)^2 - 1)]*[vell1';vell2'];
+	real[0]=1.00001425869615*vell[0]-0.0030831778541919*vell[1];
+  real[1]=-0.0030831778541919*vell[0]+1.00001425869615*vell[1];
+*/
+/*
+25.18 25.19用改进算法后拟合得出的
+手动车  轮一25.1606371025683  轮二25.2220631351932
+	//1/4096*wheelR*2*pi
+	allPara.posx=convert_X;
+	allPara.posy=convert_Y;
+	a=-0.1304/2/180*pi;测得到的误差角
+  real=[ cos(a)/(2*cos(a)^2 - 1), sin(a)/(2*sin(a)^2 - 1);sin(a)/(2*sin(a)^2 - 1), cos(a)/(2*cos(a)^2 - 1)]*[vell1';vell2'];
+	real[0]=1.00000776970874*vell[0]*0.0385959339263024+0.00227593095734927*vell[1]*0.038690160280225;
+  real[1]=0.00227593095734927*vell[0]*0.0385959339263024+1.00000776970874*vell[1]*0.038690160280225;
+*/
 void calculatePos(void)
 {
 	static uint16_t data_last[2]={0,0};
@@ -80,10 +101,10 @@ void calculatePos(void)
 	//直角坐标系和非直角坐标系的转换  一定要注意坐标系的正方向和角度正方向一样！
 	allPara.Result_Angle[0]=vell[0];
 	allPara.Result_Angle[1]=vell[1];
-	
-	real[0]=1.00001425869615*vell[0]-0.0030831778541919*vell[1];
-  real[1]=-0.0030831778541919*vell[0]+1.00001425869615*vell[1];
-	
+//	
+		real[0]=1.00000776970874*vell[0]+0.00227593095734927*vell[1];
+		real[1]=0.00227593095734927*vell[0]+1.00000776970874*vell[1];
+//	
 	pos[0]+=sin(zangle*0.017453292519943)*vell[1]+cos(zangle*0.017453292519943)*vell[0];
 	pos[1]+=cos(zangle*0.017453292519943)*vell[1]-sin(zangle*0.017453292519943)*vell[0];
 	
@@ -97,8 +118,8 @@ void calculatePos(void)
 	convert_Y=pos_temp[0]*0.707106781186548-pos_temp[1]*0.707106781186548;
 	
 	//1/4096*wheelR*2*pi
-	allPara.posx=convert_X*0.038622517085838;
-	allPara.posy=convert_Y*0.038651337725656;
+	allPara.posx=convert_X*0.0385959339263024;
+	allPara.posy=convert_Y*0.038690160280225;
 	
 }
 

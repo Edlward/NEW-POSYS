@@ -295,17 +295,17 @@ uint8_t SPI_Read(SPI_TypeDef *SPIx,
   uint8_t data;
   
   address |= (uint8_t)READWRITE_CMD;
-  SPI_Cmd(SPIx,ENABLE);	
+  SPI_Cmd(SPIx,ENABLE);
   
   GPIO_ResetBits(GPIOx,GPIO_Pin);
   
   while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  //等待发送区空  
   
-  SPI_I2S_SendData(SPIx, address); 																		//通过外设SPIx发送一个byte  数据
+  SPI_I2S_SendData(SPIx, address);	 																		//通过外设SPIx发送一个byte  数据
   
   while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  //等待接收完一个byte  
   
-  SPI_I2S_ReceiveData(SPIx); 																	        //返回通过SPIx最近接收的数据
+  SPI_I2S_ReceiveData(SPIx);																		        //返回通过SPIx最近接收的数据
   
   while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  //等待发送区空  
   
@@ -316,7 +316,7 @@ uint8_t SPI_Read(SPI_TypeDef *SPIx,
   data = SPI_I2S_ReceiveData(SPIx); 		
   
   while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_BSY) == SET){}	
-  SPI_Cmd(SPIx,DISABLE);		
+  SPI_Cmd(SPIx,DISABLE);
   GPIO_SetBits(GPIOx,GPIO_Pin);
   
   return data;

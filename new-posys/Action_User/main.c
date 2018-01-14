@@ -43,6 +43,7 @@ void init(void)
 	}
 	
 	SetCommand(HEATING);
+	SetCommand(ACCUMULATE);
   driftCoffecientInit();
   TIM_Init(TIM2,999,83,0,0);					//主周期定时5ms
 	
@@ -62,6 +63,7 @@ int main(void)
     {
 			while(readOrderLast==getReadOrder()){;}
 				readOrderLast=getReadOrder();
+				
 			if(GetCommand()&HEATING)
 			{
 				for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
@@ -90,9 +92,9 @@ int main(void)
 				}
         //计算角度 
         if(RoughHandle())
-				{					
+				{
           updateAngle();
-          calculatePos();	
+          calculatePos();
 					#ifndef TEST_SUMMER
 					//串口被中断打断依然能正常发送（试验了几分钟）
 					DataSend();
@@ -103,7 +105,7 @@ int main(void)
         UpdateVDoffTable();
 			}
       //真实的占空比会等于cpuUsage或大于其一个单位
-      cpuUsage=getTimeCount();
+      allPara.cpuUsage--;
     }
   }
 }

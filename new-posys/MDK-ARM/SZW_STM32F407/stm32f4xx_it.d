@@ -32,5 +32,7 @@
 .\szw_stm32f407\stm32f4xx_it.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h
 .\szw_stm32f407\stm32f4xx_it.o: ..\Action_User\develop\figurePos.h
 .\szw_stm32f407\stm32f4xx_it.o: ..\Action_User\math\quarternion.h
+.\szw_stm32f407\stm32f4xx_it.o: ..\Action_User\hardware\adc.h
+.\szw_stm32f407\stm32f4xx_it.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_adc.h
 .\szw_stm32f407\stm32f4xx_it.o: ..\Action_User\baseConfig\icm_20608_g.h
 .\szw_stm32f407\stm32f4xx_it.o: ..\Action_User\develop\temperature_control.h

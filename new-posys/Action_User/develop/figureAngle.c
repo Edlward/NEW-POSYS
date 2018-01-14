@@ -55,7 +55,7 @@ int RoughHandle(void)
   allPara.GYRO_Real[1]=(allPara.GYRO_Aver[1]);
   allPara.GYRO_Real[2]=(allPara.GYRO_Aver[2]);
 	
-  if((GetCommand()&ACCUMULATE)&&ignore>8*200){
+  if((GetCommand()&ACCUMULATE)&&ignore>15*200){
     allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.GYRO_Bais[0]);
     allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.GYRO_Bais[1]);
     allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.GYRO_Bais[2]);
@@ -92,6 +92,10 @@ void updateAngle(void)
 //		maxStaticValue=0.15f;
 //	}
 	
+  if(fabs(allPara.GYRO_Real[0])<0.3f)//单位 °/s
+    allPara.GYRO_Real[0]=0.f;
+  if(fabs(allPara.GYRO_Real[1])<0.3f)//单位 °/s
+    allPara.GYRO_Real[1]=0.f;
   if(fabs(allPara.GYRO_Real[2])<0.3f)//单位 °/s
     allPara.GYRO_Real[2]=0.f;
 	

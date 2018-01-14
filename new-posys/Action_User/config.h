@@ -39,6 +39,7 @@
 #include "stm32f4xx_rcc.h"
 #include "figurePos.h"
 #include "quarternion.h"
+#include "adc.h"
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 
@@ -189,6 +190,8 @@ typedef struct{
 	uint16_t codeData[2];
 	
 	double lll;
+	
+	int cpuUsage;
 }AllPara_t;
 
 

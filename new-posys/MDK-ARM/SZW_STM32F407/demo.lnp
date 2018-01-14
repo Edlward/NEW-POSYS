@@ -13,6 +13,7 @@
 ".\szw_stm32f407\spi.o"
 ".\szw_stm32f407\timer.o"
 ".\szw_stm32f407\usart.o"
+".\szw_stm32f407\adc.o"
 ".\szw_stm32f407\leastsquare.o"
 ".\szw_stm32f407\quarternion.o"
 ".\szw_stm32f407\misc.o"

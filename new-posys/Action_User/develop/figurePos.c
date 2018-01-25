@@ -44,6 +44,8 @@ float set_x,set_y,set_angle;
 	real[0]=1.00000776970874*vell[0]*0.0385959339263024+0.00227593095734927*vell[1]*0.038690160280225;
   real[1]=0.00227593095734927*vell[0]*0.0385959339263024+1.00000776970874*vell[1]*0.038690160280225;
 */
+
+int dataVellAll[2];
 void calculatePos(void)
 {
 	static uint16_t data_last[2]={0,0};
@@ -99,27 +101,30 @@ void calculatePos(void)
 	last_ang=allPara.Result_Angle[2];
 	
 	//直角坐标系和非直角坐标系的转换  一定要注意坐标系的正方向和角度正方向一样！
-	allPara.Result_Angle[0]=vell[0];
-	allPara.Result_Angle[1]=vell[1];
+
+	
 //	
 		real[0]=1.00000776970874*vell[0]+0.00227593095734927*vell[1];
 		real[1]=0.00227593095734927*vell[0]+1.00000776970874*vell[1];
 //	
-	pos[0]+=sin(zangle*0.017453292519943)*vell[1]+cos(zangle*0.017453292519943)*vell[0];
-	pos[1]+=cos(zangle*0.017453292519943)*vell[1]-sin(zangle*0.017453292519943)*vell[0];
+	dataVellAll[0]+=real[0];
+	dataVellAll[1]+=real[1];
 	
-	pos_temp[0]=pos[0];
-	pos_temp[1]=pos[1];
+	pos[0]+=sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0];
+	pos[1]+=cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0];
 	
-	double convert_X;
-	double convert_Y;
+	allPara.posx=pos[0]*0.0385959339263024;
+	allPara.posy=pos[1]*0.038690160280225;
 	
-	convert_X=pos_temp[0]*0.707106781186548+pos_temp[1]*0.707106781186548;
-	convert_Y=pos_temp[0]*0.707106781186548-pos_temp[1]*0.707106781186548;
+//	double convert_X;
+//	double convert_Y;
+	
+//	convert_X=pos_temp[0]*0.707106781186548+pos_temp[1]*0.707106781186548;
+//	convert_Y=pos_temp[0]*0.707106781186548-pos_temp[1]*0.707106781186548;
 	
 	//1/4096*wheelR*2*pi
-	allPara.posx=convert_X*0.0385959339263024;
-	allPara.posy=convert_Y*0.038690160280225;
+//	allPara.posx=convert_X*0.0385959339263024;
+//	allPara.posy=convert_Y*0.038690160280225;
 	
 }
 

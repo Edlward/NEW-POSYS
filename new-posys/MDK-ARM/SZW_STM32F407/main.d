@@ -37,3 +37,6 @@
 .\szw_stm32f407\main.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_adc.h
 .\szw_stm32f407\main.o: ..\Action_User\baseConfig\icm_20608_g.h
 .\szw_stm32f407\main.o: ..\Action_User\develop\temperature_control.h
+.\szw_stm32f407\main.o: ..\Action_User\hardware\DataRecover.h
+.\szw_stm32f407\main.o: ..\Action_User\hardware\iwdg.h
+.\szw_stm32f407\main.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_iwdg.h

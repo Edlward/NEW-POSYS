@@ -55,6 +55,9 @@ int RoughHandle(void)
   allPara.GYRO_Real[1]=(allPara.GYRO_Aver[1]);
   allPara.GYRO_Real[2]=(allPara.GYRO_Aver[2]);
 	
+	if(allPara.resetFlag)
+		ignore=15*200+1;
+	
   if((GetCommand()&ACCUMULATE)&&ignore>15*200){
     allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.GYRO_Bais[0]);
     allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.GYRO_Bais[1]);

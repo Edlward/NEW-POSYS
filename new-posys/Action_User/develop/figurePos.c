@@ -48,7 +48,6 @@ float set_x,set_y,set_angle;
 int dataVellAll[2];
 void calculatePos(void)
 {
-	static uint16_t data_last[2]={0,0};
 	static uint8_t flag=0;
 	
 	double  pos_temp[2]={0,0};
@@ -59,21 +58,24 @@ void calculatePos(void)
 	double zangle;
 	static double last_ang=0.0;
 	
+	if(allPara.resetFlag)
+		flag=6;
+	
 	if(flag<=5)
 	{
-		data_last[0]=allPara.codeData[0];
-		data_last[1]=allPara.codeData[1];
+		allPara.data_last[0]=allPara.codeData[0];
+		allPara.data_last[1]=allPara.codeData[1];
 		vell[0]=0;
 		vell[1]=0;
 		flag++;
 	}
 	else
 	{
-		vell[0]= (allPara.codeData[0]-data_last[0]);
-		vell[1]= (allPara.codeData[1]-data_last[1]);
+		vell[0]= (allPara.codeData[0]-allPara.data_last[0]);
+		vell[1]= (allPara.codeData[1]-allPara.data_last[1]);
 		
-		data_last[0]=allPara.codeData[0];
-		data_last[1]=allPara.codeData[1];
+		allPara.data_last[0]=allPara.codeData[0];
+		allPara.data_last[1]=allPara.codeData[1];
 	}
 	
 	if(vell[0]>2048)
@@ -110,11 +112,8 @@ void calculatePos(void)
 	dataVellAll[0]+=real[0];
 	dataVellAll[1]+=real[1];
 	
-	pos[0]+=sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0];
-	pos[1]+=cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0];
-	
-	allPara.posx=pos[0]*0.0385959339263024;
-	allPara.posy=pos[1]*0.038690160280225;
+	allPara.posx+=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0])*0.0385959339263024;
+	allPara.posy+=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0])*0.038690160280225;
 	
 //	double convert_X;
 //	double convert_Y;

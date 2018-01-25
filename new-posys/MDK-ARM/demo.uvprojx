@@ -460,6 +460,16 @@
               <FileType>1</FileType>
               <FilePath>..\Action_User\hardware\adc.c</FilePath>
             </File>
+            <File>
+              <FileName>DataRecover.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Action_User\hardware\DataRecover.c</FilePath>
+            </File>
+            <File>
+              <FileName>iwdg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Action_User\hardware\iwdg.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

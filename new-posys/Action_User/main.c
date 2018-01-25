@@ -12,12 +12,18 @@
 **/
 #include "misc.h"
 #include "config.h"
-
+#include "DataRecover.h"
+#include "iwdg.h"
 AllPara_t allPara;
 
 void init(void)
 {
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
+	
+  TIM_Init(TIM7,99,83,0,0);					//主周期定时5ms
+	//StartCount();
+	SoftWareReset();
+	
   /* 陀螺仪加热电阻PWM初始化--------------------------*/
   pwm_init(999, 83);//此时PWM的频率为84MHz/(83+1)/(999+1)=1KHz
   
@@ -37,18 +43,26 @@ void init(void)
 	for(int gyro;gyro<GYRO_NUMBER;gyro++)
 	{
 		/*ICM20608G模块初始化*/
-		ICM20608G_init(gyro);
+		if(!allPara.resetFlag)
+			ICM20608G_init(gyro);
 		/*初始时不加热*/
 		ICM_HeatingPower(gyro,0);
 	}
 	
+  TIM_Init(TIM2,999,83,0,0);					//主周期定时5ms
+	
 	SetCommand(HEATING);
 	SetCommand(ACCUMULATE);
   driftCoffecientInit();
-  TIM_Init(TIM2,999,83,0,0);					//主周期定时5ms
 	
-	while(!getTempInitSuces());
+	IWDG_Init(1,5); // 1.5ms
 	
+	while(!getTempInitSuces())
+	{
+		//如果是重启的，直接跳过
+		if(allPara.resetFlag)
+			SetTempInitSuces();
+	}
 }
 
 
@@ -61,19 +75,10 @@ int main(void)
   {
     while(getTimeFlag())
     {
-			while(readOrderLast==getReadOrder()){;}
-				readOrderLast=getReadOrder();
-				
-			if(GetCommand()&HEATING)
-			{
-				for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-					temp_pid_ctr(gyro,allPara.GYRO_TemperatureAim[gyro]);
-			}
-			else
-			{
-				for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-					temp_pid_ctr(gyro,allPara.GYRO_TemperatureAim[gyro]-0.5f);
-			}
+			//重启时，可能因为这个多耽误5ms
+//			while(readOrderLast==getReadOrder()){;}
+//				readOrderLast=getReadOrder();
+		
 //      				uint8_t test[3];
 //      				test[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
 			//使数据能够同步，但是不同步情况很少
@@ -104,6 +109,7 @@ int main(void)
       else{
         UpdateVDoffTable();
 			}
+			allPara.resetFlag=0;
       //真实的占空比会等于cpuUsage或大于其一个单位
       allPara.cpuUsage--;
     }

@@ -30,7 +30,8 @@
 /* Includes ------------------------------------------------------------------*/
 
 #include "config.h"
-
+#include "DataRecover.h"
+#include "iwdg.h"
 /*************定时器2******start************/
 //每1ms调用一次  用于读取编码器的值和计算坐标
 
@@ -62,7 +63,7 @@ void TIM2_IRQHandler(void)
       timeFlag=1;
 			allPara.cpuUsage++;
     }
-	
+		
 		/*读取角速度，温度的数据，并进行累加*/
 		for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 		{
@@ -151,6 +152,39 @@ uint32_t getTimeCount(void)
 {
   return (timeCount);
 }
+
+
+uint32_t startCnt=0;
+uint32_t Cnt=0;
+
+void TIM7_IRQHandler(void)
+{
+  if(TIM_GetITStatus(TIM7, TIM_IT_Update)==SET)
+  {	
+		if(startCnt==1)
+			Cnt++;
+		//printf("%d\r\n",Cnt);
+		IWDG_Feed();
+		
+    TIM_ClearITPendingBit(TIM7, TIM_IT_Update);
+	}
+}
+
+void StartCount(void)
+{
+	//printf("%d\t",startCnt);
+	startCnt=1;
+	Cnt=0;
+}
+
+uint32_t returnEndUs(void)
+{
+	uint32_t	end;
+	end=Cnt*100;
+	Cnt=0;
+	startCnt=0;
+	return end;
+}	
 
 //定时器1  
 void TIM1_UP_TIM10_IRQHandler(void)
@@ -244,43 +278,58 @@ void NMI_Handler(void)
 
 void HardFault_Handler(void)
 {  
-	  static uint32_t r_sp ;
-		/*判断发生异常时使用MSP还是PSP*/
-		if(__get_PSP()!=0x00) //获取SP的值
-			r_sp = __get_PSP(); 
-		else
-			r_sp = __get_MSP(); 
-		/*因为经历中断函数入栈之后，堆栈指针会减小0x10，所以平移回来（可能不具有普遍性）*/
-		r_sp = r_sp+0x10;
-		/*串口发数通知*/
-		USART_OUT(USART1,"\r\nHardFault");
-  	char sPoint[2]={0};
-		USART_OUT(USART1,"%s","0x");
-		/*获取出现异常时程序的地址*/
-		for(int i=3;i>=-28;i--){
-			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
-			USART_OUT(USART1,"%s",sPoint);
-			if(i%4==0)
-				USART_Enter();
-		}
-		/*发送回车符*/
-		USART_Enter();
+//	  static uint32_t r_sp ;
+//		/*判断发生异常时使用MSP还是PSP*/
+//		if(__get_PSP()!=0x00) //获取SP的值
+//			r_sp = __get_PSP(); 
+//		else
+//			r_sp = __get_MSP(); 
+//		/*因为经历中断函数入栈之后，堆栈指针会减小0x10，所以平移回来（可能不具有普遍性）*/
+//		r_sp = r_sp+0x10;
+	
+	if(allPara.resetTime<=500)
+	{
+		FindResetTime();
+		/*不擦出的情况下写flash大约只要70us*/
+		for(int i=0;i<3;i++)
+			allPara.GYRO_TemperatureAim[i]=allPara.GYRO_TemperatureAim[i];
+			
+		for(int i=0;i<3;i++)
+			allPara.GYRO_Bais[i]=allPara.GYRO_Bais[i];
+			
+		for(int i=0;i<3;i++)
+			allPara.Result_Angle[i]=allPara.Result_Angle[i];
+			
+		for(int i=0;i<2;i++)
+			allPara.data_last[i]=allPara.data_last[i];
+			
+		allPara.posx=allPara.posx;
+		allPara.posy=allPara.posy;
+		
+		allPara.isReset=1;
+		
+		WriteFlashData(&allPara,allPara.resetTime);
+		
+		//STMFLASH_Read(&allPara,allPara.resetTime);
+	}
+		
+		
   /* Go to infinite loop when Hard Fault exception occurs */
   while (1)
   {
-		/*串口发数通知*/
-		USART_OUT(USART1,"\r\nHardFault");
-  	char sPoint[2]={0};
-		USART_OUT(USART1,"%s","0x");
-		/*获取出现异常时程序的地址*/
-		for(int i=3;i>=-28;i--){
-			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
-			USART_OUT(USART1,"%s",sPoint);
-			if(i%4==0)
-				USART_Enter();
-		}
-		/*发送回车符*/
-		USART_Enter();
+//		/*串口发数通知*/
+//		USART_OUT(USART1,"\r\nHardFault");
+//  	char sPoint[2]={0};
+//		USART_OUT(USART1,"%s","0x");
+//		/*获取出现异常时程序的地址*/
+//		for(int i=3;i>=-28;i--){
+//			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
+//			USART_OUT(USART1,"%s",sPoint);
+//			if(i%4==0)
+//				USART_Enter();
+//		}
+//		/*发送回车符*/
+//		USART_Enter();
   }
 }
 

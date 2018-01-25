@@ -59,6 +59,11 @@ int getTempInitSuces(void)
 {
 	return tempInitSuces;
 }
+
+void SetTempInitSuces(void)
+{
+		tempInitSuces=1;
+}
 //有时间的话可以把这个改成随环境变化的（把上一次稳定参数存下来）但是测试的时候可能就不能那么玩
 void temp_pid_ctr(int gyro,float val_ex)
 {

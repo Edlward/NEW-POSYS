@@ -11,6 +11,7 @@ uint32_t Heating(void);
 float LowPassFilter(float newValue,int gyro);
 int HeatingInit(float temp_temp[GYRO_NUMBER]);
 int getTempInitSuces(void);
+void SetTempInitSuces(void);
 #endif // !__TEMPERATURE_CONTROL_H
 
 

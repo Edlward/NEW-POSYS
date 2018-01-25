@@ -118,6 +118,7 @@ void debugsend(float a,float b,float c,float d,float e,float f)
 static char buffer[20];
 static int bufferI=0;
 extern flashData_t flashData;
+static int atCommand=0;
 void bufferInit(void){
   bufferI=0;
   for(int i=0;i<20;i++)
@@ -134,12 +135,16 @@ void USART1_IRQHandler(void)
     bufferI++;
 		if(bufferI==20)
 			bufferI=0;
+//		if(data=='P')
+//		{
+//		atCommand=20;
+//		}
     if(bufferI>1&&buffer[bufferI-1]=='\n'&&buffer[bufferI-2]=='\r'){
       AT_CMD_Judge();
     }else{
       if(buffer[0]!='A'){
         bufferInit();
-        USART_OUT(USART1,"NO A\r\n");
+        //USART_OUT(USART1,"NO A\r\n");
       }
     }
   }else{
@@ -147,7 +152,6 @@ void USART1_IRQHandler(void)
   }
 }
 
-static int atCommand=0;
 void AT_CMD_Judge(void){
   if((bufferI == 4) && strncmp(buffer, "AT\r\n", 4)==0)//AT    
     atCommand=2;
@@ -183,10 +187,12 @@ void AT_CMD_Judge(void){
     atCommand=16;
   else if((bufferI == 12) && strncmp(buffer, "AT+default\r\n", 12)==0)//AT    
     atCommand=17;
-  else if((bufferI == 9) && strncmp(buffer, "AT+heat\r\n", 12)==0)//AT    
+  else if((bufferI == 9) && strncmp(buffer, "AT+heat\r\n", 9)==0)//AT    
     atCommand=18;
-  else if((bufferI == 11) && strncmp(buffer, "AT+noheat\r\n", 12)==0)//AT    
+  else if((bufferI == 11) && strncmp(buffer, "AT+noheat\r\n", 11)==0)//AT    
     atCommand=19;
+//  else if((bufferI == 10) && strncmp(buffer, "AT+fault\r\n", 10)==0)//AT    
+//    atCommand=20;
   else 
     atCommand=666;
   
@@ -194,6 +200,7 @@ void AT_CMD_Judge(void){
 
 void AT_CMD_Handle(void){
 	float value=0.0f;
+	int hardFaultMaker[2];
 	switch(atCommand)
 	{
 		case 0:
@@ -357,6 +364,11 @@ void AT_CMD_Handle(void){
 		case 19:
 			USART_OUT(USART1,"OK\r\n");
 			SetCommand(~HEATING);
+			break;
+		case 20:
+			SetCommand(~HEATING);
+			for(int i=80000;i<100000;i++)
+				hardFaultMaker[i]=100;
 			break;
 		default:
 			USART_OUT(USART1,"error\r\n");

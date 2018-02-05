@@ -44,7 +44,6 @@ float set_x,set_y,set_angle;
 	real[0]=1.00000776970874*vell[0]*0.0385959339263024+0.00227593095734927*vell[1]*0.038690160280225;
   real[1]=0.00227593095734927*vell[0]*0.0385959339263024+1.00000776970874*vell[1]*0.038690160280225;
 */
-
 int dataVellAll[2];
 void calculatePos(void)
 {
@@ -105,15 +104,25 @@ void calculatePos(void)
 	//直角坐标系和非直角坐标系的转换  一定要注意坐标系的正方向和角度正方向一样！
 
 	
-//	
+//
+	#ifdef AUTOCAR	
+		real[0]=1.00001425869615*vell[0]-0.0030831778541919*vell[1];
+		real[1]=-0.0030831778541919*vell[0]+1.00001425869615*vell[1];
+	#else
 		real[0]=1.00000776970874*vell[0]+0.00227593095734927*vell[1];
 		real[1]=0.00227593095734927*vell[0]+1.00000776970874*vell[1];
+	#endif
 //	
 	dataVellAll[0]+=real[0];
 	dataVellAll[1]+=real[1];
 	
-	allPara.posx+=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0])*0.0385959339263024;
-	allPara.posy+=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0])*0.038690160280225;
+	#ifdef AUTOCAR	
+		allPara.posx+=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0])*0.038622517085838;
+		allPara.posy+=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0])*0.038651337725656;
+	#else
+		allPara.posx+=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0])*0.0385959339263024;
+		allPara.posy+=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0])*0.038690160280225;
+	#endif
 	
 //	double convert_X;
 //	double convert_Y;

@@ -83,24 +83,24 @@ void STMFLASH_Write(DataSave_t *pBuffer,u32 resetTime)
   FLASH_DataCacheCmd(ENABLE);	//FLASH擦除结束,开启数据缓存
   FLASH_Lock();//上锁
 } 
-void WriteFlashData(AllPara_t *pBuffer,u32 resetTime)
+void WriteFlashData(AllPara_t pBuffer,u32 resetTime)
 {
   for(int i=0;i<3;i++)
-    dataSave.GYRO_TemperatureAim[i]=pBuffer->GYRO_TemperatureAim[i];
+    dataSave.GYRO_TemperatureAim[i]=pBuffer.GYRO_TemperatureAim[i];
   
   for(int i=0;i<3;i++)
-    dataSave.GYRO_Bais[i]=pBuffer->GYRO_Bais[i];
+    dataSave.GYRO_Bais[i]=pBuffer.GYRO_Bais[i];
   
   for(int i=0;i<3;i++)
-    dataSave.Result_Angle[i]=pBuffer->Result_Angle[i];
+    dataSave.Result_Angle[i]=pBuffer.Result_Angle[i];
   
   for(int i=0;i<2;i++)
-    dataSave.data_last[i]=pBuffer->data_last[i];
+    dataSave.data_last[i]=pBuffer.data_last[i];
   
-  dataSave.posx=pBuffer->posx;
-  dataSave.posy=pBuffer->posy;
+  dataSave.posx=pBuffer.posx;
+  dataSave.posy=pBuffer.posy;
   
-  dataSave.isReset=pBuffer->isReset;
+  dataSave.isReset=pBuffer.isReset;
   
   STMFLASH_Write(&dataSave,allPara.resetTime);
 }

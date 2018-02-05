@@ -35,7 +35,7 @@
 /*************定时器2******start************/
 //每1ms调用一次  用于读取编码器的值和计算坐标
 
-//int posx,posy;
+
 extern AllPara_t allPara;
 static uint32_t timeCount=0;
 static uint8_t timeFlag=0;
@@ -95,6 +95,10 @@ void TIM2_IRQHandler(void)
 //		}
 	  if(timeCnt==5)
 		{
+			double percentages[3][3]={
+			0.2213592813724,0.39736449174351,0.38127622688409,
+			0.308463467667503,0.351315105732058,0.340221426600438,
+			0.343476611095766,0.306446153485871,0.350077235418363	};
 			readOrder++;
       timeCnt=0;
 			allPara.codeData[0]=SPI_ReadAS5045(0);
@@ -121,9 +125,37 @@ void TIM2_IRQHandler(void)
 				}
 			}
 			//对三个陀螺仪的数据取平均数
-			allPara.GYRO_Aver[0]=allPara.GYRORemoveDrift[0][0]*0.2213592813724+allPara.GYRORemoveDrift[1][0]*0.39736449174351+allPara.GYRORemoveDrift[2][0]*0.38127622688409;
-			allPara.GYRO_Aver[1]=allPara.GYRORemoveDrift[0][1]*0.308463467667503+allPara.GYRORemoveDrift[1][1]*0.351315105732058+allPara.GYRORemoveDrift[2][1]*0.340221426600438;
-			allPara.GYRO_Aver[2]=allPara.GYRORemoveDrift[0][2]*0.343476611095766+allPara.GYRORemoveDrift[1][2]*0.306446153485871 +allPara.GYRORemoveDrift[2][2]*0.350077235418363;
+			for(axis=0;axis<GYRO_NUMBER;axis++)
+			{
+				for(gyro=0;gyro<AXIS_NUMBER;gyro++)
+				{
+					/*正常情况小于这个值，没啥用，不正常时，值是1/131=0.0076*/
+					/*满足条件时，把该项变成0*/
+					if(fabs(allPara.GYRORemoveDrift[axis][gyro])<0.01)
+						percentages[axis][gyro]=0.0;
+				}
+			}
+			for(axis=0;axis<GYRO_NUMBER;axis++)
+			{
+				double sum=percentages[axis][0]+percentages[axis][1]+percentages[axis][2];
+				for(gyro=0;gyro<AXIS_NUMBER;gyro++)
+				{
+					/*为了防止所有陀螺仪都坏掉*/
+					if(sum>0.001)
+					{
+						percentages[axis][gyro]=percentages[axis][gyro]/sum;
+					}
+					else
+					{
+						percentages[axis][gyro]=0.0;
+					}
+				}
+			}
+				
+			allPara.GYRO_Aver[0]=allPara.GYRORemoveDrift[0][0]*percentages[0][0]+allPara.GYRORemoveDrift[1][0]*percentages[0][1]+allPara.GYRORemoveDrift[2][0]*percentages[0][2];
+			allPara.GYRO_Aver[1]=allPara.GYRORemoveDrift[0][1]*percentages[1][0]+allPara.GYRORemoveDrift[1][1]*percentages[1][1]+allPara.GYRORemoveDrift[2][1]*percentages[1][2];
+			allPara.GYRO_Aver[2]=allPara.GYRORemoveDrift[0][2]*percentages[2][0]+allPara.GYRORemoveDrift[1][2]*percentages[2][1]+allPara.GYRORemoveDrift[2][2]*percentages[2][2];
+			
     }
   }
 	else{
@@ -291,24 +323,10 @@ void HardFault_Handler(void)
 	{
 		FindResetTime();
 		/*不擦出的情况下写flash大约只要70us*/
-		for(int i=0;i<3;i++)
-			allPara.GYRO_TemperatureAim[i]=allPara.GYRO_TemperatureAim[i];
-			
-		for(int i=0;i<3;i++)
-			allPara.GYRO_Bais[i]=allPara.GYRO_Bais[i];
-			
-		for(int i=0;i<3;i++)
-			allPara.Result_Angle[i]=allPara.Result_Angle[i];
-			
-		for(int i=0;i<2;i++)
-			allPara.data_last[i]=allPara.data_last[i];
-			
-		allPara.posx=allPara.posx;
-		allPara.posy=allPara.posy;
 		
 		allPara.isReset=1;
 		
-		WriteFlashData(&allPara,allPara.resetTime);
+		WriteFlashData(allPara,allPara.resetTime);
 		
 		//STMFLASH_Read(&allPara,allPara.resetTime);
 	}

@@ -50,6 +50,8 @@
 
 //#define TEST_SUMMER
 
+#define AUTOCAR
+
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
 #define PERIOD    				0.005f
@@ -191,11 +193,11 @@ typedef struct{
 	
   uint16_t data_last[2];
 	
+	int cpuUsage;
+	
 	uint32_t isReset;
 	
 	uint32_t resetTime;
-	
-	int cpuUsage;
 	
 	int resetFlag;
 }AllPara_t;

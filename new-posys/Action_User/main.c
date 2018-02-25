@@ -32,7 +32,7 @@ void init(void)
   //片选的初始化
   CS_Config();
 	
-	USART1_Init(115200);
+	USART1_Init(921600);
 
   Flash_Init();
 	
@@ -47,6 +47,7 @@ void init(void)
   TIM_Init(TIM2,999,83,0,0);					//主周期定时5ms
 	
 	SetCommand(HEATING);
+	SetCommand(ACCUMULATE);
 }
 
 

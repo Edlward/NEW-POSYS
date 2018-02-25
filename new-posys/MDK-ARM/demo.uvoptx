@@ -234,6 +234,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>percentages</ItemText>
         </Ww>
+        <Ww>
+          <count>8</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>ctr</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>

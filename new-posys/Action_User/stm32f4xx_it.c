@@ -38,7 +38,7 @@
 
 extern AllPara_t allPara;
 static uint32_t timeCount=0;
-static uint8_t timeFlag=0;
+static uint8_t timeFlag=1;
 static char readOrder=0;
 void TIM2_IRQHandler(void)
 {

@@ -85,8 +85,6 @@ int RoughHandle(void)
 	}
 }
 
-
-
 void updateAngle(void)
 {	
 //	float maxStaticValue=*(flashData.minValue);

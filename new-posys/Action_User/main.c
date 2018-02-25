@@ -78,7 +78,7 @@ int main(void)
 			//重启时，可能因为这个多耽误5ms
 //			while(readOrderLast==getReadOrder()){;}
 //				readOrderLast=getReadOrder();
-		
+//		
 //      				uint8_t test[3];
 //      				test[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
 			//使数据能够同步，但是不同步情况很少

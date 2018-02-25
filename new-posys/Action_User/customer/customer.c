@@ -22,11 +22,10 @@ extern flashData_t flashData;
 
 void AT_CMD_Judge(void);
 void SetParaDefault(void);
-extern float dataVellAll[2];
 void DataSend(void)
 {
 	int i;
-	uint8_t tdata[28];
+	uint8_t tdata[76];
   union{
 		float   val;
 		uint8_t data[4];
@@ -34,88 +33,27 @@ void DataSend(void)
 	
   tdata[0]=0x0d;
   tdata[1]=0x0a;
-  tdata[26]=0x0a;
-  tdata[27]=0x0d;
-	
-	valSend.val=(float)allPara.Result_Angle[2];
-  memcpy(tdata+2,valSend.data,4);
-	
-	valSend.val=(float)(dataVellAll[0]);
-  memcpy(tdata+6,valSend.data,4);
-	
-	valSend.val=(float)(dataVellAll[1]);
-  memcpy(tdata+10,valSend.data,4);
-	
-	valSend.val=(float)allPara.posx;
-  memcpy(tdata+14,valSend.data,4);
-	 
-	valSend.val=(float)allPara.posy;
-  memcpy(tdata+18,valSend.data,4);
-	 
-	valSend.val=(float)allPara.GYRO_Real[2];
-  memcpy(tdata+22,valSend.data,4);
-	
-	//debugsend2(allPara.Result_Angle[2],allPara.posx,allPara.posy,allPara.GYRO_Real[2],0);
-//	USART_OUT_F(allPara.Result_Angle[2]);
-//	USART_OUT_F(allPara.GYRO_Real[2]);
-//	USART_Enter();
-	for(i=0;i<28;i++)
+  tdata[74]=0x0a;
+  tdata[75]=0x0d;
+	int num=0;
+	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+		for(int axis=0;axis<AXIS_NUMBER;axis++)
+		{
+			valSend.val=(float)allPara.GYRO_Real[gyro][axis];
+			memcpy(tdata+2+num*4,valSend.data,4);
+			num++;
+		}
+	num=0;
+	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+		for(int axis=0;axis<AXIS_NUMBER;axis++)
+		{
+			valSend.val=(float)allPara.ACC_Raw[gyro][axis];
+			memcpy(tdata+38+num*4,valSend.data,4);
+			num++;
+		}
+
+	for(i=0;i<76;i++)
    USART_SendData(USART1,tdata[i]);
-}
-void debugsend2(float a,float b,float c,float d,float e)
-{
-	USART_OUT_F(a);
-	USART_OUT_F(b);
-	USART_OUT_F(c);
-//	USART_OUT_F(d);
-//	USART_OUT_F(e);
-	USART_Enter();
-}
-void debugsend(float a,float b,float c,float d,float e,float f)
-{
-	#define ADAD
-	#ifdef ADAD
-	int i;
-	uint8_t tdata[28];
-  union{
-		float   val;
-		uint8_t data[4];
-	}valSend;
-	
-  tdata[0]=0x0d;
-  tdata[1]=0x0a;
-  tdata[26]=0x0a;
-  tdata[27]=0x0d;
-	
-	valSend.val=a;
-  memcpy(tdata+2,valSend.data,4);
-	
-	valSend.val=b;
-  memcpy(tdata+6,valSend.data,4);
-	
-	valSend.val=c;
-  memcpy(tdata+10,valSend.data,4);
-	
-	valSend.val=d;
-  memcpy(tdata+14,valSend.data,4);
-	 
-	valSend.val=e;
-  memcpy(tdata+18,valSend.data,4);
-	 
-	valSend.val=f;
-  memcpy(tdata+22,valSend.data,4);
-	
-	for(i=0;i<28;i++)
-   USART_SendData(USART1,tdata[i]);
-	#else
-	USART_OUT_F(a);
-	USART_OUT_F(b);
-	USART_OUT_F(c);
-	USART_OUT_F(d);
-	USART_OUT_F(e);
-	USART_OUT_F(f);
-	USART_Enter();
-	#endif
 }
 
 static char buffer[20];
@@ -225,9 +163,9 @@ void AT_CMD_Handle(void){
 			USART_OUT_F(allPara.GYRO_Temperature[0]);
 			USART_OUT_F(allPara.GYRO_Temperature[1]);
 			USART_OUT_F(allPara.GYRO_Temperature[0]);
-			USART_OUT_F(allPara.GYRO_Aver[0]);
-			USART_OUT_F(allPara.GYRO_Aver[1]);
-			USART_OUT_F(allPara.GYRO_Aver[2]);
+//			USART_OUT_F(allPara.GYRO_Aver[0]);
+//			USART_OUT_F(allPara.GYRO_Aver[1]);
+//			USART_OUT_F(allPara.GYRO_Aver[2]);
 			USART_Enter();
 			break;
 		case 6:
@@ -260,17 +198,17 @@ void AT_CMD_Handle(void){
 			temp_float.data[1]=buffer[9];
 			temp_float.data[2]=buffer[10];
 			temp_float.data[3]=buffer[11];
-			switch(buffer[6]){
-				case 'x':
-					SetPosX(temp_float.val);
-					break;
-				case 'y':
-					SetPosY(temp_float.val);
-					break;
-				case 'a':
-					SetAngle(temp_float.val);
-					break;
-			}
+//			switch(buffer[6]){
+//				case 'x':
+//					SetPosX(temp_float.val);
+//					break;
+//				case 'y':
+//					SetPosY(temp_float.val);
+//					break;
+//				case 'a':
+//					SetAngle(temp_float.val);
+//					break;
+//			}
 			break;
 		//设置最小阈值
 		case 12:

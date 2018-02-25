@@ -43,144 +43,144 @@ int JudgeAcc(void);
 *            accData,输入加速度的值
 * @retval 初始化完成的标志位
 */
-
+#define STATIC_TIME	5
 int RoughHandle(void)
 {
   static int ignore=0;
-  static double data[AXIS_NUMBER][7*200]={0.f};    	//数据列
-  static float stdCr[AXIS_NUMBER]={0.f};                //新息的标准差
-  static float mean[AXIS_NUMBER]={0.f};
+  static double data[GYRO_NUMBER][AXIS_NUMBER][STATIC_TIME*200]={0.f};    	//数据列
 	
-  allPara.GYRO_Real[0]=(allPara.GYRO_Aver[0]);
-  allPara.GYRO_Real[1]=(allPara.GYRO_Aver[1]);
-  allPara.GYRO_Real[2]=(allPara.GYRO_Aver[2]);
 	
-	if(allPara.resetFlag)
-		ignore=15*200+1;
+	static int temperatureReach=0;
 	
-  if((GetCommand()&ACCUMULATE)&&ignore>15*200){
-    allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.GYRO_Bais[0]);
-    allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.GYRO_Bais[1]);
-    allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.GYRO_Bais[2]);
-		
+	if(fabs(allPara.GYRO_Temperature[0]-allPara.GYRO_TemperatureAim[0])<0.1f&&fabs(allPara.GYRO_Temperature[1]-allPara.GYRO_TemperatureAim[1])<0.1f&&fabs(allPara.GYRO_Temperature[2]-allPara.GYRO_TemperatureAim[2])<0.1f)
+		temperatureReach=1;
+	
+	if(!temperatureReach)
+		return 0;
+	
+	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+		for(int axis=0;axis<AXIS_NUMBER;axis++)
+			allPara.GYRO_Real[gyro][axis]=allPara.gyroRawDta[gyro][axis];
+	
+  if((GetCommand()&ACCUMULATE)&&ignore>8*200){
+	
+		for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+			for(int axis=0;axis<AXIS_NUMBER;axis++)
+				allPara.GYRO_Real[gyro][axis]=allPara.GYRO_Real[gyro][axis]-allPara.GYRO_Bais[gyro][axis];
+	
     return 1;
   }else{
-		 /*三σ法则*/
-		if(!CalculateRealCrAndMean(stdCr,mean))
-			return 0;
-		for(char axis=0;axis<AXIS_NUMBER;axis++)
-    {
-      if(fabs(allPara.GYRO_Real[axis]-mean[axis])>stdCr[axis]*3)
-			return 0;
-    }
+		
 		ignore++;
-		for(int axis=0;axis<AXIS_NUMBER;axis++)
-		{
-			allPara.GYRO_Bais[axis]-=data[axis][0]/7.0/200.0;
-			memcpy(data[axis],data[axis]+1,(7*200-1)*8);
-			data[axis][7*200-1]=allPara.GYRO_Real[axis];
-			allPara.GYRO_Bais[axis]+=data[axis][7*200-1]/7.0/200.0;
-		}
+		for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+			for(int axis=0;axis<AXIS_NUMBER;axis++)
+			{
+				allPara.GYRO_Bais[gyro][axis]-=data[gyro][axis][0]/200.0/STATIC_TIME;
+				for(int i=0;i<STATIC_TIME*200-1;i++)
+					data[gyro][axis][i]=data[gyro][axis][i+1];
+				data[gyro][axis][STATIC_TIME*200-1]=allPara.GYRO_Real[gyro][axis];
+				allPara.GYRO_Bais[gyro][axis]+=data[gyro][axis][STATIC_TIME*200-1]/200.0/STATIC_TIME;
+			}
 		 return 0;
 	}
 }
 
-void updateAngle(void)
-{	
-//	float maxStaticValue=*(flashData.minValue);
+//void updateAngle(void)
+//{	
+////	float maxStaticValue=*(flashData.minValue);
+////	
+////  if((GetCommand()&STATIC)&&(allPara.GYRO_Real[2]<0.2f)){
+////		maxStaticValue=0.15f;
+////	}
 //	
-//  if((GetCommand()&STATIC)&&(allPara.GYRO_Real[2]<0.2f)){
-//		maxStaticValue=0.15f;
+//  if(fabs(allPara.GYRO_Real[0])<0.3f)//单位 °/s
+//    allPara.GYRO_Real[0]=0.f;
+//  if(fabs(allPara.GYRO_Real[1])<0.3f)//单位 °/s
+//    allPara.GYRO_Real[1]=0.f;
+//  if(fabs(allPara.GYRO_Real[2])<0.3f)//单位 °/s
+//    allPara.GYRO_Real[2]=0.f;
+//	
+//	allPara.Result_Angle[2]+=allPara.GYRO_Real[2]*0.005;
+//	
+//	if(allPara.Result_Angle[2]>180.0)
+//		allPara.Result_Angle[2]-=360.0;
+//	else if(allPara.Result_Angle[2]<-180.0)
+//		allPara.Result_Angle[2]+=360.0;
+//	
+//}
+
+//int CalculateRealCrAndMean(float stdCr[AXIS_NUMBER],float mean[AXIS_NUMBER]){
+//  static float IAE_st[AXIS_NUMBER][200]={0.f};    //记录的新息
+//  static float data[AXIS_NUMBER][200]={0.f};    	//数据列
+//  static int ignore=0;
+//  ignore++;
+//  
+//  int axis=0;
+//  
+//  /* 新息的方差计算 */
+//    for(axis=0;axis<AXIS_NUMBER;axis++)
+//    {
+//      mean[axis]=mean[axis]-data[axis][0]/200;
+//      memcpy(data[axis],data[axis]+1,796);
+//      data[axis][199]=allPara.GYRO_Real[axis];
+//      memcpy(IAE_st[axis],IAE_st[axis]+1,796);
+//      mean[axis]=mean[axis]+data[axis][199]/200;
+//      IAE_st[axis][199]=allPara.GYRO_Real[axis]-mean[axis];
+//    }
+//  
+//  if(ignore<400)
+//    return 0;
+//  else
+//    ignore=400;
+//  
+//    for(axis=0;axis<AXIS_NUMBER;axis++){
+//      stdCr[axis]=0;
+//      for(int i=0;i<200;i++)
+//      {
+//        stdCr[axis]=stdCr[axis]+IAE_st[axis][i]*IAE_st[axis][i];
+//      }
+//      stdCr[axis]=__sqrtf(stdCr[axis]/200.0f);
+//    }
+//  
+//  return 1;
+//}
+
+
+//void SetAngle(float angle){
+//	float euler[3];
+//	euler[0]=0.0f;
+//	euler[1]=0.0f;
+//	euler[2]=angle/180.f*PI;
+//	Euler_to_Quaternion(euler,allPara.quarternion);
+//}
+
+//int JudgeAcc(void)
+//{
+//	float sum[GYRO_NUMBER]={0.f};
+//	float accInitSum=0.f;
+//	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+//	{
+//		float X_G,Y_G,Z_G;
+//		sum[gyro]=sqrt(allPara.ACC_Aver[gyro][0]*allPara.ACC_Aver[gyro][0]+allPara.ACC_Aver[gyro][1]*allPara.ACC_Aver[gyro][1]+allPara.ACC_Aver[gyro][2]*allPara.ACC_Aver[gyro][2]);
+//		
+//		X_G=allPara.ACC_Aver[gyro][0]/sum[gyro];
+//		Y_G=allPara.ACC_Aver[gyro][1]/sum[gyro];
+//		Z_G=allPara.ACC_Aver[gyro][2]/sum[gyro];
+//		/*初始坐标为0,0,g,然后可以通过坐标变换公式轻易推导*/
+//		allPara.ACC_Angle[gyro][1]= safe_atan2( X_G , -Z_G);
+//		allPara.ACC_Angle[gyro][0]=-safe_atan2( Y_G , X_G/sin(allPara.ACC_Angle[gyro][1]));
 //	}
-	
-  if(fabs(allPara.GYRO_Real[0])<0.3f)//单位 °/s
-    allPara.GYRO_Real[0]=0.f;
-  if(fabs(allPara.GYRO_Real[1])<0.3f)//单位 °/s
-    allPara.GYRO_Real[1]=0.f;
-  if(fabs(allPara.GYRO_Real[2])<0.3f)//单位 °/s
-    allPara.GYRO_Real[2]=0.f;
-	
-	allPara.Result_Angle[2]+=allPara.GYRO_Real[2]*0.005;
-	
-	if(allPara.Result_Angle[2]>180.0)
-		allPara.Result_Angle[2]-=360.0;
-	else if(allPara.Result_Angle[2]<-180.0)
-		allPara.Result_Angle[2]+=360.0;
-	
-}
-
-int CalculateRealCrAndMean(float stdCr[AXIS_NUMBER],float mean[AXIS_NUMBER]){
-  static float IAE_st[AXIS_NUMBER][200]={0.f};    //记录的新息
-  static float data[AXIS_NUMBER][200]={0.f};    	//数据列
-  static int ignore=0;
-  ignore++;
-  
-  int axis=0;
-  
-  /* 新息的方差计算 */
-    for(axis=0;axis<AXIS_NUMBER;axis++)
-    {
-      mean[axis]=mean[axis]-data[axis][0]/200;
-      memcpy(data[axis],data[axis]+1,796);
-      data[axis][199]=allPara.GYRO_Real[axis];
-      memcpy(IAE_st[axis],IAE_st[axis]+1,796);
-      mean[axis]=mean[axis]+data[axis][199]/200;
-      IAE_st[axis][199]=allPara.GYRO_Real[axis]-mean[axis];
-    }
-  
-  if(ignore<400)
-    return 0;
-  else
-    ignore=400;
-  
-    for(axis=0;axis<AXIS_NUMBER;axis++){
-      stdCr[axis]=0;
-      for(int i=0;i<200;i++)
-      {
-        stdCr[axis]=stdCr[axis]+IAE_st[axis][i]*IAE_st[axis][i];
-      }
-      stdCr[axis]=__sqrtf(stdCr[axis]/200.0f);
-    }
-  
-  return 1;
-}
-
-
-void SetAngle(float angle){
-	float euler[3];
-	euler[0]=0.0f;
-	euler[1]=0.0f;
-	euler[2]=angle/180.f*PI;
-	Euler_to_Quaternion(euler,allPara.quarternion);
-}
-
-int JudgeAcc(void)
-{
-	float sum[GYRO_NUMBER]={0.f};
-	float accInitSum=0.f;
-	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-	{
-		float X_G,Y_G,Z_G;
-		sum[gyro]=sqrt(allPara.ACC_Aver[gyro][0]*allPara.ACC_Aver[gyro][0]+allPara.ACC_Aver[gyro][1]*allPara.ACC_Aver[gyro][1]+allPara.ACC_Aver[gyro][2]*allPara.ACC_Aver[gyro][2]);
-		
-		X_G=allPara.ACC_Aver[gyro][0]/sum[gyro];
-		Y_G=allPara.ACC_Aver[gyro][1]/sum[gyro];
-		Z_G=allPara.ACC_Aver[gyro][2]/sum[gyro];
-		/*初始坐标为0,0,g,然后可以通过坐标变换公式轻易推导*/
-		allPara.ACC_Angle[gyro][1]= safe_atan2( X_G , -Z_G);
-		allPara.ACC_Angle[gyro][0]=-safe_atan2( Y_G , X_G/sin(allPara.ACC_Angle[gyro][1]));
-	}
-	allPara.ACC_RealAngle[0]=(allPara.ACC_Angle[0][0]+allPara.ACC_Angle[1][0]+allPara.ACC_Angle[2][0])/3.f;
-	allPara.ACC_RealAngle[1]=(allPara.ACC_Angle[0][1]+allPara.ACC_Angle[1][1]+allPara.ACC_Angle[2][1])/3.f;
-	
-	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-		for(int axis=0;axis<AXIS_NUMBER;axis++)
-			accInitSum=accInitSum+allPara.ACC_Aver[gyro][axis]*allPara.ACC_Aver[gyro][axis];
-  if(fabs(accInitSum-allPara.ACC_InitSum)<0.003)
-    return 1;
-  else
-    return 0;
-}	
+//	allPara.ACC_RealAngle[0]=(allPara.ACC_Angle[0][0]+allPara.ACC_Angle[1][0]+allPara.ACC_Angle[2][0])/3.f;
+//	allPara.ACC_RealAngle[1]=(allPara.ACC_Angle[0][1]+allPara.ACC_Angle[1][1]+allPara.ACC_Angle[2][1])/3.f;
+//	
+//	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+//		for(int axis=0;axis<AXIS_NUMBER;axis++)
+//			accInitSum=accInitSum+allPara.ACC_Aver[gyro][axis]*allPara.ACC_Aver[gyro][axis];
+//  if(fabs(accInitSum-allPara.ACC_InitSum)<0.003)
+//    return 1;
+//  else
+//    return 0;
+//}	
 
 /*
 chartMode方式  
@@ -205,39 +205,39 @@ chartSelect+陀螺仪序号（0-(GYRO_NUMBER-1）*AXIS_NUMBER*+轴号（0-(AXIS_NUMBER-1）
 */
 const double stdCoffeicent[GYRO_NUMBER][AXIS_NUMBER]={ 0.0,0.0, 0.0 };
 
-void driftCoffecientInit(void){
-	int selectCount[GYRO_NUMBER][AXIS_NUMBER]={0};
-	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-	{
-		for(int axis=0;axis<AXIS_NUMBER;axis++)
-		{
-			switch(*(flashData.chartMode+gyro*AXIS_NUMBER+axis))
-			{
-				//结合之前测得的标准数据
-				case 0:
-					selectCount[gyro][axis]++;
-					allPara.driftCoffecient[gyro][axis]=stdCoffeicent[gyro][axis];
-					break;
-				//不结合之前测得的标准数据
-				case 1:
-					
-					break;
-			}
-			for(int sample=0;sample<TEMP_SAMPLE_NUMBER;sample++)
-			{
-				if(*( flashData.chartSelect+gyro*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+axis*TEMP_SAMPLE_NUMBER+sample))
-				{
-					selectCount[gyro][axis]++;
-					allPara.driftCoffecient[gyro][axis]=allPara.driftCoffecient[gyro][axis]+*(flashData.chartW+gyro*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+axis*TEMP_SAMPLE_NUMBER+sample);
-				}
-			}
-			allPara.driftCoffecient[gyro][axis]=allPara.driftCoffecient[gyro][axis]/selectCount[gyro][axis];	
-		}
-	}
+//void driftCoffecientInit(void){
+//	int selectCount[GYRO_NUMBER][AXIS_NUMBER]={0};
+//	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+//	{
+//		for(int axis=0;axis<AXIS_NUMBER;axis++)
+//		{
+//			switch(*(flashData.chartMode+gyro*AXIS_NUMBER+axis))
+//			{
+//				//结合之前测得的标准数据
+//				case 0:
+//					selectCount[gyro][axis]++;
+//					allPara.driftCoffecient[gyro][axis]=stdCoffeicent[gyro][axis];
+//					break;
+//				//不结合之前测得的标准数据
+//				case 1:
+//					
+//					break;
+//			}
+//			for(int sample=0;sample<TEMP_SAMPLE_NUMBER;sample++)
+//			{
+//				if(*( flashData.chartSelect+gyro*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+axis*TEMP_SAMPLE_NUMBER+sample))
+//				{
+//					selectCount[gyro][axis]++;
+//					allPara.driftCoffecient[gyro][axis]=allPara.driftCoffecient[gyro][axis]+*(flashData.chartW+gyro*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+axis*TEMP_SAMPLE_NUMBER+sample);
+//				}
+//			}
+//			allPara.driftCoffecient[gyro][axis]=allPara.driftCoffecient[gyro][axis]/selectCount[gyro][axis];	
+//		}
+//	}
 	
 #ifdef TEST_SUMMER
 #endif
-}
+//}
 
 float safe_asin(float v)
 {

@@ -89,7 +89,7 @@ void WriteFlashData(AllPara_t pBuffer,u32 resetTime)
     dataSave.GYRO_TemperatureAim[i]=pBuffer.GYRO_TemperatureAim[i];
   
   for(int i=0;i<3;i++)
-    dataSave.GYRO_Bais[i]=pBuffer.GYRO_Bais[i];
+    dataSave.GYRO_Bais[i]=pBuffer.GYRO_Bais[0][i];
   
   for(int i=0;i<3;i++)
     dataSave.Result_Angle[i]=pBuffer.Result_Angle[i];
@@ -214,7 +214,7 @@ void SoftWareReset(void)
         allPara.GYRO_TemperatureAim[i]=dataSave.GYRO_TemperatureAim[i];
       
       for(int i=0;i<3;i++)
-        allPara.GYRO_Bais[i]=(double)(dataSave.GYRO_Bais[i]);
+        allPara.GYRO_Bais[0][i]=(double)(dataSave.GYRO_Bais[i]);
       
       for(int i=0;i<3;i++)
         allPara.Result_Angle[i]=(double)(dataSave.Result_Angle[i]);

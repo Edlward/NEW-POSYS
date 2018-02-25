@@ -156,13 +156,11 @@ typedef struct{
 	double quarternion[4];
 	
 	/*陀螺仪原始数据*/
-	double GYROWithoutRemoveDrift[GYRO_NUMBER][AXIS_NUMBER];
-	double GYRORemoveDrift[GYRO_NUMBER][AXIS_NUMBER];
-	double GYRO_Aver[AXIS_NUMBER];
+	double gyroRawDta[GYRO_NUMBER][AXIS_NUMBER];
 	/*陀螺仪处理后的数据*/
-	double GYRO_Real[AXIS_NUMBER];
+	double GYRO_Real[GYRO_NUMBER][AXIS_NUMBER];
 	/*陀螺仪处理后的数据*/
-	double GYRO_Bais[AXIS_NUMBER];
+	double GYRO_Bais[GYRO_NUMBER][AXIS_NUMBER];
 
 	/*陀螺仪原始数据*/
 	float ACC_Raw[GYRO_NUMBER][AXIS_NUMBER];

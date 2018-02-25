@@ -168,10 +168,10 @@ int CalculateCrAndMean(float stdCr[GYRO_NUMBER][AXIS_NUMBER],float mean[GYRO_NUM
     {
       mean[gyro][axis]=mean[gyro][axis]-data[gyro][axis][0]/200;
       memcpy(data[gyro][axis],data[gyro][axis]+1,796);
-      data[gyro][axis][199]=allPara.GYROWithoutRemoveDrift[gyro][axis];
+      data[gyro][axis][199]=allPara.gyroRawDta[gyro][axis];
       memcpy(IAE_st[gyro][axis],IAE_st[gyro][axis]+1,796);
       mean[gyro][axis]=mean[gyro][axis]+data[gyro][axis][199]/200;
-      IAE_st[gyro][axis][199]=allPara.GYROWithoutRemoveDrift[gyro][axis]-mean[gyro][axis];
+      IAE_st[gyro][axis][199]=allPara.gyroRawDta[gyro][axis]-mean[gyro][axis];
     }
   
   if(ignore<400)
@@ -241,7 +241,7 @@ int UpdateVDoffTable(void)
   for(gyro=0;gyro<GYRO_NUMBER;gyro++)
     for(axis=0;axis<AXIS_NUMBER;axis++)
     {
-      if(fabs(allPara.GYROWithoutRemoveDrift[gyro][axis]-mean[gyro][axis])>stdCr[gyro][axis]*5)
+      if(fabs(allPara.gyroRawDta[gyro][axis]-mean[gyro][axis])>stdCr[gyro][axis]*5)
         return 0;
     }
   
@@ -253,12 +253,12 @@ int UpdateVDoffTable(void)
       if(temp_count[gyro][index]>0){
         /*求这一个温度上的角速度和*/
         for(axis=0;axis<AXIS_NUMBER;axis++)
-          temp_w[gyro][axis][index]+=allPara.GYROWithoutRemoveDrift[gyro][axis];
+          temp_w[gyro][axis][index]+=allPara.gyroRawDta[gyro][axis];
       }
       else{
         /*初始值*/
         for(axis=0;axis<AXIS_NUMBER;axis++)
-          temp_w[gyro][axis][index]=allPara.GYROWithoutRemoveDrift[gyro][axis];
+          temp_w[gyro][axis][index]=allPara.gyroRawDta[gyro][axis];
         temp_count[gyro][index]=0;
       }
       temp_count[gyro][index]++;

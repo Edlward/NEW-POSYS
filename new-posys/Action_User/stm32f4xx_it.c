@@ -103,11 +103,14 @@ void TIM2_IRQHandler(void)
 					allPara.ACC_Raw[gyro][axis]=acc_sum[gyro][axis]/5.0;
 					acc_sum[gyro][axis]=0.0;
 				}
+				temp_sum[gyro]=0.0f;
 			}
 			//温度进行低通滤波
 			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 				allPara.GYRO_Temperature[gyro]=LowPassFilter(allPara.GYRO_Temperature[gyro],gyro)/100.f;
+			allPara.cpuUsage++;
     }
+		
   }
 	else{
 		USART_OUT(USART1,"TIM2 error");

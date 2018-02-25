@@ -75,6 +75,8 @@ int main(void)
 				{
 					DataSend();
 				}
+				
+			allPara.cpuUsage--;
     }
   }
 }

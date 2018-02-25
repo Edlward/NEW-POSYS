@@ -105,7 +105,7 @@ void temp_pid_ctr(int gyro,float val_ex)
 			}
 		/*#define ICM_HeatingPower(a)  TIM_SetCompare3(TIM3,a/100.0*1000); */
 		/*之所以最大值为1000,是因为该定时器的装载值为1000*/
-		if(allPara.GYRO_Temperature[gyro]>0.42f)
+		if(allPara.GYRO_Temperature[gyro]>0.45f)
 			ctr[gyro]=0;
 		ICM_HeatingPower(gyro,ctr[gyro]);
 	

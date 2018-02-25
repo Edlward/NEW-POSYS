@@ -24,31 +24,32 @@ extern AllPara_t allPara;
 static double pos[2];
 float set_x,set_y,set_angle;	 
 /*
-自动车  
+自动车  以y方向为基准
 	//1/4096*wheelR*2*pi
 	allPara.posx=convert_X*0.038622517085838;
 	allPara.posy=convert_Y*0.038651337725656;
-	a=0.3533/2/180*pi;测得到的误差角
-  real=[ cos(a)/(2*cos(a)^2 - 1), sin(a)/(2*sin(a)^2 - 1);sin(a)/(2*sin(a)^2 - 1), cos(a)/(2*cos(a)^2 - 1)]*[vell1';vell2'];
-	real[0]=1.00001425869615*vell[0]-0.0030831778541919*vell[1];
-  real[1]=-0.0030831778541919*vell[0]+1.00001425869615*vell[1];
+	a=0.3533/180*pi;测得到的误差角
+  real=[1/cos(a) -tan(a);0 1]*[vell1';vell2'];
+	real[0]=1.00001901160992*vell[0]*0.038622517085838-0.006166326400784*vell[1]*0.038651337725656;
+  real[1]=vell[1]*0.038651337725656;
 */
 /*
 25.18 25.19用改进算法后拟合得出的
-手动车  轮一25.1606371025683  轮二25.2220631351932
+手动车	以x方向为基准  
+轮一25.1606371025683  轮二25.2220631351932
 	//1/4096*wheelR*2*pi
 	allPara.posx=convert_X;
 	allPara.posy=convert_Y;
-	a=-0.1304/2/180*pi;测得到的误差角
-  real=[ cos(a)/(2*cos(a)^2 - 1), sin(a)/(2*sin(a)^2 - 1);sin(a)/(2*sin(a)^2 - 1), cos(a)/(2*cos(a)^2 - 1)]*[vell1';vell2'];
-	real[0]=1.00000776970874*vell[0]*0.0385959339263024+0.00227593095734927*vell[1]*0.038690160280225;
-  real[1]=0.00227593095734927*vell[0]*0.0385959339263024+1.00000776970874*vell[1]*0.038690160280225;
+	a=-0.1304/180*pi;测得到的误差角
+  real=[1 0;-tan(a) 1/cos(a)]*[vell1';vell2'];
+	real[0]=vell[0]*0.0385959339263024;
+  real[1]=-0.00227591327416601*vell[0]*0.0385959339263024+1.00000258988726*vell[1]*0.038690160280225;
 */
-int dataVellAll[2];
+float dataVellAll[2];
 void calculatePos(void)
 {
 	static uint8_t flag=0;
-	
+	static double vellLast[2]={0.0,0.0};
 	double  pos_temp[2]={0,0};
 	
 	int16_t vell[2];
@@ -58,9 +59,9 @@ void calculatePos(void)
 	static double last_ang=0.0;
 	
 	if(allPara.resetFlag)
-		flag=6;
+		flag=4;
 	
-	if(flag<=5)
+	if(flag<=3)
 	{
 		allPara.data_last[0]=allPara.codeData[0];
 		allPara.data_last[1]=allPara.codeData[1];
@@ -72,6 +73,21 @@ void calculatePos(void)
 	{
 		vell[0]= (allPara.codeData[0]-allPara.data_last[0]);
 		vell[1]= (allPara.codeData[1]-allPara.data_last[1]);
+		
+		/*限定最大速度为7m/s,如果超出这个速度就认为有问题*/
+//		if(fabs(vell[0])>900)
+//		{
+//			allPara.codeData[0]=allPara.data_last[0]+vellLast[0];
+//			vell[0]=vellLast[0];
+//		}
+//		if(fabs(vell[1])>900)
+//		{
+//			allPara.codeData[1]=allPara.data_last[1]+vellLast[1];
+//			vell[1]=vellLast[1];
+//		}
+//	
+		vellLast[0]=vell[0];
+		vellLast[1]=vell[1];
 		
 		allPara.data_last[0]=allPara.codeData[0];
 		allPara.data_last[1]=allPara.codeData[1];
@@ -105,23 +121,23 @@ void calculatePos(void)
 
 	
 //
-	#ifdef AUTOCAR	
-		real[0]=1.00001425869615*vell[0]-0.0030831778541919*vell[1];
-		real[1]=-0.0030831778541919*vell[0]+1.00001425869615*vell[1];
-	#else
-		real[0]=1.00000776970874*vell[0]+0.00227593095734927*vell[1];
-		real[1]=0.00227593095734927*vell[0]+1.00000776970874*vell[1];
+	#ifdef AUTOCAR	//以y为标准
+		real[0]=1.00001901160992*vell[0]*0.038622517085838-0.006166326400784*vell[1]*0.038651337725656;
+		real[1]=vell[1]*0.038651337725656;
+	#else			//以x为标准
+		real[0]=vell[0]*0.0385959339263024;
+		real[1]=-0.00227591327416601*vell[0]*0.0385959339263024+1.00000258988726*vell[1]*0.038690160280225;
 	#endif
 //	
-	dataVellAll[0]+=real[0];
-	dataVellAll[1]+=real[1];
+		dataVellAll[0]=real[0];
+		dataVellAll[1]=real[1];
 	
 	#ifdef AUTOCAR	
-		allPara.posx+=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0])*0.038622517085838;
-		allPara.posy+=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0])*0.038651337725656;
+		allPara.posx+=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
+		allPara.posy+=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
 	#else
-		allPara.posx+=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0])*0.0385959339263024;
-		allPara.posy+=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0])*0.038690160280225;
+		allPara.posx+=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
+		allPara.posy+=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
 	#endif
 	
 //	double convert_X;

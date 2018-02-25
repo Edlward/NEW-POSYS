@@ -22,7 +22,7 @@ extern flashData_t flashData;
 
 void AT_CMD_Judge(void);
 void SetParaDefault(void);
-extern int dataVellAll[2];
+extern float dataVellAll[2];
 void DataSend(void)
 {
 	int i;
@@ -40,10 +40,10 @@ void DataSend(void)
 	valSend.val=(float)allPara.Result_Angle[2];
   memcpy(tdata+2,valSend.data,4);
 	
-	valSend.val=(float)(dataVellAll[0]*0.0385959339263024);
+	valSend.val=(float)(dataVellAll[0]);
   memcpy(tdata+6,valSend.data,4);
 	
-	valSend.val=(float)(dataVellAll[1]*0.038690160280225);
+	valSend.val=(float)(dataVellAll[1]);
   memcpy(tdata+10,valSend.data,4);
 	
 	valSend.val=(float)allPara.posx;

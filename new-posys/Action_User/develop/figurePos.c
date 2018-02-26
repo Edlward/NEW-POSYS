@@ -86,6 +86,7 @@ void calculatePos(void)
 //			vell[1]=vellLast[1];
 //		}
 //	
+		USART_OUT(USART1,"%d\t%d\r\n",vell[0],vell[1]);
 		vellLast[0]=vell[0];
 		vellLast[1]=vell[1];
 		

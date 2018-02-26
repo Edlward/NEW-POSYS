@@ -74,7 +74,8 @@ int main(void)
         //º∆À„Ω«∂» 
         if(RoughHandle())
 				{
-					DataSend();
+					calculatePos();
+					//DataSend();
 				}
 				
 			allPara.cpuUsage--;

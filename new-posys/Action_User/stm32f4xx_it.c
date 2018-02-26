@@ -92,6 +92,8 @@ void TIM2_IRQHandler(void)
 		{
 			readOrder++;
       timeCnt=0;
+			allPara.codeData[0]=SPI_ReadAS5045(0);
+			allPara.codeData[1]=SPI_ReadAS5045(1);
 			//取得5ms的原始数据总和的平均数
 			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 			{
@@ -108,7 +110,6 @@ void TIM2_IRQHandler(void)
 			//温度进行低通滤波
 			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 				allPara.GYRO_Temperature[gyro]=LowPassFilter(allPara.GYRO_Temperature[gyro],gyro)/100.f;
-			allPara.cpuUsage++;
     }
 		
   }

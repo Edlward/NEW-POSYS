@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\SZW_STM32F407\demo.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\SZW_STM32F407\demo.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060300: Last Updated: Mon Feb 26 14:14:27 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060300: Last Updated: Tue Feb 27 21:58:48 2018
 <BR><P>
-<H3>Maximum Stack Usage =        572 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        580 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 HardFault_Handler &rArr; WriteFlashData &rArr; STMFLASH_Write &rArr; FLASH_ProgramWord &rArr; FLASH_WaitForLastOperation
 <P>
@@ -1143,8 +1143,8 @@ Global Symbols
 <LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetParaDefault
 </UL>
 
-<P><STRONG><a name="[e]"></a>HardFault_Handler</STRONG> (Thumb, 60 bytes, Stack size 488 bytes, stm32f4xx_it.o(i.HardFault_Handler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 572<LI>Call Chain = HardFault_Handler &rArr; WriteFlashData &rArr; STMFLASH_Write &rArr; FLASH_ProgramWord &rArr; FLASH_WaitForLastOperation
+<P><STRONG><a name="[e]"></a>HardFault_Handler</STRONG> (Thumb, 60 bytes, Stack size 496 bytes, stm32f4xx_it.o(i.HardFault_Handler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 580<LI>Call Chain = HardFault_Handler &rArr; WriteFlashData &rArr; STMFLASH_Write &rArr; FLASH_ProgramWord &rArr; FLASH_WaitForLastOperation
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteFlashData
 <LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FindResetTime
@@ -1457,7 +1457,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ICM20608G_init
 </UL>
 
-<P><STRONG><a name="[10e]"></a>SPI_ReadAS5045</STRONG> (Thumb, 238 bytes, Stack size 24 bytes, spi.o(i.SPI_ReadAS5045))
+<P><STRONG><a name="[10e]"></a>SPI_ReadAS5045</STRONG> (Thumb, 150 bytes, Stack size 24 bytes, spi.o(i.SPI_ReadAS5045))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = SPI_ReadAS5045
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Cmd
@@ -2184,11 +2184,12 @@ Global Symbols
 <LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_IRQHandler
 </UL>
 
-<P><STRONG><a name="[147]"></a>calculatePos</STRONG> (Thumb, 1194 bytes, Stack size 96 bytes, figurepos.o(i.calculatePos))
+<P><STRONG><a name="[147]"></a>calculatePos</STRONG> (Thumb, 1288 bytes, Stack size 96 bytes, figurepos.o(i.calculatePos))
 <BR><BR>[Stack]<UL><LI>Max Depth = 280<LI>Call Chain = calculatePos &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
 <LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
+<LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdrcmple
 <LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdcmple
@@ -2261,7 +2262,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM2_IRQHandler
 </UL>
 
-<P><STRONG><a name="[149]"></a>init</STRONG> (Thumb, 162 bytes, Stack size 16 bytes, main.o(i.init))
+<P><STRONG><a name="[149]"></a>init</STRONG> (Thumb, 160 bytes, Stack size 16 bytes, main.o(i.init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 124<LI>Call Chain = init &rArr; USART1_Init &rArr; USART_Init &rArr; RCC_GetClocksFreq
 </UL>
 <BR>[Calls]<UL><LI><a href="#[14b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwm_init
@@ -2290,7 +2291,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_OUT
 </UL>
 
-<P><STRONG><a name="[82]"></a>main</STRONG> (Thumb, 162 bytes, Stack size 8 bytes, main.o(i.main))
+<P><STRONG><a name="[82]"></a>main</STRONG> (Thumb, 160 bytes, Stack size 8 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 496 + Unknown Stack Size
 <LI>Call Chain = main &rArr; AT_CMD_Handle &rArr; __hardfp_atof &rArr; __strtod_int &rArr; _local_sscanf &rArr; _scanf_real &rArr; _scanf_really_real &rArr; _fp_value &rArr; _btod_etento &rArr; _btod_emul &rArr; _e2e
 </UL>
@@ -2668,6 +2669,7 @@ Global Symbols
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateCrAndMean
 <LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;icm_update_gyro_rate
 <LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;temp_pid_ctr
+<LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculatePos
 <LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UpdateVDoffTable
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SoftWareReset
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RoughHandle

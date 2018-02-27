@@ -49,7 +49,7 @@ void init(void)
 		ICM_HeatingPower(gyro,0);
 	}
 	
-  TIM_Init(TIM2,999,83,0,0);					//主周期定时5ms
+  TIM_Init(TIM2,999,83,1,0);					//主周期定时5ms
 	
 	SetCommand(HEATING);
 	SetCommand(ACCUMULATE);
@@ -70,7 +70,7 @@ int main(void)
 {
   init();
   static uint32_t cpuUsage;
-	char readOrderLast=(char)-1;
+//	char readOrderLast=(char)-1;
   while(1)
   {
     while(getTimeFlag())

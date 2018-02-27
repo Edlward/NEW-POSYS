@@ -40,10 +40,10 @@ void DataSend(void)
 	valSend.val=(float)allPara.Result_Angle[2];
   memcpy(tdata+2,valSend.data,4);
 	
-	valSend.val=(float)(dataVellAll[0]);
+	valSend.val=(float)allPara.vellx;
   memcpy(tdata+6,valSend.data,4);
 	
-	valSend.val=(float)(dataVellAll[1]);
+	valSend.val=(float)allPara.velly;
   memcpy(tdata+10,valSend.data,4);
 	
 	valSend.val=(float)allPara.posx;
@@ -55,10 +55,6 @@ void DataSend(void)
 	valSend.val=(float)allPara.GYRO_Real[2];
   memcpy(tdata+22,valSend.data,4);
 	
-	//debugsend2(allPara.Result_Angle[2],allPara.posx,allPara.posy,allPara.GYRO_Real[2],0);
-//	USART_OUT_F(allPara.Result_Angle[2]);
-//	USART_OUT_F(allPara.GYRO_Real[2]);
-//	USART_Enter();
 	for(i=0;i<28;i++)
    USART_SendData(USART1,tdata[i]);
 }

@@ -133,22 +133,18 @@ void calculatePos(void)
 		dataVellAll[1]=real[1];
 	
 	#ifdef AUTOCAR	
-		allPara.posx+=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
-		allPara.posy+=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
+		allPara.vellx=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
+		allPara.velly=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
 	#else
-		allPara.posx+=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
-		allPara.posy+=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
+		allPara.vellx=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
+		allPara.velly=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
 	#endif
+		allPara.posx+=allPara.vellx;
+		allPara.posy+=allPara.velly;
 	
-//	double convert_X;
-//	double convert_Y;
-	
-//	convert_X=pos_temp[0]*0.707106781186548+pos_temp[1]*0.707106781186548;
-//	convert_Y=pos_temp[0]*0.707106781186548-pos_temp[1]*0.707106781186548;
-	
-	//1/4096*wheelR*2*pi
-//	allPara.posx=convert_X*0.0385959339263024;
-//	allPara.posy=convert_Y*0.038690160280225;
+	/*获得定位系统x，y方向上的速度*/
+	allPara.vellx=allPara.vellx*200.f;
+	allPara.velly=allPara.velly*200.f;
 	
 }
 

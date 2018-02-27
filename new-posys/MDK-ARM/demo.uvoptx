@@ -164,7 +164,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>??P蹑w??</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -208,6 +207,11 @@
           <count>2</count>
           <WinNumber>1</WinNumber>
           <ItemText>temp_temp</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>as5045_state,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
@@ -390,7 +394,7 @@
 
   <Group>
     <GroupName>hardware</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

@@ -50,7 +50,7 @@
 
 //#define TEST_SUMMER
 
-//#define AUTOCAR
+#define AUTOCAR
 
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
@@ -192,6 +192,10 @@ typedef struct{
 	uint16_t codeData[2];
 	
   uint16_t data_last[2];
+	
+	float vellx;
+	
+	float velly;
 	
 	int cpuUsage;
 	

@@ -363,19 +363,15 @@ void SPI_MultiRead(SPI_TypeDef *SPIx,
   SPI_Cmd(SPIx,DISABLE);		
   GPIO_SetBits(GPIOx,GPIO_Pin);	
 }
-int as5045_state = 0;
-int as5045_state1 = 0;
-//int circle_state =1;
-//int circle_state1 =1;
+
+
 uint16_t SPI_ReadAS5045(uint8_t num)
 {
 	uint8_t  buf[3],i;
 	uint32_t AS5045_Val;
-	uint32_t AS5045_Val_2;
-	while(1)
-	{
+	
 	if(num==1)
-	  GPIO_ResetBits(GPIOB,GPIO_Pin_12);//
+	  GPIO_ResetBits(GPIOB,GPIO_Pin_12);
 	else if(num==0)
 		GPIO_ResetBits(GPIOB,GPIO_Pin_15);
 	
@@ -394,41 +390,10 @@ uint16_t SPI_ReadAS5045(uint8_t num)
 	SPI_Cmd(SPI2,DISABLE);
   AS5045_Val = (((uint32_t)buf[0]<<16) | ((uint32_t)buf[1]<<8) | ((uint32_t)buf[2]));
 	
-	if(num==0)
-	{
-	AS5045_Val_2 = AS5045_Val;
-	as5045_state = (AS5045_Val_2>>6) & 0x0000003f;
-		if(as5045_state!=32&&as5045_state!=33)
-		{
-//			circle_state++;
-			Delay_us(10);
-			continue;
-		}
-		else  
-			break;
-	}
-		if(num==1)
-	{
-	AS5045_Val_2 = AS5045_Val;
-	as5045_state1 = (AS5045_Val_2>>6) & 0x0000003f;
-		
-		if(as5045_state1!=32&&as5045_state1!=33)
-		{
-//			circle_state1++;
-			Delay_us(10);
-			continue;
-		}
-		else  
-			break;
-		
-	//as5045_state	=(as5045_state<<6) & as5045_state1;
-	}
-}
 	Delay_us(50);
 	
 	return (AS5045_Val>>12) & 0xffff;
 }
-
 
 
 #endif

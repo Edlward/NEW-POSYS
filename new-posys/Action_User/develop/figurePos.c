@@ -47,10 +47,11 @@ void calculatePos(void)
 {
 	static uint8_t flag=0;
 	
-	int16_t vell[2];
-	double real[2];
+	int vell[2]={0,0};
+	double real[2]={0.0,0.0};
+	double delPos[2]={0.0,0.0};
 	
-	double zangle;
+	double zangle=0.0;
 	static double last_ang=0.0;
 	
 	if(allPara.resetFlag)
@@ -110,18 +111,18 @@ void calculatePos(void)
 	#endif
 	
 	#ifdef AUTOCAR	
-		allPara.vellx=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
-		allPara.velly=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
+		delPos[0]=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
+		delPos[1]=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
 	#else
-		allPara.vellx=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
-		allPara.velly=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
+		delPos[0]=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
+		delPos[1]=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
 	#endif
-		allPara.posx+=allPara.vellx;
-		allPara.posy+=allPara.velly;
+		allPara.posx+=delPos[0];
+		allPara.posy+=delPos[1];
 	
 	/*获得定位系统x，y方向上的速度*/
-	allPara.vellx=allPara.vellx*200.f;
-	allPara.velly=allPara.velly*200.f;
+	allPara.vellx=delPos[0]*200.f;
+	allPara.velly=delPos[1]*200.f;
 	
 }
 

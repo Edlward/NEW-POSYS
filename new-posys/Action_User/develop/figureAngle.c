@@ -47,9 +47,6 @@ int JudgeAcc(void);
 int RoughHandle(void)
 {
   static int ignore=0;
-  static double data[AXIS_NUMBER][7*200]={0.f};    	//数据列
-  static float stdCr[AXIS_NUMBER]={0.f};                //新息的标准差
-  static float mean[AXIS_NUMBER]={0.f};
 	
   allPara.GYRO_Real[0]=(allPara.GYRO_Aver[0]);
   allPara.GYRO_Real[1]=(allPara.GYRO_Aver[1]);
@@ -58,29 +55,15 @@ int RoughHandle(void)
 	if(allPara.resetFlag)
 		ignore=15*200+1;
 	
-  if((GetCommand()&ACCUMULATE)&&ignore>15*200){
+	UpdateBais();
+	ignore++;
+  if((GetCommand()&ACCUMULATE)&&ignore>2*200){
     allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.GYRO_Bais[0]);
     allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.GYRO_Bais[1]);
     allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.GYRO_Bais[2]);
 		
     return 1;
   }else{
-		 /*三σ法则*/
-		if(!CalculateRealCrAndMean(stdCr,mean))
-			return 0;
-		for(char axis=0;axis<AXIS_NUMBER;axis++)
-    {
-      if(fabs(allPara.GYRO_Real[axis]-mean[axis])>stdCr[axis]*3)
-			return 0;
-    }
-		ignore++;
-		for(int axis=0;axis<AXIS_NUMBER;axis++)
-		{
-			allPara.GYRO_Bais[axis]-=data[axis][0]/7.0/200.0;
-			memcpy(data[axis],data[axis]+1,(7*200-1)*8);
-			data[axis][7*200-1]=allPara.GYRO_Real[axis];
-			allPara.GYRO_Bais[axis]+=data[axis][7*200-1]/7.0/200.0;
-		}
 		 return 0;
 	}
 }
@@ -92,13 +75,18 @@ void updateAngle(void)
 //  if((GetCommand()&STATIC)&&(allPara.GYRO_Real[2]<0.2f)){
 //		maxStaticValue=0.15f;
 //	}
+	double w[3]={0.0};
 	
-  if(fabs(allPara.GYRO_Real[0])<0.3f)//单位 °/s
-    allPara.GYRO_Real[0]=0.f;
-  if(fabs(allPara.GYRO_Real[1])<0.3f)//单位 °/s
-    allPara.GYRO_Real[1]=0.f;
-  if(fabs(allPara.GYRO_Real[2])<0.3f)//单位 °/s
-    allPara.GYRO_Real[2]=0.f;
+	w[0]=allPara.GYRO_Real[0];
+	w[1]=allPara.GYRO_Real[1];
+	w[2]=allPara.GYRO_Real[2];
+	
+  if(fabs(w[0])<0.3f)//单位 °/s
+    w[0]=0.f;
+  if(fabs(w[1])<0.3f)//单位 °/s
+    w[1]=0.f;
+  if(fabs(w[2])<0.3f)//单位 °/s
+    w[2]=0.f;
 	
 	allPara.Result_Angle[2]+=allPara.GYRO_Real[2]*0.005;
 	
@@ -109,41 +97,6 @@ void updateAngle(void)
 	
 }
 
-int CalculateRealCrAndMean(float stdCr[AXIS_NUMBER],float mean[AXIS_NUMBER]){
-  static float IAE_st[AXIS_NUMBER][200]={0.f};    //记录的新息
-  static float data[AXIS_NUMBER][200]={0.f};    	//数据列
-  static int ignore=0;
-  ignore++;
-  
-  int axis=0;
-  
-  /* 新息的方差计算 */
-    for(axis=0;axis<AXIS_NUMBER;axis++)
-    {
-      mean[axis]=mean[axis]-data[axis][0]/200;
-      memcpy(data[axis],data[axis]+1,796);
-      data[axis][199]=allPara.GYRO_Real[axis];
-      memcpy(IAE_st[axis],IAE_st[axis]+1,796);
-      mean[axis]=mean[axis]+data[axis][199]/200;
-      IAE_st[axis][199]=allPara.GYRO_Real[axis]-mean[axis];
-    }
-  
-  if(ignore<400)
-    return 0;
-  else
-    ignore=400;
-  
-    for(axis=0;axis<AXIS_NUMBER;axis++){
-      stdCr[axis]=0;
-      for(int i=0;i<200;i++)
-      {
-        stdCr[axis]=stdCr[axis]+IAE_st[axis][i]*IAE_st[axis][i];
-      }
-      stdCr[axis]=__sqrtf(stdCr[axis]/200.0f);
-    }
-  
-  return 1;
-}
 
 
 void SetAngle(float angle){
@@ -181,6 +134,109 @@ int JudgeAcc(void)
   else
     return 0;
 }	
+
+#define STATIC_ARRAY_NUM	10
+
+uint16_t FindMax(uint16_t codes[STATIC_ARRAY_NUM])
+{
+	uint16_t Max=codes[0]; 
+  for(int i=1;i<STATIC_ARRAY_NUM;i++)
+	{
+		if(codes[i]>Max) Max=codes[i];
+	}
+	return Max;
+}
+
+uint16_t FindMin(uint16_t codes[STATIC_ARRAY_NUM])
+{
+	uint16_t Min=codes[0]; 
+  for(int i=1;i<STATIC_ARRAY_NUM;i++)
+	{
+		if(codes[i]<Min) Min=codes[i];
+	}
+	return Min;
+}
+
+void JudgeStatic(void)
+{
+	static uint16_t codes0[STATIC_ARRAY_NUM];
+	static uint16_t codes1[STATIC_ARRAY_NUM];
+	
+	allPara.codeData[0]=SPI_ReadAS5045(0);
+	allPara.codeData[1]=SPI_ReadAS5045(1);
+	
+	for(int i=0;i<STATIC_ARRAY_NUM-1;i++)
+	{
+		codes0[i]=codes0[i+1];
+		codes1[i]=codes1[i+1];
+	}
+	codes0[STATIC_ARRAY_NUM-1]=allPara.codeData[0];
+	codes1[STATIC_ARRAY_NUM-1]=allPara.codeData[1];
+
+	
+	if(abs(FindMin(codes0)-FindMax(codes0))<=1&&abs(FindMin(codes1)-FindMax(codes1))<=1)
+		allPara.isStatic=1;
+	else
+		allPara.isStatic=0;
+}
+
+/*最大两秒，如果小于两秒就用现有的数据*/
+#define STATIC_MAX_NUM	400
+#define STATIC_MIN_NUM	20
+void UpdateBais(void)
+{  
+	static int index=0;
+  static double data[AXIS_NUMBER][STATIC_MAX_NUM]={0.f};    	//数据列
+	
+	/*如果判断成功静止，进行积累数据*/
+	if(allPara.isStatic)
+	{
+		index++;
+		/*如果已存数据小于等于最大长度，顺序一个一个存储*/
+		if(index<=STATIC_MAX_NUM)
+		{
+			for(int axis=0;axis<AXIS_NUMBER;axis++)
+			{
+				data[axis][index-1]=allPara.GYRO_Aver[axis];
+			}
+		}
+		//如果超出最大值，减去第一个值，加入
+		else if(index>STATIC_MAX_NUM)
+		{
+			index=STATIC_MAX_NUM;
+			for(int axis=0;axis<AXIS_NUMBER;axis++)
+			{
+				//数组前移一位
+				for(int i=0;i<STATIC_MAX_NUM-1;i++)
+					data[axis][i]=data[axis][i+1];
+				data[axis][STATIC_MAX_NUM-1]=allPara.GYRO_Aver[axis];
+			}
+		}
+	}
+	//不静止了，填入矫正参数
+	else
+	{
+		double sum[AXIS_NUMBER] =0.0;
+		/*计算总值*/
+		if(index>=STATIC_MIN_NUM)
+		{
+			for(int axis=0;axis<AXIS_NUMBER;axis++)
+			{
+				for(int i=0;i<index;i++)
+				{
+					sum[axis]=sum[axis]+data[axis][i];
+				}
+				allPara.GYRO_Bais[axis]=sum[axis]/index;
+			}
+		}
+		for(int axis=0;axis<AXIS_NUMBER;axis++)
+			for(int i=0;i<STATIC_MAX_NUM;i++)
+				data[axis][i]=0.0;
+		index=0;
+	}
+}
+
+
 
 /*
 chartMode方式  

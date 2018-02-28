@@ -63,7 +63,7 @@ void TIM2_IRQHandler(void)
       timeFlag=1;
 			allPara.cpuUsage++;
     }
-		
+		JudgeStatic();
 		/*读取角速度，温度的数据，并进行累加*/
 		for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 		{
@@ -80,19 +80,7 @@ void TIM2_IRQHandler(void)
 		/*确定加热温度*/
 		if(!getTempInitSuces())
 			HeatingInit(temp_temp);
-			
 		
-//		static int timecont=0;
-//		timecont++;
-//		static double aaa=0.0;
-//			aaa+=(gyr_temp[0][2]+gyr_temp[1][2]+gyr_temp[2][2])/3.0;
-//		if(timecont==2)
-//		{
-//			timecont=0;
-//			allPara.lll=aaa/2.0;
-//			aaa=0.0;
-//			
-//		}
 	  if(timeCnt==5)
 		{
 			double percentages[3][3]={
@@ -101,8 +89,6 @@ void TIM2_IRQHandler(void)
 			0.343476611095766,0.306446153485871,0.350077235418363	};
 			readOrder++;
       timeCnt=0;
-			allPara.codeData[0]=SPI_ReadAS5045(0);
-			allPara.codeData[1]=SPI_ReadAS5045(1);
 			//取得5ms的原始数据总和的平均数
 			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 			{

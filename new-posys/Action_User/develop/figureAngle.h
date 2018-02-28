@@ -46,6 +46,9 @@ void SetAngle(float angle);
 
 void driftCoffecientInit(void);
 
+void JudgeStatic(void);
+
+void UpdateBais(void);
 #endif
 
 /******************* (C) COPYRIGHT 2015 ACTION *****END OF FILE****/

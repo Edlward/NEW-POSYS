@@ -226,8 +226,8 @@ void SPI_MultiRead(SPI_TypeDef *SPIx,
 
 uint32_t SPI_ReadAS5045All(uint8_t num)
 {
-	uint8_t  buf[3],i;
-	uint32_t AS5045_Val;
+	uint8_t  buf[3]={0,0,0},i=0;
+	uint32_t AS5045_Val=0;
 	
 	if(num==1)
 	  GPIO_ResetBits(GPIOB,GPIO_Pin_12);

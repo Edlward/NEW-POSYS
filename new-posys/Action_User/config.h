@@ -203,6 +203,8 @@ typedef struct{
 	
 	uint32_t resetTime;
 	
+	uint32_t isStatic;
+	
 	int resetFlag;
 }AllPara_t;
 

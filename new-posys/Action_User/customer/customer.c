@@ -22,7 +22,6 @@ extern flashData_t flashData;
 
 void AT_CMD_Judge(void);
 void SetParaDefault(void);
-extern float dataVellAll[2];
 void DataSend(void)
 {
 	int i;

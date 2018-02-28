@@ -37,7 +37,7 @@ void init(void)
   CS_Config();
 	
 	USART1_Init(115200);
-
+	
   Flash_Init();
 	
 	for(int gyro;gyro<GYRO_NUMBER;gyro++)

@@ -5,147 +5,6 @@
 #include "timer.h"
 #include "config.h"
 
-#ifdef ADXRS453Z
-
-void ADI_SPIInit(void)
-{
-  GPIO_InitTypeDef GPIO_InitStructure;
-  SPI_InitTypeDef  SPI_InitStructure;
-  
-  /* 使能SPI和GPIO的时钟------------------------------------------*/
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
-  
-  /* 引脚复用为SPI1----------------------------------------------*/
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource5, GPIO_AF_SPI1);
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource6, GPIO_AF_SPI1);
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource7, GPIO_AF_SPI1);
-  
-  /* 硬件SPI1引脚配置---------------------------------------------*/
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-	SPI_I2S_DeInit(SPI1);
-	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;				/* 双线双向全双工									*/
-	SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* 主SPI													*/
-	SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;											    /* SPI接收8位帧结构								*/
-	SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;																/* 串行同步时钟的空闲状态为低电平	*/
-	SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;															/* 第一个跳变沿数据被采样					*/
-	SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS由软件控制									*/
-	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_32;				/* 预分频													*/
-	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/* 数据从MSB位开始								*/
-	SPI_InitStructure.SPI_CRCPolynomial = 7;
-	SPI_Init(SPI1, &SPI_InitStructure);
-	SPI_Cmd(SPI1, ENABLE);
-}
-uint16_t SPI16_Read(SPI_TypeDef *SPIx,
-													 GPIO_TypeDef* GPIOx,
-													 uint16_t GPIO_Pin,
-													 uint8_t address)
-{
-	
-	uint16_t data=0x0000;
-  uint16_t data2=0x0000;
-	uint16_t checkbit=0x0000;
-	
-	uint16_t cmd_mo=0x0000;
-  /*看数据手册*/
-	cmd_mo=0x8000|((uint16_t)address<<1);
-	
-	/*奇校验*/
-	for(uint8_t i=0;i<16;i++)
-	{
-		if((cmd_mo>>i)&0x0001)
-			checkbit++;
-	}
-	checkbit=(uint16_t)(checkbit%2!=1);
-	SPI_Cmd(SPIx,ENABLE);		
-	GPIO_ResetBits(GPIOx,GPIO_Pin);
-	
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  //等待发送区空  
-	
-	SPI_I2S_SendData(SPIx, cmd_mo); 																		//通过外设SPIx发送一个byte  数据
-		
-  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  //等待接收完一个byte  
- 
-	data =SPI_I2S_ReceiveData(SPIx); 																	        //返回通过SPIx最近接收的数据
-  
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  //等待发送区空  
-	
-	SPI_I2S_SendData(SPIx, checkbit); 																	//通过外设SPIx发送一个byte  数据
-		
-  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  //等待接收完一个byte  
- 
-	data2 = SPI_I2S_ReceiveData(SPIx); 		
-		
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_BSY) == SET){}		
-	SPI_Cmd(SPIx,DISABLE);		
-	GPIO_SetBits(GPIOx,GPIO_Pin);
-	
-	data=(data<<11)|(data2>>5);	
-		
-	return data;
-}
- uint16_t SPI16_Write(SPI_TypeDef *SPIx,
-									   GPIO_TypeDef* GPIOx,
-									   uint16_t GPIO_Pin,
-									   uint8_t address,
-                     uint16_t sdata)
-{
-	
-	uint16_t data=0x0000;
-  uint16_t data2=0x0000;
-	uint16_t checkbit=0x0000;
-	
-	uint16_t cmd_mo=0x0000;
-  
-	cmd_mo=0x4000|((uint16_t)address<<1);
-	
-	for(uint8_t i=0;i<16;i++)
-	{
-		if((cmd_mo>>i)&0x0001)
-			checkbit++;
-	}
-	for(uint8_t i=0;i<16;i++)
-	{
-		if((sdata>>i)&0x0001)
-			checkbit++;
-	}
-	checkbit=(uint16_t)(checkbit%2!=1);
-	SPI_Cmd(SPIx,ENABLE);	
-	
-	GPIO_ResetBits(GPIOx,GPIO_Pin);
-	
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  //等待发送区空  
-	
-	SPI_I2S_SendData(SPIx, cmd_mo|(sdata>>15)); 																		//通过外设SPIx发送一个byte  数据
-		
-  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  //等待接收完一个byte  
- 
-	data =SPI_I2S_ReceiveData(SPIx); 																	        //返回通过SPIx最近接收的数据
-  
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  //等待发送区空  
-	
-	SPI_I2S_SendData(SPIx, ((uint16_t)checkbit)|((uint16_t)(sdata<<1))); 																	//通过外设SPIx发送一个byte  数据
-		
-  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  //等待接收完一个byte  
- 
-	data2 = SPI_I2S_ReceiveData(SPIx); 		
-	
-  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_BSY) == SET){}	
-	SPI_Cmd(SPIx,DISABLE);		
-	GPIO_SetBits(GPIOx,GPIO_Pin);
-			
-	data=(data<<11)|(data2>>5);	
-		
-	return data;
-}
-
-#else
 void ICM_SPIInit(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
@@ -365,7 +224,7 @@ void SPI_MultiRead(SPI_TypeDef *SPIx,
 }
 
 
-uint16_t SPI_ReadAS5045(uint8_t num)
+uint32_t SPI_ReadAS5045All(uint8_t num)
 {
 	uint8_t  buf[3],i;
 	uint32_t AS5045_Val;
@@ -374,8 +233,7 @@ uint16_t SPI_ReadAS5045(uint8_t num)
 	  GPIO_ResetBits(GPIOB,GPIO_Pin_12);
 	else if(num==0)
 		GPIO_ResetBits(GPIOB,GPIO_Pin_15);
-	
-	Delay_us(1);
+
 	SPI_Cmd(SPI2,ENABLE);
 	for(i=0;i<3;i++)
 	{
@@ -390,13 +248,49 @@ uint16_t SPI_ReadAS5045(uint8_t num)
 	SPI_Cmd(SPI2,DISABLE);
   AS5045_Val = (((uint32_t)buf[0]<<16) | ((uint32_t)buf[1]<<8) | ((uint32_t)buf[2]));
 	
-	Delay_us(50);
-	
-	return (AS5045_Val>>12) & 0xffff;
+	return AS5045_Val;
 }
 
+uint16_t SPI_ReadAS5045(uint8_t num)
+{
+	
+	uint32_t  AbsEncData  = SPI_ReadAS5045All(num); //SPI读到的编码器的数据
+	/*编码器数据*/
+	int16_t   tmpAbs      = (AbsEncData >> 12) & 0X0FFF;
+	/*发送来的奇偶校验位*/
+	uint8_t evebParity = (AbsEncData >> 6) & 0x01;
+	/*被校验数*/
+	uint32_t parity = (AbsEncData>>7) & 0x1FFFF;
+	/*计算来的奇偶校验位*/
+	uint8_t evebParityCal = 0;
+	
+	while(1)
+	{
+		
+		while (parity)
+		{
+			evebParityCal =!evebParityCal;
+			parity = parity & (parity - 1);
+		}
+		/*如果奇偶校验成功*/
+		if(evebParityCal==evebParity)
+		{
+			//跳出循环
+			break;
+		}
+		//重新读取
+		else
+		{
+			AbsEncData  = SPI_ReadAS5045All(num);
+			tmpAbs      = (AbsEncData >> 12) & 0X0FFF;
+			evebParity = (AbsEncData >> 6) & 0x01;
+			parity = (AbsEncData>>7) & 0x1FFFF;
+			evebParityCal = 0;
+		}
+	}
+	return tmpAbs;
+}
 
-#endif
 
 /**
 * @brief  SPI的片选引脚配置

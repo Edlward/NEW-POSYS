@@ -20,9 +20,7 @@
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-extern AllPara_t allPara;
-static double pos[2];
-float set_x,set_y,set_angle;	 
+extern AllPara_t allPara; 
 /*
 自动车  以y方向为基准
 	//1/4096*wheelR*2*pi
@@ -45,12 +43,9 @@ float set_x,set_y,set_angle;
 	real[0]=vell[0]*0.0385959339263024;
   real[1]=-0.00227591327416601*vell[0]*0.0385959339263024+1.00000258988726*vell[1]*0.038690160280225;
 */
-float dataVellAll[2];
 void calculatePos(void)
 {
 	static uint8_t flag=0;
-	static double vellLast[2]={0.0,0.0};
-	double  pos_temp[2]={0,0};
 	
 	int16_t vell[2];
 	double real[2];
@@ -73,21 +68,6 @@ void calculatePos(void)
 	{
 		vell[0]= (allPara.codeData[0]-allPara.data_last[0]);
 		vell[1]= (allPara.codeData[1]-allPara.data_last[1]);
-		
-		/*限定最大速度为7m/s,如果超出这个速度就认为有问题*/
-//		if(fabs(vell[0])>900)
-//		{
-//			allPara.codeData[0]=allPara.data_last[0]+vellLast[0];
-//			vell[0]=vellLast[0];
-//		}
-//		if(fabs(vell[1])>900)
-//		{
-//			allPara.codeData[1]=allPara.data_last[1]+vellLast[1];
-//			vell[1]=vellLast[1];
-//		}
-//	
-		vellLast[0]=vell[0];
-		vellLast[1]=vell[1];
 		
 		allPara.data_last[0]=allPara.codeData[0];
 		allPara.data_last[1]=allPara.codeData[1];
@@ -128,9 +108,6 @@ void calculatePos(void)
 		real[0]=vell[0]*0.0385959339263024;
 		real[1]=-0.00227591327416601*vell[0]*0.0385959339263024+1.00000258988726*vell[1]*0.038690160280225;
 	#endif
-//	
-		dataVellAll[0]=real[0];
-		dataVellAll[1]=real[1];
 	
 	#ifdef AUTOCAR	
 		allPara.vellx=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);

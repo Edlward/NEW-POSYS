@@ -217,7 +217,7 @@ void icm_update_acc(int gyroNum)
 	}
 	
 }
-void icm_read_accel_acc(float data[GYRO_NUMBER])
+void icm_read_accel_acc(double data[GYRO_NUMBER])
 {
   (data)[0]=acc[0];
   (data)[1]=acc[1];

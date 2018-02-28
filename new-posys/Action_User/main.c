@@ -36,7 +36,7 @@ void init(void)
   //片选的初始化
   CS_Config();
 	
-	USART1_Init(921600);
+	USART1_Init(115200);
 	
   Flash_Init();
 	

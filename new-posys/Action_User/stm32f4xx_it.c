@@ -42,10 +42,11 @@ static uint8_t timeFlag=1;
 static char readOrder=0;
 void TIM2_IRQHandler(void)
 {
-	
   double gyr_temp[GYRO_NUMBER][AXIS_NUMBER];
+  double acc_temp[GYRO_NUMBER][AXIS_NUMBER];
   float  temp_temp[GYRO_NUMBER];
   static double gyro_sum[GYRO_NUMBER][AXIS_NUMBER];
+  static double acc_sum[GYRO_NUMBER][AXIS_NUMBER];
   static float  temp_sum[GYRO_NUMBER];
   static uint32_t timeCnt=0;
 
@@ -63,18 +64,21 @@ void TIM2_IRQHandler(void)
       timeFlag=1;
 			allPara.cpuUsage++;
     }
-		JudgeStatic();
 		/*读取角速度，温度的数据，并进行累加*/
 		for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 		{
       icm_update_gyro_rate(gyro);
+			icm_update_acc(gyro);
 			icm_update_temp(gyro);
 			icm_read_temp(&(temp_temp[gyro]));
       icm_read_gyro_rate(gyr_temp[gyro]);
+			icm_read_accel_acc(acc_temp[gyro]);
 			for(axis=0;axis<AXIS_NUMBER;axis++)
 			{
 				gyro_sum[gyro][axis]=gyro_sum[gyro][axis]+gyr_temp[gyro][axis];
+				acc_sum[gyro][axis]=acc_sum[gyro][axis]+acc_temp[gyro][axis];
 			}
+
       temp_sum[gyro]=temp_sum[gyro]+temp_temp[gyro];
 		}
 		/*确定加热温度*/
@@ -94,7 +98,11 @@ void TIM2_IRQHandler(void)
 			{
 				allPara.GYRO_Temperature[gyro]=temp_sum[gyro]/5.f;
 				for(axis=0;axis<AXIS_NUMBER;axis++)
+				{
 					allPara.GYROWithoutRemoveDrift[gyro][axis]=gyro_sum[gyro][axis]/5.0;	
+					allPara.ACC_Raw[gyro][axis]=acc_sum[gyro][axis]/5.0;
+					acc_sum[gyro][axis]=0.0;
+				}
 			}
 			
 			//温度进行低通滤波

@@ -55,13 +55,12 @@ int RoughHandle(void)
 	if(allPara.resetFlag)
 		ignore=15*200+1;
 	
-	UpdateBais();
 	ignore++;
   if((GetCommand()&ACCUMULATE)&&ignore>2*200){
     allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.GYRO_Bais[0]);
     allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.GYRO_Bais[1]);
     allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.GYRO_Bais[2]);
-		
+		UpdateBais();
     return 1;
   }else{
 		 return 0;
@@ -88,7 +87,7 @@ void updateAngle(void)
   if(fabs(w[2])<0.3f)//单位 °/s
     w[2]=0.f;
 	
-	allPara.Result_Angle[2]+=allPara.GYRO_Real[2]*0.005;
+	allPara.Result_Angle[2]+=w[2]*0.005;
 	
 	if(allPara.Result_Angle[2]>180.0)
 		allPara.Result_Angle[2]-=360.0;
@@ -135,7 +134,7 @@ int JudgeAcc(void)
     return 0;
 }	
 
-#define STATIC_ARRAY_NUM	10
+#define STATIC_ARRAY_NUM	5
 
 uint16_t FindMax(uint16_t codes[STATIC_ARRAY_NUM])
 {
@@ -157,11 +156,12 @@ uint16_t FindMin(uint16_t codes[STATIC_ARRAY_NUM])
 	return Min;
 }
 
+static uint8_t key = 1;
 void JudgeStatic(void)
 {
 	static uint16_t codes0[STATIC_ARRAY_NUM];
 	static uint16_t codes1[STATIC_ARRAY_NUM];
-	
+	//第一次判断静止时可以不用判断角速度
 	allPara.codeData[0]=SPI_ReadAS5045(0);
 	allPara.codeData[1]=SPI_ReadAS5045(1);
 	
@@ -174,22 +174,24 @@ void JudgeStatic(void)
 	codes1[STATIC_ARRAY_NUM-1]=allPara.codeData[1];
 
 	
-	if(abs(FindMin(codes0)-FindMax(codes0))<=1&&abs(FindMin(codes1)-FindMax(codes1))<=1)
+	if((abs(FindMin(codes0)-FindMax(codes0))<=1&&abs(FindMin(codes1)-FindMax(codes1))<=1)&&(fabs(allPara.GYRO_Real[2])<0.15f||key))
 		allPara.isStatic=1;
 	else
 		allPara.isStatic=0;
 }
 
 /*最大两秒，如果小于两秒就用现有的数据*/
-#define STATIC_MAX_NUM	400
+#define STATIC_MAX_NUM	200
 #define STATIC_MIN_NUM	20
 void UpdateBais(void)
 {  
 	static int index=0;
   static double data[AXIS_NUMBER][STATIC_MAX_NUM]={0.f};    	//数据列
 	
+	/*判断是否静止*/
+	JudgeStatic();
 	/*如果判断成功静止，进行积累数据*/
-	if(allPara.isStatic)
+	if(allPara.isStatic&&!(key==1&&index==STATIC_MAX_NUM))
 	{
 		index++;
 		/*如果已存数据小于等于最大长度，顺序一个一个存储*/
@@ -214,12 +216,13 @@ void UpdateBais(void)
 		}
 	}
 	//不静止了，填入矫正参数
-	else
+	else 
 	{
 		double sum[AXIS_NUMBER] =0.0;
 		/*计算总值*/
 		if(index>=STATIC_MIN_NUM)
 		{
+			key=0;
 			for(int axis=0;axis<AXIS_NUMBER;axis++)
 			{
 				for(int i=0;i<index;i++)

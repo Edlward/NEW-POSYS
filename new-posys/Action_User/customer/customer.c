@@ -57,12 +57,15 @@ void DataSend(void)
 	valSend.val=(float)allPara.codeData[1];
   memcpy(tdata+26,valSend.data,4);
 	
-	USART_OUT(USART1,"%d\t%d\t%d\t",allPara.isStatic,allPara.codeData[0],allPara.codeData[1]);
-	USART_OUT_F(allPara.GYRO_Real[2]);
-	USART_Enter();
+
+//	USART_OUT_F((allPara.GYRO_Temperature[0]+allPara.GYRO_Temperature[1]+allPara.GYRO_Temperature[2])/3.f);
+//	USART_OUT_F(allPara.GYRO_Real[2]);
+//	USART_OUT_F(allPara.isStatic);
+//	USART_OUT(USART1,"%d\t%d",allPara.codeData[0],allPara.codeData[1]);
+//	USART_Enter();
 	
-//	for(i=0;i<32;i++)
-//   USART_SendData(USART1,tdata[i]);
+	for(i=0;i<32;i++)
+   USART_SendData(USART1,tdata[i]);
 }
 void debugsend2(float a,float b,float c,float d,float e)
 {

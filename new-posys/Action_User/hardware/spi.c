@@ -251,7 +251,7 @@ uint32_t SPI_ReadAS5045All(uint8_t num)
 	return AS5045_Val;
 }
 
-uint16_t SPI_ReadAS5045(uint8_t num)
+uint16_t SPI_ReadAS5045_Parity(uint8_t num)
 {
 	
 	uint32_t  AbsEncData  = SPI_ReadAS5045All(num); //SPI读到的编码器的数据
@@ -291,6 +291,43 @@ uint16_t SPI_ReadAS5045(uint8_t num)
 	return tmpAbs;
 }
 
+#define READ_NUM	3
+
+uint16_t FindMin2(uint16_t codes[READ_NUM])
+{
+	uint16_t Min=codes[0]; 
+  for(int i=1;i<READ_NUM;i++)
+	{
+		if(codes[i]<Min) Min=codes[i];
+	}
+	return Min;
+}
+
+
+uint16_t SPI_ReadAS5045(uint8_t num)
+{
+	uint16_t value[READ_NUM]={0};
+	uint16_t delValue[READ_NUM]={0};
+	uint16_t min=0;
+	uint16_t endValue=0;
+	for(int i=0;i<READ_NUM;i++)
+		value[i]=SPI_ReadAS5045_Parity(num);
+	
+	delValue[0]=abs(value[0]-value[1]);
+	delValue[1]=abs(value[0]-value[2]);
+	delValue[2]=abs(value[2]-value[1]);
+	
+	min=FindMin2(delValue);
+	if(min==delValue[0])
+		endValue= value[1];
+	if(min==delValue[1])
+		endValue= value[2];
+	if(min==delValue[2])
+		endValue= value[2];
+	
+	return endValue;
+	
+}
 
 /**
 * @brief  SPI的片选引脚配置

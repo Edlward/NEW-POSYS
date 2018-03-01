@@ -263,7 +263,8 @@ uint16_t SPI_ReadAS5045_Parity(uint8_t num)
 	uint32_t parity = (AbsEncData>>7) & 0x1FFFF;
 	/*计算来的奇偶校验位*/
 	uint8_t evebParityCal = 0;
-	
+	uint16_t MagSta = (AbsEncData >> 7) & 0x1F;
+	static int count=0;
 	while(1)
 	{
 		
@@ -273,19 +274,27 @@ uint16_t SPI_ReadAS5045_Parity(uint8_t num)
 			parity = parity & (parity - 1);
 		}
 		/*如果奇偶校验成功*/
-		if(evebParityCal==evebParity)
+		if(evebParityCal==evebParity&&(MagSta==0x10||MagSta==0x13))
 		{
 			//跳出循环
+			count=0;
 			break;
 		}
 		//重新读取
 		else
 		{
+			count++;
 			AbsEncData  = SPI_ReadAS5045All(num);
 			tmpAbs      = (AbsEncData >> 12) & 0X0FFF;
 			evebParity = (AbsEncData >> 6) & 0x01;
 			parity = (AbsEncData>>7) & 0x1FFFF;
+			MagSta = (AbsEncData >> 7) & 0x1F;
 			evebParityCal = 0;
+			if(count>5)
+			{
+				count=0;
+				break;
+			}
 		}
 	}
 	return tmpAbs;
@@ -310,14 +319,17 @@ uint16_t SPI_ReadAS5045(uint8_t num)
 	int delValue[READ_NUM]={0};
 	uint16_t min=0;
 	uint16_t endValue=0;
-	static uint16_t endValueLast=0;
+	static uint16_t endValueLast[2]={0,0};
 	
 	for(int i=0;i<READ_NUM;i++)
 		value[i]=SPI_ReadAS5045_Parity(num);
 	
 	for(int i=0;i<READ_NUM;i++)
 	{
-		delValue[i]=(value[i]-endValueLast);
+		if(num==0)
+			delValue[i]=(value[i]-endValueLast[0]);
+		else if(num==1)
+			delValue[i]=(value[i]-endValueLast[1]);
 		if(delValue[i]>2048)
 			delValue[i]-=4096;
 		if(delValue[i]<-2048)
@@ -334,7 +346,10 @@ uint16_t SPI_ReadAS5045(uint8_t num)
 			break;
 		}
 	
-	endValueLast=endValue;
+	if(num==0)
+		endValueLast[0]=endValue;
+	else if(num==1)
+		endValueLast[1]=endValue;
 	return endValue;
 	
 }

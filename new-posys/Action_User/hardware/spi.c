@@ -316,7 +316,14 @@ uint16_t SPI_ReadAS5045(uint8_t num)
 		value[i]=SPI_ReadAS5045_Parity(num);
 	
 	for(int i=0;i<READ_NUM;i++)
-		delValue[i]=abs(value[i]-endValueLast);
+	{
+		delValue[i]=(value[i]-endValueLast);
+		if(delValue[i]>2048)
+			delValue[i]-=4096;
+		if(delValue[i]<-2048)
+			delValue[i]+=4096;
+		delValue[i]=abs(delValue[i]);
+	}
 	
 	min=FindMin2(delValue);
 	

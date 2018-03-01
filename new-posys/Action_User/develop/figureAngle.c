@@ -218,7 +218,7 @@ void UpdateBais(void)
 	//不静止了，填入矫正参数
 	else 
 	{
-		double sum[AXIS_NUMBER] =0.0;
+		double sum[AXIS_NUMBER] = {0.0};
 		/*计算总值*/
 		if(index>=STATIC_MIN_NUM)
 		{

@@ -69,7 +69,6 @@ void init(void)
 int main(void)
 {
   init();
-  static uint32_t cpuUsage;
 //	char readOrderLast=(char)-1;
   while(1)
   {

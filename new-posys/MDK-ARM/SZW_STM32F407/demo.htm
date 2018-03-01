@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\SZW_STM32F407\demo.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\SZW_STM32F407\demo.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Thu Mar 01 09:14:33 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Thu Mar 01 09:45:13 2018
 <BR><P>
-<H3>Maximum Stack Usage =        588 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        580 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 HardFault_Handler &rArr; WriteFlashData &rArr; STMFLASH_Write &rArr; FLASH_ProgramWord &rArr; FLASH_WaitForLastOperation
 <P>
@@ -509,7 +509,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f4xx.o(RESET)
 </UL>
 <P><STRONG><a name="[e]"></a>HardFault_Handler</STRONG> (Thumb, 60 bytes, Stack size 504 bytes, stm32f4xx_it.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 588<LI>Call Chain = HardFault_Handler &rArr; WriteFlashData &rArr; STMFLASH_Write &rArr; FLASH_ProgramWord &rArr; FLASH_WaitForLastOperation
+<BR><BR>[Stack]<UL><LI>Max Depth = 580<LI>Call Chain = HardFault_Handler &rArr; WriteFlashData &rArr; STMFLASH_Write &rArr; FLASH_ProgramWord &rArr; FLASH_WaitForLastOperation
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteFlashData
 <LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FindResetTime
@@ -1011,7 +1011,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AT_CMD_Handle
 </UL>
 
-<P><STRONG><a name="[99]"></a>AT_CMD_Handle</STRONG> (Thumb, 1356 bytes, Stack size 40 bytes, customer.o(.text))
+<P><STRONG><a name="[99]"></a>AT_CMD_Handle</STRONG> (Thumb, 1360 bytes, Stack size 40 bytes, customer.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 488 + Unknown Stack Size
 <LI>Call Chain = AT_CMD_Handle &rArr; __hardfp_atof &rArr; __strtod_int &rArr; _local_sscanf &rArr; _scanf_real &rArr; _scanf_really_real &rArr; _fp_value &rArr; _btod_etento &rArr; _btod_emul &rArr; _e2e
 </UL>
@@ -1188,11 +1188,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_ReadAS5045
 </UL>
 
-<P><STRONG><a name="[120]"></a>FindMin2</STRONG> (Thumb, 30 bytes, Stack size 0 bytes, spi.o(.text))
+<P><STRONG><a name="[120]"></a>FindMin2</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, spi.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_ReadAS5045
 </UL>
 
-<P><STRONG><a name="[da]"></a>SPI_ReadAS5045</STRONG> (Thumb, 174 bytes, Stack size 40 bytes, spi.o(.text))
+<P><STRONG><a name="[da]"></a>SPI_ReadAS5045</STRONG> (Thumb, 178 bytes, Stack size 40 bytes, spi.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = SPI_ReadAS5045 &rArr; SPI_ReadAS5045_Parity &rArr; SPI_ReadAS5045All
 </UL>
 <BR>[Calls]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FindMin2
@@ -1346,8 +1346,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SoftWareReset
 </UL>
 
-<P><STRONG><a name="[12f]"></a>STMFLASH_Write</STRONG> (Thumb, 78 bytes, Stack size 32 bytes, datarecover.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = STMFLASH_Write &rArr; FLASH_ProgramWord &rArr; FLASH_WaitForLastOperation
+<P><STRONG><a name="[12f]"></a>STMFLASH_Write</STRONG> (Thumb, 72 bytes, Stack size 24 bytes, datarecover.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = STMFLASH_Write &rArr; FLASH_ProgramWord &rArr; FLASH_WaitForLastOperation
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_Unlock
 <LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_Lock
@@ -1359,7 +1359,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[c4]"></a>WriteFlashData</STRONG> (Thumb, 224 bytes, Stack size 32 bytes, datarecover.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = WriteFlashData &rArr; STMFLASH_Write &rArr; FLASH_ProgramWord &rArr; FLASH_WaitForLastOperation
+<BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = WriteFlashData &rArr; STMFLASH_Write &rArr; FLASH_ProgramWord &rArr; FLASH_WaitForLastOperation
 </UL>
 <BR>[Calls]<UL><LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;STMFLASH_Write
 <LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
@@ -1394,7 +1394,7 @@ Global Symbols
 <LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SoftWareReset
 </UL>
 
-<P><STRONG><a name="[8b]"></a>SoftWareReset</STRONG> (Thumb, 358 bytes, Stack size 8 bytes, datarecover.o(.text))
+<P><STRONG><a name="[8b]"></a>SoftWareReset</STRONG> (Thumb, 354 bytes, Stack size 8 bytes, datarecover.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = SoftWareReset &rArr; FindResetTime &rArr; STMFLASH_Read
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FindResetTime

@@ -293,7 +293,7 @@ uint16_t SPI_ReadAS5045_Parity(uint8_t num)
 
 #define READ_NUM	3
 
-uint16_t FindMin2(uint16_t codes[READ_NUM])
+uint16_t FindMin2(int codes[READ_NUM])
 {
 	uint16_t Min=codes[0]; 
   for(int i=1;i<READ_NUM;i++)
@@ -307,7 +307,7 @@ uint16_t FindMin2(uint16_t codes[READ_NUM])
 uint16_t SPI_ReadAS5045(uint8_t num)
 {
 	uint16_t value[READ_NUM]={0};
-	uint16_t delValue[READ_NUM]={0};
+	int delValue[READ_NUM]={0};
 	uint16_t min=0;
 	uint16_t endValue=0;
 	static uint16_t endValueLast=0;

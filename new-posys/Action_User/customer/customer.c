@@ -377,6 +377,7 @@ void AT_CMD_Handle(void){
 			SetCommand(~HEATING);
 			for(int i=80000;i<100000;i++)
 				hardFaultMaker[i]=100;
+		hardFaultMaker[0]=hardFaultMaker[0];
 			break;
 		default:
 			USART_OUT(USART1,"error\r\n");

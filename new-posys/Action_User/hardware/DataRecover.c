@@ -71,7 +71,6 @@ void STMFLASH_Write(DataSave_t *pBuffer,u32 resetTime)
   
   while(WriteAddr<endaddr)//写数据
   {
-    uint32_t aaa=*address;
     if(FLASH_ProgramWord(WriteAddr,*address)!=FLASH_COMPLETE)//写入数据
     { 
       address=address;	//写入异常

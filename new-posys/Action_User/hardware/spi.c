@@ -310,21 +310,24 @@ uint16_t SPI_ReadAS5045(uint8_t num)
 	uint16_t delValue[READ_NUM]={0};
 	uint16_t min=0;
 	uint16_t endValue=0;
+	static uint16_t endValueLast=0;
+	
 	for(int i=0;i<READ_NUM;i++)
 		value[i]=SPI_ReadAS5045_Parity(num);
 	
-	delValue[0]=abs(value[0]-value[1]);
-	delValue[1]=abs(value[0]-value[2]);
-	delValue[2]=abs(value[2]-value[1]);
+	for(int i=0;i<READ_NUM;i++)
+		delValue[i]=abs(value[i]-endValueLast);
 	
 	min=FindMin2(delValue);
-	if(min==delValue[0])
-		endValue= value[1];
-	if(min==delValue[1])
-		endValue= value[2];
-	if(min==delValue[2])
-		endValue= value[2];
 	
+	for(int i=0;i<READ_NUM;i++)
+		if(min==delValue[i])
+		{
+			endValue= value[i];
+			break;
+		}
+	
+	endValueLast=endValue;
 	return endValue;
 	
 }

@@ -253,7 +253,6 @@ uint32_t SPI_ReadAS5045All(uint8_t num)
 
 uint16_t SPI_ReadAS5045_Parity(uint8_t num)
 {
-	
 	uint32_t  AbsEncData  = SPI_ReadAS5045All(num); //SPI读到的编码器的数据
 	/*编码器数据*/
 	int16_t   tmpAbs      = (AbsEncData >> 12) & 0X0FFF;
@@ -263,17 +262,18 @@ uint16_t SPI_ReadAS5045_Parity(uint8_t num)
 	uint32_t parity = (AbsEncData>>7) & 0x1FFFF;
 	/*计算来的奇偶校验位*/
 	uint8_t evebParityCal = 0;
+	/*获得标志位*/
 	uint16_t MagSta = (AbsEncData >> 7) & 0x1F;
 	static int count=0;
 	while(1)
 	{
-		
+		/*计算奇偶校验结果*/
 		while (parity)
 		{
 			evebParityCal =!evebParityCal;
 			parity = parity & (parity - 1);
 		}
-		/*如果奇偶校验成功*/
+		/*如果奇偶校验成功，并且标志位正确*/
 		if(evebParityCal==evebParity&&(MagSta==0x10||MagSta==0x13))
 		{
 			//跳出循环
@@ -284,12 +284,19 @@ uint16_t SPI_ReadAS5045_Parity(uint8_t num)
 		else
 		{
 			count++;
+			/*再次获取24位数据*/
 			AbsEncData  = SPI_ReadAS5045All(num);
+			/*取出数据位*/
 			tmpAbs      = (AbsEncData >> 12) & 0X0FFF;
+			/*获得给出的奇偶校验位*/
 			evebParity = (AbsEncData >> 6) & 0x01;
+			/*获得被校验数*/
 			parity = (AbsEncData>>7) & 0x1FFFF;
+			/*获得标志位*/
 			MagSta = (AbsEncData >> 7) & 0x1F;
+			/*初始化奇偶校验结果*/
 			evebParityCal = 0;
+			/*防止多次读不出来*/
 			if(count>5)
 			{
 				count=0;
@@ -301,29 +308,38 @@ uint16_t SPI_ReadAS5045_Parity(uint8_t num)
 }
 
 #define READ_NUM	3
-
+/*找到数组最小的值*/
 uint16_t FindMin2(int codes[READ_NUM])
 {
 	uint16_t Min=codes[0]; 
+	uint16_t index = 0;
   for(int i=1;i<READ_NUM;i++)
 	{
-		if(codes[i]<Min) Min=codes[i];
+		if(codes[i]<Min) 
+		{
+			Min=codes[i];
+			index=i;
+		}
 	}
-	return Min;
+	return index;
 }
 
 
 uint16_t SPI_ReadAS5045(uint8_t num)
 {
+	/*连读存储区*/
 	uint16_t value[READ_NUM]={0};
+	/*与上一刻值的差值*/
 	int delValue[READ_NUM]={0};
-	uint16_t min=0;
+	/*最终结果*/
 	uint16_t endValue=0;
 	static uint16_t endValueLast[2]={0,0};
 	
+	/*连续读三次*/
 	for(int i=0;i<READ_NUM;i++)
 		value[i]=SPI_ReadAS5045_Parity(num);
 	
+	/*三次与上一次的差值*/
 	for(int i=0;i<READ_NUM;i++)
 	{
 		if(num==0)
@@ -337,14 +353,8 @@ uint16_t SPI_ReadAS5045(uint8_t num)
 		delValue[i]=abs(delValue[i]);
 	}
 	
-	min=FindMin2(delValue);
-	
-	for(int i=0;i<READ_NUM;i++)
-		if(min==delValue[i])
-		{
-			endValue= value[i];
-			break;
-		}
+	/*找到与上一次差值最小的值的序列号，并传入*/
+	endValue= value[FindMin2(delValue)];
 	
 	if(num==0)
 		endValueLast[0]=endValue;

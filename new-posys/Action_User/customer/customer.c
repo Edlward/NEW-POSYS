@@ -61,9 +61,9 @@ void DataSend(void)
 //	USART_OUT_F((allPara.GYRO_Temperature[0]+allPara.GYRO_Temperature[1]+allPara.GYRO_Temperature[2])/3.f);
 //	USART_OUT_F(allPara.GYRO_Real[2]);
 //	USART_OUT_F(allPara.isStatic);
-//	USART_OUT(USART1,"%d\t%d",allPara.codeData[0],allPara.codeData[1]);
+//	USART_OUT(USART1,"%d\t%d\t%d",allPara.codeData[0],allPara.codeData[1],allPara.cpuUsage);
 //	USART_Enter();
-	
+//	
 	for(i=0;i<32;i++)
    USART_SendData(USART1,tdata[i]);
 }

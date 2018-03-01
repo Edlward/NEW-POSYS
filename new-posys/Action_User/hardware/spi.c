@@ -73,7 +73,7 @@ void SPI2_Init(void)
   SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;																/* 串行同步时钟的空闲状态为低电平	*/
   SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;															/* 第二个跳变沿数据被采样					*/
   SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS由软件控制									*/
-  SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_64;				/* 预分频	168M/64	*/
+  SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_256;				/* 预分频	168M/64	*/
   SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/* 数据从MSB位开始								*/
   SPI_InitStructure.SPI_CRCPolynomial = 7;
   SPI_Init(SPI2, &SPI_InitStructure);
@@ -290,13 +290,17 @@ uint16_t SPI_ReadAS5045_Parity(uint8_t num)
 			parity = (AbsEncData>>7) & 0x1FFFF;
 			MagSta = (AbsEncData >> 7) & 0x1F;
 			evebParityCal = 0;
-			if(count>5)
-			{
-				count=0;
-				break;
-			}
+//			if(count>5)
+//			{
+//				count=0;
+//				break;
+//			}
 		}
 	}
+	if(num==0)
+		USART_OUT(USART1,"%d\t",MagSta);
+	if(num==1)
+		USART_OUT(USART1,"%d\r\n",MagSta);
 	return tmpAbs;
 }
 
@@ -320,37 +324,37 @@ uint16_t SPI_ReadAS5045(uint8_t num)
 	uint16_t min=0;
 	uint16_t endValue=0;
 	static uint16_t endValueLast[2]={0,0};
-	
-	for(int i=0;i<READ_NUM;i++)
-		value[i]=SPI_ReadAS5045_Parity(num);
-	
-	for(int i=0;i<READ_NUM;i++)
-	{
-		if(num==0)
-			delValue[i]=(value[i]-endValueLast[0]);
-		else if(num==1)
-			delValue[i]=(value[i]-endValueLast[1]);
-		if(delValue[i]>2048)
-			delValue[i]-=4096;
-		if(delValue[i]<-2048)
-			delValue[i]+=4096;
-		delValue[i]=abs(delValue[i]);
-	}
-	
-	min=FindMin2(delValue);
-	
-	for(int i=0;i<READ_NUM;i++)
-		if(min==delValue[i])
-		{
-			endValue= value[i];
-			break;
-		}
-	
-	if(num==0)
-		endValueLast[0]=endValue;
-	else if(num==1)
-		endValueLast[1]=endValue;
-	return endValue;
+	value[0]=SPI_ReadAS5045_Parity(num);
+//	for(int i=0;i<READ_NUM;i++)
+//		value[i]=SPI_ReadAS5045_Parity(num);
+//	
+//	for(int i=0;i<READ_NUM;i++)
+//	{
+//		if(num==0)
+//			delValue[i]=(value[i]-endValueLast[0]);
+//		else if(num==1)
+//			delValue[i]=(value[i]-endValueLast[1]);
+//		if(delValue[i]>2048)
+//			delValue[i]-=4096;
+//		if(delValue[i]<-2048)
+//			delValue[i]+=4096;
+//		delValue[i]=abs(delValue[i]);
+//	}
+//	
+//	min=FindMin2(delValue);
+//	
+//	for(int i=0;i<READ_NUM;i++)
+//		if(min==delValue[i])
+//		{
+//			endValue= value[i];
+//			break;
+//		}
+//	
+//	if(num==0)
+//		endValueLast[0]=endValue;
+//	else if(num==1)
+//		endValueLast[1]=endValue;
+//	return endValue;
 	
 }
 

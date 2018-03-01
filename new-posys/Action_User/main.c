@@ -101,7 +101,7 @@ int main(void)
           calculatePos();
 					#ifndef TEST_SUMMER
 					//串口被中断打断依然能正常发送（试验了几分钟）
-					DataSend();
+					//DataSend();
 					#endif
 				}
 			}

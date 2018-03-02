@@ -43,7 +43,11 @@ int JudgeAcc(void);
 *            accData,输入加速度的值
 * @retval 初始化完成的标志位
 */
-
+#ifdef AUTOCAR
+#define TIME_STATIC	5
+#else
+#define TIME_STATIC	5
+#endif
 int RoughHandle(void)
 {
   static int ignore=0;
@@ -53,10 +57,11 @@ int RoughHandle(void)
   allPara.GYRO_Real[2]=(allPara.GYRO_Aver[2]);
 	
 	if(allPara.resetFlag)
-		ignore=15*200+1;
+		ignore=TIME_STATIC*200+1;
 	
 	ignore++;
-  if((GetCommand()&ACCUMULATE)&&ignore>2*200){
+  if((GetCommand()&ACCUMULATE)&&ignore>TIME_STATIC*200){
+		ignore=TIME_STATIC*200+1;
     allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.GYRO_Bais[0]);
     allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.GYRO_Bais[1]);
     allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.GYRO_Bais[2]);

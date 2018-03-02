@@ -125,7 +125,7 @@ void TIM2_IRQHandler(void)
 				{
 					/*正常情况小于这个值，没啥用，不正常时，值是1/131=0.0076*/
 					/*满足条件时，把该项变成0*/
-					if(fabs(allPara.GYRORemoveDrift[axis][gyro])<0.01)
+					if(fabs(allPara.GYRORemoveDrift[gyro][axis])<0.01)
 						percentages[axis][gyro]=0.0;
 				}
 			}
@@ -312,7 +312,7 @@ void HardFault_Handler(void)
 //			r_sp = __get_MSP(); 
 //		/*因为经历中断函数入栈之后，堆栈指针会减小0x10，所以平移回来（可能不具有普遍性）*/
 //		r_sp = r_sp+0x10;
-	
+	debugsend(1.f,2.f,3.f,4.f,5.f,6.f);
 	if(allPara.resetTime<=500)
 	{
 		FindResetTime();

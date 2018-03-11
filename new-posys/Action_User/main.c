@@ -94,6 +94,8 @@ int main(void)
 					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
 						temp_pid_ctr(gyro,allPara.GYRO_TemperatureAim[gyro]-0.5f);
 				}
+				/*ÅÐ¶ÏÊÇ·ñ¾²Ö¹*/
+				JudgeStatic();
         //¼ÆËã½Ç¶È 
         if(RoughHandle())
 				{

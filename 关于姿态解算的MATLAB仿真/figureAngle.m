@@ -13,6 +13,7 @@ quaternion=[1 0 0 0];
 for i=1:length(wx)
     quaternion=QuaternionInt(quaternion,palstance(:,i),dT);
     temporaryAngle(i,1:3)=Quaternion_to_Euler(quaternion);
+    quaternion=Euler_to_Quaternion_old(temporaryAngle(i,1:3));
 end
 angle=Quaternion_to_Euler(quaternion);
 end

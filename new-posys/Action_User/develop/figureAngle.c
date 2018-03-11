@@ -44,9 +44,9 @@ int JudgeAcc(void);
 * @retval 初始化完成的标志位
 */
 #ifdef AUTOCAR
-#define TIME_STATIC	5
+#define TIME_STATIC	15
 #else
-#define TIME_STATIC	5
+#define TIME_STATIC	10
 #endif
 int RoughHandle(void)
 {
@@ -179,7 +179,7 @@ void JudgeStatic(void)
 	codes1[STATIC_ARRAY_NUM-1]=allPara.codeData[1];
 
 	
-	if((abs(FindMin(codes0)-FindMax(codes0))<=1&&abs(FindMin(codes1)-FindMax(codes1))<=1)&&(fabs(allPara.GYRO_Real[2])<0.15f||key))
+	if((abs(FindMin(codes0)-FindMax(codes0))<=1&&abs(FindMin(codes1)-FindMax(codes1))<=1)&&(fabs(allPara.GYRO_Real[2])<0.11f||key))
 		allPara.isStatic=1;
 	else
 		allPara.isStatic=0;
@@ -193,8 +193,6 @@ void UpdateBais(void)
 	static int index=0;
   static double data[AXIS_NUMBER][STATIC_MAX_NUM]={0.f};    	//数据列
 	
-	/*判断是否静止*/
-	JudgeStatic();
 	/*如果判断成功静止，进行积累数据*/
 	if(allPara.isStatic&&!(key==1&&index==STATIC_MAX_NUM))
 	{
@@ -214,9 +212,12 @@ void UpdateBais(void)
 			for(int axis=0;axis<AXIS_NUMBER;axis++)
 			{
 				//数组前移一位
-				for(int i=0;i<STATIC_MAX_NUM-1;i++)
-					data[axis][i]=data[axis][i+1];
-				data[axis][STATIC_MAX_NUM-1]=allPara.GYRO_Aver[axis];
+				if(fabs(allPara.GYRO_Aver[axis])<4.f&&!isnan(allPara.GYRO_Aver[axis]))
+				{
+					for(int i=0;i<STATIC_MAX_NUM-1;i++)
+						data[axis][i]=data[axis][i+1];
+					data[axis][STATIC_MAX_NUM-1]=allPara.GYRO_Aver[axis];
+				}
 			}
 		}
 	}
@@ -230,11 +231,11 @@ void UpdateBais(void)
 			key=0;
 			for(int axis=0;axis<AXIS_NUMBER;axis++)
 			{
-				for(int i=0;i<index;i++)
+				for(int i=0;i<index-1;i++)
 				{
 					sum[axis]=sum[axis]+data[axis][i];
 				}
-				allPara.GYRO_Bais[axis]=sum[axis]/index;
+				allPara.GYRO_Bais[axis]=sum[axis]/(index-1);
 			}
 		}
 		for(int axis=0;axis<AXIS_NUMBER;axis++)

@@ -25,7 +25,7 @@ void SetParaDefault(void);
 void DataSend(void)
 {
 	int i;
-	uint8_t tdata[32];
+	uint8_t tdata[36];
   union{
 		float   val;
 		uint8_t data[4];
@@ -33,8 +33,8 @@ void DataSend(void)
 	
   tdata[0]=0x0d;
   tdata[1]=0x0a;
-  tdata[30]=0x0a;
-  tdata[31]=0x0d;
+  tdata[34]=0x0a;
+  tdata[35]=0x0d;
 	
 	valSend.val=(float)allPara.Result_Angle[2];
   memcpy(tdata+2,valSend.data,4);
@@ -57,6 +57,9 @@ void DataSend(void)
 	valSend.val=(float)allPara.codeData[1];
   memcpy(tdata+26,valSend.data,4);
 	
+	valSend.val=(float)allPara.GYRO_Real[2];
+  memcpy(tdata+30,valSend.data,4);
+	
 
 //	USART_OUT_F((allPara.GYRO_Temperature[0]+allPara.GYRO_Temperature[1]+allPara.GYRO_Temperature[2])/3.f);
 //	USART_OUT_F(allPara.GYRO_Real[2]);
@@ -64,7 +67,7 @@ void DataSend(void)
 //	USART_OUT(USART1,"%d\t%d\t%d",allPara.codeData[0],allPara.codeData[1],allPara.cpuUsage);
 //	USART_Enter();
 //	
-	for(i=0;i<32;i++)
+	for(i=0;i<36;i++)
    USART_SendData(USART1,tdata[i]);
 }
 void debugsend2(float a,float b,float c,float d,float e)

@@ -11,8 +11,8 @@ void ICM20608G_init(int gyroNum)
     ICM20608G_PWR_MGMT_1,0,/*10011 Wake up chip from sleep mode,enable temperature sensor,select pll	*/
     ICM20608G_PWR_MGMT_2,0,/*disable FIFO,enable gyr and accel*/
     ICM20608G_GYRO_CONFIG,0,/* gyro range:±500dps, Used to bypass DLPF				*/
-    ICM20608G_CONFIG,0,/*  DLPF低通滤波器的设置	低通滤波器截止频率为176Hz 根据↓*/
-    ICM20608G_SMPLRT_DIV,7,/* 设置采样速率为1kHz		*/
+    ICM20608G_CONFIG,1,/*  DLPF低通滤波器的设置	低通滤波器截止频率为176Hz 根据↓*/
+    ICM20608G_SMPLRT_DIV,0,/* 设置采样速率为1kHz		*/
     ICM20608G_ACCEL_CONFIG,0,/* accel:2g																	*/
     ICM20608G_ACCEL_CONFIG2,6,/*000110 DLPF:5.1	低通滤波器的设置	 不能设置低功耗模式的均值滤波，否则数字不对	*/
     ICM20608G_SIGNAL_PATH_RESET,0,/* Use SIG_COND_RST to clear sensor registers.*/
@@ -74,8 +74,8 @@ void ICM20608G_init(int gyroNum)
 					data=SPI_Read(SPI1,GPIOC,GPIO_Pin_6,registers[order*2]);
 					break;
 			}
-      if(i>5)
-        break;
+//      if(i>5)
+//        break;
 			//i=;
     }while(data!=registers[order*2+1]);//||data[1]!=registers[order*2+1]);
   }

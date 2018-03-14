@@ -35,8 +35,8 @@ void init(void)
 	
   //片选的初始化
   CS_Config();
-	
-	USART1_Init(115200);
+	delay_ms(2000);
+	USART1_Init(921600);
 	
   Flash_Init();
 	
@@ -50,7 +50,7 @@ void init(void)
 	}
 	
   TIM_Init(TIM2,999,83,1,0);					//主周期定时5ms
-	
+	while(1);
 	SetCommand(HEATING);
 	SetCommand(ACCUMULATE);
   driftCoffecientInit();
@@ -103,7 +103,7 @@ int main(void)
           calculatePos();
 					#ifndef TEST_SUMMER
 					//串口被中断打断依然能正常发送（试验了几分钟）
-					DataSend();
+				//	DataSend();
 					#endif
 				}
 			}

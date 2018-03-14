@@ -84,9 +84,12 @@ void TIM2_IRQHandler(void)
 		/*确定加热温度*/
 		if(!getTempInitSuces())
 			HeatingInit(temp_temp);
-		
 	  if(timeCnt==5)
 		{
+		USART_OUT_F(gyr_temp[0][2]);
+		USART_OUT_F(gyr_temp[1][2]);
+		USART_OUT_F(gyr_temp[2][2]);
+			USART_Enter();
 			double percentages[3][3]={
 			0.2213592813724,0.39736449174351,0.38127622688409,
 			0.308463467667503,0.351315105732058,0.340221426600438,

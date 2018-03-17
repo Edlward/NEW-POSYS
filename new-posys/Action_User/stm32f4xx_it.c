@@ -88,15 +88,15 @@ void TIM2_IRQHandler(void)
 	  if(timeCnt==5)
 		{
 			double percentages[3][3]={
-			0.2213592813724,0.39736449174351,0.38127622688409,
-			0.308463467667503,0.351315105732058,0.340221426600438,
-			0.343476611095766,0.306446153485871,0.350077235418363	};
+			0.33333333,0.33333333,0.33333333,
+			0.33333333,0.33333333,0.33333333,
+			0.33333333,0.33333333,0.33333333	};
 			readOrder++;
       timeCnt=0;
 			//取得5ms的原始数据总和的平均数
 			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 			{
-				allPara.GYRO_Temperature[gyro]=temp_sum[gyro]/5.f;
+				allPara.GYRO_Temperature[gyro]=temp_sum[gyro]/5.0;
 				for(axis=0;axis<AXIS_NUMBER;axis++)
 				{
 					allPara.GYROWithoutRemoveDrift[gyro][axis]=gyro_sum[gyro][axis]/5.0;	

@@ -175,7 +175,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -439,6 +439,11 @@
               <FilePath>..\Action_User\develop\figurePos.c</FilePath>
             </File>
             <File>
+              <FileName>gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Action_User\hardware\gpio.c</FilePath>
+            </File>
+            <File>
               <FileName>temperature_control.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Action_User\develop\temperature_control.c</FilePath>
@@ -462,11 +467,6 @@
               <FileName>flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Action_User\hardware\flash.c</FilePath>
-            </File>
-            <File>
-              <FileName>gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Action_User\hardware\gpio.c</FilePath>
             </File>
             <File>
               <FileName>spi.c</FileName>

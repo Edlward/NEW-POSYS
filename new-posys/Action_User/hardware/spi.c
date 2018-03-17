@@ -110,8 +110,10 @@ void SPI_Write(SPI_TypeDef *SPI,
                uint8_t address,
                uint8_t value)
 {
-  SPI_Cmd(SPI,ENABLE);	
+//  SPI_Cmd(SPI,ENABLE);	
   GPIO_ResetBits(GPIOx,GPIO_Pin);
+	
+	Delay_us(1);//min 2ns
   
   while (SPI_I2S_GetFlagStatus(SPI, SPI_I2S_FLAG_TXE) == RESET){}		//等待发送区空  
   
@@ -129,10 +131,13 @@ void SPI_Write(SPI_TypeDef *SPI,
   
   SPI_I2S_ReceiveData(SPI); 		
   
-  while (SPI_I2S_GetFlagStatus(SPI, SPI_I2S_FLAG_BSY) == SET){}	
-  SPI_Cmd(SPI,DISABLE);		
+	/*待定，屏蔽部分是罗潇逸在研究ADI陀螺仪时写的，不写读不出  */
+  // while (SPI_I2S_GetFlagStatus(SPI, SPI_I2S_FLAG_BSY) == SET){}	
+//  SPI_Cmd(SPI,DISABLE);		
   
-  GPIO_SetBits(GPIOx,GPIO_Pin);	
+	Delay_us(1);//min tcs.hd 63ns
+	GPIO_SetBits(GPIOx,GPIO_Pin);	
+	Delay_us(1);//tsdo.dis 20ns
 }
 
 
@@ -154,7 +159,7 @@ uint8_t SPI_Read(SPI_TypeDef *SPIx,
   uint8_t data;
   
   address |= (uint8_t)READWRITE_CMD;
-  SPI_Cmd(SPIx,ENABLE);
+//  SPI_Cmd(SPIx,ENABLE);
   
   GPIO_ResetBits(GPIOx,GPIO_Pin);
   
@@ -174,8 +179,8 @@ uint8_t SPI_Read(SPI_TypeDef *SPIx,
   
   data = SPI_I2S_ReceiveData(SPIx); 		
   
-  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_BSY) == SET){}	
-  SPI_Cmd(SPIx,DISABLE);
+//  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_BSY) == SET){}	
+//  SPI_Cmd(SPIx,DISABLE);
   GPIO_SetBits(GPIOx,GPIO_Pin);
   
   return data;
@@ -297,7 +302,7 @@ uint16_t SPI_ReadAS5045_Parity(uint8_t num)
 			/*初始化奇偶校验结果*/
 			evebParityCal = 0;
 			/*防止多次读不出来*/
-			if(count>5)
+			if(count>3)
 			{
 				count=0;
 				break;

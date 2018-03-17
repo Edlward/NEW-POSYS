@@ -13,7 +13,7 @@
 //#define AXIS_NUMBER 3
 //#endif
 
-void ICM20608G_init(int gyroNum);
+void MEMS_Configure(int gyroNum);
 
 void icm_read_gyro_rate(double data[GYRO_NUMBER]);
 void icm_read_accel_acc(double data[GYRO_NUMBER]);

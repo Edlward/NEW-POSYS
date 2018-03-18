@@ -498,6 +498,11 @@
               <FileType>1</FileType>
               <FilePath>..\Action_User\hardware\iwdg.c</FilePath>
             </File>
+            <File>
+              <FileName>odom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Action_User\hardware\odom.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

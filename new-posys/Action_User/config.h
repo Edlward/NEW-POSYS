@@ -40,6 +40,7 @@
 #include "figurePos.h"
 #include "quarternion.h"
 #include "adc.h"
+#include "odom.h"
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 
@@ -50,8 +51,8 @@
 
 //#define TEST_SUMMER
 
-//#define AUTOCAR
-
+#define AUTOCAR
+//#define TESTCAR
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
 #define PERIOD    				0.005f

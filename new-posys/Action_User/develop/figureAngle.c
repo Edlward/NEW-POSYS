@@ -45,10 +45,10 @@ int JudgeAcc(void);
 */
 #ifdef AUTOCAR
 #define TIME_STATIC					(9)
-#define TIME_STATIC_REAL		(TIME_STATIC-(1))
+#define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #else
 #define TIME_STATIC					(9)
-#define TIME_STATIC_REAL		(TIME_STATIC-(1))
+#define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #endif
 int RoughHandle(void)
 {
@@ -168,9 +168,6 @@ void JudgeStatic(void)
 {
 	static uint16_t codes0[STATIC_ARRAY_NUM];
 	static uint16_t codes1[STATIC_ARRAY_NUM];
-	//第一次判断静止时可以不用判断角速度
-	allPara.codeData[0]=SPI_ReadAS5045(0);
-	allPara.codeData[1]=SPI_ReadAS5045(1);
 	
 	for(int i=0;i<STATIC_ARRAY_NUM-1;i++)
 	{
@@ -180,7 +177,6 @@ void JudgeStatic(void)
 	codes0[STATIC_ARRAY_NUM-1]=allPara.codeData[0];
 	codes1[STATIC_ARRAY_NUM-1]=allPara.codeData[1];
 
-	
 	if((abs(FindMin(codes0)-FindMax(codes0))<=1&&abs(FindMin(codes1)-FindMax(codes1))<=1)&&(fabs(allPara.GYRO_Real[2])<0.11f||key))
 		allPara.isStatic=1;
 	else
@@ -302,8 +298,6 @@ void driftCoffecientInit(void){
 		}
 	}
 	
-#ifdef TEST_SUMMER
-#endif
 }
 
 float safe_asin(float v)

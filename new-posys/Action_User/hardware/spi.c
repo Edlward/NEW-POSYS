@@ -73,7 +73,7 @@ void SPI2_Init(void)
   SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;																/* 串行同步时钟的空闲状态为低电平	*/
   SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;															/* 第二个跳变沿数据被采样					*/
   SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS由软件控制									*/
-  SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_64;				/* 预分频	168M/64	*/
+  SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_128;				/* 预分频	168M/64	*/
   SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/* 数据从MSB位开始								*/
   SPI_InitStructure.SPI_CRCPolynomial = 7;
   SPI_Init(SPI2, &SPI_InitStructure);
@@ -240,17 +240,24 @@ uint32_t SPI_ReadAS5045All(uint8_t num)
 		GPIO_ResetBits(GPIOB,GPIO_Pin_15);
 
 	SPI_Cmd(SPI2,ENABLE);
+	
 	for(i=0;i<3;i++)
 	{
 		while((SPI2->SR & SPI_I2S_FLAG_RXNE) == (u16)RESET);
-		buf[i] = SPI2->DR;
+		{
+			buf[i] = SPI2->DR;
+		}
 	}
+	
 	if(num==1)
 	  GPIO_SetBits(GPIOB,GPIO_Pin_12);
 	else if(num==0)
 		GPIO_SetBits(GPIOB,GPIO_Pin_15);
-
+	
 	SPI_Cmd(SPI2,DISABLE);
+	
+	delay_us(15);
+	
   AS5045_Val = (((uint32_t)buf[0]<<16) | ((uint32_t)buf[1]<<8) | ((uint32_t)buf[2]));
 	
 	return AS5045_Val;
@@ -259,6 +266,7 @@ uint32_t SPI_ReadAS5045All(uint8_t num)
 uint16_t SPI_ReadAS5045_Parity(uint8_t num)
 {
 	uint32_t  AbsEncData  = SPI_ReadAS5045All(num); //SPI读到的编码器的数据
+	/*编码器数据*/
 	/*编码器数据*/
 	int16_t   tmpAbs      = (AbsEncData >> 12) & 0X0FFF;
 	/*发送来的奇偶校验位*/

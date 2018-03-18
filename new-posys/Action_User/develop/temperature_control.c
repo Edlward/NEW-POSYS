@@ -72,6 +72,7 @@ void temp_pid_ctr(int gyro,float val_ex)
   static float err_last[GYRO_NUMBER];
   static float err_v[GYRO_NUMBER];
 	static int justforfirst[3]={1,1,1};
+	static int count[3]={0};
   float Kp_summer[GYRO_NUMBER] = { 2550.0f , 2550.0f ,2550.0f };
   float Ki_summer[GYRO_NUMBER] = { 0.75f , 0.75f ,0.75f };
   float Kd_summer[GYRO_NUMBER] = { 0.0f , 0.0f ,0.0f };
@@ -107,6 +108,13 @@ void temp_pid_ctr(int gyro,float val_ex)
 		/*之所以最大值为1000,是因为该定时器的装载值为1000*/
 		if(allPara.GYRO_Temperature[gyro]>0.45f)
 			ctr[gyro]=0;
+		if(fabs(allPara.GYRO_Temperature[gyro]-allPara.GYRO_TemperatureAim[gyro])>0.04f)
+			count[gyro]++;
+		else
+			count[gyro]=0;
+		if(count[gyro]>4*200)
+			ctr[gyro]=20;
+		
 		ICM_HeatingPower(gyro,ctr[gyro]);
 	
 }

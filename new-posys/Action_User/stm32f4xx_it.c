@@ -86,7 +86,11 @@ void TIM2_IRQHandler(void)
 			HeatingInit(temp_temp);
 		
 	  if(timeCnt==5)
-		{
+		{	
+			
+			//第一次判断静止时可以不用判断角速度
+			allPara.codeData[0]=SPI_ReadAS5045(0);
+			allPara.codeData[1]=SPI_ReadAS5045(1);
 			double percentages[3][3]={
 			0.33333333,0.33333333,0.33333333,
 			0.33333333,0.33333333,0.33333333,
@@ -96,7 +100,7 @@ void TIM2_IRQHandler(void)
 			//取得5ms的原始数据总和的平均数
 			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 			{
-				allPara.GYRO_Temperature[gyro]=temp_sum[gyro]/5.0;
+				allPara.GYRO_Temperature[gyro]=temp_sum[gyro]/5.0f;
 				for(axis=0;axis<AXIS_NUMBER;axis++)
 				{
 					allPara.GYROWithoutRemoveDrift[gyro][axis]=gyro_sum[gyro][axis]/5.0;	

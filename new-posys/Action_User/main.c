@@ -82,6 +82,8 @@ int main(void)
 //      				test[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
 			//使数据能够同步，但是不同步情况很少
 			//AT指令处理
+			if(isnan(allPara.Result_Angle[2])||isnan(allPara.GYRO_Real[2]))
+				;
 			AT_CMD_Handle();
       if(!(GetCommand()&CORRECT)){
 				if(GetCommand()&HEATING)
@@ -94,8 +96,8 @@ int main(void)
 					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
 						temp_pid_ctr(gyro,allPara.GYRO_TemperatureAim[gyro]-0.5f);
 				}
-				/*判断是否静止*/
-				JudgeStatic();
+			/*判断是否静止*/
+			JudgeStatic();
         //计算角度 
         if(RoughHandle())
 				{

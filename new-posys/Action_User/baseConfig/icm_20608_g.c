@@ -132,14 +132,20 @@ void icm_update_gyro_rate(int gyroNum)
 	switch(*(flashData.scaleMode+gyroNum))
 	{
 		case 0:
-			#ifdef AUTOCAR
-				gyro[0] = -data1[1]/131.170291536093;
-				gyro[1] = -data1[0]/131.170291536093;
-				gyro[2] = -data1[2]/131.170291536093;
+			#ifdef TESTCAR
+					gyro[0] = -data1[1]/131.0;
+					gyro[1] = -data1[0]/131.0;
+					gyro[2] = -data1[2]/131.0;
 			#else
-				gyro[0] = -data1[1]/131.524243090403;
-				gyro[1] = -data1[0]/131.524243090403;
-				gyro[2] = -data1[2]/131.524243090403;
+				#ifdef AUTOCAR
+					gyro[0] = -data1[1]/130.901407488835;
+					gyro[1] = -data1[0]/130.901407488835;
+					gyro[2] = -data1[2]/130.901407488835;
+				#else
+					gyro[0] = -data1[1]/131.524243090403;
+					gyro[1] = -data1[0]/131.524243090403;
+					gyro[2] = -data1[2]/131.524243090403;
+				#endif
 			#endif
 			break;
 		case 1:
@@ -148,15 +154,22 @@ void icm_update_gyro_rate(int gyroNum)
 			gyro[2] = -data1[2]/65.5f;
 			break;
 		default:
-			#ifdef AUTOCAR
-				gyro[0] = -data1[1]/131.170291536093;
-				gyro[1] = -data1[0]/131.170291536093;
-				gyro[2] = -data1[2]/131.170291536093;
+			#ifdef TESTCAR
+					gyro[0] = -data1[1]/131.0;
+					gyro[1] = -data1[0]/131.0;
+					gyro[2] = -data1[2]/131.0;
 			#else
-				gyro[0] = -data1[1]/131.524243090403;
-				gyro[1] = -data1[0]/131.524243090403;
-				gyro[2] = -data1[2]/131.524243090403;
+				#ifdef AUTOCAR
+					gyro[0] = -data1[1]/131.170291536093;
+					gyro[1] = -data1[0]/131.170291536093;
+					gyro[2] = -data1[2]/131.170291536093;
+				#else
+					gyro[0] = -data1[1]/131.524243090403;
+					gyro[1] = -data1[0]/131.524243090403;
+					gyro[2] = -data1[2]/131.524243090403;
+				#endif
 			#endif
+
 			break;
   }
 	float middlePerson = 0.f;

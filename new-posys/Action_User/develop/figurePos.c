@@ -125,13 +125,10 @@ void calculatePos(void)
 		#endif
 	#endif
 	
-	#ifdef AUTOCAR	
+
 		delPos[0]=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
 		delPos[1]=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
-	#else
-		delPos[0]=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
-		delPos[1]=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
-	#endif
+
 		allPara.posx+=delPos[0];
 		allPara.posy+=delPos[1];
 	

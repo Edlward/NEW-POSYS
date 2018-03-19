@@ -43,13 +43,19 @@ int JudgeAcc(void);
 *            accData,输入加速度的值
 * @retval 初始化完成的标志位
 */
+
 #ifdef AUTOCAR
 #define TIME_STATIC					(9)
 #define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #else
-#define TIME_STATIC					(9)
+#define TIME_STATIC					(20)
 #define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #endif
+
+/*最大两秒，如果小于两秒就用现有的数据*/
+#define STATIC_MAX_NUM	200
+#define STATIC_MIN_NUM	20
+
 int RoughHandle(void)
 {
   static int ignore=0;
@@ -62,13 +68,17 @@ int RoughHandle(void)
 		ignore=TIME_STATIC_REAL*200+1;
 	
 	ignore++;
-  if((GetCommand()&ACCUMULATE)&&ignore>TIME_STATIC_REAL*200){
-		ignore=TIME_STATIC_REAL*200+1;
+  if((GetCommand()&ACCUMULATE)&&ignore>(TIME_STATIC_REAL)*200){
     allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.GYRO_Bais[0]);
     allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.GYRO_Bais[1]);
     allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.GYRO_Bais[2]);
 		UpdateBais();
-    return 1;
+		if(ignore>(TIME_STATIC_REAL)*200+STATIC_MAX_NUM)
+		{
+			ignore=10000;
+			return 1;
+		}
+		return 0;
   }else{
 		 return 0;
 	}
@@ -183,9 +193,6 @@ void JudgeStatic(void)
 		allPara.isStatic=0;
 }
 
-/*最大两秒，如果小于两秒就用现有的数据*/
-#define STATIC_MAX_NUM	200
-#define STATIC_MIN_NUM	20
 void UpdateBais(void)
 {  
 	static int index=0;

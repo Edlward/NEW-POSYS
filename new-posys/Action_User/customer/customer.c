@@ -55,7 +55,12 @@ void DataSend(void)
   memcpy(tdata+22,valSend.data,4);
 
 //	USART_OUT_F((allPara.GYRO_Temperature[0]+allPara.GYRO_Temperature[1]+allPara.GYRO_Temperature[2])/3.f);
+//	USART_OUT_F(allPara.GYROWithoutRemoveDrift[0][2]);
+//	USART_OUT_F(allPara.GYROWithoutRemoveDrift[1][2]);
+//	USART_OUT_F(allPara.GYROWithoutRemoveDrift[2][2]);
 //	USART_OUT_F(allPara.GYRO_Real[2]);
+//	USART_OUT_F(allPara.Result_Angle[2]);
+//	USART_OUT_F(allPara.GYRO_Bais[2]);
 //	USART_OUT_F(allPara.isStatic);
 //	USART_OUT(USART1,"%d\t%d\t%d",allPara.codeData[0],allPara.codeData[1],allPara.cpuUsage);
 //	USART_Enter();

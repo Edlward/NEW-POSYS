@@ -49,7 +49,7 @@ void TIM2_IRQHandler(void)
   static double acc_sum[GYRO_NUMBER][AXIS_NUMBER];
   static float  temp_sum[GYRO_NUMBER];
   static uint32_t timeCnt=0;
-
+	static int badGyro[AXIS_NUMBER][GYRO_NUMBER]={0};
 	int axis = 0;
 	int gyro = 0;
 	
@@ -94,7 +94,8 @@ void TIM2_IRQHandler(void)
 			double percentages[3][3]={
 			0.33333333,0.33333333,0.33333333,
 			0.33333333,0.33333333,0.33333333,
-			0.33333333,0.33333333,0.33333333	};
+			0.33333333,0.33333333,0.33333333};
+//			0.387132729300339,0.255395342771687,0.357471927927974	};
 			readOrder++;
       timeCnt=0;
 			//取得5ms的原始数据总和的平均数
@@ -130,6 +131,12 @@ void TIM2_IRQHandler(void)
 					/*正常情况小于这个值，没啥用，不正常时，值是1/131=0.0076*/
 					/*满足条件时，把该项变成0*/
 					if(fabs(allPara.GYRORemoveDrift[gyro][axis])<0.01)
+					{
+						badGyro[axis][gyro]++;
+					}
+					else
+						badGyro[axis][gyro]=0;
+					if(badGyro[axis][gyro]>10)
 						percentages[axis][gyro]=0.0;
 				}
 			}
@@ -150,10 +157,11 @@ void TIM2_IRQHandler(void)
 				}
 			}
 				
-			allPara.GYRO_Aver[0]=allPara.GYRORemoveDrift[0][0]*percentages[0][0]+allPara.GYRORemoveDrift[1][0]*percentages[0][1]+allPara.GYRORemoveDrift[2][0]*percentages[0][2];
-			allPara.GYRO_Aver[1]=allPara.GYRORemoveDrift[0][1]*percentages[1][0]+allPara.GYRORemoveDrift[1][1]*percentages[1][1]+allPara.GYRORemoveDrift[2][1]*percentages[1][2];
+//			allPara.GYRO_Aver[0]=allPara.GYRORemoveDrift[0][0]*percentages[0][0]+allPara.GYRORemoveDrift[1][0]*percentages[0][1]+allPara.GYRORemoveDrift[2][0]*percentages[0][2];
+//			allPara.GYRO_Aver[1]=allPara.GYRORemoveDrift[0][1]*percentages[1][0]+allPara.GYRORemoveDrift[1][1]*percentages[1][1]+allPara.GYRORemoveDrift[2][1]*percentages[1][2];
 			allPara.GYRO_Aver[2]=allPara.GYRORemoveDrift[0][2]*percentages[2][0]+allPara.GYRORemoveDrift[1][2]*percentages[2][1]+allPara.GYRORemoveDrift[2][2]*percentages[2][2];
-			
+			//前面的计算，如果真有一个坏了，角速度会突变
+//			allPara.GYRO_Aver[2]=allPara.GYRORemoveDrift[0][2]*0.387132729300339+allPara.GYRORemoveDrift[1][2]*0.255395342771687+allPara.GYRORemoveDrift[2][2]*0.357471927927974;
     }
   }
 	else{

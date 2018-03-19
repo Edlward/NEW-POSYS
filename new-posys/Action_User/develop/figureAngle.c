@@ -55,7 +55,7 @@ int JudgeAcc(void);
 /*最大两秒，如果小于两秒就用现有的数据*/
 #define STATIC_MAX_NUM	200
 #define STATIC_MIN_NUM	20
-
+double kalmanZ=0.0;
 int RoughHandle(void)
 {
   static int ignore=0;
@@ -64,6 +64,7 @@ int RoughHandle(void)
   allPara.GYRO_Real[1]=(allPara.GYRO_Aver[1]);
   allPara.GYRO_Real[2]=(allPara.GYRO_Aver[2]);
 	
+	kalmanZ=KalmanFilterZ(allPara.GYRO_Real[2]);
 	if(allPara.resetFlag)
 		ignore=TIME_STATIC_REAL*200+1;
 	
@@ -101,7 +102,7 @@ void updateAngle(void)
     w[0]=0.f;
   if(fabs(w[1])<0.3f)//单位 °/s
     w[1]=0.f;
-  if(fabs(w[2])<0.3f)//单位 °/s
+  if(fabs(kalmanZ)<0.3f)//单位 °/s
     w[2]=0.f;
 	
 	allPara.Result_Angle[2]+=w[2]*0.005;
@@ -488,24 +489,12 @@ double KalmanFilterZ(double measureData)
   static double P_mid;        //对预测误差的预测
   static double Kk;           //滤波增益系数
   
-  static double Q=0.003;       //系统噪声        
-  double R=(double)(flashData.varXYZ)[2];      //测量噪声 
-  static double IAE_st[50];    //记录的新息
+  static double Q=0.0001;       //系统噪声        
+  double R=0.001;      //测量噪声 
   static double data=0.0;
-  double Cr=0;                //新息的方差
   //令预测值为上一次的真实值
   predict=act_value;
   
-  /* 新息的方差计算 */
-  memcpy(IAE_st,IAE_st+1,196);
-  IAE_st[49]=measureData-predict;
-  
-  Cr=0;
-  for(int i=0;i<50;i++)
-  {
-    Cr=Cr+IAE_st[i]*IAE_st[i];
-  }
-  Cr=Cr/50.0f;
   static uint32_t ignore=0;
   ignore++;
   if(ignore<100){
@@ -514,8 +503,6 @@ double KalmanFilterZ(double measureData)
   }
   else if(ignore==100){
     predict=data/99.0;
-    //USART_OUT_F(predict);
-    //USART_Enter();
   }else
     ignore=101;
   
@@ -529,13 +516,6 @@ double KalmanFilterZ(double measureData)
   
   /* 更新预测误差 */
   P_last=(1-Kk)*P_mid;
-  
-  /* 计算并调整系统噪声 */
-  Q=Kk*Kk*Cr;
-  
-  /* 为提高滤波器的响应速度，减小滞后而设下的阈值 */
-  if(Kk>0.5)
-    act_value=measureData;
   
   return act_value;
 }

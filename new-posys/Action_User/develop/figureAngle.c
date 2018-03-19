@@ -48,7 +48,7 @@ int JudgeAcc(void);
 #define TIME_STATIC					(9)
 #define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #else
-#define TIME_STATIC					(20)
+#define TIME_STATIC					(9)
 #define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #endif
 
@@ -64,7 +64,6 @@ int RoughHandle(void)
   allPara.GYRO_Real[1]=(allPara.GYRO_Aver[1]);
   allPara.GYRO_Real[2]=(allPara.GYRO_Aver[2]);
 	
-	kalmanZ=KalmanFilterZ(allPara.GYRO_Real[2]);
 	if(allPara.resetFlag)
 		ignore=TIME_STATIC_REAL*200+1;
 	
@@ -73,8 +72,9 @@ int RoughHandle(void)
     allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.GYRO_Bais[0]);
     allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.GYRO_Bais[1]);
     allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.GYRO_Bais[2]);
+		kalmanZ=KalmanFilterZ(allPara.GYRO_Real[2]);
 		UpdateBais();
-		if(ignore>(TIME_STATIC_REAL)*200+STATIC_MAX_NUM)
+		if(ignore>(TIME_STATIC_REAL)*200+STATIC_MAX_NUM+100)
 		{
 			ignore=10000;
 			return 1;

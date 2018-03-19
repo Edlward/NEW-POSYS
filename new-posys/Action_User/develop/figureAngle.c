@@ -102,9 +102,13 @@ void updateAngle(void)
     w[0]=0.f;
   if(fabs(w[1])<0.3f)//单位 °/s
     w[1]=0.f;
-  if(fabs(kalmanZ)<0.3f)//单位 °/s
+	#ifdef AUTOCAR
+  if(fabs(kalmanZ)<0.30f)//单位 °/s
     w[2]=0.f;
-	
+	#else
+  if(fabs(kalmanZ)<0.15f)//单位 °/s
+    w[2]=0.f;
+	#endif
 	allPara.Result_Angle[2]+=w[2]*0.005;
 	
 	if(allPara.Result_Angle[2]>180.0)

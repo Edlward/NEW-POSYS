@@ -51,7 +51,7 @@
 
 //#define TEST_SUMMER
 
-#define AUTOCAR
+//#define AUTOCAR
 //#define TESTCAR
 /* Flash Read Protection */
 //#define FLASH_ENCRYP

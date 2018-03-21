@@ -72,7 +72,7 @@ int RoughHandle(void)
 	if(abs(allPara.vell[0])>5||abs(allPara.vell[1])>5)
 		SetCommand(ACCUMULATE);
 	
-  if((GetCommand()&ACCUMULATE)&&ignore>(TIME_STATIC_REAL)*200){
+  if(ignore>(TIME_STATIC_REAL)*200){
     allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.GYRO_Bais[0]);
     allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.GYRO_Bais[1]);
     allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.GYRO_Bais[2]);
@@ -113,7 +113,9 @@ void updateAngle(void)
   if(fabs(kalmanZ)<0.15f)//µ¥Î» ¡ã/s
     w[2]=0.f;
 	#endif
-	allPara.Result_Angle[2]+=w[2]*0.005;
+	
+	if(GetCommand()&ACCUMULATE)
+		allPara.Result_Angle[2]+=w[2]*0.005;
 	
 	if(allPara.Result_Angle[2]>180.0)
 		allPara.Result_Angle[2]-=360.0;

@@ -52,7 +52,6 @@ void init(void)
   TIM_Init(TIM2,999,83,1,0);					//主周期定时5ms
 	
 	SetCommand(HEATING);
-	SetCommand(ACCUMULATE);
   driftCoffecientInit();
 	
 	IWDG_Init(1,5); // 1.5ms

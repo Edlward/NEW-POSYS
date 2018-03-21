@@ -51,7 +51,7 @@
 
 //#define TEST_SUMMER
 
-//#define AUTOCAR
+#define AUTOCAR
 //#define TESTCAR
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
@@ -191,6 +191,8 @@ typedef struct{
 	double posy;
 	
 	uint16_t codeData[2];
+	
+	int vell[2];
 	
   uint16_t data_last[2];
 	

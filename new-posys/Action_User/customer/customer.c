@@ -54,19 +54,27 @@ void DataSend(void)
 	valSend.val=(float)allPara.GYRO_Real[2];
   memcpy(tdata+22,valSend.data,4);
 
+
+//	
+	#ifdef TEST_SUMMER
 //	USART_OUT_F((allPara.GYRO_Temperature[0]+allPara.GYRO_Temperature[1]+allPara.GYRO_Temperature[2])/3.f);
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[0][2]);
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[1][2]);
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[2][2]);
-//	USART_OUT_F(allPara.GYRO_Real[2]);
-//	USART_OUT_F(allPara.Result_Angle[2]);
-//	USART_OUT_F(allPara.GYRO_Bais[2]);
+	USART_OUT_F(allPara.GYRO_Real[2]);
+	USART_OUT_F(allPara.Result_Angle[2]);
+	USART_OUT_F(allPara.GYRO_Bais[2]);
+	USART_OUT_F(allPara.posx);
+	USART_OUT_F(allPara.posy);
+//	USART_OUT_F(allPara.vell[0]);
+//	USART_OUT_F(allPara.vell[1]);
 //	USART_OUT_F(allPara.isStatic);
-//	USART_OUT(USART1,"%d\t%d\t%d",allPara.codeData[0],allPara.codeData[1],allPara.cpuUsage);
-//	USART_Enter();
-//	
+	//USART_OUT(USART1,"%d\t%d\t%d",allPara.codeData[0],allPara.codeData[1],allPara.cpuUsage);
+	USART_Enter();
+	#else
 	for(i=0;i<28;i++)
    USART_SendData(USART1,tdata[i]);
+	#endif
 }
 void debugsend2(float a,float b,float c,float d,float e)
 {
@@ -142,7 +150,7 @@ void USART1_IRQHandler(void)
     data=USART_ReceiveData(USART1);
     buffer[bufferI]=data;
     bufferI++;
-		if(bufferI==20)
+		if(bufferI>=20)
 			bufferI=0;
 //		if(data=='P')
 //		{
@@ -163,7 +171,12 @@ void USART1_IRQHandler(void)
 
 void AT_CMD_Judge(void){
   if((bufferI == 4) && strncmp(buffer, "AT\r\n", 4)==0)//AT    
+	{
     atCommand=2;
+    bufferInit();
+		SetCommand(ACCUMULATE);
+		USART_OUT(USART1,"OK");
+	}
   else if((bufferI == 10) && strncmp(buffer, "AT+begin\r\n", 10)==0)//AT    
     atCommand=2;
 	else if((bufferI == 13) && strncmp(buffer, "AT+stopSend\r\n", 13)==0)//none
@@ -203,7 +216,10 @@ void AT_CMD_Judge(void){
 //  else if((bufferI == 10) && strncmp(buffer, "AT+fault\r\n", 10)==0)//AT    
 //    atCommand=20;
   else 
+	{
     atCommand=666;
+    bufferInit();
+	}
   
 }
 
@@ -215,17 +231,16 @@ void AT_CMD_Handle(void){
 		case 0:
 			break;
 		case 1:
-			USART_OUT(USART1,"OK\r\n");
 			break;
 		case 2:
 			SetCommand(ACCUMULATE);
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART1,"OK");
 			break;
 		case 3:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART1,"OK");
 			break;
 		case 4:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART1,"OK");
 			break;
 		case 5:
 			USART_OUT_F(allPara.GYRO_Temperature[0]);
@@ -238,26 +253,26 @@ void AT_CMD_Handle(void){
 			break;
 		case 6:
 			SetCommand(~ACCUMULATE);
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART1,"OK");
 			break;
 		case 7:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART1,"OK");
 			SetCommand(CORRECT);
 			break;
 		case 8:
 			SetCommand(~CORRECT);
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART1,"OK");
 			break;
 		case 9:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART1,"OK");
 			TempTablePrintf();
 			break;
 		case 10:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART1,"OK");
 			SetCommand(STATIC);
 			break;
 		case 11:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART1,"OK");
 			union{
 			float   val;
 			uint8_t data[4];
@@ -318,7 +333,7 @@ void AT_CMD_Handle(void){
 			break;
 			//设置陀螺仪是否用标准的温飘数据 如AT+G1A11
 		case 14:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART1,"OK");
 			/*不结合之前的数据*/
 			if(buffer[7]=='1')
 				*(flashData.chartMode+(buffer[4]-'1')*AXIS_NUMBER+(buffer[6]-'1'))=1;
@@ -334,7 +349,7 @@ void AT_CMD_Handle(void){
 			break;
 			//设置陀螺仪测量范围 如AT+G10
 		case 15:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART1,"OK");
 			if(buffer[5]=='1')
 				*(flashData.scaleMode+buffer[4]-'1')=1;
 			else if(buffer[5]=='0')
@@ -348,7 +363,7 @@ void AT_CMD_Handle(void){
 			break;
 		//	AT+G =  设置温度系数选择范围
 		case 16:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART1,"OK");
 			for(int i=7;i<12;i++){
 				if(buffer[i]=='1')
 					*(flashData.chartSelect+(buffer[4]-'1')*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+(buffer[6]-'1')*TEMP_SAMPLE_NUMBER+i-7)=1;
@@ -363,15 +378,15 @@ void AT_CMD_Handle(void){
 			PrintchartSelect();
 			break;
 		case 17:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART1,"OK");
 			SetParaDefault();
 			break;
 		case 18:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART1,"OK");
 			SetCommand(HEATING);
 			break;
 		case 19:
-			USART_OUT(USART1,"OK\r\n");
+			USART_OUT(USART1,"OK");
 			SetCommand(~HEATING);
 			break;
 		case 20:

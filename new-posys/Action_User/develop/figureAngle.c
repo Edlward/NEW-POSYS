@@ -45,7 +45,7 @@ int JudgeAcc(void);
 */
 
 #ifdef AUTOCAR
-#define TIME_STATIC					(9)
+#define TIME_STATIC					(4)
 #define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #else
 #define TIME_STATIC					(9)
@@ -53,8 +53,8 @@ int JudgeAcc(void);
 #endif
 
 /*最大两秒，如果小于两秒就用现有的数据*/
-#define STATIC_MAX_NUM	200
-#define STATIC_MIN_NUM	20
+#define STATIC_MAX_NUM	500
+#define STATIC_MIN_NUM	300
 double kalmanZ=0.0;
 int RoughHandle(void)
 {
@@ -69,21 +69,27 @@ int RoughHandle(void)
 	
 	ignore++;
 	
-	if(abs(allPara.vell[0])>5||abs(allPara.vell[1])>5)
-		SetCommand(ACCUMULATE);
-	
   if(ignore>(TIME_STATIC_REAL)*200){
-    allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.GYRO_Bais[0]);
-    allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.GYRO_Bais[1]);
-    allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.GYRO_Bais[2]);
-		kalmanZ=KalmanFilterZ(allPara.GYRO_Real[2]);
-		UpdateBais();
-		if(ignore>(TIME_STATIC_REAL)*200+STATIC_MAX_NUM+100)
+		if(UpdateBais())
+		if((GetCommand()&ACCUMULATE))
 		{
-			ignore=10000;
+			allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.GYRO_Bais[0]);
+			allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.GYRO_Bais[1]);
+			allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.GYRO_Bais[2]);
+			kalmanZ=KalmanFilterZ(allPara.GYRO_Real[2]);
 			return 1;
 		}
-		return 0;
+		else
+			return 0;
+		
+		
+//		if(ignore>(TIME_STATIC_REAL)*200+STATIC_MAX_NUM+100)
+//		{
+////			if(abs(allPara.vell[0])>5||abs(allPara.vell[1])>5)
+////				SetCommand(ACCUMULATE);
+//			ignore=10000;
+//			return 1;
+//		}
   }else{
 		 return 0;
 	}
@@ -107,7 +113,7 @@ void updateAngle(void)
   if(fabs(w[1])<0.3f)//单位 °/s
     w[1]=0.f;
 	#ifdef AUTOCAR
-  if(fabs(kalmanZ)<0.30f)//单位 °/s
+  if(fabs(kalmanZ)<0.20f)//单位 °/s
     w[2]=0.f;
 	#else
   if(fabs(kalmanZ)<0.15f)//单位 °/s
@@ -198,19 +204,31 @@ void JudgeStatic(void)
 	codes0[STATIC_ARRAY_NUM-1]=allPara.codeData[0];
 	codes1[STATIC_ARRAY_NUM-1]=allPara.codeData[1];
 
-	if((abs(FindMin(codes0)-FindMax(codes0))<=1&&abs(FindMin(codes1)-FindMax(codes1))<=1)&&(fabs(allPara.GYRO_Real[2])<0.11f||key))
+	if((abs(FindMin(codes0)-FindMax(codes0))<=1&&abs(FindMin(codes1)-FindMax(codes1))<=1)&&(fabs(kalmanZ)<0.10f||key))
 		allPara.isStatic=1;
 	else
 		allPara.isStatic=0;
 }
 
-void UpdateBais(void)
+uint8_t UpdateBais(void)
 {  
 	static int index=0;
   static double data[AXIS_NUMBER][STATIC_MAX_NUM]={0.f};    	//数据列
+	static int cnt=0;
 	
-	/*如果判断成功静止，进行积累数据*/
-	if(allPara.isStatic&&!(key==1&&index==STATIC_MAX_NUM))
+	uint8_t returnValue=0;
+	
+	
+	if(cnt<=STATIC_MIN_NUM)
+		cnt++;
+	
+	if(cnt>STATIC_MIN_NUM)
+		returnValue=1;
+	else
+		returnValue=0;
+	
+	/*如果没有要积分，进行积累数据*/
+	if((!(GetCommand()&ACCUMULATE))||(cnt<=STATIC_MIN_NUM))
 	{
 		index++;
 		/*如果已存数据小于等于最大长度，顺序一个一个存储*/
@@ -259,6 +277,8 @@ void UpdateBais(void)
 				data[axis][i]=0.0;
 		index=0;
 	}
+	
+	return returnValue;
 }
 
 
@@ -495,11 +515,11 @@ double KalmanFilterZ(double measureData)
   static double act_value=0;  //实际值
   double predict;             //预测值
   
-  static double P_last=0.01;   //上一次的预测误差
+  static double P_last=0.00001;   //上一次的预测误差
   static double P_mid;        //对预测误差的预测
   static double Kk;           //滤波增益系数
   
-  static double Q=0.0001;       //系统噪声        
+  static double Q=0.00001;       //系统噪声        
   double R=0.001;      //测量噪声 
   static double data=0.0;
   //令预测值为上一次的真实值
@@ -509,7 +529,7 @@ double KalmanFilterZ(double measureData)
   ignore++;
   if(ignore<100){
     data+=measureData;
-    return 0.0;
+    return measureData;
   }
   else if(ignore==100){
     predict=data/99.0;

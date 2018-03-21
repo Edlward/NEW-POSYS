@@ -426,11 +426,6 @@
               <FileType>1</FileType>
               <FilePath>..\Action_User\customer\customer.c</FilePath>
             </File>
-            <File>
-              <FileName>ADXRS453Z.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Action_User\baseConfig\ADXRS453Z.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>

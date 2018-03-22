@@ -18,8 +18,8 @@ void MEMS_Configure(int gyroNum)
   uint8_t registers[REGISTERS]={
     ICM20608G_PWR_MGMT_1,0,/*10011 Wake up chip from sleep mode,enable temperature sensor,select pll	*/
     ICM20608G_GYRO_CONFIG,0,/* gyro range:±500dps, Used to bypass DLPF				*/
-    ICM20608G_CONFIG,1,/*  DLPF低通滤波器的设置	低通滤波器截止频率为176Hz 根据↓*/
-    ICM20608G_SMPLRT_DIV,0,/* 设置采样速率为1kHz		*/
+    ICM20608G_CONFIG,0,/*  DLPF低通滤波器的设置	低通滤波器截止频率为176Hz 根据↓*/
+    ICM20608G_SMPLRT_DIV,7,/* 设置采样速率为1kHz		*/
     ICM20608G_ACCEL_CONFIG,0,/* accel:2g																	*/
     ICM20608G_ACCEL_CONFIG2,2,/*000110 DLPF:5.1	低通滤波器的设置	 不能设置低功耗模式的均值滤波，否则数字不对	*/
     ICM20608G_SIGNAL_PATH_RESET,0,/* Use SIG_COND_RST to clear sensor registers.*/
@@ -55,20 +55,20 @@ void MEMS_Configure(int gyroNum)
     uint8_t data=0xFF;
     do{
       i++;
-			switch(*(flashData.scaleMode+gyroNum))
-			{
-				/*250dps*/
-				case 0:
-					registers[5]=0;
-					break;
-				/*500dps*/
-				case 1:
-					registers[5]=8;
-					break;
-				default:
-					registers[5]=0;
-					break;
-			}
+//			switch(*(flashData.scaleMode+gyroNum))
+//			{
+//				/*250dps*/
+//				case 0:
+//					registers[5]=0;
+//					break;
+//				/*500dps*/
+//				case 1:
+//					registers[5]=8;
+//					break;
+//				default:
+//					registers[5]=0;
+//					break;
+//			}
 			switch(gyroNum)
 			{
 				case 0:
@@ -129,49 +129,49 @@ void icm_update_gyro_rate(int gyroNum)
   /*Y的原始角速度值*/
   data1[2] = (raw[4]<<8) | raw[5];
   
-	switch(*(flashData.scaleMode+gyroNum))
-	{
-		case 0:
-			#ifdef TESTCAR
-					gyro[0] = -data1[1]/131.0;
-					gyro[1] = -data1[0]/131.0;
-					gyro[2] = -data1[2]/131.0;
-			#else
-				#ifdef AUTOCAR
-					gyro[0] = -data1[1]/130.901407488835;
-					gyro[1] = -data1[0]/130.901407488835;
-					gyro[2] = -data1[2]/130.901407488835;
-				#else
-					gyro[0] = -data1[1]/131.524243090403;
-					gyro[1] = -data1[0]/131.524243090403;
-					gyro[2] = -data1[2]/131.524243090403;
-				#endif
-			#endif
-			break;
-		case 1:
-			gyro[0] = -data1[1]/65.5f;
-			gyro[1] = -data1[0]/65.5f;
-			gyro[2] = -data1[2]/65.5f;
-			break;
-		default:
-			#ifdef TESTCAR
-					gyro[0] = -data1[1]/131.0;
-					gyro[1] = -data1[0]/131.0;
-					gyro[2] = -data1[2]/131.0;
-			#else
-				#ifdef AUTOCAR
-					gyro[0] = -data1[1]/131.170291536093;
-					gyro[1] = -data1[0]/131.170291536093;
-					gyro[2] = -data1[2]/131.170291536093;
-				#else
-					gyro[0] = -data1[1]/131.524243090403;
-					gyro[1] = -data1[0]/131.524243090403;
-					gyro[2] = -data1[2]/131.524243090403;
-				#endif
-			#endif
+//	switch(*(flashData.scaleMode+gyroNum))
+//	{
+//		case 0:
+//			#ifdef TESTCAR
+//					gyro[0] = -data1[1]/131.0;
+//					gyro[1] = -data1[0]/131.0;
+//					gyro[2] = -data1[2]/131.0;
+//			#else
+//				#ifdef AUTOCAR
+					gyro[0] = -data1[1]/131.140172004891;
+					gyro[1] = -data1[0]/131.140172004891;
+					gyro[2] = -data1[2]/131.140172004891;
+//				#else
+//					gyro[0] = -data1[1]/131.524243090403;
+//					gyro[1] = -data1[0]/131.524243090403;
+//					gyro[2] = -data1[2]/131.524243090403;
+//				#endif
+//			#endif
+//			break;
+//		case 1:
+//			gyro[0] = -data1[1]/65.4507037444175;
+//			gyro[1] = -data1[0]/65.4507037444175;
+//			gyro[2] = -data1[2]/65.4507037444175;
+//			break;
+//		default:
+//			#ifdef TESTCAR
+//					gyro[0] = -data1[1]/131.0;
+//					gyro[1] = -data1[0]/131.0;
+//					gyro[2] = -data1[2]/131.0;
+//			#else
+//				#ifdef AUTOCAR
+//					gyro[0] = -data1[1]/131.170291536093;
+//					gyro[1] = -data1[0]/131.170291536093;
+//					gyro[2] = -data1[2]/131.170291536093;
+//				#else
+//					gyro[0] = -data1[1]/131.524243090403;
+//					gyro[1] = -data1[0]/131.524243090403;
+//					gyro[2] = -data1[2]/131.524243090403;
+//				#endif
+//			#endif
 
-			break;
-  }
+//			break;
+//  }
 	float middlePerson = 0.f;
 	switch(gyroNum)
 	{

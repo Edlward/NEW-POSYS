@@ -63,9 +63,9 @@ void DataSend(void)
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[2][2]);
 	USART_OUT_F(allPara.GYRO_Real[2]);
 	USART_OUT_F(allPara.Result_Angle[2]);
-	USART_OUT_F(allPara.GYRO_Bais[2]);
-	USART_OUT_F(allPara.posx);
-	USART_OUT_F(allPara.posy);
+//	USART_OUT_F(allPara.GYRO_Bais[2]);
+//	USART_OUT_F(allPara.posx);
+//	USART_OUT_F(allPara.posy);
 //	USART_OUT_F(allPara.vell[0]);
 //	USART_OUT_F(allPara.vell[1]);
 //	USART_OUT_F(allPara.isStatic);
@@ -172,9 +172,26 @@ void USART1_IRQHandler(void)
 void AT_CMD_Judge(void){
   if((bufferI == 4) && strncmp(buffer, "AT\r\n", 4)==0)//AT    
 	{
-    atCommand=2;
     bufferInit();
 		SetCommand(ACCUMULATE);
+		USART_OUT(USART1,"OK");
+	}
+	else if((bufferI == 4) && strncmp(buffer, "AS\r\n", 4)==0)//AT    
+	{
+    bufferInit();
+		SetCommand(STATIC);
+		USART_OUT(USART1,"OK");
+	}
+	else if((bufferI == 4) && strncmp(buffer, "AB\r\n", 4)==0)//AT    
+	{
+    bufferInit();
+		SetCommand(~STATIC);
+		USART_OUT(USART1,"OK");
+	}
+	else if((bufferI == 4) && strncmp(buffer, "AR\r\n", 4)==0)//AT    
+	{
+    bufferInit();
+		allPara.Result_Angle[2]=0.0;
 		USART_OUT(USART1,"OK");
 	}
   else if((bufferI == 10) && strncmp(buffer, "AT+begin\r\n", 10)==0)//AT    

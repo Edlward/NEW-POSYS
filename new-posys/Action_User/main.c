@@ -54,9 +54,11 @@ void init(void)
 	}
 	
   TIM_Init(TIM2,999,83,1,0);					//主周期定时5ms
-	
-//	SetCommand(ACCUMULATE);
+	#ifdef TEST_SUMMER
+	SetCommand(ACCUMULATE);
+	#endif
 	SetCommand(HEATING);
+	SetCommand(~STATIC);
   driftCoffecientInit();
 
 	

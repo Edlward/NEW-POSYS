@@ -45,7 +45,7 @@ int JudgeAcc(void);
 */
 
 #ifdef AUTOCAR
-#define TIME_STATIC					(4)
+#define TIME_STATIC					(10)
 #define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #else
 #define TIME_STATIC					(9)
@@ -80,7 +80,10 @@ int RoughHandle(void)
 			return 1;
 		}
 		else
+		{
+			ignore=ignore;
 			return 0;
+		}
 		
 		
 //		if(ignore>(TIME_STATIC_REAL)*200+STATIC_MAX_NUM+100)
@@ -93,6 +96,7 @@ int RoughHandle(void)
   }else{
 		 return 0;
 	}
+	return 0;
 }
 
 void updateAngle(void)
@@ -113,7 +117,7 @@ void updateAngle(void)
   if(fabs(w[1])<0.3f)//单位 °/s
     w[1]=0.f;
 	#ifdef AUTOCAR
-  if(fabs(kalmanZ)<0.20f)//单位 °/s
+  if(((fabs(allPara.GYRO_Real[2])<0.05f)&&(GetCommand()&STATIC))||(abs(allPara.vell[0])<=2&&abs(allPara.vell[1])<=2))//单位 °/s
     w[2]=0.f;
 	#else
   if(fabs(kalmanZ)<0.15f)//单位 °/s
@@ -448,43 +452,30 @@ double safe_atan2(double x,double y)
 }
 
 /*算法中 H,φ,Γ均为一*/
+/*算法中 H,φ,Γ均为一*/
 double KalmanFilterZ1(double measureData)
 {
   static double act_value=0;  //实际值
   double predict;             //预测值
   
-  static double P_last=0.01;   //上一次的预测误差
+  static double P_last=0.00001;   //上一次的预测误差
   static double P_mid;        //对预测误差的预测
   static double Kk;           //滤波增益系数
   
-  static double Q=0.003;       //系统噪声        
-  double R=(double)(flashData.varXYZ)[2];      //测量噪声 
-  static double IAE_st[50];    //记录的新息
+  static double Q=0.00001;       //系统噪声        
+  double R=0.001;      //测量噪声 
   static double data=0.0;
-  double Cr=0;                //新息的方差
   //令预测值为上一次的真实值
   predict=act_value;
   
-  /* 新息的方差计算 */
-  memcpy(IAE_st,IAE_st+1,196);
-  IAE_st[49]=measureData-predict;
-  
-  Cr=0;
-  for(int i=0;i<50;i++)
-  {
-    Cr=Cr+IAE_st[i]*IAE_st[i];
-  }
-  Cr=Cr/50.0f;
   static uint32_t ignore=0;
   ignore++;
   if(ignore<100){
     data+=measureData;
-    return 0.0;
+    return measureData;
   }
   else if(ignore==100){
     predict=data/99.0;
-    //USART_OUT_F(predict);
-    //USART_Enter();
   }else
     ignore=101;
   
@@ -498,13 +489,6 @@ double KalmanFilterZ1(double measureData)
   
   /* 更新预测误差 */
   P_last=(1-Kk)*P_mid;
-  
-  /* 计算并调整系统噪声 */
-  Q=Kk*Kk*Cr;
-  
-  /* 为提高滤波器的响应速度，减小滞后而设下的阈值 */
-  if(Kk>0.5)
-    act_value=measureData;
   
   return act_value;
 }

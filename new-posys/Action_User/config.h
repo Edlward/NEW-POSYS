@@ -87,7 +87,7 @@
 #define ACCUMULATE 								0X02
 #define STATIC										0X04
 #define HEATING										0X08
-
+#define USE_BASE									0X10
 
 /* ICM20608G ÍÓÂÝÒÇ¼Ä´æÆ÷µØÖ·--------------*/
 #define ICM20608G_WHO_AM_I							0x75

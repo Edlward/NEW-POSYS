@@ -84,10 +84,10 @@
 */
 
 #define CORRECT    								0X01
-#define ACCUMULATE 								0X02
-#define STATIC										0X04
+#define START_COMPETE 						0X02
+#define NULL_FLAG									0X04
 #define HEATING										0X08
-#define USE_BASE									0X10
+#define STATIC_FORCE							0X10
 
 /* ICM20608G 陀螺仪寄存器地址--------------*/
 #define ICM20608G_WHO_AM_I							0x75
@@ -176,11 +176,13 @@ typedef struct{
 	/*最终确定的三轴角度*/
 	double Result_Angle[AXIS_NUMBER];
   
-	uint16_t codeData[2];
+	uint32_t codeData[2];
 	
-  uint16_t data_last[2];
+  uint32_t data_last[2];
 	
 	int vell[2];
+	
+  uint32_t flag;
 }DataSave_t;
 
 
@@ -219,8 +221,6 @@ typedef struct{
 	int cpuUsage;
 	
 	uint32_t resetTime;
-	
-	uint32_t isStatic;
 	
 	int resetFlag;
 }AllPara_t;

@@ -70,8 +70,8 @@ int RoughHandle(void)
 	ignore++;
 	
   if(ignore>(TIME_STATIC_REAL)*200){
+		//如果零飘数据采集完毕
 		if(UpdateBais())
-		if((GetCommand()&ACCUMULATE))
 		{
 			allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.sDta.GYRO_Bais[0]);
 			allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.sDta.GYRO_Bais[1]);
@@ -89,21 +89,20 @@ int RoughHandle(void)
 //		if(ignore>(TIME_STATIC_REAL)*200+STATIC_MAX_NUM+100)
 //		{
 ////			if(abs(allPara.sDta.vell[0])>5||abs(allPara.sDta.vell[1])>5)
-////				SetCommand(ACCUMULATE);
+////				SetFlag(START_COMPETE);
 //			ignore=10000;
 //			return 1;
 //		}
   }else{
 		 return 0;
 	}
-	return 0;
 }
 
 void updateAngle(void)
 {	
 //	float maxStaticValue=*(flashData.minValue);
 //	
-//  if((GetCommand()&STATIC)&&(allPara.GYRO_Real[2]<0.2f)){
+//  if((allPara.sDta.flag&STATIC)&&(allPara.GYRO_Real[2]<0.2f)){
 //		maxStaticValue=0.15f;
 //	}
 	double w[3]={0.0};
@@ -117,15 +116,14 @@ void updateAngle(void)
   if(fabs(w[1])<0.3f)//单位 °/s
     w[1]=0.f;
 	#ifdef AUTOCAR
-  if(((fabs(allPara.GYRO_Real[2])<0.05f)&&(GetCommand()&STATIC))||(abs(allPara.sDta.vell[0])<=2&&abs(allPara.sDta.vell[1])<=2))//单位 °/s
+  if(allPara.sDta.flag&STATIC_FORCE)//||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1&&fabs(kalmanZ)<0.005))//单位 °/s
     w[2]=0.f;
 	#else
   if(fabs(kalmanZ)<0.15f)//单位 °/s
     w[2]=0.f;
 	#endif
 	
-	if(GetCommand()&ACCUMULATE)
-		allPara.sDta.Result_Angle[2]+=w[2]*0.005;
+	allPara.sDta.Result_Angle[2]+=w[2]*0.005;
 	
 	if(allPara.sDta.Result_Angle[2]>180.0)
 		allPara.sDta.Result_Angle[2]-=360.0;
@@ -194,7 +192,6 @@ uint16_t FindMin(uint16_t codes[STATIC_ARRAY_NUM])
 	return Min;
 }
 
-static uint8_t key = 1;
 void JudgeStatic(void)
 {
 	static uint16_t codes0[STATIC_ARRAY_NUM];
@@ -208,10 +205,13 @@ void JudgeStatic(void)
 	codes0[STATIC_ARRAY_NUM-1]=allPara.sDta.codeData[0];
 	codes1[STATIC_ARRAY_NUM-1]=allPara.sDta.codeData[1];
 
-	if((abs(FindMin(codes0)-FindMax(codes0))<=1&&abs(FindMin(codes1)-FindMax(codes1))<=1)&&(fabs(kalmanZ)<0.10f||key))
-		allPara.isStatic=1;
-	else
-		allPara.isStatic=0;
+	
+	//如果条件真的恶劣，那就说明强制静止有错
+	if(abs(FindMin(codes0)-FindMax(codes0))>=3||abs(FindMin(codes1)-FindMax(codes1))>=3||allPara.GYRO_Real[2]>0.5f)
+	{
+		SetFlag(~STATIC_FORCE);
+	}
+
 }
 
 uint8_t UpdateBais(void)
@@ -233,8 +233,12 @@ uint8_t UpdateBais(void)
 	else
 		returnValue=0;
 	
-	/*如果没有要积分，进行积累数据*/
-	if((!(GetCommand()&ACCUMULATE))||(cnt<=STATIC_MIN_NUM))
+	/*条件一	比赛还没开始*/
+	if((!(allPara.sDta.flag&START_COMPETE))\
+		/*条件二	收集的数还很少*/
+		||(cnt<=STATIC_MIN_NUM)\
+		/*条件三	强制进入静止状态，并且条件还好（后续有判断）*/
+		||(allPara.sDta.flag&STATIC_FORCE))
 	{
 		index++;
 		/*如果已存数据小于等于最大长度，顺序一个一个存储*/
@@ -268,13 +272,13 @@ uint8_t UpdateBais(void)
 		/*计算总值*/
 		if(index>=STATIC_MIN_NUM)
 		{
-			key=0;
 			for(int axis=0;axis<AXIS_NUMBER;axis++)
 			{
 				for(int i=0;i<index-1;i++)
 				{
 					sum[axis]=sum[axis]+data[axis][i];
 				}
+				if(fabs(sum[axis]/(index-1)-allPara.sDta.GYRO_Bais[axis])<0.005&&allPara.sDta.GYRO_Bais[axis]!=0.0)
 				allPara.sDta.GYRO_Bais[axis]=sum[axis]/(index-1);
 			}
 		}

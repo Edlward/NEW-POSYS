@@ -55,14 +55,16 @@ void init(void)
 	
   TIM_Init(TIM2,999,83,1,0);					//主周期定时5ms
 	#ifdef TEST_SUMMER
-	SetCommand(ACCUMULATE);
+	SetFlag(START_COMPETE);
 	#endif
-	SetCommand(HEATING);
-	SetCommand(~STATIC);
-	if(allPara.resetFlag)
-		SetCommand(ACCUMULATE);
+	
+	//只有第一次启动时才初始化状态量
+	if(!allPara.resetFlag)
+	{
+		SetFlag(HEATING);
+	}
+	
   driftCoffecientInit();
-
 	
 	IWDG_Init(1,5); // 1.5ms
 	
@@ -94,8 +96,8 @@ int main(void)
 			if(isnan(allPara.sDta.Result_Angle[2])||isnan(allPara.GYRO_Real[2]))
 				;
 			AT_CMD_Handle();
-      if(!(GetCommand()&CORRECT)){
-				if(GetCommand()&HEATING)
+      if(!(allPara.sDta.flag&CORRECT)){
+				if(allPara.sDta.flag&HEATING)
 				{
 					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
 						temp_pid_ctr(gyro,allPara.sDta.GYRO_TemperatureAim[gyro]);
@@ -110,8 +112,11 @@ int main(void)
         //计算角度 
         if(RoughHandle())
 				{
-          updateAngle();
-          calculatePos();
+					if((allPara.sDta.flag&START_COMPETE))
+					{
+						updateAngle();
+						calculatePos();
+					}
 					DataSend();
 				}
 			}

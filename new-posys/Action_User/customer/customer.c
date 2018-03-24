@@ -164,19 +164,19 @@ void AT_CMD_Judge(void){
   if((bufferI == 4) && strncmp(buffer, "AT\r\n", 4)==0)//AT    
 	{
     bufferInit();
-		SetCommand(ACCUMULATE);
+		SetFlag(START_COMPETE);
 		USART_OUT(USART1,"OK");
 	}
 	else if((bufferI == 4) && strncmp(buffer, "AS\r\n", 4)==0)//AT    
 	{
     bufferInit();
-		SetCommand(STATIC);
+		SetFlag(STATIC_FORCE);
 		USART_OUT(USART1,"OK");
 	}
 	else if((bufferI == 4) && strncmp(buffer, "AB\r\n", 4)==0)//AT    
 	{
     bufferInit();
-		SetCommand(~STATIC);
+		SetFlag(~STATIC_FORCE);
 		USART_OUT(USART1,"OK");
 	}
 	else if((bufferI == 4) && strncmp(buffer, "AR\r\n", 4)==0)//AT    
@@ -198,16 +198,8 @@ void AT_CMD_Judge(void){
 		USART_OUT(USART1,"OK");
 		#endif
 	}
-  else if((bufferI == 10) && strncmp(buffer, "AT+begin\r\n", 10)==0)//AT    
-    atCommand=2;
-	else if((bufferI == 13) && strncmp(buffer, "AT+stopSend\r\n", 13)==0)//none
-    atCommand=3;
-	else if((bufferI == 14) && strncmp(buffer, "AT+beginSend\r\n", 14)==0)//none
-    atCommand=4;
 	else if((bufferI == 14) && strncmp(buffer, "AT+printData\r\n", 14)==0)
     atCommand=5;
-  else if((bufferI == 9) && strncmp(buffer, "AT+stop\r\n", 9)==0)//AT    
-    atCommand=6;
   else if((bufferI == 10) && strncmp(buffer, "AT+reset\r\n", 10)==0)//AT    
     atCommand=7;
   else if((bufferI == 8) && strncmp(buffer, "AT+set\r\n", 8)==0)//AT    
@@ -251,18 +243,6 @@ void AT_CMD_Handle(void){
 	{
 		case 0:
 			break;
-		case 1:
-			break;
-		case 2:
-			SetCommand(ACCUMULATE);
-			USART_OUT(USART1,"OK");
-			break;
-		case 3:
-			USART_OUT(USART1,"OK");
-			break;
-		case 4:
-			USART_OUT(USART1,"OK");
-			break;
 		case 5:
 			USART_OUT_F(allPara.GYRO_Temperature[0]);
 			USART_OUT_F(allPara.GYRO_Temperature[1]);
@@ -272,25 +252,9 @@ void AT_CMD_Handle(void){
 			USART_OUT_F(allPara.sDta.GYRO_Aver[2]);
 			USART_Enter();
 			break;
-		case 6:
-			SetCommand(~ACCUMULATE);
-			USART_OUT(USART1,"OK");
-			break;
-		case 7:
-			USART_OUT(USART1,"OK");
-			SetCommand(CORRECT);
-			break;
-		case 8:
-			SetCommand(~CORRECT);
-			USART_OUT(USART1,"OK");
-			break;
 		case 9:
 			USART_OUT(USART1,"OK");
 			TempTablePrintf();
-			break;
-		case 10:
-			USART_OUT(USART1,"OK");
-			SetCommand(STATIC);
 			break;
 		case 11:
 			USART_OUT(USART1,"OK");
@@ -362,7 +326,7 @@ void AT_CMD_Handle(void){
 			else if(buffer[7]=='0')
 				*(flashData.chartMode+(buffer[4]-'1')*AXIS_NUMBER+(buffer[6]-'1'))=0;
 			else
-				USART_OUT(USART1,"mode command error\r\n");
+				USART_OUT(USART1,"mode allPara.sDta.flag error\r\n");
 			USART_OUT(USART1,"writing \r\n");
 			Flash_Write(GetFlashArr(),TempTable_Num);
 			USART_OUT(USART1,"write finished\r\n");
@@ -376,7 +340,7 @@ void AT_CMD_Handle(void){
 			else if(buffer[5]=='0')
 				*(flashData.scaleMode+buffer[4]-'1')=0;
 			else
-				USART_OUT(USART1,"(flashData.scaleMode) command error\r\n");
+				USART_OUT(USART1,"(flashData.scaleMode) allPara.sDta.flag error\r\n");
 			USART_OUT(USART1,"writing\r\n");
 			Flash_Write(GetFlashArr(),TempTable_Num);
 			USART_OUT(USART1,"write finished\r\n");
@@ -404,14 +368,14 @@ void AT_CMD_Handle(void){
 			break;
 		case 18:
 			USART_OUT(USART1,"OK");
-			SetCommand(HEATING);
+			SetFlag(HEATING);
 			break;
 		case 19:
 			USART_OUT(USART1,"OK");
-			SetCommand(~HEATING);
+			SetFlag(~HEATING);
 			break;
 		case 20:
-			SetCommand(~HEATING);
+			SetFlag(~HEATING);
 			for(int i=80000;i<100000;i++)
 				hardFaultMaker[i]=100;
 		hardFaultMaker[0]=hardFaultMaker[0];
@@ -424,37 +388,27 @@ void AT_CMD_Handle(void){
 	bufferInit();
 }
 
-static uint8_t command=0;
-void SetCommand(int val){
+void SetFlag(int val){
   switch(val){
-  case CORRECT:
-    command|=CORRECT;
+  case START_COMPETE:
+    allPara.sDta.flag|=START_COMPETE;
     break;
-  case ACCUMULATE:
-    command|=ACCUMULATE;
-    break;
-  case STATIC:
-    command|=STATIC;
+  case ~START_COMPETE:
+    allPara.sDta.flag&=~START_COMPETE;
     break;
 	case HEATING:
-    command|=HEATING;
+    allPara.sDta.flag|=HEATING;
 		break;
-  case ~CORRECT:
-    command&=~CORRECT;
-    break;
-  case ~ACCUMULATE:
-    command&=~ACCUMULATE;
-    break;
-  case ~STATIC:
-    command&=~STATIC;
-    break;
   case ~HEATING:
-    command&=~HEATING;
+    allPara.sDta.flag&=~HEATING;
+    break;
+	case STATIC_FORCE:
+    allPara.sDta.flag|=STATIC_FORCE;
+		break;
+  case ~STATIC_FORCE:
+    allPara.sDta.flag&=~STATIC_FORCE;
     break;
   }
-}
-uint8_t GetCommand(void){
-  return command;
 }
 
 void SetParaDefault(void)

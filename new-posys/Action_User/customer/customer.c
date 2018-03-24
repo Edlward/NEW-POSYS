@@ -36,19 +36,19 @@ void DataSend(void)
   tdata[26]=0x0a;
   tdata[27]=0x0d;
 	
-	valSend.val=(float)allPara.Result_Angle[2];
+	valSend.val=(float)allPara.sDta.Result_Angle[2];
   memcpy(tdata+2,valSend.data,4);
 	
-	valSend.val=(float)allPara.vellx;
+	valSend.val=(float)allPara.sDta.vellx;
   memcpy(tdata+6,valSend.data,4);
 	
-	valSend.val=(float)allPara.velly;
+	valSend.val=(float)allPara.sDta.velly;
   memcpy(tdata+10,valSend.data,4);
 	
-	valSend.val=(float)allPara.posx;
+	valSend.val=(float)allPara.sDta.posx;
   memcpy(tdata+14,valSend.data,4);
 	 
-	valSend.val=(float)allPara.posy;
+	valSend.val=(float)allPara.sDta.posy;
   memcpy(tdata+18,valSend.data,4);
 	 
 	valSend.val=(float)allPara.GYRO_Real[2];
@@ -57,19 +57,20 @@ void DataSend(void)
 
 //	
 	#ifdef TEST_SUMMER
+	i=i;
 //	USART_OUT_F((allPara.GYRO_Temperature[0]+allPara.GYRO_Temperature[1]+allPara.GYRO_Temperature[2])/3.f);
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[0][2]);
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[1][2]);
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[2][2]);
 	USART_OUT_F(allPara.GYRO_Real[2]);
-	USART_OUT_F(allPara.Result_Angle[2]);
-//	USART_OUT_F(allPara.GYRO_Bais[2]);
-//	USART_OUT_F(allPara.posx);
-//	USART_OUT_F(allPara.posy);
-//	USART_OUT_F(allPara.vell[0]);
-//	USART_OUT_F(allPara.vell[1]);
+	USART_OUT_F(allPara.sDta.Result_Angle[2]);
+	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);
+	USART_OUT_F(allPara.sDta.posx);
+	USART_OUT_F(allPara.sDta.posy);
+	USART_OUT_F(allPara.sDta.vell[0]);
+	USART_OUT_F(allPara.sDta.vell[1]);
 //	USART_OUT_F(allPara.isStatic);
-	//USART_OUT(USART1,"%d\t%d\t%d",allPara.codeData[0],allPara.codeData[1],allPara.cpuUsage);
+	//USART_OUT(USART1,"%d\t%d\t%d",allPara.sDta.codeData[0],allPara.sDta.codeData[1],allPara.cpuUsage);
 	USART_Enter();
 	#else
 	for(i=0;i<28;i++)
@@ -87,8 +88,6 @@ void debugsend2(float a,float b,float c,float d,float e)
 }
 void debugsend(float a,float b,float c,float d,float e,float f)
 {
-	#define ADAD
-	#ifdef ADAD
 	int i;
 	uint8_t tdata[28];
   union{
@@ -121,15 +120,7 @@ void debugsend(float a,float b,float c,float d,float e,float f)
 	
 	for(i=0;i<28;i++)
    USART_SendData(USART1,tdata[i]);
-	#else
-	USART_OUT_F(a);
-	USART_OUT_F(b);
-	USART_OUT_F(c);
-	USART_OUT_F(d);
-	USART_OUT_F(e);
-	USART_OUT_F(f);
-	USART_Enter();
-	#endif
+
 }
 
 static char buffer[20];
@@ -191,8 +182,21 @@ void AT_CMD_Judge(void){
 	else if((bufferI == 4) && strncmp(buffer, "AR\r\n", 4)==0)//AT    
 	{
     bufferInit();
-		allPara.Result_Angle[2]=0.0;
+		allPara.sDta.Result_Angle[2]=0.0;
 		USART_OUT(USART1,"OK");
+	}
+	else if((bufferI == 4) && strncmp(buffer, "AH\r\n", 4)==0)//AT    
+	{
+		#ifdef TEST_SUMMER
+    bufferInit();
+		int i[2]={0};
+		for(int j=60000;j<80000;j++)
+		{
+			i[j]=100;
+			i[j]=i[j];
+		}
+		USART_OUT(USART1,"OK");
+		#endif
 	}
   else if((bufferI == 10) && strncmp(buffer, "AT+begin\r\n", 10)==0)//AT    
     atCommand=2;
@@ -263,9 +267,9 @@ void AT_CMD_Handle(void){
 			USART_OUT_F(allPara.GYRO_Temperature[0]);
 			USART_OUT_F(allPara.GYRO_Temperature[1]);
 			USART_OUT_F(allPara.GYRO_Temperature[0]);
-			USART_OUT_F(allPara.GYRO_Aver[0]);
-			USART_OUT_F(allPara.GYRO_Aver[1]);
-			USART_OUT_F(allPara.GYRO_Aver[2]);
+			USART_OUT_F(allPara.sDta.GYRO_Aver[0]);
+			USART_OUT_F(allPara.sDta.GYRO_Aver[1]);
+			USART_OUT_F(allPara.sDta.GYRO_Aver[2]);
 			USART_Enter();
 			break;
 		case 6:

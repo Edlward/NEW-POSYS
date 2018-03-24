@@ -88,8 +88,8 @@ void TIM2_IRQHandler(void)
 	  if(timeCnt==5)
 		{	
 			//第一次判断静止时可以不用判断角速度
-			allPara.codeData[0]=SPI_ReadAS5045(0);
-			allPara.codeData[1]=SPI_ReadAS5045(1);
+			allPara.sDta.codeData[0]=SPI_ReadAS5045(0);
+			allPara.sDta.codeData[1]=SPI_ReadAS5045(1);
 			figureVell();
 			#ifdef TESTCAR
 			  double percentages[3][3]={
@@ -170,11 +170,11 @@ void TIM2_IRQHandler(void)
 				}
 			}
 				
-//			allPara.GYRO_Aver[0]=allPara.GYRORemoveDrift[0][0]*percentages[0][0]+allPara.GYRORemoveDrift[1][0]*percentages[0][1]+allPara.GYRORemoveDrift[2][0]*percentages[0][2];
-//			allPara.GYRO_Aver[1]=allPara.GYRORemoveDrift[0][1]*percentages[1][0]+allPara.GYRORemoveDrift[1][1]*percentages[1][1]+allPara.GYRORemoveDrift[2][1]*percentages[1][2];
-			allPara.GYRO_Aver[2]=allPara.GYRORemoveDrift[0][2]*percentages[2][0]+allPara.GYRORemoveDrift[1][2]*percentages[2][1]+allPara.GYRORemoveDrift[2][2]*percentages[2][2];
+//			allPara.sDta.GYRO_Aver[0]=allPara.GYRORemoveDrift[0][0]*percentages[0][0]+allPara.GYRORemoveDrift[1][0]*percentages[0][1]+allPara.GYRORemoveDrift[2][0]*percentages[0][2];
+//			allPara.sDta.GYRO_Aver[1]=allPara.GYRORemoveDrift[0][1]*percentages[1][0]+allPara.GYRORemoveDrift[1][1]*percentages[1][1]+allPara.GYRORemoveDrift[2][1]*percentages[1][2];
+			allPara.sDta.GYRO_Aver[2]=allPara.GYRORemoveDrift[0][2]*percentages[2][0]+allPara.GYRORemoveDrift[1][2]*percentages[2][1]+allPara.GYRORemoveDrift[2][2]*percentages[2][2];
 			//前面的计算，如果真有一个坏了，角速度会突变
-//			allPara.GYRO_Aver[2]=allPara.GYRORemoveDrift[0][2]*0.387132729300339+allPara.GYRORemoveDrift[1][2]*0.255395342771687+allPara.GYRORemoveDrift[2][2]*0.357471927927974;
+//			allPara.sDta.GYRO_Aver[2]=allPara.GYRORemoveDrift[0][2]*0.387132729300339+allPara.GYRORemoveDrift[1][2]*0.255395342771687+allPara.GYRORemoveDrift[2][2]*0.357471927927974;
     }
   }
 	else{
@@ -343,7 +343,7 @@ void HardFault_Handler(void)
 		FindResetTime();
 		/*不擦出的情况下写flash大约只要70us*/
 		
-		allPara.isReset=1;
+		allPara.sDta.isReset=1;
 		
 		WriteFlashData(allPara,allPara.resetTime);
 		

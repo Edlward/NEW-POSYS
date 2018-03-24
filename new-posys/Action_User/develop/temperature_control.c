@@ -39,12 +39,12 @@ int HeatingInit(float temp_temp[GYRO_NUMBER])
 	{
 		for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
 		{
-			allPara.GYRO_TemperatureAim[gyro]=allPara.GYRO_Temperature[gyro]+0.05f;
-			if(allPara.GYRO_TemperatureAim[gyro]>0.42f)
+			allPara.sDta.GYRO_TemperatureAim[gyro]=allPara.GYRO_Temperature[gyro]+0.05f;
+			if(allPara.sDta.GYRO_TemperatureAim[gyro]>0.42f)
 			{
-				allPara.GYRO_TemperatureAim[gyro]=0.42f;
+				allPara.sDta.GYRO_TemperatureAim[gyro]=0.42f;
 			}
-//			USART_OUT_F(allPara.GYRO_TemperatureAim[gyro]);
+//			USART_OUT_F(allPara.sDta.GYRO_TemperatureAim[gyro]);
 		}
 //		USART_Enter();
 //		USART_Enter();
@@ -108,7 +108,7 @@ void temp_pid_ctr(int gyro,float val_ex)
 		/*之所以最大值为1000,是因为该定时器的装载值为1000*/
 		if(allPara.GYRO_Temperature[gyro]>0.45f)
 			ctr[gyro]=0;
-		if(fabs(allPara.GYRO_Temperature[gyro]-allPara.GYRO_TemperatureAim[gyro])>0.04f)
+		if(fabs(allPara.GYRO_Temperature[gyro]-allPara.sDta.GYRO_TemperatureAim[gyro])>0.04f)
 			count[gyro]++;
 		else
 			count[gyro]=0;

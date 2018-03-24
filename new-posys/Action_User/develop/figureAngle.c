@@ -60,9 +60,9 @@ int RoughHandle(void)
 {
   static int ignore=0;
 	
-  allPara.GYRO_Real[0]=(allPara.GYRO_Aver[0]);
-  allPara.GYRO_Real[1]=(allPara.GYRO_Aver[1]);
-  allPara.GYRO_Real[2]=(allPara.GYRO_Aver[2]);
+  allPara.GYRO_Real[0]=(allPara.sDta.GYRO_Aver[0]);
+  allPara.GYRO_Real[1]=(allPara.sDta.GYRO_Aver[1]);
+  allPara.GYRO_Real[2]=(allPara.sDta.GYRO_Aver[2]);
 	
 	if(allPara.resetFlag)
 		ignore=TIME_STATIC_REAL*200+1;
@@ -73,9 +73,9 @@ int RoughHandle(void)
 		if(UpdateBais())
 		if((GetCommand()&ACCUMULATE))
 		{
-			allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.GYRO_Bais[0]);
-			allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.GYRO_Bais[1]);
-			allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.GYRO_Bais[2]);
+			allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.sDta.GYRO_Bais[0]);
+			allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.sDta.GYRO_Bais[1]);
+			allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.sDta.GYRO_Bais[2]);
 			kalmanZ=KalmanFilterZ(allPara.GYRO_Real[2]);
 			return 1;
 		}
@@ -88,7 +88,7 @@ int RoughHandle(void)
 		
 //		if(ignore>(TIME_STATIC_REAL)*200+STATIC_MAX_NUM+100)
 //		{
-////			if(abs(allPara.vell[0])>5||abs(allPara.vell[1])>5)
+////			if(abs(allPara.sDta.vell[0])>5||abs(allPara.sDta.vell[1])>5)
 ////				SetCommand(ACCUMULATE);
 //			ignore=10000;
 //			return 1;
@@ -117,7 +117,7 @@ void updateAngle(void)
   if(fabs(w[1])<0.3f)//单位 °/s
     w[1]=0.f;
 	#ifdef AUTOCAR
-  if(((fabs(allPara.GYRO_Real[2])<0.05f)&&(GetCommand()&STATIC))||(abs(allPara.vell[0])<=2&&abs(allPara.vell[1])<=2))//单位 °/s
+  if(((fabs(allPara.GYRO_Real[2])<0.05f)&&(GetCommand()&STATIC))||(abs(allPara.sDta.vell[0])<=2&&abs(allPara.sDta.vell[1])<=2))//单位 °/s
     w[2]=0.f;
 	#else
   if(fabs(kalmanZ)<0.15f)//单位 °/s
@@ -125,12 +125,12 @@ void updateAngle(void)
 	#endif
 	
 	if(GetCommand()&ACCUMULATE)
-		allPara.Result_Angle[2]+=w[2]*0.005;
+		allPara.sDta.Result_Angle[2]+=w[2]*0.005;
 	
-	if(allPara.Result_Angle[2]>180.0)
-		allPara.Result_Angle[2]-=360.0;
-	else if(allPara.Result_Angle[2]<-180.0)
-		allPara.Result_Angle[2]+=360.0;
+	if(allPara.sDta.Result_Angle[2]>180.0)
+		allPara.sDta.Result_Angle[2]-=360.0;
+	else if(allPara.sDta.Result_Angle[2]<-180.0)
+		allPara.sDta.Result_Angle[2]+=360.0;
 	
 }
 
@@ -141,7 +141,7 @@ void SetAngle(float angle){
 	euler[0]=0.0f;
 	euler[1]=0.0f;
 	euler[2]=angle/180.f*PI;
-	Euler_to_Quaternion(euler,allPara.quarternion);
+	Euler_to_Quaternion(euler,allPara.sDta.quarternion);
 }
 
 int JudgeAcc(void)
@@ -205,8 +205,8 @@ void JudgeStatic(void)
 		codes0[i]=codes0[i+1];
 		codes1[i]=codes1[i+1];
 	}
-	codes0[STATIC_ARRAY_NUM-1]=allPara.codeData[0];
-	codes1[STATIC_ARRAY_NUM-1]=allPara.codeData[1];
+	codes0[STATIC_ARRAY_NUM-1]=allPara.sDta.codeData[0];
+	codes1[STATIC_ARRAY_NUM-1]=allPara.sDta.codeData[1];
 
 	if((abs(FindMin(codes0)-FindMax(codes0))<=1&&abs(FindMin(codes1)-FindMax(codes1))<=1)&&(fabs(kalmanZ)<0.10f||key))
 		allPara.isStatic=1;
@@ -222,6 +222,8 @@ uint8_t UpdateBais(void)
 	
 	uint8_t returnValue=0;
 	
+	if(allPara.resetFlag)
+		cnt=STATIC_MIN_NUM+1;
 	
 	if(cnt<=STATIC_MIN_NUM)
 		cnt++;
@@ -240,7 +242,7 @@ uint8_t UpdateBais(void)
 		{
 			for(int axis=0;axis<AXIS_NUMBER;axis++)
 			{
-				data[axis][index-1]=allPara.GYRO_Aver[axis];
+				data[axis][index-1]=allPara.sDta.GYRO_Aver[axis];
 			}
 		}
 		//如果超出最大值，减去第一个值，加入
@@ -250,11 +252,11 @@ uint8_t UpdateBais(void)
 			for(int axis=0;axis<AXIS_NUMBER;axis++)
 			{
 				//数组前移一位
-				if(fabs(allPara.GYRO_Aver[axis])<4.f&&!isnan(allPara.GYRO_Aver[axis]))
+				if(fabs(allPara.sDta.GYRO_Aver[axis])<4.f&&!isnan(allPara.sDta.GYRO_Aver[axis]))
 				{
 					for(int i=0;i<STATIC_MAX_NUM-1;i++)
 						data[axis][i]=data[axis][i+1];
-					data[axis][STATIC_MAX_NUM-1]=allPara.GYRO_Aver[axis];
+					data[axis][STATIC_MAX_NUM-1]=allPara.sDta.GYRO_Aver[axis];
 				}
 			}
 		}
@@ -273,7 +275,7 @@ uint8_t UpdateBais(void)
 				{
 					sum[axis]=sum[axis]+data[axis][i];
 				}
-				allPara.GYRO_Bais[axis]=sum[axis]/(index-1);
+				allPara.sDta.GYRO_Bais[axis]=sum[axis]/(index-1);
 			}
 		}
 		for(int axis=0;axis<AXIS_NUMBER;axis++)

@@ -116,7 +116,7 @@ void updateAngle(void)
   if(fabs(w[1])<0.3f)//单位 °/s
     w[1]=0.f;
 	#ifdef AUTOCAR
-  if(allPara.sDta.flag&STATIC_FORCE)//||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1&&fabs(kalmanZ)<0.005))//单位 °/s
+  if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1&&fabs(kalmanZ)<0.005))//单位 °/s
     w[2]=0.f;
 	#else
   if(fabs(kalmanZ)<0.15f)//单位 °/s
@@ -278,8 +278,8 @@ uint8_t UpdateBais(void)
 				{
 					sum[axis]=sum[axis]+data[axis][i];
 				}
-				if(fabs(sum[axis]/(index-1)-allPara.sDta.GYRO_Bais[axis])<0.005&&allPara.sDta.GYRO_Bais[axis]!=0.0)
-				allPara.sDta.GYRO_Bais[axis]=sum[axis]/(index-1);
+				if((fabs(sum[axis]/(index-1)-allPara.sDta.GYRO_Bais[axis])<0.005&&allPara.sDta.GYRO_Bais[axis]!=0.0)||(allPara.sDta.GYRO_Bais[axis]==0.0))
+					allPara.sDta.GYRO_Bais[axis]=sum[axis]/(index-1);
 			}
 		}
 		for(int axis=0;axis<AXIS_NUMBER;axis++)

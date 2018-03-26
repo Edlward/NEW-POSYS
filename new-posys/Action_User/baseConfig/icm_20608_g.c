@@ -303,4 +303,37 @@ void icm_update_AccRad(float ACC_Init[GYRO_NUMBER][AXIS_NUMBER])
 	allPara.ACC_RealAngle[1]=(allPara.ACC_Angle[0][1]+allPara.ACC_Angle[1][1]+allPara.ACC_Angle[2][1])/3.f;
 }
 
+int CheckNan(void)
+{
+	static int count=0;
+	if(isnan(allPara.sDta.codeData[0])||isnan(allPara.sDta.Result_Angle[2])||isnan(allPara.sDta.posx)||isnan(allPara.sDta.posy)||isnan(allPara.sDta.flag)||isnan(allPara.sDta.vellx)\
+		||isnan(allPara.sDta.velly)||isnan(allPara.sDta.isReset))
+	{
+		return 1;
+	}
+	
+	for(int i=0;i<3;i++)
+	{
+		if(allPara.sDta.Result_Angle[i]>200.0||allPara.sDta.Result_Angle[i]<-200.0)
+		{
+			return 1;
+		}
+		if(allPara.sDta.GYRO_TemperatureAim[i]>200.0f||allPara.sDta.GYRO_TemperatureAim[i]<-200.0f)
+		{
+			return 1;
+		}
+	}
+	
+	for(int i=0;i<3;i++)
+		for(int j=0;j<3;j++)
+		{
+			if(allPara.GYROWithoutRemoveDrift[i][j]==0.0)
+				count++;
+			else
+				count=0;
+		}
+	if(count>100)
+		return 1;
+	return 0;
+}
 

@@ -14,7 +14,7 @@
 #include "config.h"
 #include "DataRecover.h"
 #include "iwdg.h"
-AllPara_t allPara;
+AllPara_t allPara={0};
 
 void init(void)
 {
@@ -54,7 +54,10 @@ void init(void)
 	}
 	
   TIM_Init(TIM2,999,83,1,0);					//主周期定时5ms
-	#ifdef TEST_SUMMER
+	
+	allPara.sDta.flag=0;
+	
+	#ifndef TEST_SUMMER
 	SetFlag(START_COMPETE);
 	#endif
 	
@@ -64,7 +67,7 @@ void init(void)
 		SetFlag(HEATING);
 	}
 	
-  driftCoffecientInit();
+  //driftCoffecientInit();
 	
 	IWDG_Init(1,5); // 1.5ms
 	
@@ -93,8 +96,8 @@ int main(void)
 //      				test[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
 			//使数据能够同步，但是不同步情况很少
 			//AT指令处理
-			if(isnan(allPara.sDta.Result_Angle[2])||isnan(allPara.GYRO_Real[2]))
-				;
+			if(CheckNan())
+				IWDG_Reset();
 			AT_CMD_Handle();
       if(!(allPara.sDta.flag&CORRECT)){
 				if(allPara.sDta.flag&HEATING)

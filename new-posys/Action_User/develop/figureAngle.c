@@ -115,14 +115,14 @@ void updateAngle(void)
     w[0]=0.f;
   if(fabs(w[1])<0.3f)//单位 °/s
     w[1]=0.f;
+	
 	#ifdef AUTOCAR
   if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1&&fabs(kalmanZ)<0.005))//单位 °/s
     w[2]=0.f;
 	#else
-  if(fabs(kalmanZ)<0.15f)//单位 °/s
+	if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1))
     w[2]=0.f;
 	#endif
-	
 	allPara.sDta.Result_Angle[2]+=w[2]*0.005;
 	
 	if(allPara.sDta.Result_Angle[2]>180.0)
@@ -170,7 +170,7 @@ int JudgeAcc(void)
     return 0;
 }	
 
-#define STATIC_ARRAY_NUM	5
+#define STATIC_ARRAY_NUM	20
 
 uint16_t FindMax(uint16_t codes[STATIC_ARRAY_NUM])
 {
@@ -211,7 +211,12 @@ void JudgeStatic(void)
 	{
 		SetFlag(~STATIC_FORCE);
 	}
-
+	
+	#ifndef AUTOCAR
+	if(abs(FindMin(codes0)-FindMax(codes0))<=1&&abs(FindMin(codes1)-FindMax(codes1))<=1)
+		SetFlag(STATIC_FORCE);
+	#endif
+	
 }
 
 uint8_t UpdateBais(void)
@@ -278,8 +283,13 @@ uint8_t UpdateBais(void)
 				{
 					sum[axis]=sum[axis]+data[axis][i];
 				}
-				if((fabs(sum[axis]/(index-1)-allPara.sDta.GYRO_Bais[axis])<0.005&&allPara.sDta.GYRO_Bais[axis]!=0.0)||(allPara.sDta.GYRO_Bais[axis]==0.0))
+				#ifdef AUTOCAR
+				if((fabs(sum[axis]/(index-1)-allPara.sDta.GYRO_Bais[axis])<0.009&&allPara.sDta.GYRO_Bais[axis]!=0.0)||(allPara.sDta.GYRO_Bais[axis]==0.0))
 					allPara.sDta.GYRO_Bais[axis]=sum[axis]/(index-1);
+				#else
+				if((fabs(sum[axis]/(index-1)-allPara.sDta.GYRO_Bais[axis])<0.02&&allPara.sDta.GYRO_Bais[axis]!=0.0)||(allPara.sDta.GYRO_Bais[axis]==0.0))
+					allPara.sDta.GYRO_Bais[axis]=sum[axis]/(index-1);
+				#endif
 			}
 		}
 		for(int axis=0;axis<AXIS_NUMBER;axis++)

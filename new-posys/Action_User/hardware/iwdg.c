@@ -36,3 +36,12 @@ void IWDG_Feed(void)
 {
 	IWDG_ReloadCounter();//reload
 }
+//ÖØÆô³ÌÐò
+void IWDG_Reset(void)
+{
+	IWDG->KR = 0x5555;
+	IWDG_SetReload(0x000);//reload
+}
+
+
+

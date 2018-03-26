@@ -19,4 +19,5 @@
 
 void IWDG_Init(u8 prer,u16 rlr);//IWDG³õÊ¼»¯
 void IWDG_Feed(void);  //Î¹¹·º¯Êý
+void IWDG_Reset(void);
 #endif

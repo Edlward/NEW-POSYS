@@ -185,6 +185,13 @@ void AT_CMD_Judge(void){
 		allPara.sDta.Result_Angle[2]=0.0;
 		USART_OUT(USART1,"OK");
 	}
+	else if((bufferI == 4) && strncmp(buffer, "AQ\r\n", 4)==0)//AT    
+	{
+    bufferInit();
+		allPara.sDta.Result_Angle[2]=0.0;
+		allPara.sDta.posx=0.0;
+		USART_OUT(USART1,"OK");
+	}
 	else if((bufferI == 4) && strncmp(buffer, "AH\r\n", 4)==0)//AT    
 	{
 		#ifdef TEST_SUMMER

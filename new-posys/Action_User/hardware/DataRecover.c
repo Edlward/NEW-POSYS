@@ -26,7 +26,7 @@
 /* Private  variables ---------------------------------------------------------*/
 
 /*该结构体永远是最新更新的结构体*/
-DataSave_t dataSave;
+DataSave_t dataSave={0};
 extern AllPara_t allPara;
 
 //FLASH 扇区的起始地址

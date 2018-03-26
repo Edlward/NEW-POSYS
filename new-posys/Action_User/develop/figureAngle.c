@@ -55,7 +55,6 @@ int JudgeAcc(void);
 /*最大两秒，如果小于两秒就用现有的数据*/
 #define STATIC_MAX_NUM	500
 #define STATIC_MIN_NUM	300
-double kalmanZ=0.0;
 int RoughHandle(void)
 {
   static int ignore=0;
@@ -76,7 +75,7 @@ int RoughHandle(void)
 			allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.sDta.GYRO_Bais[0]);
 			allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.sDta.GYRO_Bais[1]);
 			allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.sDta.GYRO_Bais[2]);
-			kalmanZ=KalmanFilterZ(allPara.GYRO_Real[2]);
+			allPara.kalmanZ=KalmanFilterZ(allPara.GYRO_Real[2]);
 			return 1;
 		}
 		else
@@ -117,7 +116,7 @@ void updateAngle(void)
     w[1]=0.f;
 	
 	#ifdef AUTOCAR
-  if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1&&fabs(kalmanZ)<0.005))//单位 °/s
+  if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1&&fabs(allPara.kalmanZ)<0.05))//单位 °/s
     w[2]=0.f;
 	#else
 	if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1))

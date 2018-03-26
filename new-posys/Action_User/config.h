@@ -222,6 +222,8 @@ typedef struct{
 	
 	uint32_t resetTime;
 	
+	double kalmanZ;
+	
 	int resetFlag;
 }AllPara_t;
 

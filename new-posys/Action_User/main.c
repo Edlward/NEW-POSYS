@@ -57,7 +57,7 @@ void init(void)
 	
 	allPara.sDta.flag=0;
 	
-	#ifndef TEST_SUMMER
+	#ifdef TEST_SUMMER
 	SetFlag(START_COMPETE);
 	#endif
 	

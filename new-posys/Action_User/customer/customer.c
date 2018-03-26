@@ -63,6 +63,7 @@ void DataSend(void)
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[1][2]);
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[2][2]);
 	USART_OUT_F(allPara.GYRO_Real[2]);
+	USART_OUT_F(allPara.kalmanZ);
 	USART_OUT_F(allPara.sDta.Result_Angle[2]);
 	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);
 	USART_OUT_F(allPara.sDta.posx);

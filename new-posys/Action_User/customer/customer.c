@@ -19,11 +19,48 @@
 
 extern AllPara_t allPara;
 extern flashData_t flashData;
-
+extern double lowpass;
 void AT_CMD_Judge(void);
 void SetParaDefault(void);
 void DataSend(void)
 {
+	#ifdef AUTOCAR 
+	int i;
+	uint8_t tdata[36];
+  union{
+		float   val;
+		uint8_t data[4];
+	}valSend;
+	
+  tdata[0]=0x0d;
+  tdata[1]=0x0a;
+  tdata[34]=0x0a;
+  tdata[35]=0x0d;
+	
+	valSend.val=(float)allPara.sDta.Result_Angle[2];
+  memcpy(tdata+2,valSend.data,4);
+	
+	valSend.val=(float)allPara.sDta.vellx;
+  memcpy(tdata+6,valSend.data,4);
+	
+	valSend.val=(float)allPara.sDta.velly;
+  memcpy(tdata+10,valSend.data,4);
+	
+	valSend.val=(float)allPara.sDta.posx;
+  memcpy(tdata+14,valSend.data,4);
+	 
+	valSend.val=(float)allPara.sDta.posy;
+  memcpy(tdata+18,valSend.data,4);
+	 
+	valSend.val=(float)allPara.GYRO_Real[2];
+  memcpy(tdata+22,valSend.data,4);
+	
+	valSend.val=(float)allPara.sDta.GYRO_Bais[2];
+  memcpy(tdata+26,valSend.data,4);
+	 
+	valSend.val=(float)allPara.kalmanZ;
+  memcpy(tdata+30,valSend.data,4);
+	#else
 	int i;
 	uint8_t tdata[28];
   union{
@@ -53,7 +90,7 @@ void DataSend(void)
 	 
 	valSend.val=(float)allPara.GYRO_Real[2];
   memcpy(tdata+22,valSend.data,4);
-
+	#endif
 
 //	
 	#ifdef TEST_SUMMER
@@ -62,20 +99,30 @@ void DataSend(void)
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[0][2]);
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[1][2]);
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[2][2]);
+//	for(int i=0;i<3;i++)
+//		USART_OUT_F(allPara.GYROWithoutRemoveDrift[i][2]);
+//	for(int i=0;i<3;i++)
+//		USART_OUT_F(allPara.GYRO_Temperature[2]);
 	USART_OUT_F(allPara.GYRO_Real[2]);
-	USART_OUT_F(allPara.kalmanZ);
+//	USART_OUT_F(lowpass);
 	USART_OUT_F(allPara.sDta.Result_Angle[2]);
-	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);
-	USART_OUT_F(allPara.sDta.posx);
-	USART_OUT_F(allPara.sDta.posy);
-	USART_OUT_F(allPara.sDta.vell[0]);
-	USART_OUT_F(allPara.sDta.vell[1]);
+//	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);
+//	USART_OUT_F(allPara.kalmanZ);
+//	USART_OUT_F(allPara.sDta.posx);
+//	USART_OUT_F(allPara.sDta.posy);
+//	USART_OUT_F(allPara.sDta.vell[0]);
+//	USART_OUT_F(allPara.sDta.vell[1]);
 //	USART_OUT_F(allPara.isStatic);
 	//USART_OUT(USART1,"%d\t%d\t%d",allPara.sDta.codeData[0],allPara.sDta.codeData[1],allPara.cpuUsage);
 	USART_Enter();
 	#else
+	#ifdef AUTOCAR 
+	for(i=0;i<36;i++)
+   USART_SendData(USART1,tdata[i]);
+	#else
 	for(i=0;i<28;i++)
    USART_SendData(USART1,tdata[i]);
+	#endif
 	#endif
 }
 void debugsend2(float a,float b,float c,float d,float e)

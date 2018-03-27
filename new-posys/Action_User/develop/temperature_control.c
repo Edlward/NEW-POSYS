@@ -270,7 +270,19 @@ double LowPassFilter(float newValue,int gyro)
   
 }
 
+double LowPassFilterGyro(float newValue)
+{
+  double K_x=0.03; //ÂË²¨ÏµÊý
+  static double valueLast=0.0;
 
+	if(valueLast==0.0)
+		valueLast=newValue;
+	
+  valueLast=(1-K_x)*valueLast+K_x*newValue;
+  
+  return valueLast;
+  
+}
 void pwm1_init(uint32_t arr,uint32_t psc)
 {		 					 
   GPIO_InitTypeDef GPIO_InitStructure;

@@ -45,7 +45,7 @@ int JudgeAcc(void);
 */
 
 #ifdef AUTOCAR
-#define TIME_STATIC					(10)
+#define TIME_STATIC					(15)
 #define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #else
 #define TIME_STATIC					(9)
@@ -53,8 +53,9 @@ int JudgeAcc(void);
 #endif
 
 /*最大两秒，如果小于两秒就用现有的数据*/
-#define STATIC_MAX_NUM	500
-#define STATIC_MIN_NUM	300
+#define STATIC_MAX_NUM	1000
+#define STATIC_MIN_NUM	600
+double lowpass=0.0;
 int RoughHandle(void)
 {
   static int ignore=0;
@@ -63,6 +64,7 @@ int RoughHandle(void)
   allPara.GYRO_Real[1]=(allPara.sDta.GYRO_Aver[1]);
   allPara.GYRO_Real[2]=(allPara.sDta.GYRO_Aver[2]);
 	
+	lowpass=LowPassFilterGyro(allPara.sDta.GYRO_Aver[2]);
 	if(allPara.resetFlag)
 		ignore=TIME_STATIC_REAL*200+1;
 	
@@ -116,7 +118,8 @@ void updateAngle(void)
     w[1]=0.f;
 	
 	#ifdef AUTOCAR
-  if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1&&fabs(allPara.kalmanZ)<0.05))//单位 °/s
+//  if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1&&fabs(allPara.kalmanZ)<0.05))//单位 °/s
+  if(allPara.sDta.flag&STATIC_FORCE)//单位 °/s
     w[2]=0.f;
 	#else
 	if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1))
@@ -251,6 +254,8 @@ uint8_t UpdateBais(void)
 			for(int axis=0;axis<AXIS_NUMBER;axis++)
 			{
 				data[axis][index-1]=allPara.sDta.GYRO_Aver[axis];
+//				if(axis==2)
+//					data[axis][index-1]=lowpass;
 			}
 		}
 		//如果超出最大值，减去第一个值，加入
@@ -265,6 +270,8 @@ uint8_t UpdateBais(void)
 					for(int i=0;i<STATIC_MAX_NUM-1;i++)
 						data[axis][i]=data[axis][i+1];
 					data[axis][STATIC_MAX_NUM-1]=allPara.sDta.GYRO_Aver[axis];
+//					if(axis==2)
+//						data[axis][STATIC_MAX_NUM-1]=lowpass;
 				}
 			}
 		}

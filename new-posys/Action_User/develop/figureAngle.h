@@ -49,6 +49,9 @@ void driftCoffecientInit(void);
 void JudgeStatic(void);
 
 uint8_t UpdateBais(void);
+
+float PlatFilter(float newValue);
+
 #endif
 
 /******************* (C) COPYRIGHT 2015 ACTION *****END OF FILE****/

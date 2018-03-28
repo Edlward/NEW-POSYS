@@ -45,10 +45,10 @@ int JudgeAcc(void);
 */
 
 #ifdef AUTOCAR
-#define TIME_STATIC					(15)
+#define TIME_STATIC					(20)
 #define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #else
-#define TIME_STATIC					(9)
+#define TIME_STATIC					(5)
 #define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #endif
 
@@ -97,6 +97,36 @@ int RoughHandle(void)
   }else{
 		 return 0;
 	}
+}
+
+#define PLAT_TIME		(10)
+#define PLAT_NUM		(PLAT_TIME*200)
+float PlatFilter(float newValue)
+{
+	/*最终滤波结果得到的数据*/
+	static float value=0.f;
+	/*储存平滑滤波的数据*/
+	static float data[PLAT_NUM]={0.f};
+	/*记录已填数组个数*/
+	static int index=0;
+	
+	if(index<PLAT_NUM)
+	{
+		data[index]=newValue;
+		value=value+newValue*1.f/PLAT_NUM;
+		index++;
+	}
+	//如果超出最大值，减去第一个值，加入
+	else if(index>=STATIC_MAX_NUM)
+	{
+		value=value-data[0]*1.f/PLAT_NUM;
+		for(int i=0;i<STATIC_MAX_NUM-1;i++)
+			data[i]=data[i+1];
+		data[STATIC_MAX_NUM-1]=newValue;
+		value=value+data[STATIC_MAX_NUM-1]*1.f/PLAT_NUM;
+	}
+	
+	return value;
 }
 
 void updateAngle(void)
@@ -215,8 +245,8 @@ void JudgeStatic(void)
 	}
 	
 	#ifndef AUTOCAR
-	if(abs(FindMin(codes0)-FindMax(codes0))<=1&&abs(FindMin(codes1)-FindMax(codes1))<=1)
-		SetFlag(STATIC_FORCE);
+//	if(abs(FindMin(codes0)-FindMax(codes0))<=1&&abs(FindMin(codes1)-FindMax(codes1))<=1)
+//		SetFlag(STATIC_FORCE);
 	#endif
 	
 }

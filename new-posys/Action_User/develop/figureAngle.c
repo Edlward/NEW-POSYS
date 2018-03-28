@@ -48,7 +48,7 @@ int JudgeAcc(void);
 #define TIME_STATIC					(20)
 #define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #else
-#define TIME_STATIC					(5)
+#define TIME_STATIC					(15)
 #define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #endif
 

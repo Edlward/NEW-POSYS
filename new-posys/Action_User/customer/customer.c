@@ -99,13 +99,13 @@ void DataSend(void)
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[0][2]);
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[1][2]);
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[2][2]);
-//	for(int i=0;i<3;i++)
-//		USART_OUT_F(allPara.GYROWithoutRemoveDrift[i][2]);
+	for(int i=0;i<3;i++)
+		USART_OUT_F(allPara.GYROWithoutRemoveDrift[i][2]);
 //	for(int i=0;i<3;i++)
 //		USART_OUT_F(allPara.GYRO_Temperature[2]);
-	USART_OUT_F(allPara.GYRO_Real[2]);
+//	USART_OUT_F(allPara.GYRO_Real[2]);
 //	USART_OUT_F(lowpass);
-	USART_OUT_F(allPara.sDta.Result_Angle[2]);
+//	USART_OUT_F(allPara.sDta.Result_Angle[2]);
 //	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);
 //	USART_OUT_F(allPara.kalmanZ);
 //	USART_OUT_F(allPara.sDta.posx);

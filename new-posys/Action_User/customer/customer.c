@@ -99,8 +99,8 @@ void DataSend(void)
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[0][2]);
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[1][2]);
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[2][2]);
-	for(int i=0;i<3;i++)
-		USART_OUT_F(allPara.GYROWithoutRemoveDrift[i][2]);
+//	for(int i=0;i<3;i++)
+//		USART_OUT_F(allPara.GYROWithoutRemoveDrift[i][2]);
 //	for(int i=0;i<3;i++)
 //		USART_OUT_F(allPara.GYRO_Temperature[2]);
 //	USART_OUT_F(allPara.GYRO_Real[2]);
@@ -114,7 +114,7 @@ void DataSend(void)
 //	USART_OUT_F(allPara.sDta.vell[1]);
 //	USART_OUT_F(allPara.isStatic);
 	//USART_OUT(USART1,"%d\t%d\t%d",allPara.sDta.codeData[0],allPara.sDta.codeData[1],allPara.cpuUsage);
-	USART_Enter();
+//	USART_Enter();
 	#else
 	#ifdef AUTOCAR 
 	for(i=0;i<36;i++)

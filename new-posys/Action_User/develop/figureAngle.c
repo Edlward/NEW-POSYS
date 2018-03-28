@@ -56,9 +56,12 @@ int JudgeAcc(void);
 #define STATIC_MAX_NUM	1000
 #define STATIC_MIN_NUM	600
 double lowpass=0.0;
+static float stdCr[AXIS_NUMBER]={0.f};        
+static float mean[AXIS_NUMBER]={0.f};
 int RoughHandle(void)
 {
   static int ignore=0;
+	static int isCalCrOk=0;
 	
   allPara.GYRO_Real[0]=(allPara.sDta.GYRO_Aver[0]);
   allPara.GYRO_Real[1]=(allPara.sDta.GYRO_Aver[1]);
@@ -70,6 +73,26 @@ int RoughHandle(void)
 	
 	ignore++;
 	
+	if(ignore>200*3&&!isCalCrOk)
+	{
+		if(CalculateRealCrAndMean(stdCr,mean))
+			isCalCrOk=1;
+	}
+	else if(isCalCrOk==1)
+	{
+		#ifdef TEST_SUMMER
+		/*如果满足3*std法则*/
+		int axis=2;
+		if(!(fabs(allPara.sDta.GYRO_Aver[axis]-mean[axis])<stdCr[axis]*3))
+		{
+			USART_OUT_F(allPara.sDta.GYRO_Aver[axis]);
+			USART_OUT_F(mean[axis]);
+			USART_OUT_F(stdCr[axis]);
+			USART_OUT(USART1,"NNNNNN");
+			USART_Enter();
+		}
+		#endif
+	}
   if(ignore>(TIME_STATIC_REAL)*200){
 		//如果零飘数据采集完毕
 		if(UpdateBais())
@@ -283,7 +306,13 @@ uint8_t UpdateBais(void)
 		{
 			for(int axis=0;axis<AXIS_NUMBER;axis++)
 			{
-				data[axis][index-1]=allPara.sDta.GYRO_Aver[axis];
+				/*如果满足3*std法则*/
+				if(fabs(allPara.sDta.GYRO_Aver[axis]-mean[axis])<stdCr[axis]*3)
+					data[axis][index-1]=allPara.sDta.GYRO_Aver[axis];
+				else
+				{
+					index--;
+				}
 //				if(axis==2)
 //					data[axis][index-1]=lowpass;
 			}
@@ -297,9 +326,13 @@ uint8_t UpdateBais(void)
 				//数组前移一位
 				if(fabs(allPara.sDta.GYRO_Aver[axis])<4.f&&!isnan(allPara.sDta.GYRO_Aver[axis]))
 				{
-					for(int i=0;i<STATIC_MAX_NUM-1;i++)
-						data[axis][i]=data[axis][i+1];
-					data[axis][STATIC_MAX_NUM-1]=allPara.sDta.GYRO_Aver[axis];
+					/*如果满足3*std法则*/
+					if(fabs(allPara.sDta.GYRO_Aver[axis]-mean[axis])<stdCr[axis]*3)
+					{
+						for(int i=0;i<STATIC_MAX_NUM-1;i++)
+							data[axis][i]=data[axis][i+1];
+						data[axis][STATIC_MAX_NUM-1]=allPara.sDta.GYRO_Aver[axis];
+					}
 //					if(axis==2)
 //						data[axis][STATIC_MAX_NUM-1]=lowpass;
 				}
@@ -338,6 +371,40 @@ uint8_t UpdateBais(void)
 }
 
 
+int CalculateRealCrAndMean(float stdCr[AXIS_NUMBER],float mean[AXIS_NUMBER]){
+  static float IAE_st[AXIS_NUMBER][200]={0.f};  
+  static float data[AXIS_NUMBER][200]={0.f};    
+  static int ignore=0;
+  ignore++;
+  
+  int axis=0;
+  
+    for(axis=0;axis<AXIS_NUMBER;axis++)
+    {
+      mean[axis]=mean[axis]-data[axis][0]/200;
+      memcpy(data[axis],data[axis]+1,796);
+      data[axis][199]=allPara.sDta.GYRO_Aver[axis];
+      memcpy(IAE_st[axis],IAE_st[axis]+1,796);
+      mean[axis]=mean[axis]+data[axis][199]/200;
+      IAE_st[axis][199]=allPara.sDta.GYRO_Aver[axis]-mean[axis];
+    }
+  
+  if(ignore<400)
+    return 0;
+  else
+    ignore=400;
+  
+    for(axis=0;axis<AXIS_NUMBER;axis++){
+      stdCr[axis]=0;
+      for(int i=0;i<200;i++)
+      {
+        stdCr[axis]=stdCr[axis]+IAE_st[axis][i]*IAE_st[axis][i];
+      }
+      stdCr[axis]=__sqrtf(stdCr[axis]/200.0f);
+    }
+  
+  return 1;
+}
 
 /*
 chartMode方式  

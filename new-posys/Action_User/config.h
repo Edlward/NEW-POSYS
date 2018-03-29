@@ -25,7 +25,6 @@
 #include <string.h>
 #include "stm32f4xx_it.h"
 #include "stm32f4xx.h"
-#include "flash.h"
 #include "buildExcel.h"
 #include "spi.h"
 #include "figureAngle.h"
@@ -78,6 +77,7 @@
 
 #include "icm_20608_g.h"
 #include "temperature_control.h"
+#include "flash.h"
 /*
 第一位 陀螺仪是否矫正  1代表矫正
 第二位 陀螺仪

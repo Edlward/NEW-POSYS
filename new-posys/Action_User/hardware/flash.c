@@ -25,159 +25,114 @@
 #define FLASH_USER_ADDRESS 0x08040000   //FLASH起始地址
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-flashData_t flashData;
-static uint8_t  flashdata[TempTable_Num];  //5个double 存储的是随温度变化的斜率 最后一个int存储的是选几个做平均数
-/**
-* @brief  从FLASH里得到的数据分两个部分，第一部分为数据区，第二部分为
-*         计数区，该函数用于获得数据区的指针
-* @param  None
-* @retval Result : 指向flash数据区的指针
-*/
-/**
-* @brief  从FLASH里得到的数据分两个部分，第一部分为数据区，第二部分为
-*         计数区，该函数用于获得计数区的指针
-* @param  None
-* @retval Result : 指向flash计数区的指针
-*/
-/* Extern   variables ---------------------------------------------------------*/
-/* Extern   function prototypes -----------------------------------------------*/
-/* Private  function prototypes -----------------------------------------------*/
-/* Private  functions ---------------------------------------------------------*/
+
+FlashData_t flashData={0};
+
+
 /**
 * @brief  FLASH加密
 *
 * @param  None
 * @retval None
 */
-static void Flash_Encryp(void)
-{
-#ifdef FLASH_ENCRYP
-  
-  /* 判断FLASH是否被保护 */
-  if(SET != FLASH_OB_GetRDP())
-  {
-    /* 若不被保护 */
-    FLASH_Unlock();
-    FLASH_OB_Unlock();
-    /* 等级0不保护，等级1可逆读保护，等级2不可逆读保护 */
-    FLASH_OB_RDPConfig(OB_RDP_Level_1);
-    FLASH_OB_Launch();
-    FLASH_OB_Lock();
-    FLASH_Lock();
-  }
-#endif
-}
-/* Exported function prototypes -----------------------------------------------*/
-/* Exported functions ---------------------------------------------------------*/
-/**
-* @brief  向FLASH中写入数据
-*
-* @param  data :  存储数据的指针
-* @param  len  :  写入的数据量，单位：byte
-* @retval None
-*/
-void Flash_Write(uint8_t *data,uint32_t len)
-{
-  uint32_t count;
-  FLASH_Unlock();
-  FLASH_ClearFlag(FLASH_FLAG_EOP|FLASH_FLAG_OPERR|FLASH_FLAG_WRPERR|  FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR|FLASH_FLAG_PGSERR);
-  FLASH_EraseSector(FLASH_Sector_6,VoltageRange_3);
-  FLASH_WaitForLastOperation();
-  for(count=0;count<len;count++)
-  {
-    FLASH_ProgramByte(FLASH_USER_ADDRESS+count,*(data+count));
-  }
-  FLASH_Lock();
-}
-/**
-* @brief  将FLASH中的数据改成0
-*
-* @param  len  :  改写的数据量，单位：byte
-* @retval None
-*/
-void Flash_Zero(uint32_t len)
-{
-  uint32_t count;
-  FLASH_Unlock();
-  /*将标志位都写1*/
-  FLASH_ClearFlag(FLASH_FLAG_EOP|FLASH_FLAG_OPERR|FLASH_FLAG_WRPERR|  FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR|FLASH_FLAG_PGSERR);
-  /*我们的405芯片用的是3.3V,所以选择VoltageRange_3*/
-  FLASH_EraseSector(FLASH_Sector_6,VoltageRange_3);
-  FLASH_WaitForLastOperation();
-  for(count=0;count<len;count++)
-  {
-    FLASH_ProgramByte(FLASH_USER_ADDRESS+count,0x00);
-  }
-  FLASH_Lock();
-}
+//static void Flash_Encryp(void)
+//{
+//  /* 判断FLASH是否被保护 */
+//  if(SET != FLASH_OB_GetRDP())
+//  {
+//    /* 若不被保护 */
+//    FLASH_Unlock();
+//    FLASH_OB_Unlock();
+//    /* 等级0不保护，等级1可逆读保护，等级2不可逆读保护 */
+//    FLASH_OB_RDPConfig(OB_RDP_Level_1);
+//    FLASH_OB_Launch();
+//    FLASH_OB_Lock();
+//    FLASH_Lock();
+//  }
+//}
 
-/**
-* @brief  将FLASH中的数据改成0
-*
-* @param  len  :  改写的数据量，单位：byte
-* @retval None
-*/
-void Flash_Return(void)
-{
-  FLASH_Unlock();
-  /*将标志位都写1*/
-  FLASH_ClearFlag(FLASH_FLAG_EOP|FLASH_FLAG_OPERR|FLASH_FLAG_WRPERR|  FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR|FLASH_FLAG_PGSERR);
-  /*我们的405芯片用的是3.3V,所以选择VoltageRange_3*/
-  FLASH_EraseSector(FLASH_Sector_6,VoltageRange_3);
-  FLASH_WaitForLastOperation();
-  FLASH_Lock();
-}
 
-/**
-* @brief  从FLASH中读取数据
-*
-* @param  data :  存储数据的指针
-* @param  len  :  读取的数据量，单位：byte
-* @retval None
-*/
-void Flash_Read(uint8_t *data,uint32_t len)
-{
-  uint32_t i;
-  for(i=0;i<len;i++)
-    //一个字节一个字节地进行赋值
-    *(data+i)= *((uint8_t *)(FLASH_USER_ADDRESS+i));
-}
+
 /**
 * @brief  初始化FLASH
 *
 * @param  None
 * @retval None
 */
-void Flash_Init(void)
-{
-  /* 读取FLASH中保存的数据，并将其存到内存(RAM)里 */
-  Flash_Read(flashdata,TempTable_Num);  
-  /* 分割数据段，将零漂值与计数值分开 */
-	/*45个float 180位*/
-  (flashData.chartW)=(float *)flashdata;
-	/*3个float 12位*/
-	(flashData.minValue)=(float *)((uint8_t *)flashdata+180);
-	/*3个float 12位*/
-	(flashData.varXYZ)=(float *)((uint8_t *)flashdata+192);
-	/*9个无符号字符*/
-  (flashData.chartMode)=(uint8_t *)flashdata+204;
-	/*45个无符号字符*/
-  (flashData.chartSelect)=(uint8_t *)(flashdata)+213;
-	/*3个无符号字符*/
-  (flashData.scaleMode)=(uint8_t *)(flashdata)+258;
-  /* 保护Flash数据 */
-  Flash_Encryp();
-}
-/**
-* @brief  获取从FLASH里得到的数据的指针
-*
-* @param  None
-* @retval flashdata : 指向flash数据的指针
-*/
-uint8_t *GetFlashArr(void)
-{
-  return flashdata;
-}
+//void Flash_Init(void)
+//{
+	
+
+//}
+
+//void STMFLASH_Write(FlashData_t *pBuffer,unsigned int resetTime)	
+//{ 
+//  unsigned int* address=(unsigned int*)pBuffer;
+//  unsigned int WriteAddr=FLASH_USER_ADDRESS+resetTime*sizeof(FlashData_t);
+//  unsigned int endaddr=WriteAddr+sizeof(FlashData_t);
+//  
+//  FLASH_Unlock();									//解锁 
+//  FLASH_DataCacheCmd(DISABLE);//FLASH擦除期间,必须禁止数据缓存
+//  
+//  while(WriteAddr<endaddr)//写数据
+//  {
+//    if(FLASH_ProgramWord(WriteAddr,*address)!=FLASH_COMPLETE)//写入数据
+//    { 
+//      address=address;	//写入异常
+//    }
+//		/*WriteAddr是整数，要加4，address是指针只用加一*/
+//    WriteAddr+=MAX_SIZE;
+//    address++;
+//  }
+//  
+//  FLASH_DataCacheCmd(ENABLE);	//FLASH擦除结束,开启数据缓存
+//  FLASH_Lock();//上锁
+//} 
+
+//void copyFlashData_tFromOther(FlashData_t* copy,FlashData_t* const reality)
+//{
+//	unsigned int* address=(unsigned int*)reality;
+//  unsigned int* WriteAddr=(unsigned int*)copy;
+//  unsigned int* endaddr=WriteAddr+sizeof(FlashData_t)/MAX_SIZE;
+//	
+//  while(WriteAddr<endaddr)//写数据
+//  {
+//    *WriteAddr=*address;
+//    WriteAddr++;
+//    address++;
+//  }
+//}
+
+//void copyFlashData_tAlongAddress(FlashData_t* copy,uint32_t address)
+//{
+//  unsigned int* WriteAddr=(unsigned int*)copy;
+//  unsigned int* endaddr=WriteAddr+sizeof(FlashData_t)/MAX_SIZE;
+//	
+//  while(WriteAddr<endaddr)//写数据
+//  {
+//    *WriteAddr=STMFLASH_ReadWord(address);
+//    WriteAddr++;
+//    address+=MAX_SIZE;
+//  }
+//}
+
+///*把传入的机器人结构体的参数保存到“flash写入结构体”里*/
+//void WriteFlashData(AllPara_t robot,unsigned int resetTime)
+//{
+//	copyFlashData_tFromOther(&dataSave,&robot.sDta);
+//  
+//  STMFLASH_Write(&dataSave,allPara.resetTime);
+//}
+
+
+///*读出第resetTime个结构体的值，resetTime取0 1 2 3*/
+//void STMFLASH_Read(FlashData_t* temp,uint32_t resetTime)   	
+//{
+//  uint32_t baseAdd=FLASH_USER_ADDRESS+resetTime*sizeof(FlashData_t);
+//  
+//	copyFlashData_tAlongAddress(temp,baseAdd);
+//}
+
 
 
 /************************ (C) COPYRIGHT 2016 ACTION *****END OF FILE****/

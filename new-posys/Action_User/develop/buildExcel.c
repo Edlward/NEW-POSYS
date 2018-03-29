@@ -21,7 +21,6 @@
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
 
-extern flashData_t flashData;
 extern AllPara_t allPara;
 
 /*
@@ -46,111 +45,31 @@ chart+Õ”¬›“«–Ú∫≈£®0-(GYRO_NUMBER-1)£©*AXIS_NUMBER+÷·∫≈£®0-(AXIS_NUMBER-1£©£©
 void TempTablePrintf(void)
 {
   
-  int gyro=0;
-  int axis=0;
-  
-  Flash_Read(GetFlashArr(),TempTable_Num);
-  
-  for(gyro=0;gyro<GYRO_NUMBER;gyro++)
-  {
-    for(axis=0;axis<AXIS_NUMBER;axis++)
-    {
-      USART_Enter();
-      USART_OUT(USART1,"gyro %d axis %d chartMode: %d\r\n",gyro+1,axis+1,*(flashData.chartMode+gyro*AXIS_NUMBER+axis));
-      for(int sample=0;sample<TEMP_SAMPLE_NUMBER;sample++)
-      {
-        USART_OUT_F(*(flashData.chartW+gyro*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+axis*TEMP_SAMPLE_NUMBER+sample));
-      }
-      USART_Enter();
-      for(int sample=0;sample<TEMP_SAMPLE_NUMBER;sample++)
-      {
-        USART_OUT(USART1,"%d\t",*(flashData.chartSelect+gyro*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+axis*TEMP_SAMPLE_NUMBER+sample));
-      }
-    }
-  }
-  
-  USART_Enter();
-  USART_Enter();
-  for(gyro=0;gyro<GYRO_NUMBER;gyro++)
-  {
-    USART_OUT(USART1,"gyro %d scaleMode: %d\r\n",gyro+1,*(flashData.scaleMode+gyro));
-  }
-  
-  USART_Enter();
-  for(int axis=0;axis<AXIS_NUMBER;axis++)
-  {
-    USART_OUT(USART1,"axis %d minValue: ",axis+1);
-    USART_OUT_F(*(flashData.minValue+axis));
-    USART_Enter();
-  }
-  
-  USART_Enter();
-  for(int axis=0;axis<AXIS_NUMBER;axis++)
-  {
-    USART_OUT(USART1,"axis %d varXYZ: ",axis+1);
-    USART_OUT_F(*(flashData.varXYZ+axis));
-    USART_Enter();
-  }
-  
 }
 
 void PrintChartMode(void)
 {
-  USART_Enter();
-  for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-  {
-    for(int axis=0;axis<AXIS_NUMBER;axis++)
-    {
-      USART_OUT(USART1,"gyro %d axis %d chartMode: %d\r\n",gyro+1,axis+1,*(flashData.chartMode+gyro*AXIS_NUMBER+axis));
-    }
-  }
+
 }
 
 void PrintVarXYZ(void)
 {
-  USART_Enter();
-  for(int axis=0;axis<AXIS_NUMBER;axis++)
-  {
-    USART_OUT(USART1,"axis %d varXYZ: ",axis+1);
-    USART_OUT_F(*(flashData.varXYZ+axis));
-    USART_Enter();
-  }
+
 }
 
 void PrintMinValue(void)
 {
-  USART_Enter();
-  for(int axis=0;axis<AXIS_NUMBER;axis++)
-  {
-    USART_OUT(USART1,"axis %d minValue: ",axis+1);
-    USART_OUT_F(*(flashData.minValue+axis));
-    USART_Enter();
-  }
+
 }
 
 void PrintScaleMode(void)
 {
-  USART_Enter();
-  for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-  {
-    USART_OUT(USART1,"gyro %d scaleMode: %d\r\n",gyro+1,*(flashData.scaleMode+gyro));
-  }
+
 }
 
 void PrintchartSelect(void)
 {
-  for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-  {
-    for(int axis=0;axis<AXIS_NUMBER;axis++)
-    {
-      USART_Enter();
-      USART_OUT(USART1,"gyro %d axis %d chartSelect:\r\n",gyro+1,axis+1);
-      for(int sample=0;sample<TEMP_SAMPLE_NUMBER;sample++)
-      {
-        USART_OUT_F(*(flashData.chartSelect+gyro*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+axis*TEMP_SAMPLE_NUMBER+sample));
-      }
-    }
-  }
+ 
 }
 
 int CalculateCrAndMean(float stdCr[GYRO_NUMBER][AXIS_NUMBER],float mean[GYRO_NUMBER][AXIS_NUMBER]){
@@ -308,14 +227,9 @@ int UpdateVDoffTable(void)
       }
       for(axis=0;axis<AXIS_NUMBER;axis++)
       {
-        for(int order=4;order>0;order--){
-          if(!isnan(*(flashData.chartW+gyro*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+axis*TEMP_SAMPLE_NUMBER+order-1)))
-            *(flashData.chartW+gyro*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+axis*TEMP_SAMPLE_NUMBER+order)=*(flashData.chartW+gyro*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+axis*TEMP_SAMPLE_NUMBER+order-1);
-        }
-        *(flashData.chartW+gyro*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+axis*TEMP_SAMPLE_NUMBER)=(sum[gyro]*paraXY[gyro][axis]-paraX[gyro]*paraY[gyro][axis])/(sum[gyro]*paraX2[gyro]-paraX[gyro]*paraX[gyro]);
+        (sum[gyro]*paraXY[gyro][axis]-paraX[gyro]*paraY[gyro][axis])/(sum[gyro]*paraX2[gyro]-paraX[gyro]*paraX[gyro]);
       }
       TempErgodic(gyro,1);
-      Flash_Write(GetFlashArr(),TempTable_Num);
       USART_OUT(USART1,"Flash Update end\r\n");
       TempTablePrintf();
       

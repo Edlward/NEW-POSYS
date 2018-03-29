@@ -25,6 +25,7 @@ void ICM_HeatingPower(int gyroNum,int value)
 		break;
 	}
 }
+#define MAX_TEMPERATURE			0.48F
 static int tempInitSuces=0;
 int HeatingInit(float temp_temp[GYRO_NUMBER])
 {
@@ -40,9 +41,9 @@ int HeatingInit(float temp_temp[GYRO_NUMBER])
 		for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
 		{
 			allPara.sDta.GYRO_TemperatureAim[gyro]=allPara.GYRO_Temperature[gyro]+0.05f;
-			if(allPara.sDta.GYRO_TemperatureAim[gyro]>0.42f)
+			if(allPara.sDta.GYRO_TemperatureAim[gyro]>MAX_TEMPERATURE)
 			{
-				allPara.sDta.GYRO_TemperatureAim[gyro]=0.42f;
+				allPara.sDta.GYRO_TemperatureAim[gyro]=MAX_TEMPERATURE;
 			}
 //			USART_OUT_F(allPara.sDta.GYRO_TemperatureAim[gyro]);
 		}
@@ -68,55 +69,58 @@ void SetTempInitSuces(void)
 void temp_pid_ctr(int gyro,float val_ex)
 {
   static float err[GYRO_NUMBER];
-  static float err_sum[GYRO_NUMBER];
+  static float integral[GYRO_NUMBER];
+  static float differential[GYRO_NUMBER];
   static float err_last[GYRO_NUMBER];
-  static float err_v[GYRO_NUMBER];
-	static int justforfirst[3]={1,1,1};
+//	static int justforfirst[3]={1,1,1};
 	static int count[3]={0};
-  float Kp_summer[GYRO_NUMBER] = { 2550.0f , 2550.0f ,2550.0f };
-  float Ki_summer[GYRO_NUMBER] = { 0.75f , 0.75f ,0.75f };
-  float Kd_summer[GYRO_NUMBER] = { 0.0f , 0.0f ,0.0f };
+  float K_p[GYRO_NUMBER] = { 10600.0f , 10600.0f ,10600.0f };
+  float K_i[GYRO_NUMBER] = { 3.5f , 3.5f ,3.5f };
+  float K_d[GYRO_NUMBER] = { 0.0f , 0.0f ,0.0f };
   
   static double ctr[GYRO_NUMBER];
 	
-		/*误差*/
-		err[gyro]=val_ex-allPara.GYRO_Temperature[gyro];
-	
-		allPara.GYRO_TemperatureDif[gyro]=err[gyro]*100;
-		/*积分*/
-		err_sum[gyro]=err_sum[gyro]+err[gyro];
-		/*微分量*/
-		err_v[gyro]=err[gyro]-err_last[gyro];
-		err_last[gyro]=err[gyro];
+	/*误差*/
+	err[gyro]=val_ex-allPara.GYRO_Temperature[gyro];
+	/*积分*/
+	integral[gyro]=integral[gyro]+err[gyro];
+	/*微分量*/
+	differential[gyro]=err[gyro]-err_last[gyro];
+	/*上一次的误差*/
+	err_last[gyro]=err[gyro];
 
-			ctr[gyro]=Kp_summer[gyro]*err[gyro]+Ki_summer[gyro]*err_sum[gyro]+Kd_summer[gyro]*err_v[gyro];
-			/*调节上限*/
-			if(ctr[gyro]>20)
-			{
-				ctr[gyro]=100;
-			}else if(ctr[gyro]<0)
-			{
-				ctr[gyro]=0;
-			}else{
-				if(justforfirst[gyro]==1){
-					//有时间的话可以把这个改成随环境变化的（把上一次稳定参数存下来）
-					err_sum[gyro]=8.874924f/Ki_summer[gyro];
-					justforfirst[gyro]=0;
-				}
-			}
-		/*#define ICM_HeatingPower(a)  TIM_SetCompare3(TIM3,a/100.0*1000); */
-		/*之所以最大值为1000,是因为该定时器的装载值为1000*/
-		if(allPara.GYRO_Temperature[gyro]>0.45f)
-			ctr[gyro]=0;
-		if(fabs(allPara.GYRO_Temperature[gyro]-allPara.sDta.GYRO_TemperatureAim[gyro])>0.04f)
-			count[gyro]++;
-		else
-			count[gyro]=0;
-		if(count[gyro]>4*200)
-			ctr[gyro]=20;
-		
-		ICM_HeatingPower(gyro,ctr[gyro]);
+	ctr[gyro]=K_p[gyro]*err[gyro]+K_i[gyro]*integral[gyro]+K_d[gyro]*differential[gyro];
+			
+	/*调节上限*/
+	if(ctr[gyro]>100)
+	{
+		ctr[gyro]=100;
+	}else if(ctr[gyro]<0)
+	{
+		ctr[gyro]=0;
+	}
+	else{
+//		if(justforfirst[gyro]==1){
+//			//有时间的话可以把这个改成随环境变化的（把上一次稳定参数存下来）
+//			integral[gyro]=8.874924f/K_i[gyro];
+//			justforfirst[gyro]=0;
+//		}
+	}
 	
+	if(allPara.GYRO_Temperature[gyro]>(MAX_TEMPERATURE+0.02f))
+		ctr[gyro]=0;
+		
+		/*防止温度一直读不出来，（可能一直为0）而烧毁芯片*/
+	if(fabs(allPara.GYRO_Temperature[gyro]-allPara.sDta.GYRO_TemperatureAim[gyro])>0.04f)
+		count[gyro]++;
+	else
+		count[gyro]=0;
+	if(count[gyro]>4*200)
+		ctr[gyro]=20;
+	
+	/*#define ICM_HeatingPower(a)  TIM_SetCompare3(TIM3,a/100.0*1000); */
+	/*之所以最大值为1000,是因为该定时器的装载值为1000*/
+	ICM_HeatingPower(gyro,ctr[gyro]);
 }
 
 

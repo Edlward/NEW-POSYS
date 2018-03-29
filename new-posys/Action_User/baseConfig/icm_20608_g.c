@@ -1,7 +1,6 @@
 #include "icm_20608_g.h"
 #include "config.h"
 
-extern flashData_t flashData;
 extern AllPara_t allPara;
 
 //gyro startup time from sleep mode is 35ms.
@@ -55,20 +54,6 @@ void MEMS_Configure(int gyroNum)
     uint8_t data=0xFF;
     do{
       i++;
-//			switch(*(flashData.scaleMode+gyroNum))
-//			{
-//				/*250dps*/
-//				case 0:
-//					registers[5]=0;
-//					break;
-//				/*500dps*/
-//				case 1:
-//					registers[5]=8;
-//					break;
-//				default:
-//					registers[5]=0;
-//					break;
-//			}
 			switch(gyroNum)
 			{
 				case 0:
@@ -129,9 +114,7 @@ void icm_update_gyro_rate(int gyroNum)
   /*Y的原始角速度值*/
   data1[2] = (raw[4]<<8) | raw[5];
   
-//	switch(*(flashData.scaleMode+gyroNum))
-//	{
-//		case 0:
+
 //			#ifdef TESTCAR
 //					gyro[0] = -data1[1]/131.0;
 //					gyro[1] = -data1[0]/131.0;
@@ -147,31 +130,7 @@ void icm_update_gyro_rate(int gyroNum)
 //					gyro[2] = -data1[2]/131.524243090403;
 //				#endif
 //			#endif
-//			break;
-//		case 1:
-//			gyro[0] = -data1[1]/65.4507037444175;
-//			gyro[1] = -data1[0]/65.4507037444175;
-//			gyro[2] = -data1[2]/65.4507037444175;
-//			break;
-//		default:
-//			#ifdef TESTCAR
-//					gyro[0] = -data1[1]/131.0;
-//					gyro[1] = -data1[0]/131.0;
-//					gyro[2] = -data1[2]/131.0;
-//			#else
-//				#ifdef AUTOCAR
-//					gyro[0] = -data1[1]/131.170291536093;
-//					gyro[1] = -data1[0]/131.170291536093;
-//					gyro[2] = -data1[2]/131.170291536093;
-//				#else
-//					gyro[0] = -data1[1]/131.524243090403;
-//					gyro[1] = -data1[0]/131.524243090403;
-//					gyro[2] = -data1[2]/131.524243090403;
-//				#endif
-//			#endif
 
-//			break;
-//  }
 	float middlePerson = 0.f;
 	switch(gyroNum)
 	{

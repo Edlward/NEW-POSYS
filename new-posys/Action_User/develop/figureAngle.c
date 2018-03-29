@@ -22,7 +22,6 @@
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
 
-extern flashData_t flashData;
 extern AllPara_t allPara;
 /* Extern   variables ---------------------------------------------------------*/
 /*  全局变量  */
@@ -85,11 +84,11 @@ int RoughHandle(void)
 		int axis=2;
 		if(!(fabs(allPara.sDta.GYRO_Aver[axis]-mean[axis])<stdCr[axis]*3))
 		{
-			USART_OUT_F(allPara.sDta.GYRO_Aver[axis]);
-			USART_OUT_F(mean[axis]);
-			USART_OUT_F(stdCr[axis]);
-			USART_OUT(USART1,"NNNNNN");
-			USART_Enter();
+//			USART_OUT_F(allPara.sDta.GYRO_Aver[axis]);
+//			USART_OUT_F(mean[axis]);
+//			USART_OUT_F(stdCr[axis]);
+//			USART_OUT(USART1,"NNNNNN");
+//			USART_Enter();
 		}
 		#endif
 	}
@@ -430,34 +429,6 @@ chartSelect+陀螺仪序号（0-(GYRO_NUMBER-1）*AXIS_NUMBER*+轴号（0-(AXIS_NUMBER-1）
 const double stdCoffeicent[GYRO_NUMBER][AXIS_NUMBER]={ 0.0,0.0, 0.0 };
 
 void driftCoffecientInit(void){
-	int selectCount[GYRO_NUMBER][AXIS_NUMBER]={0};
-	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-	{
-		for(int axis=0;axis<AXIS_NUMBER;axis++)
-		{
-			switch(*(flashData.chartMode+gyro*AXIS_NUMBER+axis))
-			{
-				//结合之前测得的标准数据
-				case 0:
-					selectCount[gyro][axis]++;
-					allPara.driftCoffecient[gyro][axis]=stdCoffeicent[gyro][axis];
-					break;
-				//不结合之前测得的标准数据
-				case 1:
-					
-					break;
-			}
-			for(int sample=0;sample<TEMP_SAMPLE_NUMBER;sample++)
-			{
-				if(*( flashData.chartSelect+gyro*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+axis*TEMP_SAMPLE_NUMBER+sample))
-				{
-					selectCount[gyro][axis]++;
-					allPara.driftCoffecient[gyro][axis]=allPara.driftCoffecient[gyro][axis]+*(flashData.chartW+gyro*AXIS_NUMBER*TEMP_SAMPLE_NUMBER+axis*TEMP_SAMPLE_NUMBER+sample);
-				}
-			}
-			allPara.driftCoffecient[gyro][axis]=allPara.driftCoffecient[gyro][axis]/selectCount[gyro][axis];	
-		}
-	}
 	
 }
 
@@ -663,7 +634,7 @@ double KalmanFilterX(double measureData)
   static double Kk;           //滤波增益系数
   
   static double Q=0.00000000002514;       //系统噪声         
-  double R=(double)(flashData.varXYZ)[0];      //测量噪声 
+  double R=0.0;      //测量噪声 
   static double IAE_st[50];    //记录的新息
   static double data=0.0;
   double Cr=0;                //新息的方差
@@ -725,7 +696,7 @@ double KalmanFilterY(double measureData)
   static double Kk;           //滤波增益系数
   
   static double Q=0.003;       //系统噪声        
-  double R=(double)(flashData.varXYZ)[1];      //测量噪声 
+  double R=0.0;      //测量噪声 
   static double IAE_st[50];    //记录的新息
   static double data=0.0;
   double Cr=0;                //新息的方差

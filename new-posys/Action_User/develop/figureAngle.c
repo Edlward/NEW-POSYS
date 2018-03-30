@@ -74,8 +74,8 @@ int RoughHandle(void)
 	
 	if(ignore>200*3&&!isCalCrOk)
 	{
-		if(CalculateRealCrAndMean(stdCr,mean))
-			isCalCrOk=1;
+		if(CalculateRealCrAndMean(stdCr,mean));
+			//isCalCrOk=1;
 	}
 	else if(isCalCrOk==1)
 	{
@@ -310,7 +310,11 @@ uint8_t UpdateBais(void)
 					data[axis][index-1]=allPara.sDta.GYRO_Aver[axis];
 				else
 				{
-					index--;
+					if(axis==2)
+					{
+						index--;
+						cnt--;
+					}
 				}
 //				if(axis==2)
 //					data[axis][index-1]=lowpass;

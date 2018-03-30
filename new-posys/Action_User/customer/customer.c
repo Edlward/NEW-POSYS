@@ -24,7 +24,6 @@ void AT_CMD_Judge(void);
 void SetParaDefault(void);
 void DataSend(void)
 {
-	#ifdef AUTOCAR 
 	int i;
 	uint8_t tdata[36];
   union{
@@ -36,6 +35,7 @@ void DataSend(void)
   tdata[1]=0x0a;
   tdata[34]=0x0a;
   tdata[35]=0x0d;
+	#ifdef AUTOCAR 
 	
 	valSend.val=(float)allPara.sDta.Result_Angle[2];
   memcpy(tdata+2,valSend.data,4);
@@ -61,18 +61,6 @@ void DataSend(void)
 	valSend.val=(float)allPara.kalmanZ;
   memcpy(tdata+30,valSend.data,4);
 	#else
-	int i;
-	uint8_t tdata[28];
-  union{
-		float   val;
-		uint8_t data[4];
-	}valSend;
-	
-  tdata[0]=0x0d;
-  tdata[1]=0x0a;
-  tdata[26]=0x0a;
-  tdata[27]=0x0d;
-	
 	valSend.val=(float)allPara.sDta.Result_Angle[2];
   memcpy(tdata+2,valSend.data,4);
 	
@@ -82,6 +70,9 @@ void DataSend(void)
 	valSend.val=(float)allPara.sDta.velly;
   memcpy(tdata+10,valSend.data,4);
 	
+//	valSend.val=(float)allPara.sDta.GYRO_Bais[2];
+//  memcpy(tdata+10,valSend.data,4);
+
 	valSend.val=(float)allPara.sDta.posx;
   memcpy(tdata+14,valSend.data,4);
 	 
@@ -90,6 +81,12 @@ void DataSend(void)
 	 
 	valSend.val=(float)allPara.GYRO_Real[2];
   memcpy(tdata+22,valSend.data,4);
+	
+	valSend.val=(float)allPara.sDta.codeData[0];
+  memcpy(tdata+26,valSend.data,4);
+	 
+	valSend.val=(float)allPara.sDta.codeData[1];
+  memcpy(tdata+30,valSend.data,4);
 	#endif
 
 //	
@@ -120,13 +117,10 @@ void DataSend(void)
 	//USART_OUT(USART1,"%d\t%d\t%d",allPara.sDta.codeData[0],allPara.sDta.codeData[1],allPara.cpuUsage);
 	USART_Enter();
 	#else
-	#ifdef AUTOCAR 
+	
 	for(i=0;i<36;i++)
    USART_SendData(USART1,tdata[i]);
-	#else
-	for(i=0;i<28;i++)
-   USART_SendData(USART1,tdata[i]);
-	#endif
+
 	#endif
 }
 void debugsend2(float a,float b,float c,float d,float e)

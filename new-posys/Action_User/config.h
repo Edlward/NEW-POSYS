@@ -40,6 +40,7 @@
 #include "figurePos.h"
 #include "quarternion.h"
 #include "adc.h"
+#include "odom.h"
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 
@@ -50,8 +51,8 @@
 
 //#define TEST_SUMMER
 
-//#define AUTOCAR
-
+#define AUTOCAR
+//#define TESTCAR
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
 #define PERIOD    				0.005f
@@ -83,10 +84,10 @@
 */
 
 #define CORRECT    								0X01
-#define ACCUMULATE 								0X02
-#define STATIC										0X04
+#define START_COMPETE 						0X02
+#define NULL_FLAG									0X04
 #define HEATING										0X08
-
+#define STATIC_FORCE							0X10
 
 /* ICM20608G 陀螺仪寄存器地址--------------*/
 #define ICM20608G_WHO_AM_I							0x75
@@ -151,51 +152,77 @@
 #define ICM20608G_ZA_OFFSET_L						0x7E
 
 typedef struct{
+	/*判断此次是否为看门狗复位*/
+  uint32_t isReset;
+  
+	double posx;
 	
+	double posy;
+
+	float vellx;
+	
+	float velly;
+	
+	float GYRO_TemperatureAim[GYRO_NUMBER];
+	
+	double GYRO_Aver[AXIS_NUMBER];
+	
+	/*陀螺仪处理后的数据*/
+	double GYRO_Bais[AXIS_NUMBER];
+  
 	/*用于角度积分的四元数*/
 	double quarternion[4];
+  
+	/*最终确定的三轴角度*/
+	double Result_Angle[AXIS_NUMBER];
+  
+	uint32_t codeData[2];
+	
+  uint32_t data_last[2];
+	
+	int vell[2];
+	
+  uint32_t flag;
+}DataSave_t;
+
+
+typedef struct{
+	
+	/*重启需要储存的数据*/
+	DataSave_t sDta;
 	
 	/*陀螺仪原始数据*/
-	double gyroRawDta[GYRO_NUMBER][AXIS_NUMBER];
+	double GYROWithoutRemoveDrift[GYRO_NUMBER][AXIS_NUMBER];
+	
+	double GYRORemoveDrift[GYRO_NUMBER][AXIS_NUMBER];
+	
 	/*陀螺仪处理后的数据*/
-	double GYRO_Real[GYRO_NUMBER][AXIS_NUMBER];
-	/*陀螺仪处理后的数据*/
-	double GYRO_Bais[GYRO_NUMBER][AXIS_NUMBER];
+	double GYRO_Real[AXIS_NUMBER];
 
 	/*陀螺仪原始数据*/
 	float ACC_Raw[GYRO_NUMBER][AXIS_NUMBER];
+	
 	float ACC_Aver[GYRO_NUMBER][AXIS_NUMBER];
+	
 	float ACC_InitSum;
 	
 	/*加速度计的角度 只有X Y轴角度*/
 	float ACC_Angle[GYRO_NUMBER][AXIS_NUMBER-1];
+	
 	float ACC_RealAngle[AXIS_NUMBER-1];
 	
 	/*陀螺仪温度*/
 	float GYRO_Temperature[GYRO_NUMBER];
 	
-	float GYRO_TemperatureAim[GYRO_NUMBER];
-	
 	float GYRO_TemperatureDif[GYRO_NUMBER];
 	/*三个陀螺仪三个轴随温度变化的系数*/
 	float driftCoffecient[GYRO_NUMBER][AXIS_NUMBER];
 	
-	/*最终确定的三轴角度*/
-	double Result_Angle[AXIS_NUMBER];
-	
-	double posx;
-	
-	double posy;
-	
-	uint16_t codeData[2];
-	
-  uint16_t data_last[2];
-	
 	int cpuUsage;
 	
-	uint32_t isReset;
-	
 	uint32_t resetTime;
+	
+	double kalmanZ;
 	
 	int resetFlag;
 }AllPara_t;

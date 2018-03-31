@@ -1,0 +1,9 @@
+diff a/new-posys/Action_User/hardware/spi.c b/new-posys/Action_User/hardware/spi.c	(rejected hunks)
+@@ -320,7 +320,6 @@
+ 	return tmpAbs;
+ }
+ 
+-#define READ_NUM	3
+ #define READ_NUM	1
+ /*�ҵ�������С��ֵ*/
+ uint16_t FindMin2(int codes[READ_NUM])

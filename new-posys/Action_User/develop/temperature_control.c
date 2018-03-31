@@ -39,12 +39,12 @@ int HeatingInit(float temp_temp[GYRO_NUMBER])
 	{
 		for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
 		{
-			allPara.GYRO_TemperatureAim[gyro]=allPara.GYRO_Temperature[gyro]+0.05f;
-			if(allPara.GYRO_TemperatureAim[gyro]>0.42f)
+			allPara.sDta.GYRO_TemperatureAim[gyro]=allPara.GYRO_Temperature[gyro]+0.05f;
+			if(allPara.sDta.GYRO_TemperatureAim[gyro]>0.42f)
 			{
-				allPara.GYRO_TemperatureAim[gyro]=0.42f;
+				allPara.sDta.GYRO_TemperatureAim[gyro]=0.42f;
 			}
-//			USART_OUT_F(allPara.GYRO_TemperatureAim[gyro]);
+//			USART_OUT_F(allPara.sDta.GYRO_TemperatureAim[gyro]);
 		}
 //		USART_Enter();
 //		USART_Enter();
@@ -72,6 +72,7 @@ void temp_pid_ctr(int gyro,float val_ex)
   static float err_last[GYRO_NUMBER];
   static float err_v[GYRO_NUMBER];
 	static int justforfirst[3]={1,1,1};
+	static int count[3]={0};
   float Kp_summer[GYRO_NUMBER] = { 2550.0f , 2550.0f ,2550.0f };
   float Ki_summer[GYRO_NUMBER] = { 0.75f , 0.75f ,0.75f };
   float Kd_summer[GYRO_NUMBER] = { 0.0f , 0.0f ,0.0f };
@@ -107,6 +108,15 @@ void temp_pid_ctr(int gyro,float val_ex)
 			ctr[gyro]=0;
 		/*#define ICM_HeatingPower(a)  TIM_SetCompare3(TIM3,a/100.0*1000); */
 		/*之所以最大值为1000,是因为该定时器的装载值为1000*/
+		if(allPara.GYRO_Temperature[gyro]>0.45f)
+			ctr[gyro]=0;
+		if(fabs(allPara.GYRO_Temperature[gyro]-allPara.sDta.GYRO_TemperatureAim[gyro])>0.04f)
+			count[gyro]++;
+		else
+			count[gyro]=0;
+		if(count[gyro]>4*200)
+			ctr[gyro]=20;
+		
 		ICM_HeatingPower(gyro,ctr[gyro]);
 	
 }
@@ -204,56 +214,77 @@ int TempErgodic(int gyroNum,int reset){
 }
 #endif
 
-#define THRESHOLD_TEMP 		 0.01f
-#define THRESHOLD_COUNT  	 100
-#define STD_VALUE					 0.2f
-float LowPassFilter(float newValue,int gyro)
+
+
+/*延时大，不用了！*/
+#define Threshold_1 		 0.02f				//阈值1用于一阶带参滤波器，变化角度大于此值时，计数增加
+#define Threshold_2			 10				//阈值2用于一阶带参滤波器，计数值大于此值时，增大参数，增强滤波跟随
+double LowPassFilter(float newValue,int gyro)
 {
-	static uint8_t Dr_flagLst[GYRO_NUMBER] = { 0 };
-	static uint8_t Dr_flag[GYRO_NUMBER] = { 0 };
-	static uint8_t F_count[GYRO_NUMBER] = { 0 };
-	static float coeff[GYRO_NUMBER] = { 0.f };
-	static float valueLast[GYRO_NUMBER] = { 0.f };
-	float diffValue[GYRO_NUMBER] = { 0.f };
-	if(valueLast[gyro]>newValue)
-	{
-		diffValue[gyro] = valueLast[gyro] - newValue;
-    Dr_flag[gyro] = 0;
-	}
-	else
-	{
-    diffValue[gyro] = newValue - valueLast[gyro];
-    Dr_flag[gyro] = 1;
-	}		
-  if (!(Dr_flag[gyro]^Dr_flagLst[gyro]))    //前后数据变化方向一致
-	{
-    F_count[gyro]=F_count[gyro]+2;
-    if (diffValue[gyro] >= THRESHOLD_TEMP)
-		{
-			F_count[gyro]=F_count[gyro]+4;
-		}
-    if (F_count[gyro] >= THRESHOLD_COUNT)
-      F_count[gyro] = THRESHOLD_COUNT;
-    coeff[gyro] = STD_VALUE * F_count[gyro];
-	}
-  else{
-    coeff[gyro] = STD_VALUE;
-    F_count[gyro] = 0;
+  static double K_x[GYRO_NUMBER]={0.0}; //滤波系数
+  static double k[GYRO_NUMBER]={0.0};
+  static uint32_t num_x[GYRO_NUMBER]={0};//滤波计数器
+  static uint8_t new_flag_x[GYRO_NUMBER]={0};//本次数据变化方向
+  static uint8_t old_flag_x[GYRO_NUMBER]={0};
+  static double valueLast[GYRO_NUMBER]={0.0};
+  
+	if(valueLast[gyro]==0.0)
+		valueLast[gyro]=newValue;
+	
+  //角度变化方向，new_flag=1表示角度增加，=0表示角度正在减小
+  if((newValue-valueLast[gyro])>0.0)
+  {
+    new_flag_x[gyro]=1;
   }
-  //一阶滤波算法
-  if (Dr_flag[gyro] == 0)     //当前值小于前一个值
-    newValue = valueLast[gyro] - coeff[gyro]*(valueLast[gyro] - newValue) / 256;
-  else
-		newValue = valueLast[gyro] + coeff[gyro]*(newValue - valueLast[gyro]) / 256;
-	
-  valueLast[gyro]=newValue;
-  Dr_flagLst[gyro] = Dr_flag[gyro];
-	
-	return newValue;
+  if((newValue-valueLast[gyro])<0.0)
+  {
+    new_flag_x[gyro]=0;
+  }
+  
+  if(new_flag_x[gyro]==old_flag_x[gyro])  //此次变化与前一次变化方向是否一致，相等表示角度变化方向一致
+  {
+    num_x[gyro]=num_x[gyro]+1;
+    if(fabs(newValue-valueLast[gyro])>Threshold_1)
+    {
+      //当变化角度大于Threshold_1度的时候，进行计数器num快速增加，以达到快速增大K值，提高跟随性
+      num_x[gyro]=num_x[gyro]+5;   
+    }
+  
+		if(num_x[gyro]>Threshold_2)   //计数阈值设置，当角度递增或递减速度达到一定速率时，增大K值
+		{
+			K_x[gyro]=k[gyro]+0.07;  //0.2为K_x[gyro]的增长值，看实际需要修改
+			if(K_x[gyro]>1.0) 
+				K_x[gyro]=1.0; 
+			num_x[gyro]=0;
+		}
+	}
+  else 
+  {
+    num_x[gyro]=0;
+		K_x[gyro]=K_x[gyro]-0.07;
+		if(K_x[gyro]<0.01)
+			K_x[gyro]=0.01; //角度变化稳定时K_x[gyro]值，看实际修改
+  }
+  valueLast[gyro]=(1-K_x[gyro])*valueLast[gyro]+K_x[gyro]*newValue;
+  old_flag_x[gyro]=new_flag_x[gyro];
+  
+  return valueLast[gyro];
+  
 }
 
+double LowPassFilterGyro(float newValue)
+{
+  double K_x=0.03; //滤波系数
+  static double valueLast=0.0;
 
-
+	if(valueLast==0.0)
+		valueLast=newValue;
+	
+  valueLast=(1-K_x)*valueLast+K_x*newValue;
+  
+  return valueLast;
+  
+}
 void pwm1_init(uint32_t arr,uint32_t psc)
 {		 					 
   GPIO_InitTypeDef GPIO_InitStructure;

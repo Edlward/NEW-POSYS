@@ -1,0 +1,11 @@
+diff a/new-posys/Action_User/develop/figurePos.c b/new-posys/Action_User/develop/figurePos.c	(rejected hunks)
+@@ -95,6 +95,9 @@
+ 	if(vell[1]<-2048)
+ 		vell[1]+=4096;
+ 	
++	summm[0]=summm[0]+vell[0];
++	summm[1]=summm[1]+vell[1];
++	
+ 	zangle=allPara.Result_Angle[2]; 
+ 	/*-180��180*/
+ 	if(zangle-last_ang>180.0)

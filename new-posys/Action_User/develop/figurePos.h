@@ -30,7 +30,7 @@ void calculatePos(void);
 
 void SetPosX(double in);
 void SetPosY(double in);
-
+void figureVell(void);
 
 #endif
 

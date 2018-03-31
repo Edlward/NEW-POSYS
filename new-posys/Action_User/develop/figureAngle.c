@@ -224,7 +224,7 @@ int JudgeAcc(void)
     return 0;
 }	
 
-#define STATIC_ARRAY_NUM	20
+#define STATIC_ARRAY_NUM	7
 
 uint16_t FindMax(uint16_t codes[STATIC_ARRAY_NUM])
 {
@@ -250,7 +250,8 @@ void JudgeStatic(void)
 {
 	static uint16_t codes0[STATIC_ARRAY_NUM];
 	static uint16_t codes1[STATIC_ARRAY_NUM];
-	
+	int difCode=0;
+	static int staticCount=0;
 	for(int i=0;i<STATIC_ARRAY_NUM-1;i++)
 	{
 		codes0[i]=codes0[i+1];
@@ -259,16 +260,25 @@ void JudgeStatic(void)
 	codes0[STATIC_ARRAY_NUM-1]=allPara.sDta.codeData[0];
 	codes1[STATIC_ARRAY_NUM-1]=allPara.sDta.codeData[1];
 
-	
-	//如果条件真的恶劣，那就说明强制静止有错
-	if(abs(FindMin(codes0)-FindMax(codes0))>=3||abs(FindMin(codes1)-FindMax(codes1))>=3||allPara.GYRO_Real[2]>0.5f)
-	{
-		SetFlag(~STATIC_FORCE);
-	}
-	
+	difCode=FindMin(codes0)-FindMax(codes0);
+	if(difCode>2048)
+		difCode-=4096;
+	if(difCode<-2048)
+		difCode+=4096;
 	#ifndef AUTOCAR
-//	if(abs(FindMin(codes0)-FindMax(codes0))<=1&&abs(FindMin(codes1)-FindMax(codes1))<=1)
+	//如果条件真的恶劣，那就说明强制静止有错
+	if(abs(difCode)<=20)
+	{
+		staticCount++;
+	}
+	else
+		staticCount=0;
+	
+//	if(staticCount>=5)
 //		SetFlag(STATIC_FORCE);
+//	else
+//		SetFlag(~STATIC_FORCE);
+	
 	#endif
 	
 }
@@ -295,9 +305,9 @@ uint8_t UpdateBais(void)
 	/*条件一	比赛还没开始*/
 	if((!(allPara.sDta.flag&START_COMPETE))\
 		/*条件二	收集的数还很少*/
-		||(cnt<=STATIC_MIN_NUM)\
-		/*条件三	强制进入静止状态，并且条件还好（后续有判断）*/
-		||(allPara.sDta.flag&STATIC_FORCE))
+		||(cnt<=STATIC_MIN_NUM))
+//		/*条件三	强制进入静止状态，并且条件还好（后续有判断）*/
+//		||(allPara.sDta.flag&STATIC_FORCE))
 	{
 		index++;
 		/*如果已存数据小于等于最大长度，顺序一个一个存储*/

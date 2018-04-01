@@ -171,6 +171,7 @@ void updateAngle(void)
 	
 	#ifdef AUTOCAR
 //  if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1&&fabs(allPara.kalmanZ)<0.05))//单位 °/s
+//	if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1&&fabs(w[2])<0.20))//单位 °/s
   if(allPara.sDta.flag&STATIC_FORCE)//单位 °/s
     w[2]=0.f;
 	#else

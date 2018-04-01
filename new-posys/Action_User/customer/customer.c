@@ -205,8 +205,13 @@ void USART1_IRQHandler(void)
     data=USART_ReceiveData(USART1);
   }
 }
-
 void AT_CMD_Judge(void){
+	
+	union{
+		uint8_t data[4];
+		float value;
+	}convert_u;
+	
   if((bufferI == 4) && strncmp(buffer, "AT\r\n", 4)==0)//AT    
 	{
     bufferInit();
@@ -238,18 +243,35 @@ void AT_CMD_Judge(void){
 		allPara.sDta.posx=0.0;
 		USART_OUT(USART1,"OK");
 	}
-	else if((bufferI == 4) && strncmp(buffer, "AH\r\n", 4)==0)//AT    
+	else if((bufferI == 8) && strncmp(buffer, "AX", 2)==0)//AT    
 	{
-		#ifdef TEST_SUMMER
+		convert_u.data[0]=*(buffer+2);
+		convert_u.data[1]=*(buffer+3);
+		convert_u.data[2]=*(buffer+4);
+		convert_u.data[3]=*(buffer+5);
+		allPara.sDta.posx=convert_u.value;
     bufferInit();
-		int i[2]={0};
-		for(int j=60000;j<80000;j++)
-		{
-			i[j]=100;
-			i[j]=i[j];
-		}
 		USART_OUT(USART1,"OK");
-		#endif
+	}
+	else if((bufferI == 8) && strncmp(buffer, "AY", 2)==0)//AT    
+	{
+		convert_u.data[0]=*(buffer+2);
+		convert_u.data[1]=*(buffer+3);
+		convert_u.data[2]=*(buffer+4);
+		convert_u.data[3]=*(buffer+5);
+		allPara.sDta.posy=convert_u.value;
+    bufferInit();
+		USART_OUT(USART1,"OK");
+	}
+	else if((bufferI == 8) && strncmp(buffer, "AA", 2)==0)//AT    
+	{
+		convert_u.data[0]=*(buffer+2);
+		convert_u.data[1]=*(buffer+3);
+		convert_u.data[2]=*(buffer+4);
+		convert_u.data[3]=*(buffer+5);
+		allPara.sDta.Result_Angle[2]=convert_u.value;
+    bufferInit();
+		USART_OUT(USART1,"OK");
 	}
 	else if((bufferI == 14) && strncmp(buffer, "AT+printData\r\n", 14)==0)
     atCommand=5;

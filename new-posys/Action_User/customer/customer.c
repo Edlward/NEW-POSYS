@@ -106,15 +106,15 @@ void DataSend(void)
 //		USART_OUT_F(allPara.sDta.GYRO_TemperatureAim[i]);
 //		USART_OUT_F(allPara.GYRO_Temperature[i]);
 //	}
-if(count<200*60*30)
+
+if(count>200&&allPara.sDta.flag&SendDta)
 {
 	USART_OUT_F(allPara.sDta.GYRO_Aver[0]);
 	USART_OUT_F(allPara.sDta.GYRO_Aver[1]);
 	USART_OUT_F(allPara.sDta.GYRO_Aver[2]);
   USART_OUT_F(allPara.GYRO_Temperature[0]);
+	USART_Enter();
 }
-else
-	count=200*60*40;
 //	USART_OUT_F(lowpass);
 //	USART_OUT_F(allPara.sDta.Result_Angle[2]);
 //	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);
@@ -125,7 +125,6 @@ else
 //	USART_OUT_F(allPara.sDta.vell[1]);
 //	USART_OUT_F(allPara.isStatic);
 	//USART_OUT(USART1,"%d\t%d\t%d",allPara.sDta.codeData[0],allPara.sDta.codeData[1],allPara.cpuUsage);
-	USART_Enter();
 	#else
 	
 	for(i=0;i<36;i++)
@@ -269,6 +268,18 @@ void AT_CMD_Judge(void){
 		SetFlag(~HEATING);
 		USART_OUT(USART1,"OK");
 	}
+  else if((bufferI >=5) && strncmp(buffer, "AT+SD\r\n", 11)==0)//AT    
+	{
+    bufferInit();
+		SetFlag(SendDta);
+		USART_OUT(USART1,"OK");
+	}
+  else if((bufferI >=5) && strncmp(buffer, "AT+NSD\r\n", 11)==0)//AT    
+	{
+    bufferInit();
+		SetFlag(~SendDta);
+		USART_OUT(USART1,"OK");
+	}
   else 
 	{
     atCommand=666;
@@ -311,6 +322,12 @@ void SetFlag(int val){
 		break;
   case ~STATIC_FORCE:
     allPara.sDta.flag&=~STATIC_FORCE;
+    break;
+	case SendDta:
+    allPara.sDta.flag|=SendDta;
+		break;
+  case ~SendDta:
+    allPara.sDta.flag&=~SendDta;
     break;
   }
 }

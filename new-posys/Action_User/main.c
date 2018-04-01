@@ -66,6 +66,10 @@ void init(void)
 	{
 		SetFlag(HEATING);
 	}
+	else
+	{
+		SetFlag(START_COMPETE);
+	}
 	
   //driftCoffecientInit();
 	
@@ -96,8 +100,15 @@ int main(void)
 //      				test[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_WHO_AM_I); //测试ICM20608G，正确值为0XAF
 			//使数据能够同步，但是不同步情况很少
 			//AT指令处理
-			if(CheckNan())
+			
+			/*限制只有初始化的时候才会重启*/
+			allPara.sDta.time++;
+			if(CheckNan()&&allPara.sDta.time<200*5)
 				IWDG_Reset();
+			
+			if(allPara.sDta.time>200*5)
+				allPara.sDta.time--;
+			
 			AT_CMD_Handle();
       if(!(allPara.sDta.flag&CORRECT)){
 				if(allPara.sDta.flag&HEATING)

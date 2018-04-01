@@ -183,6 +183,8 @@ typedef struct{
 	int vell[2];
 	
   uint32_t flag;
+	
+  uint32_t time;
 }DataSave_t;
 
 

@@ -17,8 +17,13 @@ void MEMS_Configure(int gyroNum)
   uint8_t registers[REGISTERS]={
     ICM20608G_PWR_MGMT_1,0,/*10011 Wake up chip from sleep mode,enable temperature sensor,select pll	*/
     ICM20608G_GYRO_CONFIG,0,/* gyro range:±500dps, Used to bypass DLPF				*/
+		#ifdef	AUTOCAR
     ICM20608G_CONFIG,0,/*  DLPF低通滤波器的设置	低通滤波器截止频率为176Hz 根据↓*/
     ICM20608G_SMPLRT_DIV,7,/* 设置采样速率为1kHz		*/
+		#else
+    ICM20608G_CONFIG,2,/*  DLPF低通滤波器的设置	低通滤波器截止频率为176Hz 根据↓*/
+    ICM20608G_SMPLRT_DIV,0,/* 设置采样速率为1kHz		*/
+		#endif
     ICM20608G_ACCEL_CONFIG,0,/* accel:2g																	*/
     ICM20608G_ACCEL_CONFIG2,2,/*000110 DLPF:5.1	低通滤波器的设置	 不能设置低功耗模式的均值滤波，否则数字不对	*/
     ICM20608G_SIGNAL_PATH_RESET,0,/* Use SIG_COND_RST to clear sensor registers.*/

@@ -92,6 +92,8 @@ void DataSend(void)
 //	
 	#ifdef TEST_SUMMER
 	i=i;
+	static int count=0;
+	count++;
 //	USART_OUT_F((allPara.GYRO_Temperature[0]+allPara.GYRO_Temperature[1]+allPara.GYRO_Temperature[2])/3.f);
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[0][2]);
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[1][2]);
@@ -104,7 +106,15 @@ void DataSend(void)
 //		USART_OUT_F(allPara.sDta.GYRO_TemperatureAim[i]);
 //		USART_OUT_F(allPara.GYRO_Temperature[i]);
 //	}
+if(count<200*60*30)
+{
+	USART_OUT_F(allPara.sDta.GYRO_Aver[0]);
+	USART_OUT_F(allPara.sDta.GYRO_Aver[1]);
 	USART_OUT_F(allPara.sDta.GYRO_Aver[2]);
+  USART_OUT_F(allPara.GYRO_Temperature[0]);
+}
+else
+	count=200*60*40;
 //	USART_OUT_F(lowpass);
 //	USART_OUT_F(allPara.sDta.Result_Angle[2]);
 //	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);

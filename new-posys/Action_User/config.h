@@ -48,10 +48,10 @@
 
 /* Exported constants --------------------------------------------------------*/
 
-//#define TEST_SUMMER
+#define TEST_SUMMER
 
 //#define AUTOCAR
-//#define TESTCAR
+#define TESTCAR
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
 #define PERIOD    				0.005f

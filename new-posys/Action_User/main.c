@@ -99,6 +99,7 @@ int main(void)
 			if(CheckNan())
 				IWDG_Reset();
 			AT_CMD_Handle();
+			allPara.sDta.GYRO_TemperatureAim[0]=0.38f;
       if(!(allPara.sDta.flag&CORRECT)){
 				if(allPara.sDta.flag&HEATING)
 				{

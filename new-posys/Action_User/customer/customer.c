@@ -169,6 +169,11 @@ void debugsend(float a,float b,float c,float d,float e,float f)
 
 }
 
+void ReportHardFault(void)
+{
+	USART_OUT(USART1,"HF");
+}
+
 static char buffer[20];
 static int bufferI=0;
 

@@ -337,7 +337,7 @@ void HardFault_Handler(void)
 //			r_sp = __get_MSP(); 
 //		/*因为经历中断函数入栈之后，堆栈指针会减小0x10，所以平移回来（可能不具有普遍性）*/
 //		r_sp = r_sp+0x10;
-	debugsend(1.f,2.f,3.f,4.f,5.f,6.f);
+	ReportHardFault();
 	if(allPara.resetTime<=500)
 	{
 		FindResetTime();
@@ -354,6 +354,7 @@ void HardFault_Handler(void)
   /* Go to infinite loop when Hard Fault exception occurs */
   while (1)
   {
+		ReportHardFault();
 //		/*串口发数通知*/
 //		USART_OUT(USART1,"\r\nHardFault");
 //  	char sPoint[2]={0};

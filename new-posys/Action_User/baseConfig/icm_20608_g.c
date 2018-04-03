@@ -21,7 +21,7 @@ void MEMS_Configure(int gyroNum)
     ICM20608G_CONFIG,0,/*  DLPF低通滤波器的设置	低通滤波器截止频率为176Hz 根据↓*/
     ICM20608G_SMPLRT_DIV,7,/* 设置采样速率为1kHz		*/
 		#else
-    ICM20608G_CONFIG,2,/*  DLPF低通滤波器的设置	低通滤波器截止频率为176Hz 根据↓*/
+    ICM20608G_CONFIG,6,/*  DLPF低通滤波器的设置	低通滤波器截止频率为176Hz 根据↓*/
     ICM20608G_SMPLRT_DIV,0,/* 设置采样速率为1kHz		*/
 		#endif
     ICM20608G_ACCEL_CONFIG,0,/* accel:2g																	*/

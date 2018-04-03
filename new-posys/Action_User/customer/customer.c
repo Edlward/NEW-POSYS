@@ -79,9 +79,14 @@ void DataSend(void)
 	valSend.val=(float)allPara.sDta.posy;
   memcpy(tdata+18,valSend.data,4);
 	 
-	valSend.val=(float)allPara.GYRO_Real[2];
+	valSend.val=(float)allPara.sDta.GYRO_Aver[0];
   memcpy(tdata+22,valSend.data,4);
 	
+//	valSend.val=(float)allPara.sDta.GYRO_Aver[1];
+//  memcpy(tdata+26,valSend.data,4);
+//	 
+//	valSend.val=(float)allPara.sDta.GYRO_Aver[2];
+//  memcpy(tdata+30,valSend.data,4);
 	valSend.val=(float)allPara.sDta.codeData[0];
   memcpy(tdata+26,valSend.data,4);
 	 

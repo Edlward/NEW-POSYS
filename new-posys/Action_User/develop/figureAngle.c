@@ -175,7 +175,7 @@ void updateAngle(void)
 //  if(allPara.sDta.flag&STATIC_FORCE)//µ¥Î» ¡ã/s
     w[2]=0.f;
 	#else
-	if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1))
+	if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1))//||(fabs(w[2])<0.3f))
     w[2]=0.f;
 	#endif
 	allPara.sDta.Result_Angle[2]+=w[2]*0.005;

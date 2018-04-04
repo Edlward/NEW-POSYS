@@ -342,3 +342,85 @@ void SetParaDefault(void)
 
 }
 
+void USART2_IRQHandler(void)
+{
+  uint8_t data=0;
+	static int step=0;
+	uint8_t cnt=0;
+  if(USART_GetITStatus(USART2,USART_IT_RXNE)==SET)
+  {
+    USART_ClearITPendingBit( USART2,USART_IT_RXNE);
+    data=USART_ReceiveData(USART2);
+		   AC  
+		switch(step)
+		{
+			/*起始符*/
+			case 0:
+				if(data==0x59)
+					step++;
+				else
+					step=0;
+				break;
+			/*起始符*/
+			case 1:
+				if(data==0x49)
+					step++;
+				else
+					step=0;
+				break;
+			/*起始符*/
+			case 2:
+				if(data==0x53)
+					step++;
+				else
+					step=0;
+				break;
+			/*时间戳*/
+			case 3:
+					step++;
+				break;
+			/*时间戳*/
+			case 4:
+					step++;
+				break;
+			/*LEN*/
+			case 5:
+				if(data==0x78)
+					step++;
+				else
+					step=0;
+				break;
+			case 6:
+				break;
+			case 7:
+				break;
+			case 8:
+				break;
+			case 9:
+				break;
+			case 10:
+				break;
+			case 11:
+				break;
+			case 12:
+				break;
+			case 13:
+				break;
+			case 14:
+				break;
+			case 15:
+				break;
+			case 16:
+				break;
+			case 17:
+				break;
+			case 18:
+				break;
+			case 19:
+				break;
+		}
+
+  }else{
+    data=USART_ReceiveData(USART1);
+  }
+}

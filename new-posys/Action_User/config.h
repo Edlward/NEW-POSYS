@@ -50,12 +50,12 @@
 
 //#define TEST_SUMMER
 
-//#define AUTOCAR
+#define AUTOCAR
 //#define TESTCAR
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
 #define PERIOD    				0.005f
-#define dT 					    0.005           //积分的步长
+#define dT 					    0.005         
 
 #define R_wheel1        25.284126
 #define R_wheel2        25.42820678
@@ -78,10 +78,7 @@
 #include "icm_20608_g.h"
 #include "temperature_control.h"
 #include "flash.h"
-/*
-第一位 陀螺仪是否矫正  1代表矫正
-第二位 陀螺仪
-*/
+
 
 #define CORRECT    								0X01
 #define START_COMPETE 						0X02
@@ -89,7 +86,6 @@
 #define HEATING										0X08
 #define STATIC_FORCE							0X10
 
-/* ICM20608G 陀螺仪寄存器地址--------------*/
 #define ICM20608G_WHO_AM_I							0x75
 
 #define ICM20608G_SELF_TEST_X_GYRO			0x00

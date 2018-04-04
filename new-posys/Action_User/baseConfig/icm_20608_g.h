@@ -26,6 +26,8 @@ void icm_update_temp(int gyroNum);
 void icm_update_AccRad(float ACC_Init[GYRO_NUMBER][AXIS_NUMBER]);
 
 int CheckNan(void);
+
+void AllParaInit(void);
 #endif 
 
 

@@ -111,7 +111,6 @@ void TIM2_IRQHandler(void)
 			#endif
 			readOrder++;
       timeCnt=0;
-			//取得5ms的原始数据总和的平均数
 			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 			{
 				allPara.GYRO_Temperature[gyro]=temp_sum[gyro]/5.0f;
@@ -123,10 +122,8 @@ void TIM2_IRQHandler(void)
 				}
 			}
 			
-			//温度进行低通滤波
 			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 				allPara.GYRO_Temperature[gyro]=LowPassFilter(allPara.GYRO_Temperature[gyro],gyro)/100.f;
-			//去除温飘
 			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 			{
 				temp_sum[gyro]=0.f;
@@ -136,13 +133,10 @@ void TIM2_IRQHandler(void)
 					gyro_sum[gyro][axis]=0.0;
 				}
 			}
-			//对三个陀螺仪的数据取平均数
 			for(axis=0;axis<GYRO_NUMBER;axis++)
 			{
 				for(gyro=0;gyro<AXIS_NUMBER;gyro++)
 				{
-					/*正常情况小于这个值，没啥用，不正常时，值是1/131=0.0076*/
-					/*满足条件时，把该项变成0*/
 					if(fabs(allPara.GYRORemoveDrift[gyro][axis])<0.01)
 					{
 						badGyro[axis][gyro]++;
@@ -158,7 +152,6 @@ void TIM2_IRQHandler(void)
 				double sum=percentages[axis][0]+percentages[axis][1]+percentages[axis][2];
 				for(gyro=0;gyro<AXIS_NUMBER;gyro++)
 				{
-					/*为了防止所有陀螺仪都坏掉*/
 					if(sum>0.001)
 					{
 						percentages[axis][gyro]=percentages[axis][gyro]/sum;
@@ -173,7 +166,6 @@ void TIM2_IRQHandler(void)
 			allPara.sDta.GYRO_Aver[0]=allPara.GYRORemoveDrift[0][0]*percentages[0][0]+allPara.GYRORemoveDrift[1][0]*percentages[0][1]+allPara.GYRORemoveDrift[2][0]*percentages[0][2];
 			allPara.sDta.GYRO_Aver[1]=allPara.GYRORemoveDrift[0][1]*percentages[1][0]+allPara.GYRORemoveDrift[1][1]*percentages[1][1]+allPara.GYRORemoveDrift[2][1]*percentages[1][2];
 			allPara.sDta.GYRO_Aver[2]=allPara.GYRORemoveDrift[0][2]*percentages[2][0]+allPara.GYRORemoveDrift[1][2]*percentages[2][1]+allPara.GYRORemoveDrift[2][2]*percentages[2][2];
-			//前面的计算，如果真有一个坏了，角速度会突变
 //			allPara.sDta.GYRO_Aver[2]=allPara.GYRORemoveDrift[0][2]*0.387132729300339+allPara.GYRORemoveDrift[1][2]*0.255395342771687+allPara.GYRORemoveDrift[2][2]*0.357471927927974;
     }
   }
@@ -237,7 +229,6 @@ uint32_t returnEndUs(void)
 	return end;
 }	
 
-//定时器1  
 void TIM1_UP_TIM10_IRQHandler(void)
 {
   if(TIM_GetITStatus(TIM1, TIM_IT_Update)==SET)    
@@ -246,7 +237,6 @@ void TIM1_UP_TIM10_IRQHandler(void)
   }
 }
 
-//定时器8  
 void TIM8_UP_TIM13_IRQHandler(void)
 {
   if(TIM_GetITStatus(TIM8, TIM_IT_Update)==SET)    
@@ -255,8 +245,6 @@ void TIM8_UP_TIM13_IRQHandler(void)
   }
 }
 
-/********************************************************/
-/*****************普通定时TIM5*****Start*****************/
 void TIM5_IRQHandler(void)
 {
   
@@ -276,7 +264,6 @@ void TIM3_IRQHandler(void)
 
 
 
-//定时器4  
 void TIM4_IRQHandler(void)
 {
   if(TIM_GetITStatus(TIM4, TIM_IT_Update)==SET)
@@ -330,20 +317,22 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {  
 //	  static uint32_t r_sp ;
-//		/*判断发生异常时使用MSP还是PSP*/
-//		if(__get_PSP()!=0x00) //获取SP的值
+//		if(__get_PSP()!=0x00) 
 //			r_sp = __get_PSP(); 
 //		else
 //			r_sp = __get_MSP(); 
-//		/*因为经历中断函数入栈之后，堆栈指针会减小0x10，所以平移回来（可能不具有普遍性）*/
 //		r_sp = r_sp+0x10;
 	ReportHardFault();
 	if(allPara.resetTime<=500)
 	{
 		FindResetTime();
-		/*不擦出的情况下写flash大约只要70us*/
-		
-		allPara.sDta.isReset=1;
+		if(allPara.sDta.GYRO_Bais[2]!=0.0)
+			allPara.sDta.isReset=1;
+		else
+		{
+			AllParaInit();
+			allPara.sDta.isReset=0;
+		}
 		
 		WriteFlashData(allPara,allPara.resetTime);
 		
@@ -355,18 +344,15 @@ void HardFault_Handler(void)
   while (1)
   {
 		ReportHardFault();
-//		/*串口发数通知*/
 //		USART_OUT(USART1,"\r\nHardFault");
 //  	char sPoint[2]={0};
 //		USART_OUT(USART1,"%s","0x");
-//		/*获取出现异常时程序的地址*/
 //		for(int i=3;i>=-28;i--){
 //			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
 //			USART_OUT(USART1,"%s",sPoint);
 //			if(i%4==0)
 //				USART_Enter();
 //		}
-//		/*发送回车符*/
 //		USART_Enter();
   }
 }

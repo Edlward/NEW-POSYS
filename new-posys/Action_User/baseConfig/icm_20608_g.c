@@ -87,19 +87,13 @@ void MEMS_Configure(int gyroNum)
 }
 
 
-/**
-自动车131.170291536093
-手动车131.524243090403
-*/
+
 static double gyro[3];
 void icm_update_gyro_rate(int gyroNum)
 {
   short data1[3] = {0,0,0};
   unsigned char raw[6];
-  /*
-  raw从低地址到高地址依次是
-  X高八位,X第八位,Y高八位,Y第八位,Z高八位,Z第八位
-  */
+
 	switch(gyroNum)
 	{
 		case 0:
@@ -112,11 +106,8 @@ void icm_update_gyro_rate(int gyroNum)
 			SPI_MultiRead(SPI1,GPIOC,GPIO_Pin_6,ICM20608G_GYRO_XOUT_H,raw,6);
 		break;
 	}
-  /*X的原始角速度值*/
-  data1[0] = (raw[0]<<8) | raw[1];
-  /*Y的原始角速度值*/
-  data1[1] = (raw[2]<<8) | raw[3];
-  /*Y的原始角速度值*/
+  data1[0] = (raw[0]<<8) | raw[1];  
+	data1[1] = (raw[2]<<8) | raw[3];
   data1[2] = (raw[4]<<8) | raw[5];
   
 
@@ -164,10 +155,7 @@ void icm_update_acc(int gyroNum)
   short data1[3] = {0,0,0};
   //	short data2[3] = {0,0,0};
   unsigned char raw[6];
-  /*
-  raw从低地址到高地址依次是
-  X高八位,X第八位,Y高八位,Y第八位,Z高八位,Z第八位
-  */	
+
 	switch(gyroNum)
 	{
 		case 0:
@@ -180,11 +168,11 @@ void icm_update_acc(int gyroNum)
 			SPI_MultiRead(SPI1,GPIOC,GPIO_Pin_6,ICM20608G_ACCEL_XOUT_H,raw,6);
 		break;
 	}
-  /*X的原始角速度值*/
+ 
   data1[0] = (raw[0]<<8) | raw[1];
-  /*Y的原始角速度值*/
+
   data1[1] = (raw[2]<<8) | raw[3];
-  /*Y的原始角速度值*/
+
   data1[2] = (raw[4]<<8) | raw[5];
   /*
   16384 LSB/g
@@ -299,5 +287,74 @@ int CheckNan(void)
 	if(count>100)
 		return 1;
 	return 0;
+}
+
+void AllParaInit(void)
+{
+	for(int i=0;i<3;i++)
+		for(int j=0;j<3;j++)
+		{
+			allPara.GYROWithoutRemoveDrift[i][j]=0.0;
+			allPara.GYRORemoveDrift[i][j]=0.0;
+			allPara.ACC_Raw[i][j]=0.0f;
+			allPara.ACC_Aver[i][j]=0.0f;
+			allPara.driftCoffecient[i][j]=0.0f;
+		}
+	for(int i=0;i<3;i++)
+		for(int j=0;j<2;j++)
+			allPara.ACC_Angle[i][j]=0.0f;
+	
+	for(int j=0;j<2;j++)
+		allPara.ACC_RealAngle[j]=0.0f;
+		
+	for(int j=0;j<3;j++)
+	{
+		allPara.GYRO_Real[j]=0.0f;
+		allPara.GYRO_Temperature[j]=0.0f;
+		allPara.GYRO_TemperatureDif[j]=0.0f;
+	}
+	
+	allPara.ACC_InitSum=0.f;
+	
+	allPara.cpuUsage=0;
+	
+	allPara.resetTime=0;
+	
+	allPara.kalmanZ=0.0;
+	
+	allPara.resetFlag=0;
+	
+	
+	allPara.sDta.isReset=0;
+  
+	allPara.sDta.posx=0.0;
+	
+	allPara.sDta.posy=0.0;
+
+	allPara.sDta.vellx=0.f;
+	
+	allPara.sDta.velly=0.f;
+  
+	for(int j=0;j<2;j++)
+	{
+		allPara.sDta.codeData[j]=0;
+		allPara.sDta.data_last[j]=0;
+		allPara.sDta.vell[j]=0;
+	}
+	
+	allPara.sDta.flag=0;
+	
+	allPara.sDta.time=0;
+	
+	for(int i=0;i<3;i++)
+	{
+		allPara.sDta.GYRO_TemperatureAim[i]=0.f;
+		allPara.sDta.GYRO_Aver[i]=0.f;
+		allPara.sDta.GYRO_Bais[i]=0.f;
+		allPara.sDta.Result_Angle[i]=0.f;
+	}
+  
+	for(int i=0;i<4;i++)
+		allPara.sDta.quarternion[i]=0.0;
 }
 

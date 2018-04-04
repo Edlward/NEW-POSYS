@@ -252,7 +252,7 @@ void JudgeStatic(void)
 	static uint16_t codes0[STATIC_ARRAY_NUM];
 	static uint16_t codes1[STATIC_ARRAY_NUM];
 	int difCode=0;
-	static int staticCount=0;
+//	static int staticCount=0;
 	for(int i=0;i<STATIC_ARRAY_NUM-1;i++)
 	{
 		codes0[i]=codes0[i+1];
@@ -268,13 +268,14 @@ void JudgeStatic(void)
 		difCode+=4096;
 	#ifndef AUTOCAR
 	//如果条件真的恶劣，那就说明强制静止有错
-	if(abs(difCode)<=20)
-	{
-		staticCount++;
-	}
-	else
-		staticCount=0;
-	
+//	if(abs(difCode)<=20)
+//	{
+//		staticCount++;
+//	}
+//	else
+//		staticCount=0;
+//	
+//	staticCount=staticCount;
 //	if(staticCount>=5)
 //		SetFlag(STATIC_FORCE);
 //	else

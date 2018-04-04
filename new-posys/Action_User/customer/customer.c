@@ -79,7 +79,7 @@ void DataSend(void)
 	valSend.val=(float)allPara.sDta.posy;
   memcpy(tdata+18,valSend.data,4);
 	 
-	valSend.val=(float)allPara.sDta.GYRO_Aver[0];
+	valSend.val=(float)allPara.GYRO_Real[2];
   memcpy(tdata+22,valSend.data,4);
 	
 //	valSend.val=(float)allPara.sDta.GYRO_Aver[1];
@@ -291,6 +291,17 @@ void AT_CMD_Judge(void){
 		SetFlag(~HEATING);
 		USART_OUT(USART1,"OK");
 	}
+  else if((bufferI == 7) && strncmp(buffer, "AT+hf\r\n", 11)==0)//AT    
+	{
+    bufferInit();
+		int a[2];
+		for(int i=10000;i<80000;i++)
+		{
+			a[i]=100;
+			a[i]=a[i];
+		}
+		USART_OUT(USART1,"OK");
+	}
   else 
 	{
     atCommand=666;
@@ -346,44 +357,37 @@ void USART2_IRQHandler(void)
 {
   uint8_t data=0;
 	static int step=0;
-	uint8_t cnt=0;
+	//uint8_t cnt=0;
   if(USART_GetITStatus(USART2,USART_IT_RXNE)==SET)
   {
     USART_ClearITPendingBit( USART2,USART_IT_RXNE);
     data=USART_ReceiveData(USART2);
-		   AC  
 		switch(step)
 		{
-			/*起始符*/
 			case 0:
 				if(data==0x59)
 					step++;
 				else
 					step=0;
 				break;
-			/*起始符*/
 			case 1:
 				if(data==0x49)
 					step++;
 				else
 					step=0;
 				break;
-			/*起始符*/
 			case 2:
 				if(data==0x53)
 					step++;
 				else
 					step=0;
 				break;
-			/*时间戳*/
 			case 3:
 					step++;
 				break;
-			/*时间戳*/
 			case 4:
 					step++;
 				break;
-			/*LEN*/
 			case 5:
 				if(data==0x78)
 					step++;

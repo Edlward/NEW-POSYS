@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    LSM303AGR.cpp
-  * @author  Luo Xiaoyi 
+  * @author  Luo Xiaoyi and Qiao Zhijian 
   * @version V1.0
   * @date    2017.3.13
   * @brief   

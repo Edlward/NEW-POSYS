@@ -1,14 +1,12 @@
 /**
   ******************************************************************************
   * @file    device.h
-  * @author  Luo Xiaoyi 
+  * @author  Luo Xiaoyi and Qiao Zhijian 
   * @version V1.0
   * @date    2017.3.13
   * @brief   This file contains the headers of device.cpp
   ******************************************************************************
-  * @attention  ÕâÀïÒ»¶¨Òª¿´
-  *  	ÄÃÀ´¿ØÖÆ¹²Í¬ĞĞÎªºÍ¶¯Ì¬°ó¶¨µÄ»ùÀà£¬ÀàÄ£°åÊÇ¸ÃÀàµÄ×ÓÀà  deviceBase
-	*		ËùÓĞmemsÆ÷¼şµÄÀàÄ£°å£¬¸ÃÀàÎªÒ»¸ö³éÏóÀà 	device
+
   ******************************************************************************
   */ 
 
@@ -40,24 +38,34 @@ public:
 	deviceBase();
 	static 	void devicesAllInit(); 
 	static 	void devicesAllUpdate(); 
+	/*pure virtual function that can't make the definite and significative realizetion*/
 	virtual void 		 		init(void)=0;
 	virtual void     		updateData(void)=0;
-	/*è®¾ç½®æˆé»˜è®¤ææ„å‡½æ•°*/
+	/*set default constructor*/
 	virtual ~deviceBase()=default;
 };
-template<typename dataType,typename rawDataType> class device:public deviceBase
+
+//this a template class, which dataType indicates the form(three axises, one axis...) of data and rawDataType indicates data type(char,int...) 
+template<typename dataType,typename rawDataType> 
+class device:public deviceBase
 {
 	protected:
-		dataType val;												//memsÆ÷¼şµÄºËĞÄÊı¾İ
-		GPIO_TypeDef* 			csGPIOx;				//memsÆ÷¼şSPIÆ¬Ñ¡
-		uint16_t 			   		csGPIO_Pin;			//Í¬ÉÏ
-		SPI_TypeDef* 				SPIx;						//memsÆ÷¼ş¹ÒÔØµÄSPI×ÜÏß
+		dataType val;												//mems core datas
+		GPIO_TypeDef* 			csGPIOx;				//mems CS
+		uint16_t 			   		csGPIO_Pin;			//idem
+		SPI_TypeDef* 				SPIx;						//mems SPI
 	public:
+		//Initialize the member 			variables csGPIOx=GPIO,csGPIO_Pin=Pin,SPIx=SPI
 		device(SPI_TypeDef* SPI,GPIO_TypeDef* GPIO,uint16_t Pin):csGPIOx(GPIO),csGPIO_Pin(Pin),SPIx(SPI){};
+		//read raw data from address
 		virtual rawDataType rawDataRead(uint8_t address)=0;
+		//write raw data into address
 		virtual void 		 		rawDataWrite(uint8_t address,rawDataType value)=0;
+		//init the device
 		virtual void 		 		init(void)=0;
+		//update the datas
 		virtual void     		updateData(void)=0;
+		//get the data
 		virtual dataType    getData(void){ return  val;}
 		virtual ~device()=default;
 };

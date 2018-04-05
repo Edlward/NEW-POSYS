@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    pos.h
-  * @author  Luo Xiaoyi 
+  * @author  Luo Xiaoyi and Qiao Zhijian 
   * @version V1.0
   * @date    2016.10.26
   * @brief   This file contains the headers of usart.cpp

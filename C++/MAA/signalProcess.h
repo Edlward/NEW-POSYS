@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    signalProcess.h
-  * @author  Luo Xiaoyi 
+  * @author  Luo Xiaoyi and Qiao Zhijian 
   * @version V1.0
   * @date    2017.4.2
   * @brief   This file contains the headers of usart.cpp
@@ -42,6 +42,8 @@ float averageWithRemoveErr(float *data,uint32_t len);
 /* Exported template	--------------------------------------------------------*/
 /* Exported class     --------------------------------------------------------*/
 /* Exported function     -----------------------------------------------------*/
+
+//figure average  out
 inline float	meanData(float *data,uint32_t len)
 {
 	float re;
@@ -65,12 +67,14 @@ void shiftLeftData(p pointer,uint32_t len,uint32_t num=1)
 		pointer[i]=pointer[i+num];
 	}
 }
+
+/*shift data right one unit*/
 template<typename p>
-void shiftRightData(p pointer,uint32_t len,uint32_t num=1)
+void shiftRightData(p pointer,uint32_t len)
 {
-	for(uint32_t i=0;i<len-num;i++)
+	for(uint32_t i=0;i<len-1;i++)
 	{
-		pointer[len-i-1]=pointer[len-i-1-num];
+		pointer[len-i-1]=pointer[len-i-2];
 	}
 }
 template<typename p>

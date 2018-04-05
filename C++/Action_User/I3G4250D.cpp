@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    I3G4250D.cpp
-  * @author  Luo Xiaoyi 
+  * @author  Luo Xiaoyi and Qiao Zhijian 
   * @version V1.0
   * @date    2017.3.13
   * @brief   
@@ -43,14 +43,14 @@ static void  changeSPIconfigure(SPI_TypeDef* SPIx)
 	SPI_InitTypeDef  SPI_InitStructure;
 	SPI_Cmd(SPIx,DISABLE);
 	SPI_I2S_DeInit(SPIx);
-	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;				/* 双线双向全双工									*/
-	SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* 主SPI													*/
-	SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;											    /* SPI接收8位帧结构								*/
-	SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;																/* 串行同步时钟的空闲状态为低电平	*/
-	SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;															/* 第一个跳变沿数据被采样					*/
-	SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS由软件控制									*/
-	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16;				/* 预分频													*/
-	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/* 数据从MSB位开始								*/
+	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;				
+	SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															
+	SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;											   
+	SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;																
+	SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;														
+	SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																				
+	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16;			
+	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;									
 	SPI_InitStructure.SPI_CRCPolynomial = 7;
 	SPI_Init(SPIx, &SPI_InitStructure);
 	SPI_Cmd(SPIx, ENABLE);
@@ -80,8 +80,10 @@ void 		deviceI3G4250D::rawDataWrite(uint8_t address,uint8_t value)
 }
 void 		deviceI3G4250D::init(void)
 {
+	//create map  note: this is an ordered sequence
 	std::map<uint8_t,uint8_t> regWriteCheck;
 	
+	/*first: register address; second: value written*/
 	regWriteCheck[0x20]=0xFF;
 	regWriteCheck[0x21]=0x09;
 	regWriteCheck[0x22]=0x00;
@@ -97,14 +99,19 @@ void 		deviceI3G4250D::init(void)
 	regWriteCheck[0x37]=0x00;
 	regWriteCheck[0x38]=0x00;
 	
+	/*loop through the map, and write the registers*/
 	for(std::map<uint8_t,uint8_t>::iterator iter=regWriteCheck.begin();iter!=regWriteCheck.end();iter++)
 	{
 		rawDataWrite(iter->first,iter->second);
 	}
+	
+	/*check the validity of writing registers*/
 	for(std::map<uint8_t,uint8_t>::iterator iter=regWriteCheck.begin();iter!=regWriteCheck.end();iter++)
 	{
+		//if different
 		if(rawDataRead(iter->first)!=iter->second)
 		{
+			/*check hardware recognition*/
 			if(rawDataRead(HARDWARE_TEST_REG)!=HARDWARE_TEST_VAL)
 				while(1);
 			else

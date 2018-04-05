@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    usart.cpp
-  * @author  Luo Xiaoyi 
+  * @author  Luo Xiaoyi and Qiao Zhijian 
   * @version V1.0
   * @date    2016.10.26
   * @brief   用于控制串口

@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    user.h
-  * @author  Luo Xiaoyi 
+  * @author  Luo Xiaoyi and Qiao Zhijian 
   * @version V1.0
   * @date    2017.4.7
   * @brief   This file contains the headers of device.cpp

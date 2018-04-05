@@ -469,12 +469,12 @@ void TIM7_IRQHandler(void)
 		timeCount++;
 		usageCount++;
 		
-		if(timeCount%(25/ADXRS453_UPDATE_FREQ)==2)
-		{
+//		if(timeCount%(25/ADXRS453_UPDATE_FREQ)==2)
+//		{
 			getADXRS453().updateData();
-		}
+//		}
 		
-		if(timeCount>=25)
+		if(timeCount>=1000/PERIOD)
 		{
 			timeCount=0;
 			timeFlag=1;

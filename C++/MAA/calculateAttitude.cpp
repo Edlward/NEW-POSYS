@@ -2,10 +2,10 @@
 /**
   ******************************************************************************
   * @file    calculateAttitude.cpp
-  * @author  Luo Xiaoyi 
+  * @author  Luo Xiaoyi and Qiao Zhijian 
   * @version V1.0
   * @date    2017.3.22
-  * @brief   用于姿态计算
+  * @brief   
   ******************************************************************************
   * @attention
   *
@@ -31,7 +31,8 @@
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-static const uint32_t calculateTime=10*100;
+#define AVERAGE_TIME 				(10)
+static const uint32_t calculateTime=AVERAGE_TIME*PERIOD;
 
 static threeAxis eulerAngle;
 
@@ -76,20 +77,20 @@ public:
 		
 		R=action_matrix(3,3,MATRIX_I)*1;
 		
-		//融合加速度计
-		r=rAcc;									//将存储空间指向加速度计的存储
-		initMatrix[0][0]=0;			//认为0位置时候的加速度计值为【0,0,1】
+		
+		r=rAcc;								
+		initMatrix[0][0]=0;			
 		initMatrix[1][0]=0;
 		initMatrix[2][0]=1;
-		predictZ();							//通过陀螺仪积分得到的姿态来预估会测量得到的加速度计值
-		adaptiveR(acc);					//自适应的计算R系数
-		estimateX(acc);					//通过前面得到的矩阵融合得到姿态
+		predictZ();					
+		adaptiveR(acc);			
+		estimateX(acc);			
 		
 		R=action_matrix(3,3,MATRIX_I)*1;
 		
 		if(MAG_IS_ENABLE)
 		{
-			r=rMag;									//同上
+			r=rMag;								
 			initMatrix[0][0]=dataLSM303AGR_mag.x;
 			initMatrix[1][0]=dataLSM303AGR_mag.y;
 			initMatrix[2][0]=dataLSM303AGR_mag.z;
@@ -99,9 +100,8 @@ public:
 			estimateX(mag);
 		}
 		
-		r=rAcc;									//为防止析构的时候一部分数据不被释放，正常情况这个类创建的对象应该不会被释放
-		
-		//四元数归一化
+		r=rAcc;								
+
 		float sum=0;
 		for(uint8_t i=0;i<4;i++)
 		{
@@ -207,12 +207,12 @@ static threeAxis Quaternion_to_Euler(const action_matrix& quaternion)
 /* Exported functions ---------------------------------------------------------*/
 void initAHRS(void)
 {
-	threeAxis newDataI3G4250D[calculateTime/100];
-	float     newTempI3G4250D[calculateTime/100];
-	float			newDataADXRS453[calculateTime/100];
-	
-	threeAxis newDataLSM303AGR_acc[calculateTime/100];
-	threeAxis newDataLSM303AGR_mag[calculateTime/100];
+	//one second, one array element
+	threeAxis newDataI3G4250D[calculateTime/PERIOD];
+	float     newTempI3G4250D[calculateTime/PERIOD];
+	float			newDataADXRS453[calculateTime/PERIOD];
+	threeAxis newDataLSM303AGR_acc[calculateTime/PERIOD];
+	threeAxis newDataLSM303AGR_mag[calculateTime/PERIOD];
 	
 	dataI3G4250D=0;
 	dataLSM303AGR_acc=0;
@@ -222,15 +222,17 @@ void initAHRS(void)
 	uint16_t count=0;
 	uint16_t countSec=0;
 	
-	//下面求初始化的均值
 	while((!DEVICE_IS_RUNNING)||(countSec<=(calculateTime/100)))
 	{
 		while(!getTimeFlag());
+		//update accelemeter, magnetometer, I3G and encoder datas
 		getLSM303AGR_Acc().updateData();
 		getLSM303AGR_Mag().updateData();
 		getI3G4250D().updateData();
 		UpdateEncoder();
-		auto mag=getLSM303AGR_Mag().getData();
+		
+		/*magnetometer*/
+		threeAxis mag=getLSM303AGR_Mag().getData();
 		encoderMagFix(mag);
 		mag=mag-magSphere;
 		
@@ -240,23 +242,25 @@ void initAHRS(void)
 		dataADXRS453=dataADXRS453+getADXRS453().getData();
 		dataLSM303AGR_mag=dataLSM303AGR_mag+mag;
 		count++;
-		if(count%100==0)
+		//if time pass by one second
+		if(count%PERIOD==0)
 		{
 			countSec++;
-			shiftRightData(newDataI3G4250D,calculateTime/100);
-			shiftRightData(newTempI3G4250D,calculateTime/100);
-			shiftRightData(newDataADXRS453,calculateTime/100);
+			/*shift data right one unit*/
+			shiftRightData(newDataI3G4250D,calculateTime/PERIOD);
+			shiftRightData(newTempI3G4250D,calculateTime/PERIOD);
+			shiftRightData(newDataADXRS453,calculateTime/PERIOD);
+			shiftRightData(newDataLSM303AGR_acc,calculateTime/PERIOD);
+			shiftRightData(newDataLSM303AGR_mag,calculateTime/PERIOD);
 			
-			shiftRightData(newDataLSM303AGR_acc,calculateTime/100);
-			shiftRightData(newDataLSM303AGR_mag,calculateTime/100);
+			/*add new value(mean of period)*/
+			newDataI3G4250D[0]=dataI3G4250D/PERIOD;
+			newTempI3G4250D[0]=tempI3G4250D/PERIOD;
+			newDataADXRS453[0]=dataADXRS453/PERIOD;
+			newDataLSM303AGR_acc[0]=dataLSM303AGR_acc/PERIOD;
+			newDataLSM303AGR_mag[0]=dataLSM303AGR_mag/PERIOD;
 			
-			newDataI3G4250D[0]=dataI3G4250D/100;
-			newTempI3G4250D[0]=tempI3G4250D/100;
-			newDataADXRS453[0]=dataADXRS453/100;
-			
-			newDataLSM303AGR_acc[0]=dataLSM303AGR_acc/100;
-			newDataLSM303AGR_mag[0]=dataLSM303AGR_mag/100;
-			
+			//reset
 			dataADXRS453=0;
 			dataI3G4250D=0;
 			tempI3G4250D=0;
@@ -273,15 +277,16 @@ void initAHRS(void)
 	
 	dataADXRS453=meanData(newDataADXRS453,calculateTime/100);
 	
-	//归一化得到方向余弦
+	//uniformization of acc and mag
 	dataLSM303AGR_acc=dataLSM303AGR_acc/abs(dataLSM303AGR_acc);
 	dataLSM303AGR_mag=dataLSM303AGR_mag/abs(dataLSM303AGR_mag);
 	
-	//通过方向余弦计算欧垃角，这里我们默认初始的时候航向角为0
+	//calculate euler angles and regard z angle as 0 acquiescently 
 	double angleX,angleY;
 	angleX=asin(dataLSM303AGR_acc.y);
 	angleY=atan2(-dataLSM303AGR_acc.x,dataLSM303AGR_acc.z);
 	
+	//ufk coefficient matrix
 	aukf.R=aukf.R*10;
 	aukf.Q=aukf.Q*0.01;
 	aukf.P=aukf.P*0.0001;
@@ -338,6 +343,7 @@ void updateAHRS(void)
 	w[0][0]=gyro.x-dataI3G4250D.x;
 	w[1][0]=gyro.y-dataI3G4250D.y;
 	
+	/*judge the range of robot angular velocit to select gyroscope to measure*/
 	if(abs(gyro.z)<250)
 	{
 		w[2][0]=gyroHigh-dataADXRS453;

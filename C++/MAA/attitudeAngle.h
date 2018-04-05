@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    attitudeAngle.h
-  * @author  Luo Xiaoyi 
+  * @author  Luo Xiaoyi and Qiao Zhijian 
   * @version V1.0
   * @date    2017.3.19
   * @brief   This file contains the headers of usart.cpp

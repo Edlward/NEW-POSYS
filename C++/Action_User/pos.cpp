@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    pos.cpp
-  * @author  Luo Xiaoyi 
+  * @author  Luo Xiaoyi and Qiao Zhijian 
   * @version V1.0
   * @date    2017.3.13
   * @brief   
@@ -27,7 +27,6 @@
 
 static const int16_t encoderRange=4096;
 
-//轮子与坐标X轴方向的夹角
 static const float wheelAngle[2]={45.0f,-45.2076f};
 
 static const float wheelDiameter[2]={50.38f,50.22f};

@@ -1,7 +1,7 @@
 /**  
   ******************************************************************************
   * @file    main.cpp
-  * @author  Luo Xiaoyi 
+  * @author  Luo Xiaoyi and Qiao Zhijian 
   * @version V1.0
   * @date    2017.2.27
   * @brief   
@@ -51,7 +51,7 @@ int main(void)
 	//设备全初始化
 	deviceBase::devicesAllInit();
 	delay_ms(1000);
-	TIM_Init(TIM7,399,83,0,0);
+	TIM_Init(TIM7,999,83,1,0);
   running(); 
 }
 /* Private  functions ---------------------------------------------------------*/

@@ -324,7 +324,6 @@ void AllParaInit(void)
 	
 	allPara.resetFlag=0;
 	
-	
 	allPara.sDta.isReset=0;
   
 	allPara.sDta.posx=0.0;
@@ -357,4 +356,6 @@ void AllParaInit(void)
 	for(int i=0;i<4;i++)
 		allPara.sDta.quarternion[i]=0.0;
 }
+
+
 

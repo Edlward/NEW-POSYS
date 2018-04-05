@@ -109,15 +109,15 @@ void DataSend(void)
 //		USART_OUT_F(allPara.sDta.GYRO_TemperatureAim[i]);
 //		USART_OUT_F(allPara.GYRO_Temperature[i]);
 //	}
-	USART_OUT_F(allPara.sDta.GYRO_Aver[2]);
+//	USART_OUT_F(allPara.sDta.GYRO_Aver[2]);
 //	USART_OUT_F(lowpass);
-//	USART_OUT_F(allPara.sDta.Result_Angle[2]);
-//	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);
-//	USART_OUT_F(allPara.kalmanZ);
-//	USART_OUT_F(allPara.sDta.posx);
-//	USART_OUT_F(allPara.sDta.posy);
-//	USART_OUT_F(allPara.sDta.vell[0]);
-//	USART_OUT_F(allPara.sDta.vell[1]);
+	USART_OUT_F(allPara.sDta.Result_Angle[2]);
+	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);
+	USART_OUT_F(allPara.GYRO_Real[2]);
+	USART_OUT_F(allPara.sDta.posx);
+	USART_OUT_F(allPara.sDta.posy);
+	USART_OUT_F(allPara.sDta.vell[0]);
+	USART_OUT_F(allPara.sDta.vell[1]);
 //	USART_OUT_F(allPara.isStatic);
 	//USART_OUT(USART1,"%d\t%d\t%d",allPara.sDta.codeData[0],allPara.sDta.codeData[1],allPara.cpuUsage);
 	USART_Enter();
@@ -353,78 +353,3 @@ void SetParaDefault(void)
 
 }
 
-void USART2_IRQHandler(void)
-{
-  uint8_t data=0;
-	static int step=0;
-	//uint8_t cnt=0;
-  if(USART_GetITStatus(USART2,USART_IT_RXNE)==SET)
-  {
-    USART_ClearITPendingBit( USART2,USART_IT_RXNE);
-    data=USART_ReceiveData(USART2);
-		switch(step)
-		{
-			case 0:
-				if(data==0x59)
-					step++;
-				else
-					step=0;
-				break;
-			case 1:
-				if(data==0x49)
-					step++;
-				else
-					step=0;
-				break;
-			case 2:
-				if(data==0x53)
-					step++;
-				else
-					step=0;
-				break;
-			case 3:
-					step++;
-				break;
-			case 4:
-					step++;
-				break;
-			case 5:
-				if(data==0x78)
-					step++;
-				else
-					step=0;
-				break;
-			case 6:
-				break;
-			case 7:
-				break;
-			case 8:
-				break;
-			case 9:
-				break;
-			case 10:
-				break;
-			case 11:
-				break;
-			case 12:
-				break;
-			case 13:
-				break;
-			case 14:
-				break;
-			case 15:
-				break;
-			case 16:
-				break;
-			case 17:
-				break;
-			case 18:
-				break;
-			case 19:
-				break;
-		}
-
-  }else{
-    data=USART_ReceiveData(USART1);
-  }
-}

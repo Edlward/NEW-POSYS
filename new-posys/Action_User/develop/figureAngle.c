@@ -125,11 +125,8 @@ int RoughHandle(void)
 #define PLAT_NUM		(PLAT_TIME*200)
 float PlatFilter(float newValue)
 {
-	/*最终滤波结果得到的数据*/
 	static float value=0.f;
-	/*储存平滑滤波的数据*/
 	static float data[PLAT_NUM]={0.f};
-	/*记录已填数组个数*/
 	static int index=0;
 	
 	if(index<PLAT_NUM)
@@ -138,7 +135,6 @@ float PlatFilter(float newValue)
 		value=value+newValue*1.f/PLAT_NUM;
 		index++;
 	}
-	//如果超出最大值，减去第一个值，加入
 	else if(index>=STATIC_MAX_NUM)
 	{
 		value=value-data[0]*1.f/PLAT_NUM;

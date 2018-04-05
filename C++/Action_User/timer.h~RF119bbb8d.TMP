@@ -18,10 +18,6 @@ extern "C"
 	
 #define TIMER_DELAY(a)	TIM_Delayms(TIM1,a)
 #define TIMER_DELAY_US(a) TIM_Delayus(TIM1,a)
-	
-#define ADXRS453_UPDATE_FREQ 5	
-	
-	
 //精确延时函数调用wait
 void  wait(uint32_t n);
 

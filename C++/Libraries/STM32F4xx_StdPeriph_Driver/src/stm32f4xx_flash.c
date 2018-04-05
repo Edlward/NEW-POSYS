@@ -985,11 +985,7 @@ void FLASH_ClearFlag(uint32_t FLASH_FLAG)
 FLASH_Status FLASH_GetStatus(void)
 {
   FLASH_Status flashstatus = FLASH_COMPLETE;
-  /*
-	FLASH_FLAG_BSY和FLASH_BUSY的区别
-	前者是为了对寄存器进行修改的值
-	后者是返回给用户看的枚举值
-	*/
+  
   if((FLASH->SR & FLASH_FLAG_BSY) == FLASH_FLAG_BSY) 
   {
     flashstatus = FLASH_BUSY;
@@ -1031,7 +1027,6 @@ FLASH_Status FLASH_GetStatus(void)
   */
 FLASH_Status FLASH_WaitForLastOperation(void)
 { 
-	//__IO -> volatile  FLASH_Status枚举类型
   __IO FLASH_Status status = FLASH_COMPLETE;
    
   /* Check for the FLASH Status */

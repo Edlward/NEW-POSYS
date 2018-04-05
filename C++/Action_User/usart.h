@@ -1,28 +1,97 @@
+/**
+  ******************************************************************************
+  * @file    usart.h
+  * @author  Tian Chang & Luo Xiaoyi 
+  * @version V1.0
+  * @date    2016.10.26
+  * @brief   This file contains the headers of usart.cpp
+  ******************************************************************************
+  * @attention
+  *
+  *
+  * 
+  * 
+  *
+  ******************************************************************************
+  */ 
+
+/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USART_H
 #define __USART_H
 
+/* C&C++ ---------------------------------------------------------------------*/
 #ifdef __cplusplus
-extern "C"
-{
+ extern "C" {
 #endif
-	#include "stdint.h"
-	#include "stm32f4xx_usart.h"
 
-	//#define USART_REC_LEN  			200  										//定义最大接收字节数 200
-	//#define EN_USART1_RX 				1												//使能（1）/禁止（0）串口1接收
-	//	  	
-	//extern uint8_t  USART_RX_BUF[USART_REC_LEN]; 				//接收缓冲,最大USART_REC_LEN个字节.末字节为换行符 
-	//extern uint16_t USART_RX_STA;         							//接收状态标记	
-
-	////如果想串口中断接收，请不要注释以下宏定义
-	//void uart_init(uint32_t bound);
-	void USART1_Init(int baudrate);
-
-	void USART_OUT(USART_TypeDef* USARTx, const char  *Data,...);
-	char *itoa(int value, char *string, int radix);
+#define DEBUG	 
+//#define HEX_SEND	 
+/* Includes ------------------------------------------------------------------*/
+#include "stdint.h"	 
+/* Exported types ------------------------------------------------------------*/
+/* Exported constants --------------------------------------------------------*/
+/* Exported macro ------------------------------------------------------------*/
+	 
+#ifdef DEBUG
+	#define cout (getUsartOut())
+	#define endl ("\r\n")	 	 
+#endif	 
+/* Exported functions ------------------------------------------------------- */
+void USART1_INIT(void);
+//void DMA2_Stream7_IRQHandler(void);	 
+void USART1_IRQHandler(void);	 
+void USART_SendDataToDMA(uint8_t data);
 #ifdef __cplusplus
 }
-#endif
+/* Exported functions ------------------------------------------------------- */
+  #ifdef DEBUG 
+	class _out_stream
+	{
+		public:
+			const _out_stream& operator<<(const int32_t value) const;
+			inline const _out_stream& operator<<(const int16_t value) const{	return this->operator<<(static_cast<int32_t>(value));	}
+			inline const _out_stream& operator<<(const int8_t value) const{	return this->operator<<(static_cast<int32_t>(value));	}
+			
+			const _out_stream& operator<<(const uint32_t value) const;
+			inline const _out_stream& operator<<(const uint16_t value) const{	return this->operator<<(static_cast<uint32_t>(value));	}
+			
+			const _out_stream& operator<<(const float value) const;
+			inline const _out_stream& operator<<(const double value) const{	return this->operator<<(static_cast<float>(value));	}
+			
+			const _out_stream& operator<<(const char value) const;
+			const _out_stream& operator<<(const char* value) const;
+	};
+	
+  _out_stream& getUsartOut(void);
+
+	template<typename val>
+	void USART_SendByteData(val *data)
+	{
+		#ifdef HEX_SEND
+		uint8_t len;
+		len=sizeof(val);
+		
+		uint8_t *p=reinterpret_cast<uint8_t*>(data);
+		
+		for(uint8_t i=0;i<len;i++)
+		{
+			USART_SendDataToDMA(p[i]);
+		}
+		#endif
+	}
+	inline void USART_SendByteData(uint8_t data)
+	{
+		#ifdef HEX_SEND
+			USART_SendDataToDMA(data);
+		#endif
+	}
+	
+	
+	
+  #endif
 #endif
 
 
+#endif
+
+/******************* (C) COPYRIGHT 2016 ACTION *****END OF FILE****/

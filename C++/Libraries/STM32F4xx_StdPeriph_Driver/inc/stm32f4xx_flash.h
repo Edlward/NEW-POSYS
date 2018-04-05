@@ -51,15 +51,14 @@
   */ 
 typedef enum
 { 
-  FLASH_BUSY = 1,									//操作忙
-	//FLASH_ERROR_RD  读保护错误  跟库函数不一样啊??374面
-  FLASH_ERROR_PGS,								//编程顺序错误
-  FLASH_ERROR_PGP,								//编程并行位数错误
-  FLASH_ERROR_PGA,								//编程对齐错误
-  FLASH_ERROR_WRP,								//写保护错误
-  FLASH_ERROR_PROGRAM,						//编程错误
-  FLASH_ERROR_OPERATION,					//操作错误		
-  FLASH_COMPLETE									//操作结束
+  FLASH_BUSY = 1,
+  FLASH_ERROR_PGS,
+  FLASH_ERROR_PGP,
+  FLASH_ERROR_PGA,
+  FLASH_ERROR_WRP,
+  FLASH_ERROR_PROGRAM,
+  FLASH_ERROR_OPERATION,
+  FLASH_COMPLETE
 }FLASH_Status;
 
 /* Exported constants --------------------------------------------------------*/

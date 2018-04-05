@@ -1,6 +1,11 @@
 #ifndef __SPI_H
 #define __SPI_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include "stm32f4xx.h"
 #include "stm32f4xx_gpio.h"
 
@@ -13,31 +18,61 @@
 #define DUMMY_BYTE                 ((uint8_t)0x00)
 
 
-
-//ICM_20608_G
-#define ICM_Read(address)            	SPI_Read(SPI2,GPIOB,GPIO_Pin_12,address)
-#define ICM_Write(address,value)     	SPI_Write(SPI2,GPIOB,GPIO_Pin_12,address,value)
-
-
 /* spi≈‰÷√∫Ø ˝-----------------------------------*/
 void SPI1_Init(void);	
 void SPI2_Init(void);
 void CS_Config(void);
-void SPI1_SetSpeed(u8 SpeedSet); 				
+void SPI3_Init(void);
 
-void SPI_Write(SPI_TypeDef *SPI,
-	           GPIO_TypeDef* GPIOx,
-	                uint16_t GPIO_Pin,
-                   uint8_t address,
-                   uint8_t value);
-uint8_t SPI_Read(SPI_TypeDef *SPI,
-	              GPIO_TypeDef* GPIOx,
-	                   uint16_t GPIO_Pin,
-                      uint8_t address);
+void SPI_Write(	 SPI_TypeDef *SPI,
+				 GPIO_TypeDef *GPIOx,
+				 uint16_t GPIO_Pin,
+				 uint8_t address,
+				 uint8_t value);
 
-u8 SPI2_ReadWriteByte(u8 TxData);
-uint16_t SPI_ReadAS5045(uint8_t num);
-void mRead(uint8_t* pBuffer, uint8_t ReadAddr, uint16_t NumByteToRead);
+uint8_t SPI_Read(	SPI_TypeDef *SPIx,
+					GPIO_TypeDef* GPIOx,
+					uint16_t GPIO_Pin,
+					uint8_t address);
+
+
+void SPI_MultiRead(	 SPI_TypeDef *SPIx,
+					 GPIO_TypeDef* GPIOx,
+					 uint16_t GPIO_Pin,
+					 uint8_t address,
+					 uint8_t* data,
+					 uint32_t 	len);
+
+uint16_t SPI16_Read(  SPI_TypeDef *SPIx,
+					  GPIO_TypeDef* GPIOx,
+					  uint16_t GPIO_Pin,
+					  uint8_t address);
+
+uint16_t SPI16_Write(	SPI_TypeDef *SPIx,
+						GPIO_TypeDef* GPIOx,
+						uint16_t GPIO_Pin,
+						uint8_t address,
+						uint16_t sdata);
+
+void SPI_HalfDuplex_Write(	SPI_TypeDef *SPIx,
+							GPIO_TypeDef* GPIOx,
+							uint16_t GPIO_Pin,
+							uint8_t address,
+							uint16_t sdata);
+
+uint8_t SPI_HalfDuplex_Read(SPI_TypeDef *SPIx,
+														GPIO_TypeDef* GPIOx,
+														uint16_t GPIO_Pin,
+														uint8_t address);
+void SPI_OnlyRead(SPI_TypeDef *SPIx,
+									GPIO_TypeDef* GPIOx,
+									uint16_t GPIO_Pin,
+									uint8_t* data,
+									uint8_t len);
+#ifdef __cplusplus
+}
+#endif
+
 #endif
 
 

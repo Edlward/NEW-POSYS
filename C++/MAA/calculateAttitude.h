@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
-  * @file    *.h
-  * @author  Lxy Action
-  * @version 
-  * @date   
-  * @brief   This file contains the headers of 
+  * @file    calculateAttitude.h
+  * @author  Tian Chang & Luo Xiaoyi 
+  * @version V1.0
+  * @date    2016.10.26
+  * @brief   This file contains the headers of usart.cpp
   ******************************************************************************
   * @attention
   *
@@ -16,34 +16,31 @@
   */ 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __FLASH_H
-#define __FLASH_H
+#ifndef __CALCULATEATTITUDE_H
+#define __CALCULATEATTITUDE_H
 
-#ifdef __cplusplus  //为C提供接口
-extern "C"
-{
+/* C&C++ ---------------------------------------------------------------------*/
+#ifdef __cplusplus
+ extern "C" {
 #endif
-
 /* Includes ------------------------------------------------------------------*/
-#include "stdint.h"
+#include "stdint.h"	
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void Flash_Write(uint8_t *data,uint32_t len);
-void Flash_Zero(uint32_t len);
-void Flash_Read(uint8_t *data,uint32_t len);
-void Flash_Init(void);
-uint8_t  *GetFlashArr(void);
-float    *GetResultArr(void);
-uint32_t *GetCountArr(void);
-uint8_t  GetFlashUpdataFlag(void);
-void     SetFlashUpdateFlag(uint8_t val);
-	
-#ifdef __cplusplus  //为C提供接口
+void initAHRS(void);
+void updateAHRS(void);
+void resetAttitude(void);
+#ifdef __cplusplus
 }
-#endif	
-	
+#include "device.h"	 
+/* Exported functions ------------------------------------------------------- */
+threeAxis getEulerAngle(void);
 #endif
 
-/******************* (C) COPYRIGHT 2015 ACTION *****END OF FILE****/
+
+#endif
+
+/******************* (C) COPYRIGHT 2016 ACTION *****END OF FILE****/

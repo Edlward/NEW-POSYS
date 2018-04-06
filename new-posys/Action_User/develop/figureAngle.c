@@ -51,7 +51,7 @@ int JudgeAcc(void);
 #define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #endif
 
-/*最大两秒，如果小于两秒就用现有的数据*/
+
 #define STATIC_MAX_NUM	1000
 #define STATIC_MIN_NUM	600
 double lowpass=0.0;
@@ -80,7 +80,6 @@ int RoughHandle(void)
 	else if(isCalCrOk==1)
 	{
 		#ifdef TEST_SUMMER
-		/*如果满足3*std法则*/
 		int axis=2;
 		if(!(fabs(allPara.sDta.GYRO_Aver[axis]-mean[axis])<stdCr[axis]*3))
 		{
@@ -93,7 +92,6 @@ int RoughHandle(void)
 		#endif
 	}
   if(ignore>(TIME_STATIC_REAL)*200){
-		//如果零飘数据采集完毕
 		if(UpdateBais()||allPara.resetFlag)
 		{
 			allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.sDta.GYRO_Bais[0]);

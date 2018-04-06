@@ -93,7 +93,7 @@ void calculatePos(void)
 			real[1]=allPara.sDta.vell[1]*0.038651337725656;
 		#else			//以x为标准
 			real[0]=allPara.sDta.vell[0]*0.0385959339263024;
-			real[1]=0.00227591327416601*allPara.sDta.vell[0]*0.0385959339263024+1.00000258988726*allPara.sDta.vell[1]*0.038690160280225;
+			real[1]=0.00227591327416601*allPara.sDta.vell[0]*0.0385959339263024+1.00000258988726*allPara.sDta.vell[1]*0.0387637529427695;
 		#endif
 	#endif
 	

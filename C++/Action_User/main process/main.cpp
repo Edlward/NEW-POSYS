@@ -1,7 +1,7 @@
 /**  
   ******************************************************************************
   * @file    main.cpp
-  * @author  Luo Xiaoyi and Qiao Zhijian 
+  * @author  Luo Xiaoyi(gay) and Qiao Zhijian 
   * @version V1.0
   * @date    2017.2.27
   * @brief   
@@ -49,7 +49,7 @@ int main(void)
 	SPI2_Init();
 	CS_Config();
 	delay_ms(500);
-	//设备全初始化
+	//devices all initiate
 	deviceBase::devicesAllInit();
 	delay_ms(1000);
 	TIM_Init(TIM7,999,83,1,0);

@@ -30,6 +30,14 @@
 #ifdef __cplusplus
 }
 
+
+//#define ADXRS453_USED
+//#define I3G4250D_USED
+//#define LSM303AGR_USED
+#define ICM_20602_USED_1
+#define ICM_20602_USED_2
+#define ICM_20602_USED_3
+
 /* Exported Class ----------------------------------------------------------- */
 class deviceBase
 {
@@ -40,7 +48,7 @@ public:
 	static 	void devicesAllUpdate(); 
 	/*pure virtual function that can't make the definite and significative realizetion*/
 	virtual void 		 		init(void)=0;
-	virtual void     		updateData(void)=0;
+	virtual void     		UpdateData(void)=0;
 	/*set default constructor*/
 	virtual ~deviceBase()=default;
 };
@@ -51,10 +59,11 @@ class device:public deviceBase
 {
 	protected:
 		dataType val;												//mems core datas
-		GPIO_TypeDef* 			csGPIOx;				//mems CS
+		GPIO_TypeDef* 				csGPIOx;				//mems CS
 		uint16_t 			   		csGPIO_Pin;			//idem
 		SPI_TypeDef* 				SPIx;						//mems SPI
 	public:
+		device()=default;
 		//Initialize the member 			variables csGPIOx=GPIO,csGPIO_Pin=Pin,SPIx=SPI
 		device(SPI_TypeDef* SPI,GPIO_TypeDef* GPIO,uint16_t Pin):csGPIOx(GPIO),csGPIO_Pin(Pin),SPIx(SPI){};
 		//read raw data from address
@@ -64,7 +73,7 @@ class device:public deviceBase
 		//init the device
 		virtual void 		 		init(void)=0;
 		//update the datas
-		virtual void     		updateData(void)=0;
+		virtual void     		UpdateData(void)=0;
 		//get the data
 		virtual dataType    getData(void){ return  val;}
 		virtual ~device()=default;

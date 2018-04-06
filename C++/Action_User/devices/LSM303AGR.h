@@ -43,7 +43,7 @@ class deviceLSM303AGR_Acc:public device<threeAxis,uint8_t>
 		virtual uint8_t 		rawDataRead(uint8_t address);
 		virtual void 		 		rawDataWrite(uint8_t address,uint8_t val);
 		virtual void 		 		init(void);
-		virtual void     		updateData(void);
+		virtual void     		UpdateData(void);
 };
 class deviceLSM303AGR_Mag:public deviceLSM303AGR_Acc
 {	
@@ -51,7 +51,7 @@ class deviceLSM303AGR_Mag:public deviceLSM303AGR_Acc
 		deviceLSM303AGR_Mag(SPI_TypeDef* SPI,GPIO_TypeDef* GPIO,uint16_t Pin):deviceLSM303AGR_Acc(SPI,GPIO,Pin){};
 		virtual ~deviceLSM303AGR_Mag()=default;
 		virtual void 		 		init(void);
-		virtual void     		updateData(void);
+		virtual void     		UpdateData(void);
 };
 deviceLSM303AGR_Acc& getLSM303AGR_Acc(void);
 deviceLSM303AGR_Mag& getLSM303AGR_Mag(void);

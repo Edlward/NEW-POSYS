@@ -18,6 +18,8 @@
 #include "I3G4250D.h"
 #include "ADXRS453.h"
 #include "LSM303AGR.h"
+#include "ICM20602.h"
+#include <typeinfo>
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
 #define MAX_DEVICE  10
@@ -60,7 +62,7 @@ void deviceBase::devicesAllUpdate()
 {
 	for (uint8_t iter = 0; iter < countDevice; iter++)
 	{
-		deviceList[iter]->updateData();
+		deviceList[iter]->UpdateData();
 	}
 }
 threeAxis operator+(threeAxis x,threeAxis y)

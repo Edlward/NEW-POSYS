@@ -226,9 +226,9 @@ void initAHRS(void)
 	{
 		while(!getTimeFlag());
 		//update accelemeter, magnetometer, I3G and encoder datas
-		getLSM303AGR_Acc().updateData();
-		getLSM303AGR_Mag().updateData();
-		getI3G4250D().updateData();
+		getLSM303AGR_Acc().UpdateData();
+		getLSM303AGR_Mag().UpdateData();
+		getI3G4250D().UpdateData();
 		UpdateEncoder();
 		
 		/*magnetometer*/

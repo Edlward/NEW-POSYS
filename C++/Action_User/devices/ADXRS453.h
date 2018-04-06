@@ -56,7 +56,7 @@ class deviceADXRS453:public device<oneAxis,uint16_t>
 		//init the device
 		virtual void 		 		init(void);
 		//update the datas
-		virtual void     		updateData(void);
+		virtual void     		UpdateData(void);
 		//virtual oneAxis     getData(void);
 };
 /* Exported function     ------------------------------------------------------- */

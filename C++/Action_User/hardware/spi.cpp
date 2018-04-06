@@ -16,16 +16,13 @@ void SPI1_Init(void)
   GPIO_InitTypeDef GPIO_InitStructure;
   SPI_InitTypeDef  SPI_InitStructure;
 
-	/*  πƒ‹SPI∫ÕGPIOµƒ ±÷”------------------------------------------*/
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
 
-	/* “˝Ω≈∏¥”√Œ™SPI1----------------------------------------------*/
   GPIO_PinAFConfig(GPIOA, GPIO_PinSource5, GPIO_AF_SPI1);
   GPIO_PinAFConfig(GPIOA, GPIO_PinSource6, GPIO_AF_SPI1);
   GPIO_PinAFConfig(GPIOA, GPIO_PinSource7, GPIO_AF_SPI1);
 	
-	/* ”≤º˛SPI1“˝Ω≈≈‰÷√---------------------------------------------*/
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
@@ -33,16 +30,15 @@ void SPI1_Init(void)
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
   GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
-	/* SPI≈‰÷√------------------------------------------------------*/
   SPI_I2S_DeInit(SPI1);
-  SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;				/* À´œﬂÀ´œÚ»´À´π§									*/
-  SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* ÷˜SPI													*/
-	SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;											    /* SPIΩ” ’8Œª÷°Ω·ππ								*/
-  SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;																/* ¥Æ––Õ¨≤Ω ±÷”µƒø’œ–◊¥Ã¨Œ™µÕµÁ∆Ω	*/
-  SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;															/* µ⁄“ª∏ˆÃ¯±‰—ÿ ˝æ›±ª≤…—˘					*/
-  SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS”…»Ìº˛øÿ÷∆									*/
-  SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_32;				/* ‘§∑÷∆µ													*/
-  SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/*  ˝æ›¥”MSBŒªø™ º								*/
+  SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;			
+  SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															
+	SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;											
+  SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;														
+  SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;													
+  SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;															
+  SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_32;			
+  SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;											
   SPI_InitStructure.SPI_CRCPolynomial = 7;
   SPI_Init(SPI1, &SPI_InitStructure);
 
@@ -54,16 +50,13 @@ void SPI2_Init(void)
   GPIO_InitTypeDef GPIO_InitStructure;
   SPI_InitTypeDef  SPI_InitStructure;
 
-	/*  πƒ‹SPI∫ÕGPIOµƒ ±÷”------------------------------------------*/
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
 
-	/* “˝Ω≈∏¥”√Œ™SPI1----------------------------------------------*/
   GPIO_PinAFConfig(GPIOB, GPIO_PinSource13, GPIO_AF_SPI2);
   GPIO_PinAFConfig(GPIOB, GPIO_PinSource14, GPIO_AF_SPI2);
   //GPIO_PinAFConfig(GPIOB, GPIO_PinSource15, GPIO_AF_SPI2);
 	
-	/* ”≤º˛SPI1“˝Ω≈≈‰÷√---------------------------------------------*/
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14 /*| GPIO_Pin_15*/;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
@@ -71,16 +64,15 @@ void SPI2_Init(void)
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
   GPIO_Init(GPIOB, &GPIO_InitStructure);
 	
-	/* SPI≈‰÷√------------------------------------------------------*/
   SPI_I2S_DeInit(SPI2);
-  SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_RxOnly;									/* À´œﬂÀ´œÚ»´À´π§									*/
-  SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* ÷˜SPI													*/
-	SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;													/* SPIΩ” ’8Œª÷°Ω·ππ								*/
-  SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;																/* ¥Æ––Õ¨≤Ω ±÷”µƒø’œ–◊¥Ã¨Œ™µÕµÁ∆Ω	*/
-  SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;															/* µ⁄“ª∏ˆÃ¯±‰—ÿ ˝æ›±ª≤…—˘					*/
-  SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS”…»Ìº˛øÿ÷∆									*/
-  SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_128;				/* ‘§∑÷∆µ													*/
-  SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/*  ˝æ›¥”MSBŒªø™ º								*/
+  SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_RxOnly;							
+  SPI_InitStructure.SPI_Mode = SPI_Mode_Master;														
+	SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;									
+  SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;											
+  SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;									
+  SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;							
+  SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_128;		
+  SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;			
   SPI_InitStructure.SPI_CRCPolynomial = 7;
   SPI_Init(SPI2, &SPI_InitStructure);
 
@@ -146,34 +138,32 @@ void SPI3_Init(void)
   */
 void CS_Config(void)
 {
-	GPIO_InitTypeDef GPIO_InitStructure;
-
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE); 
+  GPIO_InitTypeDef GPIO_InitStructure;
+  
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE); 
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);	
-
-	/* ≈‰÷√∆¨—°“˝Ω≈------------------------- */
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-	GPIO_Init(GPIOA, &GPIO_InitStructure);                 
-		
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_15|GPIO_Pin_12;             
-	GPIO_Init(GPIOB, &GPIO_InitStructure);                
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);	
+  
+  /* ÈÖçÁΩÆÁâáÈÄâÂºïËÑö------------------------- */
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1|GPIO_Pin_2;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+  GPIO_Init(GPIOA, &GPIO_InitStructure);                 //ICM20608G
 	
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;             
-	GPIO_Init(GPIOC, &GPIO_InitStructure);  
-	
-	/* Deselect : Chip Select high ---------*/
-	GPIO_SetBits(GPIOA, GPIO_Pin_4);
-	GPIO_SetBits(GPIOB, GPIO_Pin_5);
-	GPIO_SetBits(GPIOB, GPIO_Pin_6);
-	
-	GPIO_SetBits(GPIOB, GPIO_Pin_12);
-	GPIO_SetBits(GPIOB, GPIO_Pin_15);
-	
-	GPIO_SetBits(GPIOC, GPIO_Pin_4);
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;             
+  GPIO_Init(GPIOC, &GPIO_InitStructure);   
+  
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12|GPIO_Pin_15;             
+  GPIO_Init(GPIOB, &GPIO_InitStructure);   
+  
+  /* Deselect : Chip Select high ---------*/
+  GPIO_SetBits(GPIOA, GPIO_Pin_1);
+  GPIO_SetBits(GPIOA, GPIO_Pin_2);
+  GPIO_SetBits(GPIOC, GPIO_Pin_6);
+  GPIO_SetBits(GPIOB, GPIO_Pin_12);
+  GPIO_SetBits(GPIOB, GPIO_Pin_15);
 }
 
 
@@ -194,26 +184,28 @@ void SPI_Write(SPI_TypeDef *SPI,
 	SPI_Cmd(SPI,ENABLE);	
 	GPIO_ResetBits(GPIOx,GPIO_Pin);
 	
-	while (SPI_I2S_GetFlagStatus(SPI, SPI_I2S_FLAG_TXE) == RESET){}		//µ»¥˝∑¢ÀÕ«¯ø’  
+	while (SPI_I2S_GetFlagStatus(SPI, SPI_I2S_FLAG_TXE) == RESET){}		  
 	
-	SPI_I2S_SendData(SPI, address); 																		//Õ®π˝Õ‚…ËSPIx∑¢ÀÕ“ª∏ˆbyte   ˝æ›
+	SPI_I2S_SendData(SPI, address); 																		
 		
-  while (SPI_I2S_GetFlagStatus(SPI, SPI_I2S_FLAG_RXNE) == RESET){} 	  //µ»¥˝Ω” ’ÕÍ“ª∏ˆbyte  
+  while (SPI_I2S_GetFlagStatus(SPI, SPI_I2S_FLAG_RXNE) == RESET){} 	  
  
-	SPI_I2S_ReceiveData(SPI); 																	        //∑µªÿÕ®π˝SPIx◊ÓΩ¸Ω” ’µƒ ˝æ›
+	SPI_I2S_ReceiveData(SPI); 																	        
   
-	while (SPI_I2S_GetFlagStatus(SPI, SPI_I2S_FLAG_TXE) == RESET){}		//µ»¥˝∑¢ÀÕ«¯ø’  
+	while (SPI_I2S_GetFlagStatus(SPI, SPI_I2S_FLAG_TXE) == RESET){}	
 	
-	SPI_I2S_SendData(SPI, value); 																		//Õ®π˝Õ‚…ËSPIx∑¢ÀÕ“ª∏ˆbyte   ˝æ›
+	SPI_I2S_SendData(SPI, value); 																		
 		
-  while (SPI_I2S_GetFlagStatus(SPI, SPI_I2S_FLAG_RXNE) == RESET){} 	  //µ»¥˝Ω” ’ÕÍ“ª∏ˆbyte  
+  while (SPI_I2S_GetFlagStatus(SPI, SPI_I2S_FLAG_RXNE) == RESET){} 	 
  
 	SPI_I2S_ReceiveData(SPI); 		
 		
 	while (SPI_I2S_GetFlagStatus(SPI, SPI_I2S_FLAG_BSY) == SET){}	
 	SPI_Cmd(SPI,DISABLE);		
 		
+	Delay_us(1);//min tcs.hd 63ns
 	GPIO_SetBits(GPIOx,GPIO_Pin);	
+	Delay_us(1);//tsdo.dis 20ns
 }
 
 
@@ -239,19 +231,19 @@ uint8_t SPI_Read(SPI_TypeDef *SPIx,
 	
 	GPIO_ResetBits(GPIOx,GPIO_Pin);
 	
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  //µ»¥˝∑¢ÀÕ«¯ø’  
+	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  
 	
-	SPI_I2S_SendData(SPIx, address); 																		//Õ®π˝Õ‚…ËSPIx∑¢ÀÕ“ª∏ˆbyte   ˝æ›
+	SPI_I2S_SendData(SPIx, address); 																		
 		
-  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  //µ»¥˝Ω” ’ÕÍ“ª∏ˆbyte  
+  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	 
  
-	SPI_I2S_ReceiveData(SPIx); 																	        //∑µªÿÕ®π˝SPIx◊ÓΩ¸Ω” ’µƒ ˝æ›
+	SPI_I2S_ReceiveData(SPIx); 																	     
   
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  //µ»¥˝∑¢ÀÕ«¯ø’  
+	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		 
 	
-	SPI_I2S_SendData(SPIx, DUMMY_BYTE); 																	//Õ®π˝Õ‚…ËSPIx∑¢ÀÕ“ª∏ˆbyte   ˝æ›
+	SPI_I2S_SendData(SPIx, DUMMY_BYTE); 															
 		
-  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  //µ»¥˝Ω” ’ÕÍ“ª∏ˆbyte  
+  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  
  
 	data = SPI_I2S_ReceiveData(SPIx); 		
 		
@@ -269,34 +261,36 @@ void SPI_MultiRead(SPI_TypeDef *SPIx,
 									 uint8_t* data,
 									 uint32_t 	len)
 {
+	/*SPI read and write operations are completed in 16 or more clock cycles (two or more bytes). 
+	The first byte contains the SPI Address, and the following byte(s) contain(s) the SPI data. 
+	The first bit of the first byte contains the Read/Write bit and indicates the Read (1) or Write (0) operation. */
 	address |= (uint8_t)READWRITE_CMD;
-	address |= (uint8_t)MULTIPLEBYTE_CMD;
+	
 	SPI_Cmd(SPIx,ENABLE);	
 	GPIO_ResetBits(GPIOx,GPIO_Pin);
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  //µ»¥˝∑¢ÀÕ«¯ø’  
+	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  
 	
-	SPI_I2S_SendData(SPIx, address); 																		//Õ®π˝Õ‚…ËSPIx∑¢ÀÕ“ª∏ˆbyte   ˝æ›
+	SPI_I2S_SendData(SPIx, address); 																	
 
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  //µ»¥˝Ω” ’ÕÍ“ª∏ˆbyte  
+	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	 
  
-	SPI_I2S_ReceiveData(SPIx); 																	        //∑µªÿÕ®π˝SPIx◊ÓΩ¸Ω” ’µƒ ˝æ›
+	SPI_I2S_ReceiveData(SPIx); 																	 
 
-
+	/* Receive the data that will be read from the device (MSB First) */
 	for(uint32_t i=0;i<len;i++)
 	{
-		while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  //µ»¥˝∑¢ÀÕ«¯ø’  
+		while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		 
 	
-		SPI_I2S_SendData(SPIx, DUMMY_BYTE); 																	//Õ®π˝Õ‚…ËSPIx∑¢ÀÕ“ª∏ˆbyte   ˝æ›
+		SPI_I2S_SendData(SPIx, DUMMY_BYTE); 																
 
-		while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  //µ»¥˝Ω” ’ÕÍ“ª∏ˆbyte  
+		while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	 
  
-		data[i]=SPI_I2S_ReceiveData(SPIx); 																	        //∑µªÿÕ®π˝SPIx◊ÓΩ¸Ω” ’µƒ ˝æ›
+		data[i]=SPI_I2S_ReceiveData(SPIx); 																	
 	}
 		
 	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_BSY) == SET){}	
 	SPI_Cmd(SPIx,DISABLE);		
 	GPIO_SetBits(GPIOx,GPIO_Pin);	
-	
 }
 
 

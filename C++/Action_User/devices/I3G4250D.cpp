@@ -33,7 +33,9 @@
 
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
+#ifdef I3G4250D_USED
 static deviceI3G4250D I3G4250D(SPI1,GPIOC,GPIO_Pin_4);
+#endif
 /* Extern   variables ---------------------------------------------------------*/
 /* Extern   function prototypes -----------------------------------------------*/
 /* Private  function prototypes -----------------------------------------------*/
@@ -66,7 +68,12 @@ void deviceI3G4250D::multiRead(uint8_t address,uint8_t *data,uint32_t len)
 /* Exported functions ---------------------------------------------------------*/
 deviceI3G4250D& getI3G4250D(void)
 {	
-	return I3G4250D;
+	#ifdef I3G4250D_USED
+		return I3G4250D;
+	#else
+		deviceI3G4250D* b;
+		return (deviceI3G4250D&)b;
+	#endif
 }
 uint8_t 	deviceI3G4250D::rawDataRead(uint8_t address)
 {
@@ -119,7 +126,7 @@ void 		deviceI3G4250D::init(void)
 		}
 	}
 }
-void    deviceI3G4250D::updateData(void)
+void    deviceI3G4250D::UpdateData(void)
 {
 	temp=rawDataRead(0x26);
 	
@@ -132,6 +139,7 @@ void    deviceI3G4250D::updateData(void)
 	float *dataY=new float[dataLen];
 	float *dataZ=new float[dataLen];
 	
+	//open a FIFO and filter error data by 5 sigma principle
 	for(uint32_t i=0;i<dataLen;i++)
 	{
 		rawDataRead(GYRO_DATA_REG_BEGIN);

@@ -1,32 +1,51 @@
 /**
   ******************************************************************************
-  * @file    *.h
-  * @author  Lxy Action
-  * @version 
-  * @date   
-  * @brief   This file contains the headers of 
+  * @file    get_set.h
+  * @author  Tian Chang & Luo Xiaoyi 
+  * @version V1.0
+  * @date    2016.10.26
+  * @brief   This file contains the headers of get_set.cpp
   ******************************************************************************
-  * @attention
-  *
-  *
-  * 
-  * 
-  *
+  * @attention none
   ******************************************************************************
   */ 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __CUSTOMER_H
-#define __CUSTOMER_H
+#ifndef __MAIN_H
+#define __MAIN_H
 
 /* Includes ------------------------------------------------------------------*/
+#include "stm32f4xx.h"
+#include <stdio.h>
+#include <stdint.h>
+
+//#define TEST_SUMMER
+
+#define AUTOCAR
+//#define TESTCAR
+
+#ifdef AUTOCAR
+	#define SCALE_FACTOR	(131.140172004891f)
+#else 
+	#ifdef TESTCAR
+		#define SCALE_FACTOR	(131.140172004891f)
+	#else
+		#define SCALE_FACTOR	(131.140172004891f)
+	#endif
+#endif
+
+
+#define DUG_PRINTF   printf
+
+#ifndef DUG_PRINTF
+  #define DUG_PRINTF   printf
+#endif
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void Set_R_Zaxis(float val);
-float Get_R_Zaxis(void);
-void DataSend(void);
-#endif
 
-/******************* (C) COPYRIGHT 2015 ACTION *****END OF FILE****/
+#endif /* __MAIN_H */
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

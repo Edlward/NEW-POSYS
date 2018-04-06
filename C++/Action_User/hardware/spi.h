@@ -9,16 +9,12 @@ extern "C"
 #include "stm32f4xx.h"
 #include "stm32f4xx_gpio.h"
 
-/*  从机读写控制命令-------------------------------*/
 /* Read/Write command */
 #define READWRITE_CMD              ((uint8_t)0x80) 
-/* Multiple byte read/write command */ 
-#define MULTIPLEBYTE_CMD           ((uint8_t)0x40)
+	
 /* Dummy Byte Send by the SPI Master device in order to generate the Clock to the Slave device */
 #define DUMMY_BYTE                 ((uint8_t)0x00)
 
-
-/* spi配置函数-----------------------------------*/
 void SPI1_Init(void);	
 void SPI2_Init(void);
 void CS_Config(void);

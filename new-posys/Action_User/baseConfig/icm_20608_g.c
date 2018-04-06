@@ -52,7 +52,6 @@ void MEMS_Configure(int gyroNum)
 		break;
 	}
 	
-  Delay_ms(MAX_POWER_RAMP_TIME + MAX_REGISTER_STARTUP_TIME);							//in consideration of worse case, we need wait this much time
   
   for(order=0;order<REGISTERS/2;order++){
     uint8_t i=0;

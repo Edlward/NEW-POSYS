@@ -34,8 +34,10 @@
 
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
+#ifdef LSM303AGR_USED
 static deviceLSM303AGR_Acc LSM303AGR_Acc(SPI3,GPIOB,GPIO_Pin_5);
 static deviceLSM303AGR_Mag LSM303AGR_Mag(SPI3,GPIOB,GPIO_Pin_6);
+#endif
 /* Extern   variables ---------------------------------------------------------*/
 /* Extern   function prototypes -----------------------------------------------*/
 /* Private  function prototypes -----------------------------------------------*/
@@ -44,11 +46,21 @@ static deviceLSM303AGR_Mag LSM303AGR_Mag(SPI3,GPIOB,GPIO_Pin_6);
 /* Exported functions ---------------------------------------------------------*/
 deviceLSM303AGR_Acc& getLSM303AGR_Acc(void)
 {
-	return LSM303AGR_Acc;
+	#ifdef LSM303AGR_USED
+		return LSM303AGR_Acc;
+	#else
+		deviceLSM303AGR_Acc* b;
+		return (deviceLSM303AGR_Acc&)b;
+	#endif
 }
 deviceLSM303AGR_Mag& getLSM303AGR_Mag(void)
 {
-	return LSM303AGR_Mag;
+	#ifdef LSM303AGR_USED
+		return LSM303AGR_Mag;
+	#else
+		deviceLSM303AGR_Mag* b;
+		return (deviceLSM303AGR_Mag&)b;
+	#endif
 }
 uint8_t 	deviceLSM303AGR_Acc::rawDataRead(uint8_t address)
 {
@@ -86,7 +98,7 @@ void 		deviceLSM303AGR_Acc::init(void)
 		}
 	}
 }
-void    deviceLSM303AGR_Acc::updateData(void)
+void    deviceLSM303AGR_Acc::UpdateData(void)
 {	
 	int16_t temp;
 	temp=(static_cast<uint16_t>(rawDataRead(ACC_DATA_REG_BEGIN+1))<<8)|(static_cast<uint16_t>(rawDataRead(ACC_DATA_REG_BEGIN)));
@@ -123,7 +135,7 @@ void 		deviceLSM303AGR_Mag::init(void)
 		}
 	}
 }
-void    deviceLSM303AGR_Mag::updateData(void)
+void    deviceLSM303AGR_Mag::UpdateData(void)
 {
 	int16_t temp;
 	temp=(static_cast<uint16_t>(rawDataRead(MAG_DATA_REG_BEGIN+1))<<8)|(static_cast<uint16_t>(rawDataRead(MAG_DATA_REG_BEGIN)));

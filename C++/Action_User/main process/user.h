@@ -24,12 +24,20 @@
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
-#define DEVICE_IS_RUNNING			(getCmdState()&0x01)
+	 
+#define CORRECT    								0X01
+#define START_COMPETE 						0X02
+#define NULL_FLAG									0X04
+#define HEATING										0X08
+#define STATIC_FORCE							0X10
+	 
+#define DEVICE_IS_RUNNING			(getCmdState()&START_COMPETE)
 #define MAG_IS_ENABLE					(getCmdState()&0x02)
 	 
 /* Exported functions ------------------------------------------------------- */
 void usartCmdInput(uint8_t data);
 uint8_t getCmdState(void);
+void SetCmdState(int val);
 void dataSend(void);
 #ifdef __cplusplus
 }

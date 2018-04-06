@@ -22,8 +22,10 @@
 #include "calculateAttitude.h"
 #include "LSM303AGR.h"
 #include "I3G4250D.h"
+#include "ICM20602.h"
 #include "device.h"
 #include "pos.h"
+#include "ahrs.h"
 #include "user.h"
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
@@ -45,7 +47,6 @@ int main(void)
 	USART1_INIT();
 	SPI1_Init();
 	SPI2_Init();
-	SPI3_Init();
 	CS_Config();
 	delay_ms(500);
 	//设备全初始化
@@ -62,13 +63,16 @@ int main(void)
   */
 static void running(void)
 {
-	initAHRS();
+	AHRS_Init();
 	while(DEVICE_IS_RUNNING)
 	{
 		while(!getTimeFlag());
-		getLSM303AGR_Acc().updateData();
-		getLSM303AGR_Mag().updateData();
-		getI3G4250D().updateData();
+		//judeg getICM20602_Gyro() return null
+		if(getICM20602_Gyro())
+		{
+			for(int i=0;i<getICM20602_Gyro()[0]->getInstanceNum();i++)
+				getICM20602_Gyro()[i]->UpdateData();
+		}
 		UpdateEncoder();
 		updateAHRS();
 		calculatePos();
@@ -77,5 +81,17 @@ static void running(void)
 	running();
 }
 
-
+//	initAHRS();
+//	while(DEVICE_IS_RUNNING)
+//	{
+//		while(!getTimeFlag());
+//		getLSM303AGR_Acc().UpdateData();
+//		getLSM303AGR_Mag().UpdateData();
+//		getI3G4250D().UpdateData();
+//		UpdateEncoder();
+//		updateAHRS();
+//		calculatePos();
+//		dataSend();
+//	}
+//	running();
 /************************ (C) COPYRIGHT 2016 ACTION *****END OF FILE****/

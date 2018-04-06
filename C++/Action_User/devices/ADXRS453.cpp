@@ -24,8 +24,9 @@
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-
+#ifdef ADXRS453_USED
 static deviceADXRS453 ADXRS453(SPI1,GPIOA,GPIO_Pin_4);
+#endif
 /* Extern   variables ---------------------------------------------------------*/
 /* Extern   function prototypes -----------------------------------------------*/
 /* Private  function prototypes -----------------------------------------------*/
@@ -53,7 +54,12 @@ static void  changeSPIconfigure(SPI_TypeDef* SPIx)
 /* Exported functions ---------------------------------------------------------*/
 deviceADXRS453& getADXRS453(void)
 {
-	return ADXRS453;
+	#ifdef ADXRS453_USED
+		return ADXRS453;
+	#else
+		deviceADXRS453* b;
+		return (deviceADXRS453&)b;
+	#endif
 }
 /* Class functions ------------------------------------------------------------*/
 uint16_t deviceADXRS453::rawDataRead(uint8_t address)
@@ -163,7 +169,7 @@ void 	deviceADXRS453::init(void)
 		
 	//rawDataRead(0x00);	
 }
-void deviceADXRS453::updateData(void)
+void deviceADXRS453::UpdateData(void)
 {
 	static float rateList[ADXRS453_UPDATE_FREQ]={0,0,0,0,0};
 	static float tempList[ADXRS453_UPDATE_FREQ]={0,0,0,0,0};

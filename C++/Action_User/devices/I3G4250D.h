@@ -48,7 +48,7 @@ class deviceI3G4250D:public device<threeAxis,uint8_t>
 		virtual uint8_t 		rawDataRead(uint8_t address);
 		virtual void 		 		rawDataWrite(uint8_t address,uint8_t value);
 		virtual void 		 		init(void);
-		virtual void     		updateData(void);
+		virtual void     		UpdateData(void);
 		//virtual threeAxis   getData(void);
 };
 deviceI3G4250D& getI3G4250D(void);

@@ -72,6 +72,30 @@ static void usartACCT(uint8_t data,uint16_t &count)
 	if(count>=7)
 		count=0;
 }
+
+void SetCmdState(int val){
+  switch(val){
+  case START_COMPETE:
+    cmdState|=START_COMPETE;
+    break;
+  case ~START_COMPETE:
+    cmdState&=~START_COMPETE;
+    break;
+	case HEATING:
+    cmdState|=HEATING;
+		break;
+  case ~HEATING:
+    cmdState&=~HEATING;
+    break;
+	case STATIC_FORCE:
+    cmdState|=STATIC_FORCE;
+		break;
+  case ~STATIC_FORCE:
+    cmdState&=~STATIC_FORCE;
+    break;
+  }
+}
+
 //static void usartACPC(uint8_t data,uint16_t &count)
 //{
 //}

@@ -318,13 +318,13 @@ void HardFault_Handler(void)
 {  
 		ReportHardFault();
 		ReportHardFault();
+		ReportHardFault();
 //	  static uint32_t r_sp ;
 //		if(__get_PSP()!=0x00) 
 //			r_sp = __get_PSP(); 
 //		else
 //			r_sp = __get_MSP(); 
 //		r_sp = r_sp+0x10;
-	ReportHardFault();
 	if(allPara.resetTime<=500)
 	{
 		FindResetTime();

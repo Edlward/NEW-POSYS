@@ -137,7 +137,8 @@ void 		ICM20602_Gyro::init(void)
   Delay_ms(MAX_POWER_RAMP_TIME + MAX_REGISTER_STARTUP_TIME);							//in consideration of worse case, we need wait this much time
 	
 	rawDataWrite(ICM20608G_PWR_MGMT_1,0x80);																//Wake up chip from sleep mode,enable temperature sensor
-	Delay_ms(1);
+	
+  Delay_ms(MAX_POWER_RAMP_TIME + MAX_REGISTER_STARTUP_TIME);							//in consideration of worse case, we need wait this much time
 	
 	while(rawDataRead(ICM20608G_PWR_MGMT_1)!=0x00)
 	{

@@ -95,7 +95,9 @@ int main(void)
 			
 			allPara.sDta.time++;
 			if(CheckNan()&&allPara.sDta.GYRO_Bais[2]==0.0)
+			{
 				IWDG_Reset();
+			}
 			
 			if(allPara.sDta.time>200*5)
 				allPara.sDta.time--;

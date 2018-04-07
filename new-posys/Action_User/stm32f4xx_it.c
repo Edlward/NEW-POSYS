@@ -316,6 +316,8 @@ void NMI_Handler(void)
 
 void HardFault_Handler(void)
 {  
+		ReportHardFault();
+		ReportHardFault();
 //	  static uint32_t r_sp ;
 //		if(__get_PSP()!=0x00) 
 //			r_sp = __get_PSP(); 

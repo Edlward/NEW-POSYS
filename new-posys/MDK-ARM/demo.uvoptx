@@ -118,7 +118,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>棂?P鮞w棂?</Name>
+          <Name>?yP鮞w?y</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -161,17 +161,7 @@
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>ignore,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>3</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>data,0x10</ItemText>
-        </Ww>
-        <Ww>
-          <count>4</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>\\demo\../Action_User/main.c\allPara.GYRORemoveDrift[2]</ItemText>
+          <ItemText>gyr_temp</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
@@ -206,7 +196,7 @@
         <aPa1>0</aPa1>
         <AscS4>0</AscS4>
         <aSer4>0</aSer4>
-        <StkLoc>0</StkLoc>
+        <StkLoc>1</StkLoc>
         <TrcWin>0</TrcWin>
         <newCpu>0</newCpu>
         <uProt>0</uProt>

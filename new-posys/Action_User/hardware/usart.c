@@ -104,7 +104,7 @@ void USART1_Init(uint32_t BaudRate)
 
 	//Usart1 NVIC Ƥ׃
   NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;//Ԯࠚ1א׏ͨր
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0;//ȀռԅЈܶ3
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1;//ȀռԅЈܶ3
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority =0;		//ؓԅЈܶ3
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQͨրʹŜ
 	NVIC_Init(&NVIC_InitStructure);	//ٹߝָ֨քӎ˽ԵʼۯVIC݄զǷb

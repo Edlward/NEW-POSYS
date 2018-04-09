@@ -99,9 +99,9 @@ void TIM2_IRQHandler(void)
 			#else
 				#ifdef AUTOCAR	//以y为标准
 					double percentages[3][3]={
-					0.6,0.4,0.0,
-					0.6,0.4,0.0,
-					0.6,0.4,0.0	};
+					0.0,1.0,0.0,
+					0.0,1.0,0.0,
+					0.0,1.0,0.0	};
 				#else			//以x为标准
 					double percentages[3][3]={
 					0.0,1.0,0.0,
@@ -206,7 +206,6 @@ void TIM7_IRQHandler(void)
   {	
 		if(startCnt==1)
 			Cnt++;
-		//printf("%d\r\n",Cnt);
 		IWDG_Feed();
 		
     TIM_ClearITPendingBit(TIM7, TIM_IT_Update);

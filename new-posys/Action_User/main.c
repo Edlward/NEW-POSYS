@@ -49,7 +49,7 @@ void init(void)
 		ICM_HeatingPower(gyro,0);
 	}
 	
-  TIM_Init(TIM2,999,83,1,0);			
+  TIM_Init(TIM2,999,83,2,0);			
 	
 	allPara.sDta.flag=0;
 	

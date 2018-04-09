@@ -25,7 +25,7 @@ void SetParaDefault(void);
 void DataSend(void)
 {
 	int i;
-	uint8_t tdata[36];
+	uint8_t tdata[DMA_SEND_SIZE];
   union{
 		float   val;
 		uint8_t data[4];
@@ -33,8 +33,8 @@ void DataSend(void)
 	
   tdata[0]=0x0d;
   tdata[1]=0x0a;
-  tdata[34]=0x0a;
-  tdata[35]=0x0d;
+  tdata[DMA_SEND_SIZE-2]=0x0a;
+  tdata[DMA_SEND_SIZE-1]=0x0d;
 	#ifdef AUTOCAR 
 	
 	valSend.val=(float)allPara.sDta.Result_Angle[2];
@@ -123,8 +123,8 @@ void DataSend(void)
 	USART_Enter();
 	#else
 	
-	for(i=0;i<36;i++)
-   USART_SendData(USART1,tdata[i]);
+	for(i=0;i<DMA_SEND_SIZE;i++)
+   USART_SendDataToDMA(tdata[i]);
 
 	#endif
 }

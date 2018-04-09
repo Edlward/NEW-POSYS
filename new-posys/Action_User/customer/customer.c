@@ -58,7 +58,10 @@ void DataSend(void)
 	valSend.val=(float)allPara.sDta.GYRO_Bais[2];
   memcpy(tdata+26,valSend.data,4);
 	 
-	valSend.val=(float)allPara.kalmanZ;
+	 if(allPara.sDta.flag&START_COMPETE)
+	valSend.val=66.f;
+	 else
+	valSend.val=55.f;
   memcpy(tdata+30,valSend.data,4);
 	#else
 	valSend.val=(float)allPara.sDta.Result_Angle[2];

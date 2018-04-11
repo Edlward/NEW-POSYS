@@ -345,6 +345,7 @@ void HardFault_Handler(void)
   while (1)
   {
 		ReportHardFault();
+		IWDG_Reset();
 //		USART_OUT(USART1,"\r\nHardFault");
 //  	char sPoint[2]={0};
 //		USART_OUT(USART1,"%s","0x");

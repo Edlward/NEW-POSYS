@@ -94,6 +94,7 @@ int RoughHandle(void)
   if(ignore>(TIME_STATIC_REAL)*200){
 		if(UpdateBais()||allPara.resetFlag)
 		{
+			ignore=(TIME_STATIC_REAL)*200+5;
 			allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.sDta.GYRO_Bais[0]);
 			allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.sDta.GYRO_Bais[1]);
 			allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.sDta.GYRO_Bais[2]);

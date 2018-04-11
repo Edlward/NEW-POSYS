@@ -68,7 +68,7 @@ void init(void)
 	
   //driftCoffecientInit();
 	
-	IWDG_Init(1,5); // 1.5ms
+	IWDG_Init(1,50); // 1.5ms
 	
 	while(!getTempInitSuces())
 	{

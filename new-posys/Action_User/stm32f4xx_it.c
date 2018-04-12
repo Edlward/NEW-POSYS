@@ -93,9 +93,9 @@ void TIM2_IRQHandler(void)
 			figureVell();
 			#ifdef TESTCAR
 			  double percentages[3][3]={
-				0.6,0.0,0.4,
-				0.6,0.0,0.4,
-				0.6,0.0,0.4};
+				1.0,0.0,0.0,
+				1.0,0.0,0.0,
+				1.0,0.0,0.0};
 			#else
 				#ifdef AUTOCAR	//以y为标准
 					double percentages[3][3]={

@@ -41,13 +41,13 @@ void init(void)
 	
 //  Flash_Init();
 	
-	for(int gyro;gyro<GYRO_NUMBER;gyro++)
-	{
+//	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+//	{
 
-		if(!allPara.resetFlag)
-			MEMS_Configure(gyro);
-		ICM_HeatingPower(gyro,0);
-	}
+//		if(!allPara.resetFlag)
+			MEMS_Configure(0);
+		ICM_HeatingPower(0,0);
+//	}
 	
   TIM_Init(TIM2,999,83,2,0);			
 	

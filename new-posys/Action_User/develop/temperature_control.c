@@ -142,9 +142,9 @@ int TempErgodic(int reset){
   temp_pid_ctr(TempTable_min*100.0+(TempTable_max*100.0-TempTable_min*100.0)*circle_count*PERIOD/(float)HEATTIME/60.f);
   if(circle_count==(int)(HEATTIME*60.f/PERIOD)){
     flag=1;
-    //USART_OUT(USART1,"finish rise\r\n");
+    //USART_OUT(USART3,"finish rise\r\n");
   }else if(circle_count==0){
-    //USART_OUT(USART1,"finish decrease\r\n");
+    //USART_OUT(USART3,"finish decrease\r\n");
     flag=3;
   }
   return flag;
@@ -293,18 +293,18 @@ void pwm1_init(uint32_t arr,uint32_t psc)
   TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
   TIM_OCInitTypeDef  TIM_OCInitStructure;
   
-  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);  				//TIM5时钟使能
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5,ENABLE);  				//TIM5时钟使能
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
   
-  GPIO_PinAFConfig(GPIOB, GPIO_PinSource10, GPIO_AF_TIM2); 		//
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource1, GPIO_AF_TIM5); 		//
   
   
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;        
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;        
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;        
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;	
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;      
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;        
-  GPIO_Init(GPIOB,&GPIO_InitStructure);              
+  GPIO_Init(GPIOA,&GPIO_InitStructure);              
   
   
   TIM_TimeBaseStructure.TIM_Prescaler = psc;  //定时器分频

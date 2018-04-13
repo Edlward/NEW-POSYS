@@ -99,9 +99,9 @@ void TIM2_IRQHandler(void)
 			#else
 				#ifdef AUTOCAR	//以y为标准
 					double percentages[3][3]={
-					0.0,1.0,0.0,
-					0.0,1.0,0.0,
-					0.0,1.0,0.0	};
+				1.0,0.0,0.0,
+				1.0,0.0,0.0,
+				1.0,0.0,0.0};
 				#else			//以x为标准
 					double percentages[3][3]={
 					0.0,1.0,0.0,
@@ -170,7 +170,7 @@ void TIM2_IRQHandler(void)
     }
   }
 	else{
-		USART_OUT(USART1,"TIM2 error");
+		USART_OUT(USART3,"TIM2 error");
 	}
 }
 
@@ -283,17 +283,6 @@ void UART5_IRQHandler(void)
   
 }
 
-void USART3_IRQHandler(void)
-{
-  //uint8_t data = 0;
-  if(USART_GetITStatus(USART3, USART_IT_RXNE)==SET)   
-  {
-    USART_ClearITPendingBit( USART3,USART_IT_RXNE);
-    //data=USART_ReceiveData(USART3);
-  }
-  
-}
-
 
 /**
 * @brief   This function handles NMI exception.
@@ -346,12 +335,12 @@ void HardFault_Handler(void)
   {
 		ReportHardFault();
 		IWDG_Reset();
-//		USART_OUT(USART1,"\r\nHardFault");
+//		USART_OUT(USART3,"\r\nHardFault");
 //  	char sPoint[2]={0};
-//		USART_OUT(USART1,"%s","0x");
+//		USART_OUT(USART3,"%s","0x");
 //		for(int i=3;i>=-28;i--){
 //			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
-//			USART_OUT(USART1,"%s",sPoint);
+//			USART_OUT(USART3,"%s",sPoint);
 //			if(i%4==0)
 //				USART_Enter();
 //		}

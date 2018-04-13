@@ -19,7 +19,7 @@ AllPara_t allPara={0};
 void init(void)
 {
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
-	
+
   TIM_Init(TIM7,99,83,0,0);				
 	//StartCount();
 	SoftWareReset();
@@ -34,9 +34,9 @@ void init(void)
   CS_Config();
 	
 	#ifdef TEST_SUMMER
-	USART1_Init(921600);
+	USART3_Init(921600);
 	#else
-	USART1_Init(115200);
+	USART3_Init(115200);
 	#endif
 	
 //  Flash_Init();
@@ -45,7 +45,7 @@ void init(void)
 //	{
 
 //		if(!allPara.resetFlag)
-			MEMS_Configure(0);
+   			MEMS_Configure(0);
 		ICM_HeatingPower(0,0);
 //	}
 	

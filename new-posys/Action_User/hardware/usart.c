@@ -28,19 +28,19 @@ void USART_SendDataToDMA(uint8_t data)
 	
 	if(count>=DMA_SEND_SIZE)
 	{
-		while(DMA_GetITStatus(DMA2_Stream7,DMA_IT_TCIF7) == RESET	&&	DMA_GetCmdStatus(DMA2_Stream7)	==	ENABLE	);    
-		DMA_ClearFlag(DMA2_Stream7,DMA_IT_TCIF7);  
-		DMA_Cmd(DMA2_Stream7,DISABLE);  
+		while(DMA_GetITStatus(DMA1_Stream3,DMA_IT_TCIF3) == RESET	&&	DMA_GetCmdStatus(DMA1_Stream3)	==	ENABLE	);    
+		DMA_ClearFlag(DMA1_Stream3,DMA_IT_TCIF3);  
+		DMA_Cmd(DMA1_Stream3,DISABLE);  
 		count=0;
 		memcpy(dmaSendBuffer,tempBuffer,DMA_SEND_SIZE);
-		DMA_SetCurrDataCounter(DMA2_Stream7,DMA_SEND_SIZE);
-		DMA_Cmd(DMA2_Stream7,ENABLE);
+		DMA_SetCurrDataCounter(DMA1_Stream3,DMA_SEND_SIZE);
+		DMA_Cmd(DMA1_Stream3,ENABLE);
 	}
 	
 }
 
 //PD8
-void USART1_Init(uint32_t BaudRate)
+void USART3_Init(uint32_t BaudRate)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
@@ -48,19 +48,19 @@ void USART1_Init(uint32_t BaudRate)
 	DMA_InitTypeDef DMA_InitStructure;
 	
 	
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA,ENABLE); //ʹŜGPIOAʱד
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1,ENABLE);//ʹŜUSART1ʱד
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);  
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB,ENABLE); //ʹŜGPIOBʱד
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1,ENABLE);//ʹŜUSART3ʱד
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA1, ENABLE);  
 	
-//	NVIC_InitStructure.NVIC_IRQChannel = DMA2_Stream7_IRQn;  
+//	NVIC_InitStructure.NVIC_IRQChannel = DMA1_Stream3_IRQn;  
 //	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;  
 //	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;  
 //	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;  
 //	NVIC_Init(&NVIC_InitStructure);  
 	
-	DMA_DeInit(DMA2_Stream7);  
+	DMA_DeInit(DMA1_Stream3);  
 	DMA_InitStructure.DMA_Channel = DMA_Channel_4;   
-	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)(&USART1->DR);  
+	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)(&USART3->DR);  
 	DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)dmaSendBuffer;  
 	DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral;   
 	DMA_InitStructure.DMA_BufferSize = DMA_SEND_SIZE;  
@@ -75,32 +75,32 @@ void USART1_Init(uint32_t BaudRate)
 	DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_HalfFull;          
 	DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;         
 	DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;   	 
-	DMA_Init(DMA2_Stream7, &DMA_InitStructure);    
-//	DMA_ITConfig(DMA2_Stream7,DMA_IT_TC,ENABLE);  	
+	DMA_Init(DMA1_Stream3, &DMA_InitStructure);    
+//	DMA_ITConfig(DMA1_Stream3,DMA_IT_TC,ENABLE);  	
 
-	DMA_ClearFlag(DMA2_Stream7,DMA_IT_TCIF7);  
-	DMA_Cmd(DMA2_Stream7,DISABLE);
+	DMA_ClearFlag(DMA1_Stream3,DMA_IT_TCIF3);  
+	DMA_Cmd(DMA1_Stream3,DISABLE);
 	
 	//Ԯࠚ1הӦӽޅشԃӳʤ
-	GPIO_PinAFConfig(GPIOA,GPIO_PinSource10,GPIO_AF_USART1); //GPIOA9شԃΪUSART1
-	GPIO_PinAFConfig(GPIOA,GPIO_PinSource9, GPIO_AF_USART1); //GPIOA10شԃΪUSART1
+	GPIO_PinAFConfig(GPIOB,GPIO_PinSource10,GPIO_AF_USART1); //GPIOB9شԃΪUSART3
+	GPIO_PinAFConfig(GPIOB,GPIO_PinSource11, GPIO_AF_USART1); //GPIOB10شԃΪUSART3
 	
-	//USART1׋ࠚƤ׃
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_9; //GPIOA9ԫGPIOA10
+	//USART3׋ࠚƤ׃
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11; //GPIOB9ԫGPIOB10
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//شԃ٦Ŝ
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	//̙׈50MHz
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; //ΆάشԃˤԶ
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP; //ʏ-
-	GPIO_Init(GPIOA,&GPIO_InitStructure); //ԵʼۯPA9ìPA10
+	GPIO_Init(GPIOB,&GPIO_InitStructure); //ԵʼۯPA9ìPA10
 
-   //USART1 Եʼۯʨ׃
+   //USART3 Եʼۯʨ׃
 	USART_InitStructure.USART_BaudRate = BaudRate;//Ҩ͘Êʨ׃
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;//ؖӤΪ8λ˽ߝٱʽ
 	USART_InitStructure.USART_StopBits = USART_StopBits_1;//һٶֹͣλ
 	USART_InitStructure.USART_Parity = USART_Parity_No;//ϞǦżУҩλ
 	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//ϞӲݾ˽ߝ·࠘׆
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//˕עģʽ
-  USART_Init(USART1, &USART_InitStructure); //ԵʼۯԮࠚ1
+  USART_Init(USART3, &USART_InitStructure); //ԵʼۯԮࠚ1
 
 	//Usart1 NVIC Ƥ׃
   NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;//Ԯࠚ1א׏ͨր
@@ -108,13 +108,13 @@ void USART1_Init(uint32_t BaudRate)
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority =0;		//ؓԅЈܶ3
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQͨրʹŜ
 	NVIC_Init(&NVIC_InitStructure);	//ٹߝָ֨քӎ˽ԵʼۯVIC݄զǷb
-	USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);//ߪǴРژא׏
-	USART_ClearFlag(USART1, USART_FLAG_TC);
-	USART_ClearFlag(USART1, USART_FLAG_TXE);
+	USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);//ߪǴРژא׏
+	USART_ClearFlag(USART3, USART_FLAG_TC);
+	USART_ClearFlag(USART3, USART_FLAG_TXE);
 	
 	
-	USART_DMACmd(USART1,USART_DMAReq_Tx,ENABLE);
-	USART_Cmd(USART1, ENABLE);  //ʹŜԮࠚ3
+	USART_DMACmd(USART3,USART_DMAReq_Tx,ENABLE);
+	USART_Cmd(USART3, ENABLE);  //ʹŜԮࠚ3
   
 }
 
@@ -122,10 +122,10 @@ void USART_OUT_F(float value)
 {
   char s[10]={0};
   sprintf(s,"%f\t",value);
-  USART_OUT(USART1,s);
+  USART_OUT(USART3,s);
 }
 void USART_Enter(void){
-  USART_OUT(USART1,"\r\n");
+  USART_OUT(USART3,"\r\n");
 }
 
 
@@ -190,10 +190,7 @@ void USART_OUT(USART_TypeDef* USARTx,const char *Data,...){
 char *itoa(int value, char *string, int radix)
 radix=10 ��ʾ��10����	��ʮ���ƣ�ת�����Ϊ0;  
 
-����d=-379;
-ִ��	itoa(d, buf, 10); ��
-
-buf="-379"							   			  
+						   			  
 **********************************************************/
 char *itoa(int value, char *string, int radix)
 {

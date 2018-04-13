@@ -5,7 +5,7 @@
 
 #define DMA_SEND_SIZE   36
 
-void USART1_Init(uint32_t BaudRate);
+void USART3_Init(uint32_t BaudRate);
 void USART6_Init(uint32_t BaudRate);
 void USART_OUT(USART_TypeDef* USARTx,const char *Data,...);
 char *itoa(int value, char *string, int radix);

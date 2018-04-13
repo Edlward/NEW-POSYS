@@ -118,8 +118,8 @@ void icm_update_gyro_rate(int gyroNum)
 //			#else
 //				#ifdef AUTOCAR
 					gyro[0] = -data1[1]/131.140172004891;
-					gyro[1] = -data1[0]/131.140172004891;
-					gyro[2] = -data1[2]/131.140172004891;
+					gyro[1] = data1[0]/131.140172004891;
+					gyro[2] = data1[2]/131.140172004891;
 //				#else
 //					gyro[0] = -data1[1]/131.524243090403;
 //					gyro[1] = -data1[0]/131.524243090403;
@@ -261,8 +261,8 @@ int CheckNan(void)
 	if(isnan(allPara.sDta.codeData[0])||isnan(allPara.sDta.Result_Angle[2])||isnan(allPara.sDta.posx)||isnan(allPara.sDta.posy)||isnan(allPara.sDta.flag)||isnan(allPara.sDta.vellx)\
 		||isnan(allPara.sDta.velly)||isnan(allPara.sDta.isReset))
 	{
-		USART_OUT(USART1,"HN");
-		USART_OUT(USART1,"HN");
+		USART_OUT(USART3,"HN");
+		USART_OUT(USART3,"HN");
 		return 1;
 	}
 	
@@ -288,8 +288,8 @@ int CheckNan(void)
 		}
 	if(count>100)
 	{
-		USART_OUT(USART1,"HZ");
-		USART_OUT(USART1,"HZ");
+		USART_OUT(USART3,"HZ");
+		USART_OUT(USART3,"HZ");
 		return 1;
 	}
 	return 0;

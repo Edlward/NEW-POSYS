@@ -34,11 +34,17 @@ void init(void)
   CS_Config();
 	
 	#ifdef TEST_SUMMER
-	USART3_Init(921600);
+	USART3_DMA_Init(921600);
 	#else
-	USART3_Init(115200);
+	USART3_DMA_Init(115200);
 	#endif
 	
+	while(1)
+	{
+//		USART_OUT(USART3,"123\r\n");
+		USART_SendDataToDMA('R');
+		Delay_ms(5);
+	}
 //  Flash_Init();
 	
 //	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)

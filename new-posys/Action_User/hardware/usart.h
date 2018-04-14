@@ -4,7 +4,7 @@
 #include "stm32f4xx_usart.h"
 
 #define DMA_SEND_SIZE   36
-
+void USART3_DMA_Init(uint32_t BaudRate);
 void USART3_Init(uint32_t BaudRate);
 void USART6_Init(uint32_t BaudRate);
 void USART_OUT(USART_TypeDef* USARTx,const char *Data,...);

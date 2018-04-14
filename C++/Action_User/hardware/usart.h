@@ -37,9 +37,8 @@
 	#define endl ("\r\n")	 	 
 #endif	 
 /* Exported functions ------------------------------------------------------- */
-void USART1_INIT(void);
-//void DMA2_Stream7_IRQHandler(void);	 
-void USART1_IRQHandler(void);	 
+void USART3_DMA_Init(uint32_t BaudRate);
+void USART3_IRQHandler(void);	 
 void USART_SendDataToDMA(uint8_t data);
 #ifdef __cplusplus
 }

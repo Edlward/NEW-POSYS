@@ -74,8 +74,6 @@ void 	deviceADXRS453::rawDataWrite(uint8_t address,uint16_t value)
 }
 void 	deviceADXRS453::init(void)
 {
-	uint16_t data=0x00;
-	
 	//change SPI configures according to the reference mannual
 	changeSPIconfigure(SPIx);
 	
@@ -89,7 +87,7 @@ void 	deviceADXRS453::init(void)
 		
   while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 
  
-	data=SPI_I2S_ReceiveData(SPIx);	
+	SPI_I2S_ReceiveData(SPIx);	
   
 	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}	
 	
@@ -111,7 +109,7 @@ void 	deviceADXRS453::init(void)
 		
   while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	 
  
-  data=SPI_I2S_ReceiveData(SPIx);       
+  SPI_I2S_ReceiveData(SPIx);       
   
 	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		
 	
@@ -119,7 +117,7 @@ void 	deviceADXRS453::init(void)
 		
   while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	
  
-	data=SPI_I2S_ReceiveData(SPIx);		
+	SPI_I2S_ReceiveData(SPIx);		
 		
 	GPIO_SetBits(csGPIOx,csGPIO_Pin);
 		
@@ -141,7 +139,7 @@ void 	deviceADXRS453::init(void)
 		
   while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  
   
-	data=SPI_I2S_ReceiveData(SPIx);
+	SPI_I2S_ReceiveData(SPIx);
 		
 	GPIO_SetBits(csGPIOx,csGPIO_Pin);
 	
@@ -155,7 +153,7 @@ void 	deviceADXRS453::init(void)
 		
   while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	
  
-	data=SPI_I2S_ReceiveData(SPIx);        
+	SPI_I2S_ReceiveData(SPIx);        
   
 	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		
 	
@@ -163,7 +161,7 @@ void 	deviceADXRS453::init(void)
 		
   while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	
  
-	data=SPI_I2S_ReceiveData(SPIx);		
+	SPI_I2S_ReceiveData(SPIx);		
 		
 	GPIO_SetBits(csGPIOx,csGPIO_Pin);
 		

@@ -44,11 +44,9 @@ static float pos[2]={0,0};
 /* Exported functions ---------------------------------------------------------*/
 void UpdateEncoder()
 {
-	uint8_t temp[3];
-	SPI_OnlyRead(SPI2,GPIOB,GPIO_Pin_12,temp,3);
-	encoder[0]=((temp[0]&0x7f)<<5)|(temp[1]>>3);
-	SPI_OnlyRead(SPI2,GPIOB,GPIO_Pin_15,temp,3);
-	encoder[1]=((temp[0]&0x7f)<<5)|(temp[1]>>3);
+	encoder[0]=SPI_ReadAS5045(0);
+	encoder[1]=SPI_ReadAS5045(1);
+	cout<<encoder[0]<<'\t'<<encoder[1]<<endl;
 }
 
 uint16_t getEncoder(uint8_t num)
@@ -82,8 +80,6 @@ void calculatePos(void)
 	
 	vell[1]-=(vell[1]>(encoderRange/2))*encoderRange;
 	vell[1]+=(vell[1]<(-(encoderRange/2)))*encoderRange;
-	
-	/*cout<<encoder[0]<<'\t'<<encoder[1]<<'\t'*//*<<vell[0]<<'\t'<<vell[1]<<'\t'*/;
 	
 	float sinVal[2];
 	float cosVal[2];

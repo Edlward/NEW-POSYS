@@ -26,7 +26,7 @@ void init(void)
 	
 	AllParaInit();
 	
-  pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz
+//  pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz
   
 	ICM_SPIInit();
 	SPI2_Init();
@@ -39,12 +39,17 @@ void init(void)
 	USART3_DMA_Init(115200);
 	#endif
 	
-	while(1)
-	{
+//	while(1)
+//	{
+//		Delay_ms(5);
 //		USART_OUT(USART3,"123\r\n");
-		USART_SendDataToDMA('R');
-		Delay_ms(5);
-	}
+//	}
+//	while(1)
+//	{
+//		USART_OUT(USART3,"123\r\n");
+//		USART_SendDataToDMA('R');
+//		Delay_ms(5);
+//	}
 //  Flash_Init();
 	
 //	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)

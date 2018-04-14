@@ -28,11 +28,10 @@ static uint8_t cmdState=0x00;
 /* Extern   function prototypes -----------------------------------------------*/
 /* Private  function prototypes -----------------------------------------------*/
 /* Private  functions ---------------------------------------------------------*/
-static void usartACCT(uint8_t data,uint16_t &count)
+static void usartACCT(char data,uint16_t &count)
 {
 	static uint16_t cmdId=0;
 	data-='0';
-	while(data<0||data>9);
 	
 	cmdId*=10;
 	cmdId+=data;

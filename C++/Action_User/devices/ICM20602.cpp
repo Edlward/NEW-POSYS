@@ -32,33 +32,15 @@
 
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-#ifdef ICM_20602_USED_1
-static ICM20602_Gyro ICM20602_Gyro1(SPI1,GPIOA,GPIO_Pin_1);
-//static deviceICM20602 ICM20602_Acc1(SPI1,GPIOA,GPIO_Pin_1);
-#endif
-#ifdef ICM_20602_USED_2
-static ICM20602_Gyro ICM20602_Gyro2(SPI1,GPIOA,GPIO_Pin_2);
-//static deviceICM20602 ICM20602_Acc2(SPI1,GPIOA,GPIO_Pin_2);
-#endif
-#ifdef ICM_20602_USED_3
-static ICM20602_Gyro ICM20602_Gyro3(SPI1,GPIOC,GPIO_Pin_6);
-//static deviceICM20602 ICM20602_Acc3(SPI1,GPIOC,GPIO_Pin_6);
-#endif
 
-static ICM20602_Gyro* pICM20602_Gyro_Array[ICM_GYRO_NUM];
-
-uint8_t ICM20602_Gyro:: instanceNum=0;
+static ICM20602_Gyro icm20602_Gyro(SPI1,GPIOA,GPIO_Pin_4);
+//static deviceICM20602 ICM20602_Acc(SPI1,GPIOA,GPIO_Pin_4);
 
 ICM20602_Gyro::ICM20602_Gyro(SPI_TypeDef* SPI,GPIO_TypeDef* GPIO,uint16_t Pin)
 {
   csGPIOx=GPIO;
 	csGPIO_Pin=Pin;
 	SPIx=SPI;
-	if(instanceNum<ICM_GYRO_NUM)
-		pICM20602_Gyro_Array[instanceNum]=this;
-	else
-		while(1);
-	instanceNum++;
 }
 /* Extern   variables ---------------------------------------------------------*/
 /* Extern   function prototypes -----------------------------------------------*/
@@ -90,9 +72,9 @@ void ICM20602_Gyro::multiRead(uint8_t address,uint8_t *data,uint32_t len)
 /* Exported function prototypes -----------------------------------------------*/
 
 /* Exported functions ---------------------------------------------------------*/
-ICM20602_Gyro** getICM20602_Gyro(void)
+ICM20602_Gyro* getICM20602_Gyro(void)
 {	
-	return pICM20602_Gyro_Array;
+	return &icm20602_Gyro;
 }
 uint8_t 	ICM20602_Gyro::rawDataRead(uint8_t address)
 {
@@ -172,6 +154,7 @@ void 		ICM20602_Gyro::init(void)
 		}
 	}
 	Delay_ms(MAX_STARTUP_FROM_SLEEP_MAX_TIME);
+	
 }
 void    ICM20602_Gyro::UpdateData(void)
 {
@@ -188,12 +171,8 @@ void    ICM20602_Gyro::UpdateData(void)
 	/*read temperature*/
 	multiRead(ICM20608G_TEMP_OUT_H,byte.byte_2,2);
 	tempValF=25.0f+static_cast<float>((byte.byte_2[0] << 8) | byte.byte_2[1])/ 326.8f;
-	//right shift temperature array
-	shiftRightData(tempSeq,ICM_OVER_SAMPLE_NUM);
-	//update data at leftmost end
-	tempSeq[0]=tempValF;
-	//make mean temSeq as the real temp
-	temp=meanData(tempSeq,ICM_OVER_SAMPLE_NUM);
+	//lowpass filter
+	temp=tempControl.LowPassFilter(tempValF);
 	
 	/*read raw datas of angular velocity*/
 	multiRead(ICM20608G_GYRO_XOUT_H,byte.byte_6,6);
@@ -227,6 +206,7 @@ void    ICM20602_Gyro::UpdateData(void)
 	//make mean rateSeq as the real rate
 	val=meanData(rateSeq,ICM_OVER_SAMPLE_NUM);
 	
+//	cout<<val.z<<'\t'<<temp<<endl;
 }
 
 void ICM20602_Gyro:: UpdateBais(void)
@@ -234,9 +214,6 @@ void ICM20602_Gyro:: UpdateBais(void)
 	
 }
 
-uint8_t ICM20602_Gyro:: getInstanceNum(void)
-{
-	return instanceNum;
-};
+
 
 /************************ (C) COPYRIGHT 2016 ACTION *****END OF FILE****/

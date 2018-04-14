@@ -27,6 +27,7 @@
 #include "pos.h"
 #include "ahrs.h"
 #include "user.h"
+#include "gpio.h"
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
@@ -44,15 +45,15 @@ static void running(void);
 int main(void)
 {	
 	NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
-	USART1_INIT();
+	USART3_DMA_Init(115200);
 	SPI1_Init();
 	SPI2_Init();
 	CS_Config();
-	delay_ms(500);
+	Led_Init();
 	//devices all initiate
 	deviceBase::devicesAllInit();
-	delay_ms(1000);
 	TIM_Init(TIM7,999,83,1,0);
+  pwm_init(999, 83);
   running(); 
 }
 /* Private  functions ---------------------------------------------------------*/
@@ -67,13 +68,8 @@ static void running(void)
 	while(DEVICE_IS_RUNNING)
 	{
 		while(!getTimeFlag());
-		//judeg getICM20602_Gyro() return null
-		if(getICM20602_Gyro())
-		{
-			for(int i=0;i<getICM20602_Gyro()[0]->getInstanceNum();i++)
-				getICM20602_Gyro()[i]->UpdateData();
-		}
-		UpdateEncoder();
+		/*temperature control*/
+		getICM20602_Gyro()->tempControl.temp_pid_ctr(getICM20602_Gyro()->temp);
 		updateAHRS();
 		calculatePos();
 		dataSend();

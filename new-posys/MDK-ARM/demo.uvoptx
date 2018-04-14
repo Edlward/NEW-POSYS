@@ -118,7 +118,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>樏?P躔v樏?</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -157,6 +156,11 @@
           <count>1</count>
           <WinNumber>1</WinNumber>
           <ItemText>ignore,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>endValue,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>

@@ -134,7 +134,7 @@ class BaisHandle
 			return re;
 		}
 		//reset index and rateBaisArray
-		dataType ResetBais(void)
+		void ResetBais(void)
 		{
 			for(index=0;index<BaisNum;index++)
 			{

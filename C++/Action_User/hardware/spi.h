@@ -60,11 +60,9 @@ uint8_t SPI_HalfDuplex_Read(SPI_TypeDef *SPIx,
 														GPIO_TypeDef* GPIOx,
 														uint16_t GPIO_Pin,
 														uint8_t address);
-void SPI_OnlyRead(SPI_TypeDef *SPIx,
-									GPIO_TypeDef* GPIOx,
-									uint16_t GPIO_Pin,
-									uint8_t* data,
-									uint8_t len);
+
+uint16_t SPI_ReadAS5045(uint8_t num);
+
 #ifdef __cplusplus
 }
 #endif

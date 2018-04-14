@@ -39,9 +39,7 @@ void TIM7_IRQHandler(void)
 		
 		if(getICM20602_Gyro())
 		{
-			//update gyro data and temperature
-			for(int i=0;i<getICM20602_Gyro()[0]->getInstanceNum();i++)
-				getICM20602_Gyro()[i]->UpdateData();
+			getICM20602_Gyro()->UpdateData();
 		}
 		
 //		if(timeCount%(25/ADXRS453_UPDATE_FREQ)==2)

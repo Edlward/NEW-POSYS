@@ -20,14 +20,34 @@
 extern AllPara_t allPara;
 
 extern double lowpass;
+
+uint8_t getParity(float val)
+{
+		/*被校验数*/
+	uint32_t *pParity = (uint32_t *)(&val);
+	uint32_t parity=*pParity;
+	/*计算来的奇偶校验位*/
+	uint8_t evebParityCal = 0;
+
+	/*计算奇偶校验结果*/
+	while (parity)
+	{
+		evebParityCal =!evebParityCal;
+		parity = parity & (parity - 1);
+	}
+	return evebParityCal;
+}
+
 void AT_CMD_Judge(void);
 void SetParaDefault(void);
 void DataSend(void)
 {
 	int i;
 	uint8_t tdata[DMA_SEND_SIZE];
+	uint32_t parity=0;
   union{
 		float   val;
+		uint32_t   parity;
 		uint8_t data[4];
 	}valSend;
 	
@@ -37,61 +57,49 @@ void DataSend(void)
   tdata[DMA_SEND_SIZE-1]=0x0d;
 	#ifdef AUTOCAR 
 	
-	valSend.val=(float)allPara.sDta.Result_Angle[2];
-  memcpy(tdata+2,valSend.data,4);
+	float values[6]={0.f};
 	
-	valSend.val=(float)allPara.sDta.vellx;
-  memcpy(tdata+6,valSend.data,4);
+	values[0]=(float)allPara.sDta.Result_Angle[2];
+	values[1]=(float)allPara.sDta.GYRO_Bais[2];
+	values[1]=(float)allPara.kalmanZ;
+	values[2]=(float)allPara.sDta.posx;
+	values[3]=(float)allPara.sDta.posy;
+	values[4]=(float)allPara.GYRO_Real[2];
+	values[5]=(float)allPara.sDta.Result_Angle[2];
 	
-	valSend.val=(float)allPara.sDta.velly;
-  memcpy(tdata+10,valSend.data,4);
+	for(int i=0;i<6;i++)
+	{
+		valSend.val=values[i];
+		memcpy(tdata+2+i*4,valSend.data,4);
+		parity|=getParity(values[i])<<i;
+	}
 	
-	valSend.val=(float)allPara.sDta.posx;
-  memcpy(tdata+14,valSend.data,4);
-	 
-	valSend.val=(float)allPara.sDta.posy;
-  memcpy(tdata+18,valSend.data,4);
-	 
-	valSend.val=(float)allPara.GYRO_Real[2];
-  memcpy(tdata+22,valSend.data,4);
-	
-	valSend.val=(float)allPara.sDta.GYRO_Bais[2];
+	valSend.parity=parity;
   memcpy(tdata+26,valSend.data,4);
-	 
-	valSend.val=allPara.kalmanZ;
-  memcpy(tdata+30,valSend.data,4);
+	
 	#else
-	valSend.val=(float)allPara.sDta.Result_Angle[2];
-  memcpy(tdata+2,valSend.data,4);
 	
-	valSend.val=(float)allPara.sDta.vellx;
-  memcpy(tdata+6,valSend.data,4);
 	
-	valSend.val=(float)allPara.sDta.velly;
-  memcpy(tdata+10,valSend.data,4);
+	float values[6]={0.f};
 	
-//	valSend.val=(float)allPara.sDta.GYRO_Bais[2];
-//  memcpy(tdata+10,valSend.data,4);
-
-	valSend.val=(float)allPara.sDta.posx;
-  memcpy(tdata+14,valSend.data,4);
-	 
-	valSend.val=(float)allPara.sDta.posy;
-  memcpy(tdata+18,valSend.data,4);
-	 
-	valSend.val=(float)allPara.GYRO_Real[2];
-  memcpy(tdata+22,valSend.data,4);
+	values[0]=(float)allPara.sDta.Result_Angle[2];
+	values[1]=(float)allPara.sDta.codeData[0];
+	values[2]=(float)allPara.sDta.codeData[1];
+	values[2]=(float)allPara.sDta.posx;
+	values[3]=(float)allPara.sDta.posy;
+	values[4]=(float)allPara.GYRO_Real[2];
+	values[5]=(float)allPara.sDta.Result_Angle[2];
 	
-//	valSend.val=(float)allPara.sDta.GYRO_Aver[1];
-//  memcpy(tdata+26,valSend.data,4);
-//	 
-//	valSend.val=(float)allPara.sDta.GYRO_Aver[2];
-//  memcpy(tdata+30,valSend.data,4);
-	valSend.val=(float)allPara.sDta.codeData[0];
+	for(int i=0;i<6;i++)
+	{
+		valSend.val=values[i];
+		memcpy(tdata+2+i*4,valSend.data,4);
+		parity|=getParity(values[i])<<i;
+	}
+	
+	valSend.parity=parity;
   memcpy(tdata+26,valSend.data,4);
-	 
-	valSend.val=(float)allPara.sDta.codeData[1];
-  memcpy(tdata+30,valSend.data,4);
+
 	#endif
 
 //	

@@ -432,11 +432,6 @@
           <GroupName>hardware</GroupName>
           <Files>
             <File>
-              <FileName>flash.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Action_User\hardware\flash.c</FilePath>
-            </File>
-            <File>
               <FileName>spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Action_User\hardware\spi.c</FilePath>

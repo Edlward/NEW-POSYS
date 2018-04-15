@@ -213,7 +213,7 @@ void icm_update_temp(int gyroNum)
 	switch(gyroNum)
 	{
 		case 0:
-			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_1,ICM20608G_TEMP_OUT_H,byte,2);
+			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_TEMP_OUT_H,byte,2);
 		break;
 		case 1:
 			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_2,ICM20608G_TEMP_OUT_H,byte,2);

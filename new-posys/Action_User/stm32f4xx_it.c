@@ -65,7 +65,8 @@ void TIM2_IRQHandler(void)
 			allPara.cpuUsage++;
     }
 		/*读取角速度，温度的数据，并进行累加*/
-		for(gyro=0;gyro<GYRO_NUMBER;gyro++)
+		gyro=0;
+//		for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 		{
       icm_update_gyro_rate(gyro);
 			icm_update_acc(gyro);
@@ -111,7 +112,9 @@ void TIM2_IRQHandler(void)
 			#endif
 			readOrder++;
       timeCnt=0;
-			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
+
+			gyro=0;
+	//		for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 			{
 				allPara.GYRO_Temperature[gyro]=temp_sum[gyro]/5.0f;
 				for(axis=0;axis<AXIS_NUMBER;axis++)
@@ -122,8 +125,13 @@ void TIM2_IRQHandler(void)
 				}
 			}
 			
-			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
+			gyro=0;
+		USART_OUT_F(allPara.GYRO_Temperature[0]);
+	//		for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 				allPara.GYRO_Temperature[gyro]=LowPassFilter(allPara.GYRO_Temperature[gyro],gyro)/100.f;
+		USART_OUT_F(allPara.GYRO_Temperature[0]);
+		USART_OUT_F(allPara.sDta.GYRO_TemperatureAim[0]);
+			USART_Enter();
 			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 			{
 				temp_sum[gyro]=0.f;
@@ -135,7 +143,8 @@ void TIM2_IRQHandler(void)
 			}
 			for(axis=0;axis<GYRO_NUMBER;axis++)
 			{
-				for(gyro=0;gyro<AXIS_NUMBER;gyro++)
+				gyro=0;
+		//		for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 				{
 					if(fabs(allPara.GYRORemoveDrift[gyro][axis])<0.01)
 					{
@@ -150,7 +159,8 @@ void TIM2_IRQHandler(void)
 			for(axis=0;axis<GYRO_NUMBER;axis++)
 			{
 				double sum=percentages[axis][0]+percentages[axis][1]+percentages[axis][2];
-				for(gyro=0;gyro<AXIS_NUMBER;gyro++)
+				gyro=0;
+		//		for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 				{
 					if(sum>0.001)
 					{

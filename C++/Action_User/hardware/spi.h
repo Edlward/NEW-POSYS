@@ -18,7 +18,6 @@ extern "C"
 void SPI1_Init(void);	
 void SPI2_Init(void);
 void CS_Config(void);
-void SPI3_Init(void);
 
 void SPI_Write(	 SPI_TypeDef *SPI,
 				 GPIO_TypeDef *GPIOx,

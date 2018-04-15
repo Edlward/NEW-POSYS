@@ -29,12 +29,12 @@ void  wait(uint32_t n)
 static uint16_t timeCount=0;
 static uint8_t timeFlag=0;
 
-void TIM7_IRQHandler(void)
+void TIM2_IRQHandler(void)
 {
 
-	if(TIM_GetITStatus(TIM7, TIM_IT_Update)==SET)
+	if(TIM_GetITStatus(TIM2, TIM_IT_Update)==SET)
   {	
-		TIM_ClearITPendingBit(TIM7, TIM_IT_Update);
+		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
 		timeCount++;
 		
 		if(getICM20602_Gyro())
@@ -220,21 +220,21 @@ void TIM_Init(TIM_TypeDef * TIMx, uint16_t arr, uint16_t psr,uint16_t prepri,uin
 		default: break;
 	}
 	
-	//֨ʱǷTIMxԵʼۯ
-	TIMx_TimeBaseStructure.TIM_Period=arr;						//ʨ׃ؔ֯טת՘݄զǷלǚքֵ
-	TIMx_TimeBaseStructure.TIM_Prescaler=psr;        		    //ʨ׃ʱדؖƵԽ˽քԤؖƵֵ
-	TIMx_TimeBaseStructure.TIM_ClockDivision=TIM_CKD_DIV1;      //ʨ׃ʱדؖٮ
-	TIMx_TimeBaseStructure.TIM_CounterMode=TIM_CounterMode_Up;  //TIMвʏ݆˽
-	TIM_TimeBaseInit(TIMx, &TIMx_TimeBaseStructure);            //ԵʼۯTIM1
-	TIM_ClearITPendingBit(TIMx, TIM_IT_Update);                 //ԵʼۯʱҘѫݫӧԶא׏ȥ0,Ҙѫ՚ߪӧԶא׏֮ǰ
-	TIM_ITConfig(TIMx,TIM_IT_Update,ENABLE);                    //ՊѭӧԶא׏
-	//א׏ԅЈܶNVICʨ׃
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=prepri;		//ȀռԅЈܶ0
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority=subpri;            //ՓԅЈܶ3
-	NVIC_InitStructure.NVIC_IRQChannelCmd=ENABLE;               //ʹŜIRQͨր
-	NVIC_Init(&NVIC_InitStructure);                             //ԵʼۯNVIC݄զǷ
+
+	TIMx_TimeBaseStructure.TIM_Period=arr;					
+	TIMx_TimeBaseStructure.TIM_Prescaler=psr;        		    
+	TIMx_TimeBaseStructure.TIM_ClockDivision=TIM_CKD_DIV1;   
+	TIMx_TimeBaseStructure.TIM_CounterMode=TIM_CounterMode_Up; 
+	TIM_TimeBaseInit(TIMx, &TIMx_TimeBaseStructure);         
+	TIM_ClearITPendingBit(TIMx, TIM_IT_Update);              
+	TIM_ITConfig(TIMx,TIM_IT_Update,ENABLE);               
+
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=prepri;	
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority=subpri;      
+	NVIC_InitStructure.NVIC_IRQChannelCmd=ENABLE;            
+	NVIC_Init(&NVIC_InitStructure);                          
 	
-	TIM_Cmd(TIMx,ENABLE);                                       //ʹŜTIM1
+	TIM_Cmd(TIMx,ENABLE);                           
 }
 
 

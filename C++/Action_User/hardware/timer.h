@@ -29,7 +29,7 @@ void  wait(uint32_t n);
 
 void TIM_Init(TIM_TypeDef * TIMx, uint16_t arr, uint16_t psr,uint16_t prepri,uint16_t subpri); 
 
-void TIM7_IRQHandler(void);
+void TIM2_IRQHandler(void);
 uint8_t getTimeFlag(void);	
 void Delay_us(uint32_t nTime);
 void Delay_ms(uint32_t nTime);

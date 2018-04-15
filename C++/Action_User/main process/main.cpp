@@ -52,7 +52,7 @@ int main(void)
 	Led_Init();
 	//devices all initiate
 	deviceBase::devicesAllInit();
-	TIM_Init(TIM7,999,83,1,0);
+	TIM_Init(TIM2,999,83,1,0);
   pwm_init(999, 83);
   running(); 
 }

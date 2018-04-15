@@ -27,10 +27,6 @@
 
 static const int16_t encoderRange=4096;
 
-static const float wheelAngle[2]={45.0f,-45.2076f};
-
-static const float wheelDiameter[2]={50.38f,50.22f};
-
 static uint16_t encoder[2];
 
 static float pos[2]={0,0};
@@ -68,10 +64,31 @@ void encoderMagFix(threeAxis& data)
 
 void calculatePos(void)
 {
-	float eulerAngle=getEulerAngle().z;
+	double eulerAngle=getEulerAngle().z;
+	static double last_ang=0.0;
+	
+		/*-180µ½180*/
+	if(eulerAngle-last_ang>180.0)
+		eulerAngle=(eulerAngle-360.0+last_ang)/2.0;
+	if(eulerAngle-last_ang<-180.0)
+		eulerAngle=(eulerAngle+360.0+last_ang)/2.0;
+	
+	if(eulerAngle>180.0)
+		eulerAngle-=360.0;
+	else if(eulerAngle<-180.0)
+		eulerAngle+=360.0;
+	
+	last_ang=eulerAngle;
+	
+	double real[2]={0.0,0.0};
+	double delPos[2]={0.0,0.0};
+	
 	uint16_t encoder[2]={getEncoder(0),getEncoder(1)};
+	
 	static uint16_t encoderLast[2]={encoder[0],encoder[1]};
+	
 	int32_t vell[2]={encoder[0]-encoderLast[0],encoder[1]-encoderLast[1]};
+	
 	encoderLast[0]=encoder[0];
 	encoderLast[1]=encoder[1];
 	
@@ -81,14 +98,14 @@ void calculatePos(void)
 	vell[1]-=(vell[1]>(encoderRange/2))*encoderRange;
 	vell[1]+=(vell[1]<(-(encoderRange/2)))*encoderRange;
 	
-	float sinVal[2];
-	float cosVal[2];
+	real[0]=1.00001901160992*vell[0]*0.038622517085838-0.006166326400784*vell[1]*0.038651337725656;
+	real[1]=vell[1]*0.038651337725656;
 	
-	arm_sin_cos_f32(wheelAngle[0]-eulerAngle,sinVal	,cosVal  );
-	arm_sin_cos_f32(wheelAngle[1]-eulerAngle,sinVal+1,cosVal+1);
-	
-	pos[0]+=(vell[0]*cosVal[0]*wheelDiameter[0]+vell[1]*cosVal[1]*wheelDiameter[1])/encoderRange*PI;
-	pos[1]+=(vell[0]*sinVal[0]*wheelDiameter[0]+vell[1]*sinVal[1]*wheelDiameter[1])/encoderRange*PI;
+	delPos[0]=(sin(eulerAngle*0.017453292519943)*real[1]+cos(eulerAngle*0.017453292519943)*real[0]);
+	delPos[1]=(cos(eulerAngle*0.017453292519943)*real[1]-sin(eulerAngle*0.017453292519943)*real[0]);
+
+	pos[0]+=delPos[0];
+	pos[1]+=delPos[1];
 }
 float* getPos(void)
 {

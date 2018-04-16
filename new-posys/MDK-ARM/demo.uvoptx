@@ -118,7 +118,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>@踢!P鮞w@踢!</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -198,9 +197,9 @@
         <Bp>
           <Number>3</Number>
           <Type>0</Type>
-          <LineNumber>318</LineNumber>
+          <LineNumber>320</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134223826</Address>
+          <Address>134223882</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -209,23 +208,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\Action_User\stm32f4xx_it.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\demo\../Action_User/stm32f4xx_it.c\318</Expression>
-        </Bp>
-        <Bp>
-          <Number>4</Number>
-          <Type>0</Type>
-          <LineNumber>320</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\Action_User\stm32f4xx_it.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\demo\../Action_User/stm32f4xx_it.c\320</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>

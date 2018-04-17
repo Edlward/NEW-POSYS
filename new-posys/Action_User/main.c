@@ -34,9 +34,9 @@ void init(void)
   CS_Config();
 	
 	#ifdef TEST_SUMMER
-	USART1_Init(921600);
+	usart_Init(921600);
 	#else
-	USART1_Init(115200);
+	usart_Init(115200);
 	#endif
 	
 //  Flash_Init();

@@ -44,7 +44,14 @@
 /* Exported types ------------------------------------------------------------*/
 
 //#define ADXRS453Z
-
+//#define NEW_BOARD
+#ifdef NEW_BOARD
+	#define GPIO_GYRO	GPIOA
+	#define GPIO_PIN	GPIO_Pin_4
+#else
+	#define GPIO_GYRO	GPIOA
+	#define GPIO_PIN	GPIO_Pin_2
+#endif
 
 /* Exported constants --------------------------------------------------------*/
 
@@ -71,7 +78,7 @@
 #define UINT8_SIZE											1
 
 
-#define GYRO_NUMBER    									3
+#define GYRO_NUMBER    									1
 #define AXIS_NUMBER    									3
 #define TEMP_SAMPLE_NUMBER    					5
 

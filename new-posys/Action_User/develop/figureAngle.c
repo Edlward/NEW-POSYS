@@ -86,7 +86,7 @@ int RoughHandle(void)
 //			USART_OUT_F(allPara.sDta.GYRO_Aver[axis]);
 //			USART_OUT_F(mean[axis]);
 //			USART_OUT_F(stdCr[axis]);
-//			USART_OUT(USART1,"NNNNNN");
+//			USART_OUT(SEND_USART,"NNNNNN");
 //			USART_Enter();
 		}
 		#endif
@@ -475,13 +475,13 @@ float safe_asin(float v)
 		/*因为经历中断函数入栈之后，堆栈指针会减小0x10，所以平移回来（可能不具有普遍性）*/
 		r_sp = r_sp+0x10;
 		/*串口发数通知*/
-		USART_OUT(USART1,"sinFault %d",error);
+		USART_OUT(SEND_USART,"sinFault %d",error);
 		char sPoint[2]={0};
-		USART_OUT(USART1,"%s","0x");
+		USART_OUT(SEND_USART,"%s","0x");
 		/*获取出现异常时程序的地址*/
 		for(int i=3;i>=-28;i--){
 			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
-			USART_OUT(USART1,"%s",sPoint);
+			USART_OUT(SEND_USART,"%s",sPoint);
 			if(i%4==0)
 				USART_Enter();
 		}
@@ -535,13 +535,13 @@ double safe_atan2(double x,double y)
 		/*因为经历中断函数入栈之后，堆栈指针会减小0x10，所以平移回来（可能不具有普遍性）*/
 		r_sp = r_sp+0x10;
 		/*串口发数通知*/
-		USART_OUT(USART1,"tanFault %d",error);
+		USART_OUT(SEND_USART,"tanFault %d",error);
 		char sPoint[2]={0};
-		USART_OUT(USART1,"%s","0x");
+		USART_OUT(SEND_USART,"%s","0x");
 		/*获取出现异常时程序的地址*/
 		for(int i=3;i>=-28;i--){
 			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
-			USART_OUT(USART1,"%s",sPoint);
+			USART_OUT(SEND_USART,"%s",sPoint);
 			if(i%4==0)
 				USART_Enter();
 		}

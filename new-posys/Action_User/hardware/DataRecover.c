@@ -174,7 +174,7 @@ void FindResetTime(void)
     STMFLASH_Read(&flashdata,allPara.resetTime);
     if(allPara.resetTime>=500)
     {
-      //USART_OUT(USART1,"extend!\r\n");
+      //USART_OUT(SEND_USART,"extend!\r\n");
       return;
     }
     

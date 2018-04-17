@@ -14,6 +14,7 @@
 #include "config.h"
 #include "DataRecover.h"
 #include "iwdg.h"
+#include "gpio.h"
 AllPara_t allPara={0};
 
 void init(void)
@@ -31,6 +32,9 @@ void init(void)
 	ICM_SPIInit();
 	SPI2_Init();
 
+	#ifdef NEW_BOARD
+	Led_Init();
+	#endif
   CS_Config();
 	
 	#ifdef TEST_SUMMER

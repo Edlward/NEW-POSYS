@@ -74,12 +74,15 @@ void temp_pid_ctr(int gyro,float val_ex)
 {
   static float err[GYRO_NUMBER];
   static float integral[GYRO_NUMBER];
-  static float differential[GYRO_NUMBER];
-  static float err_last[GYRO_NUMBER];
 //	static int justforfirst[3]={1,1,1};
 	static int count[3]={0};
+	#ifdef NEW_BOARD
+  float K_p[GYRO_NUMBER] = { 450.0f };
+  float K_i[GYRO_NUMBER] = { 0.4f };
+	#else
   float K_p[GYRO_NUMBER] = { 10600.0f };
   float K_i[GYRO_NUMBER] = { 3.5f };
+	#endif
   float K_d[GYRO_NUMBER] = { 0.0f };
   
   static double ctr[GYRO_NUMBER];
@@ -88,12 +91,8 @@ void temp_pid_ctr(int gyro,float val_ex)
 	err[gyro]=val_ex-allPara.GYRO_Temperature[gyro];
 	/*积分*/
 	integral[gyro]=integral[gyro]+err[gyro];
-	/*微分量*/
-	differential[gyro]=err[gyro]-err_last[gyro];
-	/*上一次的误差*/
-	err_last[gyro]=err[gyro];
 
-	ctr[gyro]=K_p[gyro]*err[gyro]+K_i[gyro]*integral[gyro]+K_d[gyro]*differential[gyro];
+	ctr[gyro]=K_p[gyro]*err[gyro]+K_i[gyro]*integral[gyro];
 			
 	/*调节上限*/
 	if(ctr[gyro]>100)

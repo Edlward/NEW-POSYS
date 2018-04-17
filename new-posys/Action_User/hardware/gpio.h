@@ -3,7 +3,7 @@
 #define __GPIO_H
 
 #include "stm32f4xx_gpio.h"
-
+#include "config.h"
 
  
 void GPIO_Init_Pins(GPIO_TypeDef * GPIOx,
@@ -12,4 +12,8 @@ void GPIO_Init_Pins(GPIO_TypeDef * GPIOx,
 
 void KeyInit(void);
 	
+#ifdef NEW_BOARD
+void Led_Init(void);
+#endif
+
 #endif

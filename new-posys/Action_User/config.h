@@ -19,6 +19,8 @@
 #ifndef __CONFIG_H
 #define __CONFIG_H
 
+//#define ADXRS453Z
+#define NEW_BOARD
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -43,8 +45,7 @@
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 
-//#define ADXRS453Z
-#define NEW_BOARD
+
 #ifdef NEW_BOARD
 	#define GPIO_GYRO	GPIOA
 	#define GPIO_PIN	GPIO_Pin_4

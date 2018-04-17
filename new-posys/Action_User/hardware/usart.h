@@ -2,7 +2,7 @@
 #define __USART_H
 
 #include "stm32f4xx_usart.h"
-
+#include "config.h"
 #define DMA_SEND_SIZE   36
 
 #ifdef NEW_BOARD

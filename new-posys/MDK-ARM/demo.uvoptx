@@ -145,56 +145,7 @@
           <Name></Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint>
-        <Bp>
-          <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>260</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134220466</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Action_User\baseConfig\icm_20608_g.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\demo\../Action_User/baseConfig/icm_20608_g.c\260</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>267</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134220598</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Action_User\baseConfig\icm_20608_g.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\demo\../Action_User/baseConfig/icm_20608_g.c\267</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>271</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134220654</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Action_User\baseConfig\icm_20608_g.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\demo\../Action_User/baseConfig/icm_20608_g.c\271</Expression>
-        </Bp>
-      </Breakpoint>
+      <Breakpoint/>
       <WatchWindow1>
         <Ww>
           <count>0</count>
@@ -205,6 +156,11 @@
           <count>1</count>
           <WinNumber>1</WinNumber>
           <ItemText>ignore,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>SEND_USART</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>

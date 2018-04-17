@@ -10,6 +10,7 @@
 #include "gpio.h"
 #include "stm32f4xx_rcc.h"
 #include "stm32f4xx_gpio.h"
+#include "config.h"
 /**
 * @brief  set the pins of a specific GPIO group to be input or output driver pin.
 * @param  GPIOx: where x can be A-I.
@@ -90,5 +91,26 @@ void GPIO_Init_Pins(GPIO_TypeDef * GPIOx,
   GPIO_Init(GPIOx,&GPIO_InitStructure);	
 }
 
+#ifdef NEW_BOARD
+
+void Led_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStructure;
+  
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE); 
+  
+  /* 配置片选引�?------------------------ */
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2|GPIO_Pin_3;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+  GPIO_Init(GPIOA, &GPIO_InitStructure);                 //ICM20608G
+  
+  /* Deselect : Chip Select high ---------*/
+  GPIO_ResetBits(GPIOA, GPIO_Pin_3);
+  GPIO_SetBits(GPIOA, GPIO_Pin_2);
+}
+#endif
 
 

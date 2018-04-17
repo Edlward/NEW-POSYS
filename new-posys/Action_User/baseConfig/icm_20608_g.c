@@ -260,7 +260,7 @@ int CheckNan(void)
 		return 1;
 	}
 	
-	for(int i=0;i<3;i++)
+	for(int i=0;i<GYRO_NUMBER;i++)
 	{
 		if(allPara.sDta.Result_Angle[i]>200.0||allPara.sDta.Result_Angle[i]<-200.0)
 		{
@@ -272,7 +272,7 @@ int CheckNan(void)
 		}
 	}
 	
-	for(int i=0;i<3;i++)
+	for(int i=0;i<GYRO_NUMBER;i++)
 		for(int j=0;j<3;j++)
 		{
 			if(allPara.GYROWithoutRemoveDrift[i][j]==0.0)

@@ -44,7 +44,7 @@
 /* Exported types ------------------------------------------------------------*/
 
 //#define ADXRS453Z
-//#define NEW_BOARD
+#define NEW_BOARD
 #ifdef NEW_BOARD
 	#define GPIO_GYRO	GPIOA
 	#define GPIO_PIN	GPIO_Pin_4
@@ -57,7 +57,7 @@
 
 //#define TEST_SUMMER
 
-//#define AUTOCAR
+#define AUTOCAR
 //#define TESTCAR
 /* Flash Read Protection */
 //#define FLASH_ENCRYP

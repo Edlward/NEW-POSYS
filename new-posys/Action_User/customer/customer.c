@@ -111,16 +111,16 @@ void DataSend(void)
 //	}
 //	USART_OUT_F(allPara.sDta.GYRO_Aver[2]);
 //	USART_OUT_F(lowpass);
-	USART_OUT_F(allPara.sDta.Result_Angle[2]);
-	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);
-	USART_OUT_F(allPara.GYRO_Real[2]);
-	USART_OUT_F(allPara.sDta.posx);
-	USART_OUT_F(allPara.sDta.posy);
-	USART_OUT_F(allPara.sDta.vell[0]);
-	USART_OUT_F(allPara.sDta.vell[1]);
+//	USART_OUT_F(allPara.sDta.Result_Angle[2]);
+//	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);
+//	USART_OUT_F(allPara.GYRO_Real[2]);
+//	USART_OUT_F(allPara.sDta.posx);
+//	USART_OUT_F(allPara.sDta.posy);
+//	USART_OUT_F(allPara.sDta.vell[0]);
+//	USART_OUT_F(allPara.sDta.vell[1]);
 //	USART_OUT_F(allPara.isStatic);
 	//USART_OUT(SEND_USART,"%d\t%d\t%d",allPara.sDta.codeData[0],allPara.sDta.codeData[1],allPara.cpuUsage);
-	USART_Enter();
+//	USART_Enter();
 	#else
 	
 	for(i=0;i<DMA_SEND_SIZE;i++)

@@ -19,7 +19,7 @@ AllPara_t allPara={0};
 void init(void)
 {
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
-	
+
   TIM_Init(TIM7,99,83,0,0);				
 	//StartCount();
 	SoftWareReset();

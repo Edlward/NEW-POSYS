@@ -68,11 +68,11 @@ void TIM2_IRQHandler(void)
 		for(gyro=0;gyro<GYRO_NUMBER;gyro++)
 		{
       icm_update_gyro_rate(gyro);
-			icm_update_acc(gyro);
+//			icm_update_acc(gyro);
 			icm_update_temp(gyro);
 			icm_read_temp(&(temp_temp[gyro]));
       icm_read_gyro_rate(gyr_temp[gyro]);
-			icm_read_accel_acc(acc_temp[gyro]);
+//			icm_read_accel_acc(acc_temp[gyro]);
 			for(axis=0;axis<AXIS_NUMBER;axis++)
 			{
 				gyro_sum[gyro][axis]=gyro_sum[gyro][axis]+gyr_temp[gyro][axis];

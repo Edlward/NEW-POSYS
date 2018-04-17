@@ -70,8 +70,8 @@ void SPI2_Init(void)
   SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_RxOnly;				    /* 双线双向全双工									*/
   SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* 主SPI													*/
 	SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;													/* SPI接收8位帧结构								*/
-  SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;																/* 串行同步时钟的空闲状态为低电平	*/
-  SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;															/* 第二个跳变沿数据被采样					*/
+  SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;																/* 串行同步时钟的空闲状态为低电平	*/
+  SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;															/* 第二个跳变沿数据被采样					*/
   SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS由软件控制									*/
   SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_128;				/* 预分频	168M/64	*/
   SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/* 数据从MSB位开始								*/
@@ -258,7 +258,7 @@ uint32_t SPI_ReadAS5045All(uint8_t num)
 	
 	delay_us(15);
 	
-  AS5045_Val = (((uint32_t)buf[0]<<16) | ((uint32_t)buf[1]<<8) | ((uint32_t)buf[2]));
+  AS5045_Val = (((uint32_t)buf[0]<<17) | ((uint32_t)buf[1]<<9) | ((uint32_t)buf[2]<<1) | (uint32_t)0);
 	
 	return AS5045_Val;
 }
@@ -266,7 +266,6 @@ uint32_t SPI_ReadAS5045All(uint8_t num)
 uint16_t SPI_ReadAS5045_Parity(uint8_t num)
 {
 	uint32_t  AbsEncData  = SPI_ReadAS5045All(num); //SPI读到的编码器的数据
-	/*编码器数据*/
 	/*编码器数据*/
 	int16_t   tmpAbs      = (AbsEncData >> 12) & 0X0FFF;
 	/*发送来的奇偶校验位*/

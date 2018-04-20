@@ -386,7 +386,7 @@ void CS_Config(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
   
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE); 
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE); 
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);	
   
   /* ≈‰÷√∆¨—°“˝Ω≈------------------------- */

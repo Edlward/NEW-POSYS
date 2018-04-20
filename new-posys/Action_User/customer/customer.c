@@ -109,6 +109,7 @@ void DataSend(void)
 //		USART_OUT_F(allPara.sDta.GYRO_TemperatureAim[i]);
 //		USART_OUT_F(allPara.GYRO_Temperature[i]);
 //	}
+USART_OUT_F(allPara.GYRO_Temperature[0]);
 for(int i=0;i<3;i++)
 USART_OUT_F(allPara.sDta.GYRO_Aver[i]);
 for(int i=0;i<3;i++)

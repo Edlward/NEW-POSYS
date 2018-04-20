@@ -13,7 +13,7 @@
 
 static uint8_t dmaSendBuffer[DMA_SEND_SIZE];
 
-#ifdef NEW_BOARD
+#ifdef 0
 void USART_SendDataToDMA(uint8_t data)
 {
 	static uint8_t tempBuffer[DMA_SEND_SIZE];

@@ -3,10 +3,10 @@
 
 #include "stm32f4xx_usart.h"
 #include "config.h"
-#define DMA_SEND_SIZE   36
+#define DMA_SEND_SIZE   28
 
 #ifdef NEW_BOARD
-#define SEND_USART	USART3
+#define SEND_USART	USART1
 #else
 #define SEND_USART	USART1
 #endif

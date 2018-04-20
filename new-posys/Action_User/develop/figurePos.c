@@ -100,9 +100,11 @@ void calculatePos(void)
 
 		delPos[0]=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
 		delPos[1]=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
-
-		allPara.sDta.posx+=delPos[0];
-		allPara.sDta.posy+=delPos[1];
+		static double posx,posy=0.0;
+		posx+=delPos[0];
+		posy+=delPos[1];
+		allPara.sDta.posx=posx*0.707106781186547-posy*0.707106781186547;
+		allPara.sDta.posy=posx*0.707106781186547+posy*0.707106781186547;
 	
 	/*获得定位系统x，y方向上的速度*/
 	allPara.sDta.vellx=delPos[0]*200.f;

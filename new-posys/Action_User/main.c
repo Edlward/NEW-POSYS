@@ -20,7 +20,7 @@ AllPara_t allPara={0};
 void init(void)
 {
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
-
+	
   TIM_Init(TIM7,99,83,0,0);				
 	//StartCount();
 	SoftWareReset();
@@ -47,7 +47,6 @@ void init(void)
 	
 	for(int gyro;gyro<GYRO_NUMBER;gyro++)
 	{
-
 		if(!allPara.resetFlag)
 			MEMS_Configure(gyro);
 		ICM_HeatingPower(gyro,0);
@@ -67,6 +66,7 @@ void init(void)
 	}
 	else
 	{
+		SetFlag(HEATING);
 		SetFlag(START_COMPETE);
 	}
 	
@@ -124,7 +124,7 @@ int main(void)
 					if((allPara.sDta.flag&START_COMPETE))
 					{
 						updateAngle();
-						calculatePos();
+						calculatePos();                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 					}
 					#ifndef TEST_SUMMER
 					DataSend();

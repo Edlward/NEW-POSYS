@@ -178,10 +178,10 @@ void Quaternion_to_Euler(const double quaternion[4],float Rad[3] )
   q1=q1/sum;
   q2=q2/sum;
   q3=q3/sum;
-  
-  Rad[0]= safe_asin(2.0f*(q2*q3 + q0*q1));
-  Rad[1]= atan2(-2 * q1 * q3 + 2 * q0 * q2,  q3*q3 - q2 * q2 - q1 * q1 +q0 * q0);
-  Rad[2]=atan2(2*q1*q2-2*q0*q3,q2*q2-q3*q3+q0*q0-q1*q1);
+	
+  Rad[0]= atan2(-2 * q0 * q1 + 2 * q2 * q3,  q3*q3 - q2 * q2 - q1 * q1 +q0 * q0);
+  Rad[1]= safe_asin(2.0f*(-q1*q3 + q0*q2));
+  Rad[2]=atan2(2*q1*q2+2*q0*q3,-q2*q2-q3*q3+q0*q0+q1*q1);
 }
 
 /**
@@ -189,12 +189,13 @@ void Quaternion_to_Euler(const double quaternion[4],float Rad[3] )
 * @param  quaternion: 需要转换的欧拉角
 * @retval 四元数对应的四元数
 */
+
 void Euler_to_Quaternion(const float Rad[3],double quaternion[4])
 {
 	quaternion[0]=arm_cos_f32(Rad[0]/2)*arm_cos_f32(Rad[1]/2)*arm_cos_f32(Rad[2]/2)+arm_sin_f32(Rad[0]/2)*arm_sin_f32(Rad[1]/2)*arm_sin_f32(Rad[2]/2);
 	quaternion[1]=arm_sin_f32(Rad[0]/2)*arm_cos_f32(Rad[1]/2)*arm_cos_f32(Rad[2]/2)-arm_cos_f32(Rad[0]/2)*arm_sin_f32(Rad[1]/2)*arm_sin_f32(Rad[2]/2);
 	quaternion[2]=arm_cos_f32(Rad[0]/2)*arm_sin_f32(Rad[1]/2)*arm_cos_f32(Rad[2]/2)+arm_sin_f32(Rad[0]/2)*arm_cos_f32(Rad[1]/2)*arm_sin_f32(Rad[2]/2);
-	quaternion[3]=-arm_cos_f32(Rad[0]/2)*arm_cos_f32(Rad[1]/2)*arm_sin_f32(Rad[2]/2)-arm_sin_f32(Rad[0]/2)*arm_sin_f32(Rad[1]/2)*arm_cos_f32(Rad[2]/2);
+	quaternion[3]=arm_cos_f32(Rad[0]/2)*arm_cos_f32(Rad[1]/2)*arm_sin_f32(Rad[2]/2)-arm_sin_f32(Rad[0]/2)*arm_sin_f32(Rad[1]/2)*arm_cos_f32(Rad[2]/2);
 }
 
 void getJacobi(double dif_quarterion[4],const double quaternion[4],const float data[3]){

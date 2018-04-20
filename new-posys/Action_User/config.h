@@ -20,7 +20,8 @@
 #define __CONFIG_H
 
 //#define ADXRS453Z
-#define NEW_BOARD
+//#define NEW_BOARD
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -208,14 +209,8 @@ typedef struct{
 	/*陀螺仪原始数据*/
 	float ACC_Raw[GYRO_NUMBER][AXIS_NUMBER];
 	
-	float ACC_Aver[GYRO_NUMBER][AXIS_NUMBER];
-	
-	float ACC_InitSum;
-	
 	/*加速度计的角度 只有X Y轴角度*/
 	float ACC_Angle[GYRO_NUMBER][AXIS_NUMBER-1];
-	
-	float ACC_RealAngle[AXIS_NUMBER-1];
 	
 	/*陀螺仪温度*/
 	float GYRO_Temperature[GYRO_NUMBER];

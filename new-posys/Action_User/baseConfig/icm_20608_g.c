@@ -18,8 +18,8 @@ void MEMS_Configure(int gyroNum)
     ICM20608G_PWR_MGMT_1,0,/*10011 Wake up chip from sleep mode,enable temperature sensor,select pll	*/
     ICM20608G_GYRO_CONFIG,0,/* gyro range:±500dps, Used to bypass DLPF				*/
 		#ifdef	AUTOCAR
-    ICM20608G_CONFIG,0,/*  DLPF低通滤波器的设置	低通滤波器截止频率为176Hz 根据↓*/
-    ICM20608G_SMPLRT_DIV,7,/* 设置采样速率为1kHz		*/
+    ICM20608G_CONFIG,1,/*  DLPF低通滤波器的设置	低通滤波器截止频率为176Hz 根据↓*/
+    ICM20608G_SMPLRT_DIV,0,/* 设置采样速率为1kHz		*/
 		#else
     ICM20608G_CONFIG,0,/*  DLPF低通滤波器的设置	低通滤波器截止频率为176Hz 根据↓*/
     ICM20608G_SMPLRT_DIV,7,/* 设置采样速率为1kHz		*/
@@ -245,8 +245,8 @@ void icm_update_AccRad(float ACC_Init[GYRO_NUMBER][AXIS_NUMBER])
 		allPara.ACC_Angle[gyro][1]= safe_atan2( X_G , -Z_G);
 		allPara.ACC_Angle[gyro][0]=-safe_atan2( Y_G , X_G/sin(allPara.ACC_Angle[gyro][1]));
 	}
-	allPara.ACC_RealAngle[0]=(allPara.ACC_Angle[0][0]+allPara.ACC_Angle[1][0]+allPara.ACC_Angle[2][0])/3.f;
-	allPara.ACC_RealAngle[1]=(allPara.ACC_Angle[0][1]+allPara.ACC_Angle[1][1]+allPara.ACC_Angle[2][1])/3.f;
+//	allPara.ACC_RealAngle[0]=(allPara.ACC_Angle[0][0]+allPara.ACC_Angle[1][0]+allPara.ACC_Angle[2][0])/3.f;
+//	allPara.ACC_RealAngle[1]=(allPara.ACC_Angle[0][1]+allPara.ACC_Angle[1][1]+allPara.ACC_Angle[2][1])/3.f;
 }
 
 int CheckNan(void)
@@ -297,15 +297,15 @@ void AllParaInit(void)
 			allPara.GYROWithoutRemoveDrift[i][j]=0.0;
 			allPara.GYRORemoveDrift[i][j]=0.0;
 			allPara.ACC_Raw[i][j]=0.0f;
-			allPara.ACC_Aver[i][j]=0.0f;
+//			allPara.ACC_Aver[i][j]=0.0f;
 			allPara.driftCoffecient[i][j]=0.0f;
 		}
 	for(int i=0;i<3;i++)
 		for(int j=0;j<2;j++)
 			allPara.ACC_Angle[i][j]=0.0f;
 	
-	for(int j=0;j<2;j++)
-		allPara.ACC_RealAngle[j]=0.0f;
+//	for(int j=0;j<2;j++)
+//		allPara.ACC_RealAngle[j]=0.0f;
 		
 	for(int j=0;j<3;j++)
 	{
@@ -314,7 +314,7 @@ void AllParaInit(void)
 		allPara.GYRO_TemperatureDif[j]=0.0f;
 	}
 	
-	allPara.ACC_InitSum=0.f;
+//	allPara.ACC_InitSum=0.f;
 	
 	allPara.cpuUsage=0;
 	

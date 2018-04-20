@@ -109,9 +109,14 @@ void DataSend(void)
 //		USART_OUT_F(allPara.sDta.GYRO_TemperatureAim[i]);
 //		USART_OUT_F(allPara.GYRO_Temperature[i]);
 //	}
-//	USART_OUT_F(allPara.sDta.GYRO_Aver[2]);
-//	USART_OUT_F(lowpass);
-//	USART_OUT_F(allPara.sDta.Result_Angle[2]);
+for(int i=0;i<3;i++)
+USART_OUT_F(allPara.GYRO_Real[i]);
+for(int i=0;i<3;i++)
+	USART_OUT_F(allPara.sDta.Result_Angle[i]);
+for(int i=0;i<3;i++)
+	USART_OUT_F(allPara.ACC_Raw[0][i]);
+for(int i=0;i<2;i++)
+USART_OUT_F(allPara.ACC_Angle[0][i]/PI*180.0);
 //	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);
 //	USART_OUT_F(allPara.GYRO_Real[2]);
 //	USART_OUT_F(allPara.sDta.posx);
@@ -120,7 +125,7 @@ void DataSend(void)
 //	USART_OUT_F(allPara.sDta.vell[1]);
 //	USART_OUT_F(allPara.isStatic);
 	//USART_OUT(SEND_USART,"%d\t%d\t%d",allPara.sDta.codeData[0],allPara.sDta.codeData[1],allPara.cpuUsage);
-//	USART_Enter();
+	USART_Enter();
 	#else
 	
 	for(i=0;i<DMA_SEND_SIZE;i++)

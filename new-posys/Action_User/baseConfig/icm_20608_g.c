@@ -112,29 +112,14 @@ void icm_update_gyro_rate(int gyroNum)
   
 	//auto old board 131.140172004891
 	#ifdef NEW_BOARD
-	gyro[0] = -data1[1]/131.140172004891;
-	gyro[1] = data1[0]/131.140172004891;
+	gyro[0] = data1[0]/131.140172004891;
+	gyro[1] = data1[1]/131.140172004891;
 	gyro[2] = data1[2]/131.140172004891;
 	#else
-	gyro[0] = -data1[1]/131.140172004891;
-	gyro[1] = -data1[0]/131.140172004891;
+	gyro[0] = -data1[0]/131.140172004891;
+	gyro[1] = data1[1]/131.140172004891;
 	gyro[2] = -data1[2]/131.140172004891;
 	#endif
-
-	float middlePerson = 0.f;
-	switch(gyroNum)
-	{
-		case 0:
-			middlePerson = gyro[0];
-			gyro[0] = gyro[1];
-			gyro[1] = -middlePerson;
-			break;
-		case 2:
-			middlePerson = gyro[0];
-			gyro[0] = gyro[1];
-			gyro[1] = -middlePerson;
-			break;
-	}
 }
 void icm_read_gyro_rate(double data[GYRO_NUMBER])
 {
@@ -171,24 +156,11 @@ void icm_update_acc(int gyroNum)
   /*
   16384 LSB/g
   */
-  acc[0] = data1[1]/16384.0;
-  acc[1] = data1[0]/16384.0;
+  acc[0] = data1[0]/16384.0;
+  acc[1] = -data1[1]/16384.0;
   acc[2] = data1[2]/16384.0;
   
-	float middlePerson = 0.f;
-	switch(gyroNum)
-	{
-		case 0:
-			middlePerson = acc[0];
-			acc[0] = acc[1];
-			acc[1] = -middlePerson;
-			break;
-		case 2:
-			middlePerson = acc[0];
-			acc[0] = acc[1];
-			acc[1] = -middlePerson;
-			break;
-	}
+
 	
 }
 void icm_read_accel_acc(double data[GYRO_NUMBER])

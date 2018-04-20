@@ -118,6 +118,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
+          <Name> u?P?w u?</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -161,16 +162,6 @@
           <count>2</count>
           <WinNumber>1</WinNumber>
           <ItemText>SEND_USART</ItemText>
-        </Ww>
-        <Ww>
-          <count>3</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>euler</ItemText>
-        </Ww>
-        <Ww>
-          <count>4</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>quaternion</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>

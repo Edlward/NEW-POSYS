@@ -110,7 +110,7 @@ void DataSend(void)
 //		USART_OUT_F(allPara.GYRO_Temperature[i]);
 //	}
 for(int i=0;i<3;i++)
-USART_OUT_F(allPara.GYRO_Real[i]);
+USART_OUT_F(allPara.sDta.GYRO_Aver[i]);
 for(int i=0;i<3;i++)
 	USART_OUT_F(allPara.sDta.Result_Angle[i]);
 for(int i=0;i<3;i++)

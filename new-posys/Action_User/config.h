@@ -51,8 +51,8 @@
 	#define GPIO_GYRO	GPIOA
 	#define GPIO_PIN	GPIO_Pin_4
 #else
-	#define GPIO_GYRO	GPIOA
-	#define GPIO_PIN	GPIO_Pin_2
+	#define GPIO_GYRO	GPIOC
+	#define GPIO_PIN	GPIO_Pin_6
 #endif
 
 /* Exported constants --------------------------------------------------------*/

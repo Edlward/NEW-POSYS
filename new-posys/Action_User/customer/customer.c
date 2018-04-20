@@ -183,7 +183,7 @@ void bufferInit(void){
   for(int i=0;i<20;i++)
     buffer[i]=0;
 }
-#ifdef NEW_BOARD
+#ifdef 0
 void USART3_IRQHandler(void)
 #else
 void USART1_IRQHandler(void)

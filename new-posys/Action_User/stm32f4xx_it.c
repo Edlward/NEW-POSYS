@@ -87,9 +87,6 @@ void TIM2_IRQHandler(void)
 		
 	  if(timeCnt==5)
 		{	
-			//第一次判断静止时可以不用判断角速度
-			allPara.sDta.codeData[0]=SPI_ReadAS5045(0);
-			allPara.sDta.codeData[1]=SPI_ReadAS5045(1);
 			figureVell();
 			#ifdef TESTCAR
 			  double percentages[3][3]={

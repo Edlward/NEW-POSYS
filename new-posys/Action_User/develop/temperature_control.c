@@ -83,7 +83,6 @@ void temp_pid_ctr(int gyro,float val_ex)
   float K_p[GYRO_NUMBER] = { 10600.0f };
   float K_i[GYRO_NUMBER] = { 3.5f };
 	#endif
-  float K_d[GYRO_NUMBER] = { 0.0f };
   
   static double ctr[GYRO_NUMBER];
 	

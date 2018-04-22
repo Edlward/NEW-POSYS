@@ -55,15 +55,14 @@
 #endif
 
 /* Exported constants --------------------------------------------------------*/
-
 //#define TEST_SUMMER
 
-#define AUTOCAR
+//#define AUTOCAR
 //#define TESTCAR
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
 #define PERIOD    				0.005f
-#define dT 					    0.005         
+#define dT 					  	  0.005         
 
 #define R_wheel1        25.284126
 #define R_wheel2        25.42820678

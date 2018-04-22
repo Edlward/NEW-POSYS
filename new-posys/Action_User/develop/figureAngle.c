@@ -258,6 +258,11 @@ void JudgeStatic(void)
 	static uint16_t codes0[STATIC_ARRAY_NUM];
 	static uint16_t codes1[STATIC_ARRAY_NUM];
 	int difCode=0;
+	
+	//第一次判断静止时可以不用判断角速度
+	allPara.sDta.codeData[0]=SPI_ReadAS5045(0);
+	allPara.sDta.codeData[1]=SPI_ReadAS5045(1);
+	
 //	static int staticCount=0;
 	for(int i=0;i<STATIC_ARRAY_NUM-1;i++)
 	{

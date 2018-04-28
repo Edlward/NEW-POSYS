@@ -111,7 +111,7 @@ void DataSend(void)
 	}
 	USART_OUT_F(allPara.sDta.GYRO_Aver[2]);
 //	USART_OUT_F(lowpass);
-//	USART_OUT_F(allPara.sDta.Result_Angle[2]);
+	USART_OUT_F(allPara.sDta.Result_Angle[2]);
 //	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);
 //	USART_OUT_F(allPara.GYRO_Real[2]);
 	USART_OUT_F(allPara.sDta.posx);

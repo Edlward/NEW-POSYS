@@ -77,8 +77,8 @@ void temp_pid_ctr(int gyro,float val_ex)
 //	static int justforfirst[3]={1,1,1};
 	static int count[3]={0};
 	#ifdef NEW_BOARD
-  float K_p[GYRO_NUMBER] = { 450.0f };
-  float K_i[GYRO_NUMBER] = { 0.4f };
+  float K_p[GYRO_NUMBER] = { 400.0f };
+  float K_i[GYRO_NUMBER] = { 0.08f };
 	#else
   float K_p[GYRO_NUMBER] = { 10600.0f };
   float K_i[GYRO_NUMBER] = { 3.5f };

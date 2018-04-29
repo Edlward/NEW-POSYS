@@ -303,7 +303,9 @@ void NMI_Handler(void)
 
 void HardFault_Handler(void)
 {  
-		ReportHardFault();
+		#ifdef NEW_BOARD
+			LedAbNormal();
+		#endif
 		ReportHardFault();
 		ReportHardFault();
 //	  static uint32_t r_sp ;

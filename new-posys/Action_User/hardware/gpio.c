@@ -93,6 +93,19 @@ void GPIO_Init_Pins(GPIO_TypeDef * GPIOx,
 
 #ifdef NEW_BOARD
 
+void LedNormal(void)
+{
+  /* Deselect : Chip Select high ---------*/
+  GPIO_ResetBits(GPIOA, GPIO_Pin_3);
+  GPIO_SetBits(GPIOA, GPIO_Pin_2);
+}
+
+void LedAbNormal(void)
+{
+  /* Deselect : Chip Select high ---------*/
+  GPIO_ResetBits(GPIOA, GPIO_Pin_2);
+  GPIO_SetBits(GPIOA, GPIO_Pin_3);
+}
 void Led_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
@@ -107,9 +120,7 @@ void Led_Init(void)
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
   GPIO_Init(GPIOA, &GPIO_InitStructure);                 //ICM20608G
   
-  /* Deselect : Chip Select high ---------*/
-  GPIO_ResetBits(GPIOA, GPIO_Pin_3);
-  GPIO_SetBits(GPIOA, GPIO_Pin_2);
+	LedNormal();
 }
 #endif
 

@@ -30,8 +30,6 @@ void init(void)
 	//StartCount();
 	SoftWareReset();
 	
-	AllParaInit();
-	
 
 	//  pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz
 

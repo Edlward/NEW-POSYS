@@ -32,6 +32,7 @@
 #include "config.h"
 #include "DataRecover.h"
 #include "iwdg.h"
+#include "gpio.h"
 /*************定时器2******start************/
 //每1ms调用一次  用于读取编码器的值和计算坐标
 
@@ -87,7 +88,6 @@ void TIM2_IRQHandler(void)
 		
 	  if(timeCnt==5)
 		{	
-			figureVell();
 			#ifdef TESTCAR
 			  double percentages[3][3]={
 				1.0,0.0,0.0,
@@ -303,6 +303,22 @@ void NMI_Handler(void)
 
 void HardFault_Handler(void)
 {  
+			LedAbNormal();
+		if(allPara.resetTime<=500&&allPara.sDta.GYRO_Bais[2]!=0.0)
+	{
+		FindResetTime();
+//		if(allPara.sDta.GYRO_Bais[2]!=0.0)
+			allPara.sDta.isReset=1;
+//		else
+//		{
+//			AllParaInit();
+//			allPara.sDta.isReset=0;
+////		}
+		
+		WriteFlashData(allPara,allPara.resetTime);
+		
+		//STMFLASH_Read(&allPara,allPara.resetTime);
+	}
 		#ifdef NEW_BOARD
 			LedAbNormal();
 		#endif
@@ -314,27 +330,14 @@ void HardFault_Handler(void)
 //		else
 //			r_sp = __get_MSP(); 
 //		r_sp = r_sp+0x10;
-	if(allPara.resetTime<=500)
-	{
-		FindResetTime();
-		if(allPara.sDta.GYRO_Bais[2]!=0.0)
-			allPara.sDta.isReset=1;
-		else
-		{
-			AllParaInit();
-			allPara.sDta.isReset=0;
-		}
-		
-		WriteFlashData(allPara,allPara.resetTime);
-		
-		//STMFLASH_Read(&allPara,allPara.resetTime);
-	}
+
 		
 		
   /* Go to infinite loop when Hard Fault exception occurs */
   while (1)
   {
 		ReportHardFault();
+		if(allPara.resetTime<=500&&allPara.sDta.GYRO_Bais[2]!=0.0)
 		IWDG_Reset();
 //		USART_OUT(SEND_USART,"\r\nHardFault");
 //  	char sPoint[2]={0};

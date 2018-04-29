@@ -55,7 +55,7 @@
 #endif
 
 /* Exported constants --------------------------------------------------------*/
-//#define TEST_SUMMER
+#define TEST_SUMMER
 
 //#define AUTOCAR
 //#define TESTCAR
@@ -223,6 +223,7 @@ typedef struct{
 	/*三个陀螺仪三个轴随温度变化的系数*/
 	float driftCoffecient[GYRO_NUMBER][AXIS_NUMBER];
 	
+  int vellSum[2];
 	int cpuUsage;
 	
 	uint32_t resetTime;

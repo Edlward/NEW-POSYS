@@ -15,6 +15,7 @@ void KeyInit(void);
 #ifdef NEW_BOARD
 void Led_Init(void);
 void LedAbNormal(void);
+void LedNormal(void);
 #endif
 
 #endif

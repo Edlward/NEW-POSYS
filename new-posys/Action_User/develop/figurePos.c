@@ -142,6 +142,9 @@ void figureVell(void)
 		allPara.sDta.vell[1]-=4096;
 	if(allPara.sDta.vell[1]<-2048)
 		allPara.sDta.vell[1]+=4096;
+	
+	allPara.vellSum[0]+=allPara.sDta.vell[0];
+	allPara.vellSum[1]+=allPara.sDta.vell[1];
 }
 
 void SetPosX(double in)

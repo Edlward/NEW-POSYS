@@ -206,6 +206,8 @@ void SoftWareReset(void)
   if(allPara.resetTime==0||dataSave.isReset==0||allPara.resetTime>=500)
   {
     STMFLASH_ERASE();
+		
+		AllParaInit();
   }
   /*进了硬件中断后重启*/
   else

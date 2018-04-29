@@ -304,7 +304,7 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {  
 			LedAbNormal();
-		if(allPara.resetTime<=500&&allPara.sDta.GYRO_Bais[2]!=0.0)
+	//if(allPara.resetTime<=500&&allPara.sDta.GYRO_Bais[2]!=0.0)
 	{
 		FindResetTime();
 //		if(allPara.sDta.GYRO_Bais[2]!=0.0)
@@ -323,7 +323,7 @@ void HardFault_Handler(void)
 			LedAbNormal();
 		#endif
 		ReportHardFault();
-		ReportHardFault();
+//		ReportHardFault();
 //	  static uint32_t r_sp ;
 //		if(__get_PSP()!=0x00) 
 //			r_sp = __get_PSP(); 
@@ -336,8 +336,8 @@ void HardFault_Handler(void)
   /* Go to infinite loop when Hard Fault exception occurs */
   while (1)
   {
-		ReportHardFault();
-		if(allPara.resetTime<=500&&allPara.sDta.GYRO_Bais[2]!=0.0)
+//		ReportHardFault();
+//		if(allPara.resetTime<=500&&allPara.sDta.GYRO_Bais[2]!=0.0)
 		IWDG_Reset();
 //		USART_OUT(SEND_USART,"\r\nHardFault");
 //  	char sPoint[2]={0};

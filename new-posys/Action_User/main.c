@@ -30,8 +30,6 @@ void init(void)
 	//StartCount();
 	SoftWareReset();
 	
-	AllParaInit();
-	
 	LedNormal();
   pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz
   
@@ -75,7 +73,7 @@ void init(void)
 	
   //driftCoffecientInit();
 	
-	IWDG_Init(1,50); // 1.5ms
+	IWDG_Init(1,60); // 1.5ms
 	
 	while(!getTempInitSuces())
 	{
@@ -83,7 +81,6 @@ void init(void)
 			SetTempInitSuces();
 	}
 }
-
 
 int main(void)
 {
@@ -109,8 +106,7 @@ int main(void)
 			LedNormal();
 			if(allPara.sDta.time>200*5)
 				allPara.sDta.time--;
-			
-			
+
 			AT_CMD_Handle();
       if(!(allPara.sDta.flag&CORRECT)){
 				if(allPara.sDta.flag&HEATING)

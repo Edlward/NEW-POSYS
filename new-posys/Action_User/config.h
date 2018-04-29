@@ -55,24 +55,23 @@
 #endif
 
 /* Exported constants --------------------------------------------------------*/
-
 //#define TEST_SUMMER
 
-#define AUTOCAR
+//#define AUTOCAR
 //#define TESTCAR
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
-#define PERIOD    				0.005f
-#define dT 					    0.005         
+#define PERIOD    											0.005f
+#define dT 					 								 	  0.005         
 
-#define R_wheel1        25.284126
-#define R_wheel2        25.42820678
-#define LEASTNUM			 	50
+#define R_wheel1      								  25.284126
+#define R_wheel2    								    25.42820678
+#define LEASTNUM											 	50
 
-#define TempTable_min 				  0.35
-#define TempTable_max  					0.45
-#define TempTable_NUMBER  			150
-#define HEATTIME	   	 30.0
+#define TempTable_min 								  0.35
+#define TempTable_max  									0.45
+#define TempTable_NUMBER  							150
+#define HEATTIME	  				 					  30.0
 
 #define DOUBLE_SIZE											8
 #define FLOAT_SIZE											4
@@ -224,6 +223,7 @@ typedef struct{
 	/*三个陀螺仪三个轴随温度变化的系数*/
 	float driftCoffecient[GYRO_NUMBER][AXIS_NUMBER];
 	
+  int vellSum[2];
 	int cpuUsage;
 	
 	uint32_t resetTime;

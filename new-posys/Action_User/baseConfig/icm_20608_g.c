@@ -339,6 +339,7 @@ void AllParaInit(void)
 		allPara.sDta.codeData[j]=0;
 		allPara.sDta.data_last[j]=0;
 		allPara.sDta.vell[j]=0;
+		allPara.vellSum[j]=0;
 	}
 	
 	allPara.sDta.flag=0;

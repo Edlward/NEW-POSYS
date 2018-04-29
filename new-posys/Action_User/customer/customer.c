@@ -99,15 +99,15 @@ void DataSend(void)
 //	for(int i=0;i<3;i++)
 //		USART_OUT_F(allPara.GYROWithoutRemoveDrift[i][2]);
 
-//	for(int i=0;i<3;i++)
-//	{
-//		USART_OUT_F(allPara.sDta.GYRO_TemperatureAim[i]);
-//		USART_OUT_F(allPara.GYRO_Temperature[i]);
-//	}
-//	USART_OUT_F(allPara.sDta.GYRO_Aver[2]);
+	for(int i=0;i<GYRO_NUMBER;i++)
+	{
+		USART_OUT_F(allPara.sDta.GYRO_TemperatureAim[i]);
+		USART_OUT_F(allPara.GYRO_Temperature[i]);
+	}
+	USART_OUT_F(allPara.sDta.GYRO_Aver[2]);
 //	USART_OUT_F(lowpass);
 	USART_OUT_F(allPara.sDta.Result_Angle[2]);
-	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);
+//	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);
 //	USART_OUT_F(allPara.GYRO_Real[2]);
 	USART_OUT_F(allPara.sDta.posx);
 	USART_OUT_F(allPara.sDta.posy);
@@ -171,7 +171,7 @@ void debugsend(float a,float b,float c,float d,float e,float f)
 
 void ReportHardFault(void)
 {
-	USART_OUT(SEND_USART,"HF");
+	USART_OUT(SEND_USART,"hardfault\r\n");
 }
 
 static char buffer[20];
@@ -183,8 +183,8 @@ void bufferInit(void){
   for(int i=0;i<20;i++)
     buffer[i]=0;
 }
-#ifdef 0
-void USART3_IRQHandler(void)
+#ifdef NEW_BOARD
+void USART1_IRQHandler(void)
 #else
 void USART1_IRQHandler(void)
 #endif

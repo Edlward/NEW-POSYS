@@ -263,6 +263,7 @@ void JudgeStatic(void)
 	allPara.sDta.codeData[0]=SPI_ReadAS5045(0);
 	allPara.sDta.codeData[1]=SPI_ReadAS5045(1);
 	
+			figureVell();
 //	static int staticCount=0;
 	for(int i=0;i<STATIC_ARRAY_NUM-1;i++)
 	{

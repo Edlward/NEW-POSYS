@@ -19,6 +19,11 @@ AllPara_t allPara={0};
 
 void init(void)
 {
+	#ifdef NEW_BOARD
+	Led_Init();
+	LedAbNormal();
+	#endif
+	
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
 	
   TIM_Init(TIM7,99,83,0,0);				
@@ -27,14 +32,16 @@ void init(void)
 	
 	AllParaInit();
 	
-//  pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz
-  
+
+	//  pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz
+
+	#ifdef NEW_BOARD
+	LedNormal();
+	#endif
+	
 	ICM_SPIInit();
 	SPI2_Init();
 
-	#ifdef NEW_BOARD
-//	Led_Init();
-	#endif
   CS_Config();
 	
 	#ifdef TEST_SUMMER
@@ -103,6 +110,7 @@ int main(void)
 				IWDG_Reset();
 			}
 			
+			LedNormal();
 			if(allPara.sDta.time>200*5)
 				allPara.sDta.time--;
 			

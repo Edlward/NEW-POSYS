@@ -174,9 +174,13 @@ void updateAngle(void)
 	static double tempAngle=0.0;
 	static int sumvell=0;
 	static int flag=0;
+	if(abs(allPara.sDta.vell[0])==0&&abs(allPara.sDta.vell[1])==0)
+		w[2]=0.f;
+	
 	tempAngle+=w[2]*0.005;
+	
 	sumvell+=allPara.sDta.vell[0];
-	if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=20))//||(fabs(w[2])<0.3f))
+	if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[1])<=20))//||(fabs(w[2])<0.3f))
     w[2]=0.f;
 	if(fabs(tempAngle)>3.0)
 		flag=1;

@@ -92,19 +92,17 @@ void calculatePos(void)
 			real[0]=1.00001901160992*allPara.sDta.vell[0]*0.038622517085838-0.006166326400784*allPara.sDta.vell[1]*0.038651337725656;
 			real[1]=allPara.sDta.vell[1]*0.038651337725656;
 		#else			//以x为标准
-			real[0]=allPara.sDta.vell[0]*0.0385959339263024;
+			real[0]=allPara.sDta.vell[0]*0.038779870068921;
 			real[1]=0.00227591327416601*allPara.sDta.vell[0]*0.0385959339263024+1.00000258988726*allPara.sDta.vell[1]*0.0387637529427695;
 		#endif
 	#endif
 	
 
-		delPos[0]=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
-		delPos[1]=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
-		static double posx,posy=0.0;
-		posx+=delPos[0];
-		posy+=delPos[1];
-		allPara.sDta.posx=posx*0.707106781186547-posy*0.707106781186547;
-		allPara.sDta.posy=posx*0.707106781186547+posy*0.707106781186547;
+	delPos[0]=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
+	delPos[1]=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
+	
+	allPara.sDta.posx+=delPos[0];
+	allPara.sDta.posy+=delPos[1];
 	
 	/*获得定位系统x，y方向上的速度*/
 	allPara.sDta.vellx=delPos[0]*200.f;
@@ -129,6 +127,10 @@ void figureVell(void)
 	}
 	else
 	{
+		if(allPara.sDta.codeData[0]>4096)
+			allPara.sDta.codeData[0]=allPara.sDta.data_last[0];
+		if(allPara.sDta.codeData[1]>4096)
+			allPara.sDta.codeData[1]=allPara.sDta.data_last[1];
 		allPara.sDta.vell[0]= (allPara.sDta.codeData[0]-allPara.sDta.data_last[0]);
 		allPara.sDta.vell[1]= (allPara.sDta.codeData[1]-allPara.sDta.data_last[1]);
 		allPara.sDta.data_last[0]=allPara.sDta.codeData[0];

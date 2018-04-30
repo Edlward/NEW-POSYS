@@ -174,7 +174,12 @@ void updateAngle(void)
 	static double tempAngle=0.0;
 	static int sumvell=0;
 	static int flag=0;
+	
+	if(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1)
+		w[2]=0.0;
+	
 	tempAngle+=w[2]*0.005;
+	
 	sumvell+=allPara.sDta.vell[0];
 	if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=20))//||(fabs(w[2])<0.3f))
     w[2]=0.f;
@@ -263,7 +268,7 @@ void JudgeStatic(void)
 	allPara.sDta.codeData[0]=SPI_ReadAS5045(0);
 	allPara.sDta.codeData[1]=SPI_ReadAS5045(1);
 	
-			figureVell();
+	figureVell();
 //	static int staticCount=0;
 	for(int i=0;i<STATIC_ARRAY_NUM-1;i++)
 	{

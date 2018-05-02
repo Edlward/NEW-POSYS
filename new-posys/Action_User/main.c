@@ -48,15 +48,15 @@ void init(void)
 	#endif
 	
 //  Flash_Init();
-	
-	for(int gyro;gyro<GYRO_NUMBER;gyro++)
-	{
+//	
+//	for(int gyro;gyro<GYRO_NUMBER;gyro++)
+//	{
 
-		if(!allPara.resetFlag)
-			MEMS_Configure(gyro);
-//		ICM_HeatingPower(gyro,0);
-	}
-	
+//		if(!allPara.resetFlag)
+//			MEMS_Configure(gyro);
+////		ICM_HeatingPower(gyro,0);
+//	}
+//	
   TIM_Init(TIM2,999,83,2,0);			
 	
 	allPara.sDta.flag=0;
@@ -102,10 +102,10 @@ int main(void)
 //      				test[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_WHO_AM_I); 
 			
 			allPara.sDta.time++;
-			if(CheckNan()&&allPara.sDta.GYRO_Bais[2]==0.0)
-			{
-				IWDG_Reset();
-			}
+//			if(CheckNan()&&allPara.sDta.GYRO_Bais[2]==0.0)
+//			{
+//				IWDG_Reset();
+//			}
 			
 			LedNormal();
 			if(allPara.sDta.time>200*5)
@@ -125,13 +125,13 @@ int main(void)
 //						temp_pid_ctr(gyro,allPara.sDta.GYRO_TemperatureAim[gyro]-0.5f);
 //				}
 				JudgeStatic();
-        if(RoughHandle())
+//        if(RoughHandle())
 				{
-					if((allPara.sDta.flag&START_COMPETE))
-					{
-						updateAngle();
+//					if((allPara.sDta.flag&START_COMPETE))
+//					{
+//						updateAngle();
 						calculatePos();
-					}
+//					}
 					#ifndef TEST_SUMMER
 					DataSend();
 					#endif

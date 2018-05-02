@@ -171,24 +171,25 @@ void updateAngle(void)
     w[2]=0.f;
 	allPara.sDta.Result_Angle[2]+=w[2]*0.005;
 	#else
-	static double tempAngle=0.0;
-	static int sumvell=0;
-	static int flag=0;
-	
-	if(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1)
-		w[2]=0.0;
-	
-	tempAngle+=w[2]*0.005;
-	
-	sumvell+=allPara.sDta.vell[0];
-	if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=20))//||(fabs(w[2])<0.3f))
-    w[2]=0.f;
-	if(fabs(tempAngle)>3.0)
-		flag=1;
-	if(!flag)
-		allPara.sDta.Result_Angle[2]+=w[2]*0.005;
-	else
-		allPara.sDta.Result_Angle[2]=tempAngle;
+//	static double tempAngle=0.0;
+//	static int sumvell=0;
+//	static int flag=0;
+//	
+//	if(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1)
+//		w[2]=0.0;
+//	
+//	tempAngle+=w[2]*0.005;
+//	
+//	sumvell+=allPara.sDta.vell[0];
+//	if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=20))//||(fabs(w[2])<0.3f))
+//    w[2]=0.f;
+//	if(fabs(tempAngle)>3.0)
+//		flag=1;
+//	if(!flag)
+//		allPara.sDta.Result_Angle[2]+=w[2]*0.005;
+//	else
+//		allPara.sDta.Result_Angle[2]=tempAngle;
+	allPara.sDta.Result_Angle[2]=0.f;
 	#endif
 	
 	if(allPara.sDta.Result_Angle[2]>180.0)

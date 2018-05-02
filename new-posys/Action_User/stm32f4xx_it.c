@@ -65,108 +65,108 @@ void TIM2_IRQHandler(void)
       timeFlag=1;
 			allPara.cpuUsage++;
     }
-		/*读取角速度，温度的数据，并进行累加*/
-		for(gyro=0;gyro<GYRO_NUMBER;gyro++)
-		{
-      icm_update_gyro_rate(gyro);
-//			icm_update_acc(gyro);
-			icm_update_temp(gyro);
-			icm_read_temp(&(temp_temp[gyro]));
-      icm_read_gyro_rate(gyr_temp[gyro]);
-//			icm_read_accel_acc(acc_temp[gyro]);
-			for(axis=0;axis<AXIS_NUMBER;axis++)
-			{
-				gyro_sum[gyro][axis]=gyro_sum[gyro][axis]+gyr_temp[gyro][axis];
-				acc_sum[gyro][axis]=acc_sum[gyro][axis]+acc_temp[gyro][axis];
-			}
+//		/*读取角速度，温度的数据，并进行累加*/
+//		for(gyro=0;gyro<GYRO_NUMBER;gyro++)
+//		{
+//      icm_update_gyro_rate(gyro);
+////			icm_update_acc(gyro);
+//			icm_update_temp(gyro);
+//			icm_read_temp(&(temp_temp[gyro]));
+//      icm_read_gyro_rate(gyr_temp[gyro]);
+////			icm_read_accel_acc(acc_temp[gyro]);
+//			for(axis=0;axis<AXIS_NUMBER;axis++)
+//			{
+//				gyro_sum[gyro][axis]=gyro_sum[gyro][axis]+gyr_temp[gyro][axis];
+//				acc_sum[gyro][axis]=acc_sum[gyro][axis]+acc_temp[gyro][axis];
+//			}
 
-      temp_sum[gyro]=temp_sum[gyro]+temp_temp[gyro];
-		}
+//      temp_sum[gyro]=temp_sum[gyro]+temp_temp[gyro];
+//		}
 		/*确定加热温度*/
-		if(!getTempInitSuces())
-			HeatingInit(temp_temp);
-		
-	  if(timeCnt==5)
-		{	
-			#ifdef TESTCAR
-			  double percentages[3][3]={
-				1.0,0.0,0.0,
-				1.0,0.0,0.0,
-				1.0,0.0,0.0};
-			#else
-				#ifdef AUTOCAR	//以y为标准
-					double percentages[3][3]={
-					1.0,0.0,0.0,
-					1.0,0.0,0.0,
-					1.0,0.0,0.0	};
-				#else			//以x为标准
-					double percentages[3][3]={
-					1.0,0.0,0.0,
-					1.0,0.0,0.0,
-					1.0,0.0,0.0};
-				#endif
-			#endif
-			readOrder++;
-      timeCnt=0;
-			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
-			{
-				allPara.GYRO_Temperature[gyro]=temp_sum[gyro]/5.0f;
-				for(axis=0;axis<AXIS_NUMBER;axis++)
-				{
-					allPara.GYROWithoutRemoveDrift[gyro][axis]=gyro_sum[gyro][axis]/5.0;	
-					allPara.ACC_Raw[gyro][axis]=acc_sum[gyro][axis]/5.0;
-					acc_sum[gyro][axis]=0.0;
-				}
-			}
-			
-			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
-				allPara.GYRO_Temperature[gyro]=LowPassFilter(allPara.GYRO_Temperature[gyro],gyro)/100.f;
-			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
-			{
-				temp_sum[gyro]=0.f;
-				for(axis=0;axis<AXIS_NUMBER;axis++)
-				{
-					allPara.GYRORemoveDrift[gyro][axis]=allPara.GYROWithoutRemoveDrift[gyro][axis];//-allPara.driftCoffecient[gyro][axis]*(allPara.GYRO_Temperature[gyro]);
-					gyro_sum[gyro][axis]=0.0;
-				}
-			}
-			for(axis=0;axis<GYRO_NUMBER;axis++)
-			{
-				for(gyro=0;gyro<AXIS_NUMBER;gyro++)
-				{
-					if(fabs(allPara.GYRORemoveDrift[gyro][axis])<0.01)
-					{
-						badGyro[axis][gyro]++;
-					}
-					else
-						badGyro[axis][gyro]=0;
-					if(badGyro[axis][gyro]>10)
-						percentages[axis][gyro]=0.0;
-				}
-			}
-			for(axis=0;axis<GYRO_NUMBER;axis++)
-			{
-				double sum=percentages[axis][0]+percentages[axis][1]+percentages[axis][2];
-				for(gyro=0;gyro<AXIS_NUMBER;gyro++)
-				{
-					if(sum>0.001)
-					{
-						percentages[axis][gyro]=percentages[axis][gyro]/sum;
-					}
-					else
-					{
-						percentages[axis][gyro]=0.0;
-					}
-				}
-			}
-				
-			allPara.sDta.GYRO_Aver[0]=allPara.GYRORemoveDrift[0][0]*percentages[0][0]+allPara.GYRORemoveDrift[1][0]*percentages[0][1]+allPara.GYRORemoveDrift[2][0]*percentages[0][2];
-			allPara.sDta.GYRO_Aver[1]=allPara.GYRORemoveDrift[0][1]*percentages[1][0]+allPara.GYRORemoveDrift[1][1]*percentages[1][1]+allPara.GYRORemoveDrift[2][1]*percentages[1][2];
-			allPara.sDta.GYRO_Aver[2]=allPara.GYRORemoveDrift[0][2]*percentages[2][0]+allPara.GYRORemoveDrift[1][2]*percentages[2][1]+allPara.GYRORemoveDrift[2][2]*percentages[2][2];
-			if(fabs(allPara.sDta.GYRO_Aver[2])>251.f)
-				allPara.sDta.GYRO_Aver[2]=0.f;
-//			allPara.sDta.GYRO_Aver[2]=allPara.GYRORemoveDrift[0][2]*0.387132729300339+allPara.GYRORemoveDrift[1][2]*0.255395342771687+allPara.GYRORemoveDrift[2][2]*0.357471927927974;
-    }
+//		if(!getTempInitSuces())
+//			HeatingInit(temp_temp);
+//		
+//	  if(timeCnt==5)
+//		{	
+//			#ifdef TESTCAR
+//			  double percentages[3][3]={
+//				1.0,0.0,0.0,
+//				1.0,0.0,0.0,
+//				1.0,0.0,0.0};
+//			#else
+//				#ifdef AUTOCAR	//以y为标准
+//					double percentages[3][3]={
+//					1.0,0.0,0.0,
+//					1.0,0.0,0.0,
+//					1.0,0.0,0.0	};
+//				#else			//以x为标准
+//					double percentages[3][3]={
+//					1.0,0.0,0.0,
+//					1.0,0.0,0.0,
+//					1.0,0.0,0.0};
+//				#endif
+//			#endif
+//			readOrder++;
+//      timeCnt=0;
+//			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
+//			{
+//				allPara.GYRO_Temperature[gyro]=temp_sum[gyro]/5.0f;
+//				for(axis=0;axis<AXIS_NUMBER;axis++)
+//				{
+//					allPara.GYROWithoutRemoveDrift[gyro][axis]=gyro_sum[gyro][axis]/5.0;	
+//					allPara.ACC_Raw[gyro][axis]=acc_sum[gyro][axis]/5.0;
+//					acc_sum[gyro][axis]=0.0;
+//				}
+//			}
+//			
+//			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
+//				allPara.GYRO_Temperature[gyro]=LowPassFilter(allPara.GYRO_Temperature[gyro],gyro)/100.f;
+//			for(gyro=0;gyro<GYRO_NUMBER;gyro++)
+//			{
+//				temp_sum[gyro]=0.f;
+//				for(axis=0;axis<AXIS_NUMBER;axis++)
+//				{
+//					allPara.GYRORemoveDrift[gyro][axis]=allPara.GYROWithoutRemoveDrift[gyro][axis];//-allPara.driftCoffecient[gyro][axis]*(allPara.GYRO_Temperature[gyro]);
+//					gyro_sum[gyro][axis]=0.0;
+//				}
+//			}
+//			for(axis=0;axis<GYRO_NUMBER;axis++)
+//			{
+//				for(gyro=0;gyro<AXIS_NUMBER;gyro++)
+//				{
+//					if(fabs(allPara.GYRORemoveDrift[gyro][axis])<0.01)
+//					{
+//						badGyro[axis][gyro]++;
+//					}
+//					else
+//						badGyro[axis][gyro]=0;
+//					if(badGyro[axis][gyro]>10)
+//						percentages[axis][gyro]=0.0;
+//				}
+//			}
+//			for(axis=0;axis<GYRO_NUMBER;axis++)
+//			{
+//				double sum=percentages[axis][0]+percentages[axis][1]+percentages[axis][2];
+//				for(gyro=0;gyro<AXIS_NUMBER;gyro++)
+//				{
+//					if(sum>0.001)
+//					{
+//						percentages[axis][gyro]=percentages[axis][gyro]/sum;
+//					}
+//					else
+//					{
+//						percentages[axis][gyro]=0.0;
+//					}
+//				}
+//			}
+//				
+//			allPara.sDta.GYRO_Aver[0]=allPara.GYRORemoveDrift[0][0]*percentages[0][0]+allPara.GYRORemoveDrift[1][0]*percentages[0][1]+allPara.GYRORemoveDrift[2][0]*percentages[0][2];
+//			allPara.sDta.GYRO_Aver[1]=allPara.GYRORemoveDrift[0][1]*percentages[1][0]+allPara.GYRORemoveDrift[1][1]*percentages[1][1]+allPara.GYRORemoveDrift[2][1]*percentages[1][2];
+//			allPara.sDta.GYRO_Aver[2]=allPara.GYRORemoveDrift[0][2]*percentages[2][0]+allPara.GYRORemoveDrift[1][2]*percentages[2][1]+allPara.GYRORemoveDrift[2][2]*percentages[2][2];
+//			if(fabs(allPara.sDta.GYRO_Aver[2])>251.f)
+//				allPara.sDta.GYRO_Aver[2]=0.f;
+////			allPara.sDta.GYRO_Aver[2]=allPara.GYRORemoveDrift[0][2]*0.387132729300339+allPara.GYRORemoveDrift[1][2]*0.255395342771687+allPara.GYRORemoveDrift[2][2]*0.357471927927974;
+//    }
   }
 	else{
 		USART_OUT(SEND_USART,"TIM2 error");

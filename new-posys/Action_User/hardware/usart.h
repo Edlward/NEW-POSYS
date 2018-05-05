@@ -6,7 +6,7 @@
 #define DMA_SEND_SIZE   36
 
 #ifdef NEW_BOARD
-#define SEND_USART	USART1
+#define SEND_USART	USART3
 #else
 #define SEND_USART	USART1
 #endif

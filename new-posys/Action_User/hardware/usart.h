@@ -5,11 +5,6 @@
 #include "config.h"
 #define DMA_SEND_SIZE   36
 
-#ifdef NEW_BOARD
-#define SEND_USART	USART3
-#else
-#define SEND_USART	USART1
-#endif
 
 void usart_Init(uint32_t BaudRate);
 void USART_OUT(USART_TypeDef* USARTx,const char *Data,...);

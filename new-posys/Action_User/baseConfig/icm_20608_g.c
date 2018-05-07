@@ -42,7 +42,7 @@ void MEMS_Configure(int gyroNum)
 	switch(gyroNum)
 	{
 		case 0:
-		SPI_Write(SPI1,GPIO_GYRO,GPIO_PIN,ICM20608G_PWR_MGMT_1,0x80);
+		SPI_Write(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_PWR_MGMT_1,0x80);
 		break;
 		case 1:
 		SPI_Write(SPI1,GPIOA,GPIO_Pin_2,ICM20608G_PWR_MGMT_1,0x80);
@@ -62,9 +62,9 @@ void MEMS_Configure(int gyroNum)
 			switch(gyroNum)
 			{
 				case 0:
-					SPI_Write(SPI1,GPIO_GYRO,GPIO_PIN,registers[order*2],registers[order*2+1]);
+					SPI_Write(SPI1,GPIOA,GPIO_Pin_4,registers[order*2],registers[order*2+1]);
 					Delay_ms(i);
-					data=SPI_Read(SPI1,GPIO_GYRO,GPIO_PIN,registers[order*2]);
+					data=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,registers[order*2]);
 					break;
 				case 1:
 					SPI_Write(SPI1,GPIOA,GPIO_Pin_2,registers[order*2],registers[order*2+1]);
@@ -97,7 +97,7 @@ void icm_update_gyro_rate(int gyroNum)
 	switch(gyroNum)
 	{
 		case 0:
-			SPI_MultiRead(SPI1,GPIO_GYRO,GPIO_PIN,ICM20608G_GYRO_XOUT_H,raw,6);
+			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_GYRO_XOUT_H,raw,6);
 		break;
 		case 1:
 			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_2,ICM20608G_GYRO_XOUT_H,raw,6);
@@ -110,16 +110,9 @@ void icm_update_gyro_rate(int gyroNum)
 	data1[1] = (raw[2]<<8) | raw[3];
   data1[2] = (raw[4]<<8) | raw[5];
   
-	//auto old board 131.140172004891
-	#ifdef NEW_BOARD
 	gyro[0] = -data1[1]/131.140172004891;
 	gyro[1] = data1[0]/131.140172004891;
 	gyro[2] = data1[2]/131.140172004891;
-	#else
-	gyro[0] = -data1[1]/131.140172004891;
-	gyro[1] = -data1[0]/131.140172004891;
-	gyro[2] = -data1[2]/131.140172004891;
-	#endif
 
 	float middlePerson = 0.f;
 	switch(gyroNum)
@@ -153,7 +146,7 @@ void icm_update_acc(int gyroNum)
 	switch(gyroNum)
 	{
 		case 0:
-			SPI_MultiRead(SPI1,GPIO_GYRO,GPIO_PIN,ICM20608G_ACCEL_XOUT_H,raw,6);
+			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_ACCEL_XOUT_H,raw,6);
 		break;
 		case 1:
 			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_2,ICM20608G_ACCEL_XOUT_H,raw,6);
@@ -207,7 +200,7 @@ void icm_update_temp(int gyroNum)
 	switch(gyroNum)
 	{
 		case 0:
-			SPI_MultiRead(SPI1,GPIO_GYRO,GPIO_PIN,ICM20608G_TEMP_OUT_H,byte,2);
+			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_TEMP_OUT_H,byte,2);
 		break;
 		case 1:
 			SPI_MultiRead(SPI1,GPIOA,GPIO_Pin_2,ICM20608G_TEMP_OUT_H,byte,2);
@@ -255,8 +248,8 @@ int CheckNan(void)
 	if(isnan(allPara.sDta.codeData[0])||isnan(allPara.sDta.Result_Angle[2])||isnan(allPara.sDta.posx)||isnan(allPara.sDta.posy)||isnan(allPara.sDta.flag)||isnan(allPara.sDta.vellx)\
 		||isnan(allPara.sDta.velly)||isnan(allPara.sDta.isReset))
 	{
-		USART_OUT(SEND_USART,"HN");
-		USART_OUT(SEND_USART,"HN");
+		USART_OUT(USART1,"HN");
+		USART_OUT(USART1,"HN");
 		return 1;
 	}
 	
@@ -282,8 +275,8 @@ int CheckNan(void)
 		}
 	if(count>100)
 	{
-		USART_OUT(SEND_USART,"HZ");
-		USART_OUT(SEND_USART,"HZ");
+		USART_OUT(USART1,"HZ");
+		USART_OUT(USART1,"HZ");
 		return 1;
 	}
 	return 0;

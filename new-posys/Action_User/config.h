@@ -20,7 +20,7 @@
 #define __CONFIG_H
 
 //#define ADXRS453Z
-#define NEW_BOARD
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -46,18 +46,10 @@
 /* Exported types ------------------------------------------------------------*/
 
 
-#ifdef NEW_BOARD
-	#define GPIO_GYRO	GPIOA
-	#define GPIO_PIN	GPIO_Pin_4
-#else
-	#define GPIO_GYRO	GPIOA
-	#define GPIO_PIN	GPIO_Pin_2
-#endif
-
 /* Exported constants --------------------------------------------------------*/
 //#define TEST_SUMMER
 
-//#define AUTOCAR
+#define AUTOCAR
 //#define TESTCAR
 /* Flash Read Protection */
 //#define FLASH_ENCRYP

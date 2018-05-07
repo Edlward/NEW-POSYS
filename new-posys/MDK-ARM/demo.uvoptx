@@ -158,6 +158,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>SEND_USART</ItemText>
         </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>tdata</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>

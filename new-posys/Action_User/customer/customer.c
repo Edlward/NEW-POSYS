@@ -119,7 +119,7 @@ void DataSend(void)
 //	USART_OUT_F(allPara.sDta.vell[0]);
 //	USART_OUT_F(allPara.sDta.vell[1]);
 //	USART_OUT_F(allPara.isStatic);
-	//USART_OUT(SEND_USART,"%d\t%d\t%d",allPara.sDta.codeData[0],allPara.sDta.codeData[1],allPara.cpuUsage);
+	//USART_OUT(USART1,"%d\t%d\t%d",allPara.sDta.codeData[0],allPara.sDta.codeData[1],allPara.cpuUsage);
 	USART_Enter();
 	#else
 	
@@ -170,13 +170,13 @@ void debugsend(float a,float b,float c,float d,float e,float f)
   memcpy(tdata+22,valSend.data,4);
 	
 	for(i=0;i<28;i++)
-   USART_SendData(SEND_USART,tdata[i]);
+   USART_SendData(USART1,tdata[i]);
 
 }
 
 void ReportHardFault(void)
 {
-	USART_OUT(SEND_USART,"hardfault\r\n");
+	USART_OUT(USART1,"hardfault\r\n");
 }
 
 static char buffer[20];
@@ -188,17 +188,14 @@ void bufferInit(void){
   for(int i=0;i<20;i++)
     buffer[i]=0;
 }
-#ifdef NEW_BOARD
-void USART3_IRQHandler(void)
-#else
+
 void USART1_IRQHandler(void)
-#endif
 {
   uint8_t data;
-  if(USART_GetITStatus(SEND_USART,USART_IT_RXNE)==SET)
+  if(USART_GetITStatus(USART1,USART_IT_RXNE)==SET)
   {
-    USART_ClearITPendingBit(SEND_USART,USART_IT_RXNE);
-    data=USART_ReceiveData(SEND_USART);
+    USART_ClearITPendingBit(USART1,USART_IT_RXNE);
+    data=USART_ReceiveData(USART1);
     buffer[bufferI]=data;
     bufferI++;
 		if(bufferI>=20)
@@ -212,11 +209,11 @@ void USART1_IRQHandler(void)
     }else{
       if(buffer[0]!='A'){
         bufferInit();
-        //USART_OUT(SEND_USART,"NO A\r\n");
+        //USART_OUT(USART1,"NO A\r\n");
       }
     }
   }else{
-    data=USART_ReceiveData(SEND_USART);
+    data=USART_ReceiveData(USART1);
   }
 }
 void AT_CMD_Judge(void){
@@ -230,32 +227,32 @@ void AT_CMD_Judge(void){
 	{
     bufferInit();
 		SetFlag(START_COMPETE);
-		USART_OUT(SEND_USART,"OK");
+		USART_OUT(USART1,"OK");
 	}
 	else if((bufferI == 4) && strncmp(buffer, "AS\r\n", 4)==0)//AT    
 	{
     bufferInit();
 		SetFlag(STATIC_FORCE);
-		USART_OUT(SEND_USART,"OK");
+		USART_OUT(USART1,"OK");
 	}
 	else if((bufferI == 4) && strncmp(buffer, "AB\r\n", 4)==0)//AT    
 	{
     bufferInit();
 		SetFlag(~STATIC_FORCE);
-		USART_OUT(SEND_USART,"OK");
+		USART_OUT(USART1,"OK");
 	}
 	else if((bufferI == 4) && strncmp(buffer, "AR\r\n", 4)==0)//AT    
 	{
     bufferInit();
 		allPara.sDta.Result_Angle[2]=0.0;
-		USART_OUT(SEND_USART,"OK");
+		USART_OUT(USART1,"OK");
 	}
 	else if((bufferI == 4) && strncmp(buffer, "AQ\r\n", 4)==0)//AT    
 	{
     bufferInit();
 		allPara.sDta.Result_Angle[2]=0.0;
 		allPara.sDta.posx=0.0;
-		USART_OUT(SEND_USART,"OK");
+		USART_OUT(USART1,"OK");
 	}
 	else if((bufferI == 8) && strncmp(buffer, "AX", 2)==0)//AT    
 	{
@@ -265,7 +262,7 @@ void AT_CMD_Judge(void){
 		convert_u.data[3]=*(buffer+5);
 		allPara.sDta.posx=convert_u.value;
     bufferInit();
-		USART_OUT(SEND_USART,"OK");
+		USART_OUT(USART1,"OK");
 	}
 	else if((bufferI == 8) && strncmp(buffer, "AY", 2)==0)//AT    
 	{
@@ -275,7 +272,7 @@ void AT_CMD_Judge(void){
 		convert_u.data[3]=*(buffer+5);
 		allPara.sDta.posy=convert_u.value;
     bufferInit();
-		USART_OUT(SEND_USART,"OK");
+		USART_OUT(USART1,"OK");
 	}
 	else if((bufferI == 8) && strncmp(buffer, "AA", 2)==0)//AT    
 	{
@@ -285,7 +282,7 @@ void AT_CMD_Judge(void){
 		convert_u.data[3]=*(buffer+5);
 		allPara.sDta.Result_Angle[2]=convert_u.value;
     bufferInit();
-		USART_OUT(SEND_USART,"OK");
+		USART_OUT(USART1,"OK");
 	}
 	else if((bufferI == 14) && strncmp(buffer, "AT+printData\r\n", 14)==0)
     atCommand=5;
@@ -293,7 +290,7 @@ void AT_CMD_Judge(void){
 	{
     bufferInit();
 		SetFlag(~HEATING);
-		USART_OUT(SEND_USART,"OK");
+		USART_OUT(USART1,"OK");
 	}
   else if((bufferI == 7) && strncmp(buffer, "AT+hf\r\n", 11)==0)//AT    
 	{
@@ -304,7 +301,7 @@ void AT_CMD_Judge(void){
 			a[i]=100;
 			a[i]=a[i];
 		}
-		USART_OUT(SEND_USART,"OK");
+		USART_OUT(USART1,"OK");
 	}
   else 
 	{
@@ -322,7 +319,7 @@ void AT_CMD_Handle(void){
 			break;
 
 		default:
-			USART_OUT(SEND_USART,"error\r\n");
+			USART_OUT(USART1,"error\r\n");
 			break;
 	}
 	atCommand=0;

@@ -19,10 +19,8 @@ AllPara_t allPara={0};
 
 void init(void)
 {
-	#ifdef NEW_BOARD
 	Led_Init();
 	LedAbNormal();
-	#endif
 	
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
 

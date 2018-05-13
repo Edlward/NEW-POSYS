@@ -169,7 +169,7 @@ void TIM2_IRQHandler(void)
     }
   }
 	else{
-		USART_OUT(USART1,"TIM2 error");
+		USART_OUT(USART3,"TIM2 error");
 	}
 }
 
@@ -339,12 +339,12 @@ void HardFault_Handler(void)
 //		ReportHardFault();
 //		if(allPara.resetTime<=500&&allPara.sDta.GYRO_Bais[2]!=0.0)
 		IWDG_Reset();
-//		USART_OUT(USART1,"\r\nHardFault");
+//		USART_OUT(USART3,"\r\nHardFault");
 //  	char sPoint[2]={0};
-//		USART_OUT(USART1,"%s","0x");
+//		USART_OUT(USART3,"%s","0x");
 //		for(int i=3;i>=-28;i--){
 //			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
-//			USART_OUT(USART1,"%s",sPoint);
+//			USART_OUT(USART3,"%s",sPoint);
 //			if(i%4==0)
 //				USART_Enter();
 //		}

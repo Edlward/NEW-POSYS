@@ -248,8 +248,8 @@ int CheckNan(void)
 	if(isnan(allPara.sDta.codeData[0])||isnan(allPara.sDta.Result_Angle[2])||isnan(allPara.sDta.posx)||isnan(allPara.sDta.posy)||isnan(allPara.sDta.flag)||isnan(allPara.sDta.vellx)\
 		||isnan(allPara.sDta.velly)||isnan(allPara.sDta.isReset))
 	{
-		USART_OUT(USART1,"HN");
-		USART_OUT(USART1,"HN");
+		USART_OUT(USART3,"HN");
+		USART_OUT(USART3,"HN");
 		return 1;
 	}
 	
@@ -275,8 +275,8 @@ int CheckNan(void)
 		}
 	if(count>100)
 	{
-		USART_OUT(USART1,"HZ");
-		USART_OUT(USART1,"HZ");
+		USART_OUT(USART3,"HZ");
+		USART_OUT(USART3,"HZ");
 		return 1;
 	}
 	return 0;

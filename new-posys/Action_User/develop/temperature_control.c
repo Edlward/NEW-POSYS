@@ -65,12 +65,12 @@ void SetTempInitSuces(void)
 {
 		tempInitSuces=1;
 }
-//有时间的话可以把这个改成随环境变化的（把上一次稳定参数存下来）但是测试的时候可能就不能那么玩
+
 void temp_pid_ctr(int gyro,float val_ex)
 {
   static float err[GYRO_NUMBER];
   static float integral[GYRO_NUMBER];
-//	static int justforfirst[3]={1,1,1};
+	
 	static int count[3]={0};
   float K_p[GYRO_NUMBER] = { 400.0f };
   float K_i[GYRO_NUMBER] = { 0.08f };
@@ -93,11 +93,7 @@ void temp_pid_ctr(int gyro,float val_ex)
 		ctr[gyro]=0;
 	}
 	else{
-//		if(justforfirst[gyro]==1){
-//			//有时间的话可以把这个改成随环境变化的（把上一次稳定参数存下来）
-//			integral[gyro]=8.874924f/K_i[gyro];
-//			justforfirst[gyro]=0;
-//		}
+
 	}
 	
 	if(allPara.GYRO_Temperature[gyro]>(MAX_TEMPERATURE+0.02f))
@@ -111,15 +107,15 @@ void temp_pid_ctr(int gyro,float val_ex)
 	if(count[gyro]>4*200)
 		ctr[gyro]=20;
 	
-//	static int cnt=0;
-//	cnt++;
-//	USART_OUT_F(allPara.sDta.GYRO_TemperatureAim[gyro]);
-//	USART_OUT_F(allPara.GYRO_Temperature[gyro]);
-//	USART_OUT_F(K_p[gyro]*err[gyro]);
-//	USART_OUT_F(K_i[gyro]*integral[gyro]);
-//	USART_OUT_F(ctr[gyro]);
-//	USART_OUT_F(cnt);
-//	USART_Enter();
+	static int cnt=0;
+	cnt++;
+	USART_OUT_F(allPara.sDta.GYRO_TemperatureAim[gyro]);
+	USART_OUT_F(allPara.GYRO_Temperature[gyro]);
+	USART_OUT_F(K_p[gyro]*err[gyro]);
+	USART_OUT_F(K_i[gyro]*integral[gyro]);
+	USART_OUT_F(ctr[gyro]);
+	USART_OUT_F(cnt);
+	USART_Enter();
 	/*#define ICM_HeatingPower(a)  TIM_SetCompare3(TIM3,a/100.0*1000); */
 	/*之所以最大值为1000,是因为该定时器的装载值为1000*/
 	ICM_HeatingPower(gyro,ctr[gyro]);
@@ -144,9 +140,9 @@ int TempErgodic(int reset){
   temp_pid_ctr(TempTable_min*100.0+(TempTable_max*100.0-TempTable_min*100.0)*circle_count*PERIOD/(float)HEATTIME/60.f);
   if(circle_count==(int)(HEATTIME*60.f/PERIOD)){
     flag=1;
-    //USART_OUT(USART1,"finish rise\r\n");
+    //USART_OUT(USART3,"finish rise\r\n");
   }else if(circle_count==0){
-    //USART_OUT(USART1,"finish decrease\r\n");
+    //USART_OUT(USART3,"finish decrease\r\n");
     flag=3;
   }
   return flag;

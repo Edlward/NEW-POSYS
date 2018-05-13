@@ -47,7 +47,7 @@
 
 
 /* Exported constants --------------------------------------------------------*/
-//#define TEST_SUMMER
+#define TEST_SUMMER
 
 #define AUTOCAR
 //#define TESTCAR

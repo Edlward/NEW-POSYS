@@ -24,12 +24,12 @@ extern AllPara_t allPara;
 /*
 自动车  以y方向为基准
 	//1/4096*wheelR*2*pi
-	allPara.sDta.posx=convert_X*0.038622517085838;
-	allPara.sDta.posy=convert_Y*0.038651337725656;
-	a=0.3533/180*pi;测得到的误差角
+	allPara.sDta.posx=convert_X*0.0385305294301115;
+	allPara.sDta.posy=convert_Y*0.0383709954281714;
+	a=1.371/180*pi;测得到的误差角
   real=[1/cos(a) -tan(a);0 1]*[allPara.sDta.vell1';allPara.sDta.vell2'];
-	real[0]=1.00001901160992*allPara.sDta.vell[0]*0.038622517085838-0.006166326400784*allPara.sDta.vell[1]*0.038651337725656;
-  real[1]=allPara.sDta.vell[1]*0.038651337725656;
+	real[0]=1.00028635401126*allPara.sDta.vell[0]*0.0385305294301115-0.0239330320090246*allPara.sDta.vell[1]*0.0383709954281714;
+  real[1]=allPara.sDta.vell[1]*0.0383709954281714;
 */
 /*
 25.18 25.19用改进算法后拟合得出的
@@ -83,14 +83,15 @@ void calculatePos(void)
 	//直角坐标系和非直角坐标系的转换  一定要注意坐标系的正方向和角度正方向一样！
 
 		
-
+	zangle=0.0;
 	#ifdef TESTCAR
 			real[0]=allPara.sDta.vell[0]*0.0388255696403668;
 			real[1]=0.00670391008416163*allPara.sDta.vell[0]*0.0388255696403668+1.00002247095274*allPara.sDta.vell[1]*0.03866266008737;
 	#else
 		#ifdef AUTOCAR	//以y为标准
-			real[0]=1.00001901160992*allPara.sDta.vell[0]*0.038622517085838-0.006166326400784*allPara.sDta.vell[1]*0.038651337725656;
-			real[1]=allPara.sDta.vell[1]*0.038651337725656;
+			real[0]=1.00028635401126*allPara.sDta.vell[0]*0.0387451841901678-0.0239330320090246*allPara.sDta.vell[1]*0.0387451841901678;
+			real[1]=allPara.sDta.vell[1]*0.0387451841901678;
+
 		#else			//以x为标准
 			real[0]=allPara.sDta.vell[0]*0.038762276842169;
 			real[1]=0.00227591327416601*allPara.sDta.vell[0]*0.0385959339263024+1.00000258988726*allPara.sDta.vell[1]*0.0387637529427695;

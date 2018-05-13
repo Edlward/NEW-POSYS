@@ -117,7 +117,7 @@ int main(void)
 						temp_pid_ctr(gyro,allPara.sDta.GYRO_TemperatureAim[gyro]-0.5f);
 				}
 				JudgeStatic();
-//        if(RoughHandle())
+        if(RoughHandle())
 				{
 					if((allPara.sDta.flag&START_COMPETE))
 					{

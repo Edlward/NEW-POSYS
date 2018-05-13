@@ -55,10 +55,10 @@ void DataSend(void)
 	valSend.val=(float)allPara.GYRO_Real[2];
   memcpy(tdata+22,valSend.data,4);
 	
-	valSend.val=(float)allPara.sDta.GYRO_Bais[2];
+	valSend.val=(float)allPara.sDta.codeData[0];
   memcpy(tdata+26,valSend.data,4);
 	 
-	valSend.val=allPara.kalmanZ;
+	valSend.val=(float)allPara.sDta.codeData[1];
   memcpy(tdata+30,valSend.data,4);
 	#else
 	valSend.val=(float)allPara.sDta.Result_Angle[2];
@@ -109,7 +109,7 @@ void DataSend(void)
 //		USART_OUT_F(allPara.sDta.GYRO_TemperatureAim[i]);
 //		USART_OUT_F(allPara.GYRO_Temperature[i]);
 //	}
-//	USART_OUT_F(allPara.sDta.GYRO_Aver[2]);
+	USART_OUT_F(allPara.sDta.GYRO_Aver[2]);
 //	USART_OUT_F(lowpass);
 //	USART_OUT_F(allPara.sDta.Result_Angle[2]);
 //	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);
@@ -129,7 +129,7 @@ void DataSend(void)
 //	USART_OUT_F(sqrt(allPara.sDta.posx*allPara.sDta.posx+allPara.sDta.posy*allPara.sDta.posy));
 //	USART_OUT_F(codesum[1]);
 	
-//	USART_Enter();
+	USART_Enter();
 	#else
 	
 	for(i=0;i<DMA_SEND_SIZE;i++)

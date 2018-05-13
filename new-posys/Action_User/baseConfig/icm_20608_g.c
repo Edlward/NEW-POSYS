@@ -110,9 +110,9 @@ void icm_update_gyro_rate(int gyroNum)
 	data1[1] = (raw[2]<<8) | raw[3];
   data1[2] = (raw[4]<<8) | raw[5];
   
-	gyro[0] = -data1[1]/131.140172004891;
-	gyro[1] = data1[0]/131.140172004891;
-	gyro[2] = data1[2]/131.140172004891;
+	gyro[0] = -data1[1]/131.0;
+	gyro[1] = data1[0]/131.0;
+	gyro[2] = data1[2]/131.0;
 
 	float middlePerson = 0.f;
 	switch(gyroNum)

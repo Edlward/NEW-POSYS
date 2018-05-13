@@ -16,7 +16,7 @@
 /* Includes -------------------------------------------------------------------*/
 
 #include "config.h"
-
+#include "iwdg.h"
 extern AllPara_t allPara;
 
 extern double lowpass;
@@ -228,6 +228,13 @@ void AT_CMD_Judge(void){
     bufferInit();
 		SetFlag(START_COMPETE);
 		USART_OUT(USART1,"OK");
+	}
+	else if((bufferI == 4) && strncmp(buffer, "AT+R\r\n", 4)==0)//AT    
+	{
+		USART_OUT(USART1,"OK");
+    bufferInit();
+		delay_us(10);
+		IWDG_Reset();
 	}
 	else if((bufferI == 4) && strncmp(buffer, "AS\r\n", 4)==0)//AT    
 	{

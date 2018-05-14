@@ -28,8 +28,8 @@ extern AllPara_t allPara;
 	allPara.sDta.posy=convert_Y*0.0383709954281714;
 	a=1.371/180*pi;测得到的误差角
   real=[1/cos(a) -tan(a);0 1]*[allPara.sDta.vell1';allPara.sDta.vell2'];
-	real[0]=1.00028635401126*allPara.sDta.vell[0]*0.0385305294301115-0.0239330320090246*allPara.sDta.vell[1]*0.0383709954281714;
-  real[1]=allPara.sDta.vell[1]*0.0383709954281714;
+			real[0]=1.00028635401126*allPara.sDta.vell[0]*0.0387451841901678-0.0239330320090246*allPara.sDta.vell[1]*0.0387451841901678;
+			real[1]=allPara.sDta.vell[1]*0.0387451841901678;
 */
 /*
 25.18 25.19用改进算法后拟合得出的
@@ -82,8 +82,6 @@ void calculatePos(void)
 	
 	//直角坐标系和非直角坐标系的转换  一定要注意坐标系的正方向和角度正方向一样！
 
-		
-	zangle=0.0;
 	#ifdef TESTCAR
 			real[0]=allPara.sDta.vell[0]*0.0388255696403668;
 			real[1]=0.00670391008416163*allPara.sDta.vell[0]*0.0388255696403668+1.00002247095274*allPara.sDta.vell[1]*0.03866266008737;
@@ -99,8 +97,8 @@ void calculatePos(void)
 	#endif
 	
 
-		delPos[0]=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
-		delPos[1]=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
+		delPos[0]=(-sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
+		delPos[1]=(cos(zangle*0.017453292519943)*real[1]+sin(zangle*0.017453292519943)*real[0]);
 
 		allPara.sDta.posx+=delPos[0];
 		allPara.sDta.posy+=delPos[1];

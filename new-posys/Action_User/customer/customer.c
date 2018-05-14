@@ -238,7 +238,7 @@ void AT_CMD_Judge(void){
 		SetFlag(START_COMPETE);
 		USART_OUT(USART3,"OK");
 	}
-	else if((bufferI == 4) && strncmp(buffer, "AT+R\r\n", 4)==0)//AT    
+	else if((bufferI == 6) && strncmp(buffer, "AT+R\r\n", 6)==0)//AT    
 	{
 		USART_OUT(USART3,"OK");
     bufferInit();

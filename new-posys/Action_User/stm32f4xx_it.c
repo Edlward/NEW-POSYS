@@ -303,7 +303,7 @@ void NMI_Handler(void)
 
 void HardFault_Handler(void)
 {  
-			LedAbNormal();
+	LedAbNormal();
 	//if(allPara.resetTime<=500&&allPara.sDta.GYRO_Bais[2]!=0.0)
 	{
 		FindResetTime();
@@ -319,8 +319,6 @@ void HardFault_Handler(void)
 		
 		//STMFLASH_Read(&allPara,allPara.resetTime);
 	}
-	
-		LedAbNormal();
 	
 		ReportHardFault();
 //		ReportHardFault();

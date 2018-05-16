@@ -87,12 +87,11 @@ void calculatePos(void)
 			real[1]=0.00670391008416163*allPara.sDta.vell[0]*0.0388255696403668+1.00002247095274*allPara.sDta.vell[1]*0.03866266008737;
 	#else
 		#ifdef AUTOCAR	//以y为标准
-			real[0]=1.00028635401126*allPara.sDta.vell[0]*0.0387451841901678-0.0239330320090246*allPara.sDta.vell[1]*0.0387451841901678;
-			real[1]=allPara.sDta.vell[1]*0.0387451841901678;
-
+			real[0]=allPara.sDta.vell[0]*0.0387838161359827;
+			real[1]=1.00008334242607*allPara.sDta.vell[1]*0.0387498006697496-0.0129109177866286*allPara.sDta.vell[0]*0.0387838161359827;
 		#else			//以x为标准
 			real[0]=allPara.sDta.vell[0]*0.038762276842169;
-			real[1]=0.00227591327416601*allPara.sDta.vell[0]*0.0385959339263024+1.00000258988726*allPara.sDta.vell[1]*0.0387637529427695;
+			real[1]=1.00000258988726*allPara.sDta.vell[1]*0.0387637529427695-0.0129109177866286*allPara.sDta.vell[0]*0.0385959339263024;
 		#endif
 	#endif
 	

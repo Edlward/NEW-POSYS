@@ -189,25 +189,6 @@ void icm_read_temp(float *data)
   *data=temp;
 }
 
-void icm_update_AccRad(float ACC_Init[GYRO_NUMBER][AXIS_NUMBER])
-{
-	float sum[GYRO_NUMBER]={0.f};
-	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-	{
-		float X_G,Y_G,Z_G;
-		sum[gyro]=sqrt(ACC_Init[gyro][0]*ACC_Init[gyro][0]+ACC_Init[gyro][1]*ACC_Init[gyro][1]+ACC_Init[gyro][2]*ACC_Init[gyro][2]);
-		
-		X_G=ACC_Init[gyro][0]/sum[gyro];
-		Y_G=ACC_Init[gyro][1]/sum[gyro];
-		Z_G=ACC_Init[gyro][2]/sum[gyro];
-		/*初始坐标为0,0,g,然后可以通过坐标变换公式轻易推导*/
-		allPara.ACC_Angle[gyro][1]= safe_atan2( X_G , -Z_G);
-		allPara.ACC_Angle[gyro][0]=-safe_atan2( Y_G , X_G/sin(allPara.ACC_Angle[gyro][1]));
-	}
-	allPara.ACC_RealAngle[0]=(allPara.ACC_Angle[0][0]+allPara.ACC_Angle[1][0]+allPara.ACC_Angle[2][0])/3.f;
-	allPara.ACC_RealAngle[1]=(allPara.ACC_Angle[0][1]+allPara.ACC_Angle[1][1]+allPara.ACC_Angle[2][1])/3.f;
-}
-
 int CheckNan(void)
 {
 	static int count=0;

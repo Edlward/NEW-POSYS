@@ -23,6 +23,37 @@
 
 extern AllPara_t allPara;
 
+
+/*
+chartMode方式  
+陀螺仪1（X轴  Y轴  Z轴）
+陀螺仪2（X轴  Y轴  Z轴）
+陀螺仪3（X轴  Y轴  Z轴）
+
+chartMode+陀螺仪序号（0-2）*3+轴号（0-2）
+*/
+
+//#define GYRO_NUMBER    									
+//#define AXIS_NUMBER    									
+//#define TEMP_SAMPLE_NUMBER    					
+
+/*
+chartSelect方式  
+陀螺仪1（X轴（TEMP_SAMPLE_NUMBER个结果）Y轴（TEMP_SAMPLE_NUMBER个结果）Z轴（TEMP_SAMPLE_NUMBER个结果））
+陀螺仪2（X轴（TEMP_SAMPLE_NUMBER个结果）Y轴（TEMP_SAMPLE_NUMBER个结果）Z轴（TEMP_SAMPLE_NUMBER个结果））
+陀螺仪3（X轴（TEMP_SAMPLE_NUMBER个结果）Y轴（TEMP_SAMPLE_NUMBER个结果）Z轴（TEMP_SAMPLE_NUMBER个结果））
+
+chartSelect+陀螺仪序号（0-(GYRO_NUMBER-1）*AXIS_NUMBER*+轴号（0-(AXIS_NUMBER-1）*TEMP_SAMPLE_NUMBER+结果号（0-(TEMP_SAMPLE_NUMBER-1)）
+*/
+const double stdCoffeicent[GYRO_NUMBER][AXIS_NUMBER]={ 0.0,0.0, 0.0 };
+
+void driftCoffecientInit(void){
+	
+}
+
+
+
+
 /*
 chartW排序方式  
 陀螺仪1（X轴（TEMP_SAMPLE_NUMBER个结果）Y轴（TEMP_SAMPLE_NUMBER个结果）Z轴（TEMP_SAMPLE_NUMBER个结果））

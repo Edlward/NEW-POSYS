@@ -33,7 +33,7 @@ void USART_SendDataToDMA(uint8_t data)
 	
 }
 void USART3_Init(uint32_t BaudRate);
-void usart_Init(uint32_t BaudRate)
+void USART3DMAInit(uint32_t BaudRate)
 {
 	DMA_InitTypeDef DMA_InitStructure;
 	

@@ -35,6 +35,7 @@ void PrintVarXYZ(void);
 void PrintMinValue(void);
 void PrintScaleMode(void);
 void PrintchartSelect(void);
+void driftCoffecientInit(void);
 
 
 #endif

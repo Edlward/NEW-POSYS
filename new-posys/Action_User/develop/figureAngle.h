@@ -36,21 +36,10 @@ void TemporaryHandle(void);
 
 void updateAngle(void);
 
-double safe_atan2(double x,double y);			
-
-void setAngle(float zAngle);
-
-float safe_asin(float v);
-
 void SetAngle(float angle);
-
-void driftCoffecientInit(void);
-
-void JudgeStatic(void);
 
 uint8_t UpdateBais(void);
 
-float PlatFilter(float newValue);
 
 #endif
 

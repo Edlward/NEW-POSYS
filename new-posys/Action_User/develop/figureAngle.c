@@ -16,7 +16,8 @@
 /* Includes -------------------------------------------------------------------*/
 
 #include "config.h"
-
+#include "kalman.h"
+#include "self_math.h"
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
@@ -24,15 +25,9 @@
 
 extern AllPara_t allPara;
 /* Extern   variables ---------------------------------------------------------*/
-/*  全局变量  */
-float K_acc=1;
 /* Extern   function prototypes -----------------------------------------------*/
 /* Private  function prototypes -----------------------------------------------*/
 /* Private  functions ---------------------------------------------------------*/
-double KalmanFilterZ(double measureData);
-double KalmanFilterY(double measureData);
-double KalmanFilterX(double measureData);
-int CalculateRealCrAndMean(float stdCr[AXIS_NUMBER],float mean[AXIS_NUMBER]);
 /**
 * @brief  更新角度值
 *
@@ -53,6 +48,7 @@ int CalculateRealCrAndMean(float stdCr[AXIS_NUMBER],float mean[AXIS_NUMBER]);
 
 #define STATIC_MAX_NUM	1000
 #define STATIC_MIN_NUM	600
+
 double lowpass=0.0;
 static float stdCr[AXIS_NUMBER]={0.f};        
 static float mean[AXIS_NUMBER]={0.f};
@@ -73,7 +69,7 @@ int RoughHandle(void)
 	
 	if(ignore>200*3&&!isCalCrOk)
 	{
-		if(CalculateRealCrAndMean(stdCr,mean));
+		if(CalculateRealCrAndMean(stdCr,mean)){}
 			//isCalCrOk=1;
 	}
 	else if(isCalCrOk==1)
@@ -119,49 +115,6 @@ int RoughHandle(void)
 	}
 }
 
-float FilterVell(float newValue)
-{
-	static float datas[10]={0.f};
-	float temp=0.f;
-	
-	for(int i=0;i<10-1;i++)
-		datas[i]=datas[i+1];
-	
-	datas[10-1]=newValue;
-	
-	for(int i=0;i<10;i++)
-		temp+=datas[i]/10;
-	
-	return temp;
-}
-
-
-#define PLAT_TIME		(10)
-#define PLAT_NUM		(PLAT_TIME*200)
-float PlatFilter(float newValue)
-{
-	static float value=0.f;
-	static float data[PLAT_NUM]={0.f};
-	static int index=0;
-	
-	if(index<PLAT_NUM)
-	{
-		data[index]=newValue;
-		value=value+newValue*1.f/PLAT_NUM;
-		index++;
-	}
-	else if(index>=STATIC_MAX_NUM)
-	{
-		value=value-data[0]*1.f/PLAT_NUM;
-		for(int i=0;i<STATIC_MAX_NUM-1;i++)
-			data[i]=data[i+1];
-		data[STATIC_MAX_NUM-1]=newValue;
-		value=value+data[STATIC_MAX_NUM-1]*1.f/PLAT_NUM;
-	}
-	
-	return value;
-}
-
 void updateAngle(void)
 {	
 	double w[3]={0.0};
@@ -191,82 +144,6 @@ void updateAngle(void)
 	
 }
 
-
-
-void SetAngle(float angle){
-	double euler[3];
-	euler[0]=0.0f;
-	euler[1]=0.0f;
-	euler[2]=angle/180.f*PI;
-	Euler_to_Quaternion(euler,allPara.sDta.quarternion);
-}
-
-
-#define STATIC_ARRAY_NUM	7
-
-uint16_t FindMax(uint16_t codes[STATIC_ARRAY_NUM])
-{
-	uint16_t Max=codes[0]; 
-  for(int i=1;i<STATIC_ARRAY_NUM;i++)
-	{
-		if(codes[i]>Max) Max=codes[i];
-	}
-	return Max;
-}
-
-uint16_t FindMin(uint16_t codes[STATIC_ARRAY_NUM])
-{
-	uint16_t Min=codes[0]; 
-  for(int i=1;i<STATIC_ARRAY_NUM;i++)
-	{
-		if(codes[i]<Min) Min=codes[i];
-	}
-	return Min;
-}
-
-void JudgeStatic(void)
-{
-	static uint16_t codes0[STATIC_ARRAY_NUM];
-	static uint16_t codes1[STATIC_ARRAY_NUM];
-	int difCode=0;
-	
-	//第一次判断静止时可以不用判断角速度
-	allPara.sDta.codeData[0]=SPI_ReadAS5045(0);
-	allPara.sDta.codeData[1]=SPI_ReadAS5045(1);
-	
-			figureVell();
-//	static int staticCount=0;
-	for(int i=0;i<STATIC_ARRAY_NUM-1;i++)
-	{
-		codes0[i]=codes0[i+1];
-		codes1[i]=codes1[i+1];
-	}
-	codes0[STATIC_ARRAY_NUM-1]=allPara.sDta.codeData[0];
-	codes1[STATIC_ARRAY_NUM-1]=allPara.sDta.codeData[1];
-
-	difCode=FindMin(codes0)-FindMax(codes0);
-	if(difCode>2048)
-		difCode-=4096;
-	if(difCode<-2048)
-		difCode+=4096;
-	#ifndef AUTOCAR
-	//如果条件真的恶劣，那就说明强制静止有错
-//	if(abs(difCode)<=20)
-//	{
-//		staticCount++;
-//	}
-//	else
-//		staticCount=0;
-//	
-//	staticCount=staticCount;
-//	if(staticCount>=5)
-//		SetFlag(STATIC_FORCE);
-//	else
-//		SetFlag(~STATIC_FORCE);
-	
-	#endif
-	
-}
 
 uint8_t UpdateBais(void)
 {  
@@ -364,381 +241,15 @@ uint8_t UpdateBais(void)
 }
 
 
-int CalculateRealCrAndMean(float stdCr[AXIS_NUMBER],float mean[AXIS_NUMBER]){
-  static float IAE_st[AXIS_NUMBER][200]={0.f};  
-  static float data[AXIS_NUMBER][200]={0.f};    
-  static int ignore=0;
-  ignore++;
-  
-  int axis=0;
-  
-    for(axis=0;axis<AXIS_NUMBER;axis++)
-    {
-      mean[axis]=mean[axis]-data[axis][0]/200;
-      memcpy(data[axis],data[axis]+1,796);
-      data[axis][199]=allPara.sDta.GYRO_Aver[axis];
-      memcpy(IAE_st[axis],IAE_st[axis]+1,796);
-      mean[axis]=mean[axis]+data[axis][199]/200;
-      IAE_st[axis][199]=allPara.sDta.GYRO_Aver[axis]-mean[axis];
-    }
-  
-  if(ignore<400)
-    return 0;
-  else
-    ignore=400;
-  
-    for(axis=0;axis<AXIS_NUMBER;axis++){
-      stdCr[axis]=0;
-      for(int i=0;i<200;i++)
-      {
-        stdCr[axis]=stdCr[axis]+IAE_st[axis][i]*IAE_st[axis][i];
-      }
-      stdCr[axis]=__sqrtf(stdCr[axis]/200.0f);
-    }
-  
-  return 1;
+
+
+void SetAngle(float angle){
+	double euler[3];
+	euler[0]=0.0f;
+	euler[1]=0.0f;
+	euler[2]=angle/180.f*PI;
+	Euler_to_Quaternion(euler,allPara.sDta.quarternion);
 }
 
-/*
-chartMode方式  
-陀螺仪1（X轴  Y轴  Z轴）
-陀螺仪2（X轴  Y轴  Z轴）
-陀螺仪3（X轴  Y轴  Z轴）
-
-chartMode+陀螺仪序号（0-2）*3+轴号（0-2）
-*/
-
-//#define GYRO_NUMBER    									
-//#define AXIS_NUMBER    									
-//#define TEMP_SAMPLE_NUMBER    					
-
-/*
-chartSelect方式  
-陀螺仪1（X轴（TEMP_SAMPLE_NUMBER个结果）Y轴（TEMP_SAMPLE_NUMBER个结果）Z轴（TEMP_SAMPLE_NUMBER个结果））
-陀螺仪2（X轴（TEMP_SAMPLE_NUMBER个结果）Y轴（TEMP_SAMPLE_NUMBER个结果）Z轴（TEMP_SAMPLE_NUMBER个结果））
-陀螺仪3（X轴（TEMP_SAMPLE_NUMBER个结果）Y轴（TEMP_SAMPLE_NUMBER个结果）Z轴（TEMP_SAMPLE_NUMBER个结果））
-
-chartSelect+陀螺仪序号（0-(GYRO_NUMBER-1）*AXIS_NUMBER*+轴号（0-(AXIS_NUMBER-1）*TEMP_SAMPLE_NUMBER+结果号（0-(TEMP_SAMPLE_NUMBER-1)）
-*/
-const double stdCoffeicent[GYRO_NUMBER][AXIS_NUMBER]={ 0.0,0.0, 0.0 };
-
-void driftCoffecientInit(void){
-	
-}
-
-float safe_asin(float v)
-{
-	int error=0;
-	if (isnan(v)) 
-		error=1;
-	else if (v >= 1.0f) 
-		error=2;
-	else if (v <= -1.0f) 
-		error=3;
-	
-	if(error!=0)
-	{
-		uint32_t r_sp ;
-			/*判断发生异常时使用MSP还是PSP*/		
-		if(__get_PSP()!=0x00) //获取SP的值
-			r_sp = __get_PSP(); 
-		else
-			r_sp = __get_MSP(); 
-		/*因为经历中断函数入栈之后，堆栈指针会减小0x10，所以平移回来（可能不具有普遍性）*/
-		r_sp = r_sp+0x10;
-		/*串口发数通知*/
-		USART_OUT(USART3,"sinFault %d",error);
-		char sPoint[2]={0};
-		USART_OUT(USART3,"%s","0x");
-		/*获取出现异常时程序的地址*/
-		for(int i=3;i>=-28;i--){
-			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
-			USART_OUT(USART3,"%s",sPoint);
-			if(i%4==0)
-				USART_Enter();
-		}
-		/*发送回车符*/
-		USART_Enter();
-		switch(error)
-		{
-			case 1:
-				return 0.0;
-			case 2:
-				return 3.1415926/2;
-			case 3:
-				return -3.1415926/2;
-		}
-	}else
-			return asin(v);
-	return asin(v);
-}
-
-/**
-  * @brief  优化后的反三角函数
-  * @param  x: tan=x/y
-  * @param  y:
-  * @retval 得到反正切的值
-  */
-double safe_atan2(double x,double y)
-{	
-	int error=0;
-
-		if (isnan(y)) 
-	{ 
-		error=1;
-  }else if(isnan(x/y))
-	{
-		if(x>0)
-			error=2;
-		else if(x<0)
-			error=3;
-		else 
-			error=4;
-	}
-	
-	if(error!=0)
-	{
-		uint32_t r_sp ;
-			/*判断发生异常时使用MSP还是PSP*/		
-		if(__get_PSP()!=0x00) //获取SP的值
-			r_sp = __get_PSP(); 
-		else
-			r_sp = __get_MSP(); 
-		/*因为经历中断函数入栈之后，堆栈指针会减小0x10，所以平移回来（可能不具有普遍性）*/
-		r_sp = r_sp+0x10;
-		/*串口发数通知*/
-		USART_OUT(USART3,"tanFault %d",error);
-		char sPoint[2]={0};
-		USART_OUT(USART3,"%s","0x");
-		/*获取出现异常时程序的地址*/
-		for(int i=3;i>=-28;i--){
-			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
-			USART_OUT(USART3,"%s",sPoint);
-			if(i%4==0)
-				USART_Enter();
-		}
-		/*发送回车符*/
-		USART_Enter();
-		switch(error)
-		{
-			case 1:
-				return 0.0f;
-			case 2:
-				return  3.1415926/2.0; 
-			case 3:
-				return -3.1415926/2.0;
-			case 4:
-				return 0.0;
-		}
-	}else
-		return atan2(x,y);
-	return atan2(x,y);
-}
-
-/*算法中 H,φ,Γ均为一*/
-/*算法中 H,φ,Γ均为一*/
-double KalmanFilterZ1(double measureData)
-{
-  static double act_value=0;  //实际值
-  double predict;             //预测值
-  
-  static double P_last=0.00001;   //上一次的预测误差
-  static double P_mid;        //对预测误差的预测
-  static double Kk;           //滤波增益系数
-  
-  static double Q=0.00001;       //系统噪声        
-  double R=0.001;      //测量噪声 
-  static double data=0.0;
-  //令预测值为上一次的真实值
-  predict=act_value;
-  
-  static uint32_t ignore=0;
-  ignore++;
-  if(ignore<100){
-    data+=measureData;
-    return measureData;
-  }
-  else if(ignore==100){
-    predict=data/99.0;
-  }else
-    ignore=101;
-  
-  /* 预测本次的预测误差 */
-  P_mid=P_last+Q;
-  
-  /* 计算系数，求得输出值 */
-  Kk=P_mid/(P_mid+R);
-  
-  act_value=predict+Kk*(measureData-predict);
-  
-  /* 更新预测误差 */
-  P_last=(1-Kk)*P_mid;
-  
-  return act_value;
-}
-
-/*算法中 H,φ,Γ均为一*/
-double KalmanFilterZ(double measureData)
-{
-  static double act_value=0;  //实际值
-  double predict;             //预测值
-  
-  static double P_last=0.00001;   //上一次的预测误差
-  static double P_mid;        //对预测误差的预测
-  static double Kk;           //滤波增益系数
-  
-  static double Q=0.00001;       //系统噪声        
-  double R=0.001;      //测量噪声 
-  static double data=0.0;
-  //令预测值为上一次的真实值
-  predict=act_value;
-  
-  static uint32_t ignore=0;
-  ignore++;
-  if(ignore<100){
-    data+=measureData;
-    return measureData;
-  }
-  else if(ignore==100){
-    predict=data/99.0;
-  }else
-    ignore=101;
-  
-  /* 预测本次的预测误差 */
-  P_mid=P_last+Q;
-  
-  /* 计算系数，求得输出值 */
-  Kk=P_mid/(P_mid+R);
-  
-  act_value=predict+Kk*(measureData-predict);
-  
-  /* 更新预测误差 */
-  P_last=(1-Kk)*P_mid;
-  
-  return act_value;
-}
-/*算法中 H,φ,Γ均为一*/
-double KalmanFilterX(double measureData)
-{
-  static double act_value=0;  //实际值
-  double predict;             //预测值
-  
-  static double P_last=0.0000003169;   //上一次的预测误差
-  static double P_mid;        //对预测误差的预测
-  static double Kk;           //滤波增益系数
-  
-  static double Q=0.00000000002514;       //系统噪声         
-  double R=0.0;      //测量噪声 
-  static double IAE_st[50];    //记录的新息
-  static double data=0.0;
-  double Cr=0;                //新息的方差
-  
-  predict=act_value;
-  
-  /* 新息的方差计算 */
-  memcpy(IAE_st,IAE_st+1,392);
-  IAE_st[49]=measureData-predict;
-  
-  Cr=0;
-  for(int i=0;i<50;i++)
-  {
-    Cr=Cr+IAE_st[i]*IAE_st[i];
-  }
-  Cr=Cr/50.0f;
-  static uint32_t ignore=0;
-  ignore++;
-  if(ignore<100){
-    data+=measureData;
-    return 0.0;
-  }
-  else if(ignore==100){
-    predict=data/99.0;
-    //USART_OUT_F(predict);
-    //USART_Enter();
-  }else
-    ignore=101;
-  
-  /* 预测本次的预测误差 */
-  P_mid=P_last+Q;
-  
-  /* 计算系数，求得输出值 */
-  Kk=P_mid/(P_mid+R);
-  
-  act_value=predict+Kk*(measureData-predict);
-  
-  /* 更新预测误差 */
-  P_last=(1-Kk)*P_mid;
-  
-  /* 计算并调整系统噪声 */
-  Q=Kk*Kk*Cr;
-  
-  /* 为提高滤波器的响应速度，减小滞后而设下的阈值 */
-  if(Kk>0.5)
-    act_value=measureData;
-  
-  return act_value;
-}
-
-/*算法中 H,φ,Γ均为一*/
-double KalmanFilterY(double measureData)
-{
-   static double act_value=0;  //实际值
-  double predict;             //预测值
-  
-  static double P_last=0.01;   //上一次的预测误差
-  static double P_mid;        //对预测误差的预测
-  static double Kk;           //滤波增益系数
-  
-  static double Q=0.003;       //系统噪声        
-  double R=0.0;      //测量噪声 
-  static double IAE_st[50];    //记录的新息
-  static double data=0.0;
-  double Cr=0;                //新息的方差
-  //令预测值为上一次的真实值
-  predict=act_value;
-  
-  /* 新息的方差计算 */
-  memcpy(IAE_st,IAE_st+1,196);
-  IAE_st[49]=measureData-predict;
-  
-  Cr=0;
-  for(int i=0;i<50;i++)
-  {
-    Cr=Cr+IAE_st[i]*IAE_st[i];
-  }
-  Cr=Cr/50.0f;
-  static uint32_t ignore=0;
-  ignore++;
-  if(ignore<100){
-    data+=measureData;
-    return 0.0;
-  }
-  else if(ignore==100){
-    predict=data/99.0;
-    //USART_OUT_F(predict);
-    //USART_Enter();
-  }else
-    ignore=101;
-  
-  /* 预测本次的预测误差 */
-  P_mid=P_last+Q;
-  
-  /* 计算系数，求得输出值 */
-  Kk=P_mid/(P_mid+R);
-  
-  act_value=predict+Kk*(measureData-predict);
-  
-  /* 更新预测误差 */
-  P_last=(1-Kk)*P_mid;
-  
-  /* 计算并调整系统噪声 */
-  Q=Kk*Kk*Cr;
-  
-  /* 为提高滤波器的响应速度，减小滞后而设下的阈值 */
-  if(Kk>0.5)
-    act_value=measureData;
-  
-  return act_value;
-}
 
 /************************ (C) COPYRIGHT 2016 ACTION *****END OF FILE****/

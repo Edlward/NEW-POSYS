@@ -17,11 +17,64 @@
 
 #include "config.h"
 #include "iwdg.h"
-extern AllPara_t allPara;
 
-extern double lowpass;
+extern AllPara_t allPara;
+static char buffer[20];
+static int bufferI=0;
+static int atCommand=0;
+
 void AT_CMD_Judge(void);
 void SetParaDefault(void);
+void bufferInit(void);
+void AT_CMD_Judge(void);
+
+
+void USART1_IRQHandler(void)
+{
+  uint8_t data;
+  if(USART_GetITStatus(USART1,USART_IT_RXNE)==SET)
+  {
+    USART_ClearITPendingBit(USART1,USART_IT_RXNE);
+    data=USART_ReceiveData(USART1);
+    buffer[bufferI]=data;
+    bufferI++;
+		if(bufferI>=20)
+			bufferI=0;
+    if(bufferI>1&&buffer[bufferI-1]=='\n'&&buffer[bufferI-2]=='\r'){
+      AT_CMD_Judge();
+    }else{
+      if(buffer[0]!='A'){
+        bufferInit();
+      }
+    }
+  }else{
+    data=USART_ReceiveData(USART1);
+  }
+}
+
+void USART3_IRQHandler(void)
+{
+  uint8_t data;
+  if(USART_GetITStatus(USART3,USART_IT_RXNE)==SET)
+  {
+    USART_ClearITPendingBit(USART3,USART_IT_RXNE);
+    data=USART_ReceiveData(USART3);
+    buffer[bufferI]=data;
+    bufferI++;
+		if(bufferI>=20)
+			bufferI=0;
+    if(bufferI>1&&buffer[bufferI-1]=='\n'&&buffer[bufferI-2]=='\r'){
+      AT_CMD_Judge();
+    }else{
+      if(buffer[0]!='A'){
+        bufferInit();
+      }
+    }
+  }else{
+    data=USART_ReceiveData(USART3);
+  }
+}
+
 void DataSend(void)
 {
 	int i;
@@ -104,93 +157,11 @@ void DataSend(void)
 
 	#endif
 }
-void debugsend2(float a,float b,float c,float d,float e)
-{
-	USART_OUT_F(a);
-	USART_OUT_F(b);
-	USART_OUT_F(c);
-//	USART_OUT_F(d);
-//	USART_OUT_F(e);
-	USART_Enter();
-}
-void debugsend(float a,float b,float c,float d,float e,float f)
-{
-	int i;
-	uint8_t tdata[28];
-  union{
-		float   val;
-		uint8_t data[4];
-	}valSend;
-	
-  tdata[0]=0x0d;
-  tdata[1]=0x0a;
-  tdata[26]=0x0a;
-  tdata[27]=0x0d;
-	
-	valSend.val=a;
-  memcpy(tdata+2,valSend.data,4);
-	
-	valSend.val=b;
-  memcpy(tdata+6,valSend.data,4);
-	
-	valSend.val=c;
-  memcpy(tdata+10,valSend.data,4);
-	
-	valSend.val=d;
-  memcpy(tdata+14,valSend.data,4);
-	 
-	valSend.val=e;
-  memcpy(tdata+18,valSend.data,4);
-	 
-	valSend.val=f;
-  memcpy(tdata+22,valSend.data,4);
-	
-	for(i=0;i<28;i++)
-   USART_SendData(USART3,tdata[i]);
 
-}
-
-void ReportHardFault(void)
-{
-	USART_OUT(USART3,"hardfault\r\n");
-}
-
-static char buffer[20];
-static int bufferI=0;
-
-static int atCommand=0;
 void bufferInit(void){
   bufferI=0;
   for(int i=0;i<20;i++)
     buffer[i]=0;
-}
-
-void USART3_IRQHandler(void)
-{
-  uint8_t data;
-  if(USART_GetITStatus(USART3,USART_IT_RXNE)==SET)
-  {
-    USART_ClearITPendingBit(USART3,USART_IT_RXNE);
-    data=USART_ReceiveData(USART3);
-    buffer[bufferI]=data;
-    bufferI++;
-		if(bufferI>=20)
-			bufferI=0;
-//		if(data=='P')
-//		{
-//		atCommand=20;
-//		}
-    if(bufferI>1&&buffer[bufferI-1]=='\n'&&buffer[bufferI-2]=='\r'){
-      AT_CMD_Judge();
-    }else{
-      if(buffer[0]!='A'){
-        bufferInit();
-        //USART_OUT(USART3,"NO A\r\n");
-      }
-    }
-  }else{
-    data=USART_ReceiveData(USART3);
-  }
 }
 void AT_CMD_Judge(void){
 	
@@ -337,3 +308,7 @@ void SetParaDefault(void)
 
 }
 
+void ReportHardFault(void)
+{
+	USART_OUT(USART3,"hardfault\r\n");
+}

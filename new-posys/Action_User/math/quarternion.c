@@ -1,5 +1,6 @@
 #include "arm_math.h"
 #include "figureAngle.h"
+#include "self_math.h"
 
 extern AllPara_t allPara;
 

@@ -15,6 +15,7 @@
 #include "DataRecover.h"
 #include "iwdg.h"
 #include "gpio.h"
+#include "self_math.h"
 AllPara_t allPara={0};
 
 void init(void)
@@ -37,9 +38,9 @@ void init(void)
   CS_Config();
 	
 	#ifdef TEST_SUMMER
-	usart_Init(921600);
+	USART3DMAInit(921600);
 	#else
-	usart_Init(115200);
+	USART3DMAInit(115200);
 	#endif
 	
 //  Flash_Init();

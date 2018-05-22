@@ -90,11 +90,10 @@ void calculatePos(void)
 			real[0]=allPara.sDta.vell[0]*0.0387838161359827;
 			real[1]=1.00008334242607*allPara.sDta.vell[1]*0.0387498006697496-0.0129109177866286*allPara.sDta.vell[0]*0.0387838161359827;
 		#else			//以x为标准
-			real[0]=allPara.sDta.vell[0]*0.038762276842169;
-			real[1]=1.00000258988726*allPara.sDta.vell[1]*0.0387637529427695-0.0129109177866286*allPara.sDta.vell[0]*0.0385959339263024;
+			real[0]=allPara.sDta.vell[0]*0.0387838161359827;
+			real[1]=allPara.sDta.vell[1]*0.0387498006697496;
 		#endif
 	#endif
-	
 
 		delPos[0]=(-sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
 		delPos[1]=(cos(zangle*0.017453292519943)*real[1]+sin(zangle*0.017453292519943)*real[0]);

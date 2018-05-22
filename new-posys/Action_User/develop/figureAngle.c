@@ -33,7 +33,6 @@ double KalmanFilterZ(double measureData);
 double KalmanFilterY(double measureData);
 double KalmanFilterX(double measureData);
 int CalculateRealCrAndMean(float stdCr[AXIS_NUMBER],float mean[AXIS_NUMBER]);
-int JudgeAcc(void);
 /**
 * @brief  更新角度值
 *
@@ -47,7 +46,7 @@ int JudgeAcc(void);
 #define TIME_STATIC					(20)
 #define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #else
-#define TIME_STATIC					(15)
+#define TIME_STATIC					(3)
 #define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #endif
 
@@ -120,6 +119,23 @@ int RoughHandle(void)
 	}
 }
 
+float FilterVell(float newValue)
+{
+	static float datas[10]={0.f};
+	float temp=0.f;
+	
+	for(int i=0;i<10-1;i++)
+		datas[i]=datas[i+1];
+	
+	datas[10-1]=newValue;
+	
+	for(int i=0;i<10;i++)
+		temp+=datas[i]/10;
+	
+	return temp;
+}
+
+
 #define PLAT_TIME		(10)
 #define PLAT_NUM		(PLAT_TIME*200)
 float PlatFilter(float newValue)
@@ -148,11 +164,6 @@ float PlatFilter(float newValue)
 
 void updateAngle(void)
 {	
-//	float maxStaticValue=*(flashData.minValue);
-//	
-//  if((allPara.sDta.flag&STATIC)&&(allPara.GYRO_Real[2]<0.2f)){
-//		maxStaticValue=0.15f;
-//	}
 	double w[3]={0.0};
 	
 	w[0]=allPara.GYRO_Real[0];
@@ -163,33 +174,16 @@ void updateAngle(void)
     w[0]=0.f;
   if(fabs(w[1])<0.3f)//单位 °/s
     w[1]=0.f;
-	
+
 	#ifdef AUTOCAR
-//  if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1&&fabs(allPara.kalmanZ)<0.05))//单位 °/s
 	if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1&&fabs(w[2])<0.20))//单位 °/s
-//  if(allPara.sDta.flag&STATIC_FORCE)//单位 °/s
     w[2]=0.f;
-	allPara.sDta.Result_Angle[2]+=w[2]*0.005;
 	#else
-	static double tempAngle=0.0;
-	static int sumvell=0;
-	static int flag=0;
-	if(abs(allPara.sDta.vell[0])==0&&abs(allPara.sDta.vell[1])==0)
-		w[2]=0.f;
-	
-	tempAngle+=w[2]*0.005;
-	
-	sumvell+=allPara.sDta.vell[0];
-	if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[1])<=20))//||(fabs(w[2])<0.3f))
+	if((allPara.sDta.flag&STATIC_FORCE)||(fabs(FilterVell(allPara.sDta.vell[1]))<=20.f))//||(fabs(w[2])<0.3f))
     w[2]=0.f;
-	if(fabs(tempAngle)>3.0)
-		flag=1;
-	if(!flag)
-		allPara.sDta.Result_Angle[2]+=w[2]*0.005;
-	else
-		allPara.sDta.Result_Angle[2]=tempAngle;
 	#endif
 	
+	allPara.sDta.Result_Angle[2]+=w[2]*0.005;
 	if(allPara.sDta.Result_Angle[2]>180.0)
 		allPara.sDta.Result_Angle[2]-=360.0;
 	else if(allPara.sDta.Result_Angle[2]<-180.0)
@@ -200,40 +194,13 @@ void updateAngle(void)
 
 
 void SetAngle(float angle){
-	float euler[3];
+	double euler[3];
 	euler[0]=0.0f;
 	euler[1]=0.0f;
 	euler[2]=angle/180.f*PI;
 	Euler_to_Quaternion(euler,allPara.sDta.quarternion);
 }
 
-int JudgeAcc(void)
-{
-	float sum[GYRO_NUMBER]={0.f};
-	float accInitSum=0.f;
-	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-	{
-		float X_G,Y_G,Z_G;
-		sum[gyro]=sqrt(allPara.ACC_Aver[gyro][0]*allPara.ACC_Aver[gyro][0]+allPara.ACC_Aver[gyro][1]*allPara.ACC_Aver[gyro][1]+allPara.ACC_Aver[gyro][2]*allPara.ACC_Aver[gyro][2]);
-		
-		X_G=allPara.ACC_Aver[gyro][0]/sum[gyro];
-		Y_G=allPara.ACC_Aver[gyro][1]/sum[gyro];
-		Z_G=allPara.ACC_Aver[gyro][2]/sum[gyro];
-		/*初始坐标为0,0,g,然后可以通过坐标变换公式轻易推导*/
-		allPara.ACC_Angle[gyro][1]= safe_atan2( X_G , -Z_G);
-		allPara.ACC_Angle[gyro][0]=-safe_atan2( Y_G , X_G/sin(allPara.ACC_Angle[gyro][1]));
-	}
-	allPara.ACC_RealAngle[0]=(allPara.ACC_Angle[0][0]+allPara.ACC_Angle[1][0]+allPara.ACC_Angle[2][0])/3.f;
-	allPara.ACC_RealAngle[1]=(allPara.ACC_Angle[0][1]+allPara.ACC_Angle[1][1]+allPara.ACC_Angle[2][1])/3.f;
-	
-	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-		for(int axis=0;axis<AXIS_NUMBER;axis++)
-			accInitSum=accInitSum+allPara.ACC_Aver[gyro][axis]*allPara.ACC_Aver[gyro][axis];
-  if(fabs(accInitSum-allPara.ACC_InitSum)<0.003)
-    return 1;
-  else
-    return 0;
-}	
 
 #define STATIC_ARRAY_NUM	7
 
@@ -383,13 +350,8 @@ uint8_t UpdateBais(void)
 				{
 					sum[axis]=sum[axis]+data[axis][i];
 				}
-				#ifdef AUTOCAR
 				if((fabs(sum[axis]/(index-1)-allPara.sDta.GYRO_Bais[axis])<0.009&&allPara.sDta.GYRO_Bais[axis]!=0.0)||(allPara.sDta.GYRO_Bais[axis]==0.0))
 					allPara.sDta.GYRO_Bais[axis]=sum[axis]/(index-1);
-				#else
-				if((fabs(sum[axis]/(index-1)-allPara.sDta.GYRO_Bais[axis])<0.02&&allPara.sDta.GYRO_Bais[axis]!=0.0)||(allPara.sDta.GYRO_Bais[axis]==0.0))
-					allPara.sDta.GYRO_Bais[axis]=sum[axis]/(index-1);
-				#endif
 			}
 		}
 		for(int axis=0;axis<AXIS_NUMBER;axis++)
@@ -778,6 +740,5 @@ double KalmanFilterY(double measureData)
   
   return act_value;
 }
-
 
 /************************ (C) COPYRIGHT 2016 ACTION *****END OF FILE****/

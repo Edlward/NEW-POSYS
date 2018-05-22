@@ -35,7 +35,6 @@ void DataSend(void)
   tdata[1]=0x0a;
   tdata[DMA_SEND_SIZE-2]=0x0a;
   tdata[DMA_SEND_SIZE-1]=0x0d;
-	#ifdef AUTOCAR 
 	
 	valSend.val=(float)allPara.sDta.Result_Angle[2];
   memcpy(tdata+2,valSend.data,4);
@@ -60,40 +59,6 @@ void DataSend(void)
 	 
 	valSend.val=(float)allPara.sDta.codeData[1];
   memcpy(tdata+30,valSend.data,4);
-	#else
-	valSend.val=(float)allPara.sDta.Result_Angle[2];
-  memcpy(tdata+2,valSend.data,4);
-	
-	valSend.val=(float)allPara.sDta.vellx;
-  memcpy(tdata+6,valSend.data,4);
-	
-	valSend.val=(float)allPara.sDta.velly;
-  memcpy(tdata+10,valSend.data,4);
-	
-//	valSend.val=(float)allPara.sDta.GYRO_Bais[2];
-//  memcpy(tdata+10,valSend.data,4);
-
-	valSend.val=(float)allPara.sDta.posx;
-  memcpy(tdata+14,valSend.data,4);
-	 
-	valSend.val=(float)allPara.sDta.posy;
-  memcpy(tdata+18,valSend.data,4);
-	 
-	valSend.val=(float)allPara.GYRO_Real[2];
-  memcpy(tdata+22,valSend.data,4);
-	
-//	valSend.val=(float)allPara.sDta.GYRO_Aver[1];
-//  memcpy(tdata+26,valSend.data,4);
-//	 
-//	valSend.val=(float)allPara.sDta.GYRO_Aver[2];
-//  memcpy(tdata+30,valSend.data,4);
-	valSend.val=(float)allPara.sDta.codeData[0];
-  memcpy(tdata+26,valSend.data,4);
-	 
-	valSend.val=(float)allPara.sDta.codeData[1];
-  memcpy(tdata+30,valSend.data,4);
-	#endif
-
 //	
 	#ifdef TEST_SUMMER
 	i=i;
@@ -111,7 +76,7 @@ void DataSend(void)
 //	}
 //	USART_OUT_F(allPara.sDta.GYRO_Aver[2]);
 //	USART_OUT_F(lowpass);
-	USART_OUT_F(allPara.sDta.Result_Angle[2]);
+//	USART_OUT_F(allPara.sDta.Result_Angle[2]);
 //	USART_OUT_F(allPara.sDta.GYRO_Bais[2]);
 //	USART_OUT_F(allPara.GYRO_Real[2]);
 //	USART_OUT_F(allPara.sDta.posx);
@@ -121,17 +86,17 @@ void DataSend(void)
 //	USART_OUT_F(allPara.isStatic);
 	//USART_OUT(USART3,"%d\t%d\t%d",allPara.sDta.codeData[0],allPara.sDta.codeData[1],allPara.cpuUsage);
 	
-	static int codesum[2]={0};
-	codesum[0]+=allPara.sDta.vell[0];
-	codesum[1]+=allPara.sDta.vell[1];
-//	USART_OUT_F(codesum[0]);
+//	static int codesum[2]={0};
+//	codesum[0]+=allPara.sDta.vell[0];
+//	codesum[1]+=allPara.sDta.vell[1];
+////	USART_OUT_F(codesum[0]);
+////	USART_OUT_F(codesum[1]);
+//	USART_OUT_F(allPara.sDta.posx);
+//	USART_OUT_F(allPara.sDta.posy);
+//	USART_OUT_F(sqrt(allPara.sDta.posx*allPara.sDta.posx+allPara.sDta.posy*allPara.sDta.posy));
 //	USART_OUT_F(codesum[1]);
-	USART_OUT_F(allPara.sDta.posx);
-	USART_OUT_F(allPara.sDta.posy);
-	USART_OUT_F(sqrt(allPara.sDta.posx*allPara.sDta.posx+allPara.sDta.posy*allPara.sDta.posy));
-//	USART_OUT_F(codesum[1]);
-	
-	USART_Enter();
+		USART_OUT(USART3,"123\r\n");
+//	USART_Enter();
 	#else
 	
 	for(i=0;i<DMA_SEND_SIZE;i++)

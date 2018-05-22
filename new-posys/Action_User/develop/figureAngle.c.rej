@@ -1,0 +1,23 @@
+diff a/new-posys/Action_User/develop/figureAngle.c b/new-posys/Action_User/develop/figureAngle.c	(rejected hunks)
+@@ -180,6 +180,21 @@
+     w[0]=0.f;
+   if(fabs(w[1])<0.3f)//��λ ��/s
+     w[1]=0.f;
++  if(fabs(w[2])<0.3f)//��λ ��/s
++    w[1]=0.f;
++	
++	static double qu[4]={1.0,0.0,0.0,0.0};
++	static double angle[3]={-20.0,-70.0,-150.0};
++	
++	QuaternionInt(qu,w);
++	Quaternion_to_Euler(qu,angle);
++	Euler_to_Quaternion(angle,qu);
++	angle[0]*=57.2957795130823;
++	angle[1]*=57.2957795130823;
++	angle[2]*=57.2957795130823;
++	
++	
++	JudgeAcc();
+ 	
+ 	#ifdef AUTOCAR
+ //  if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1&&fabs(allPara.kalmanZ)<0.05))//��λ ��/s

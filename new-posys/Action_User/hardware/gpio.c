@@ -91,16 +91,18 @@ void GPIO_Init_Pins(GPIO_TypeDef * GPIOx,
   GPIO_Init(GPIOx,&GPIO_InitStructure);	
 }
 
-void LedNormal(void)
-{
-  /* Deselect : Chip Select high ---------*/
-  GPIO_SetBits(GPIOA, GPIO_Pin_2);
-}
-
 void LedAbNormal(void)
 {
   /* Deselect : Chip Select high ---------*/
+  GPIO_ResetBits(GPIOA, GPIO_Pin_3);
+  GPIO_SetBits(GPIOA, GPIO_Pin_2);
+}
+
+void LedNormal(void)
+{
+  /* Deselect : Chip Select high ---------*/
   GPIO_ResetBits(GPIOA, GPIO_Pin_2);
+  GPIO_SetBits(GPIOA, GPIO_Pin_3);
 }
 void Led_Init(void)
 {
@@ -109,14 +111,13 @@ void Led_Init(void)
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE); 
   
   /* 配置片选引�?------------------------ */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2|GPIO_Pin_3;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
   GPIO_Init(GPIOA, &GPIO_InitStructure);                 //ICM20608G
   
-	LedNormal();
 }
 
 

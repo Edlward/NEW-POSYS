@@ -60,6 +60,10 @@ void init(void)
 	SetFlag(START_COMPETE);
 	#endif
 	
+	#ifndef AUTOCAR
+	SetFlag(START_COMPETE);
+	#endif
+	
 	if(!allPara.resetFlag)
 	{
 		SetFlag(HEATING);
@@ -116,6 +120,7 @@ int main(void)
 					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
 						temp_pid_ctr(gyro,allPara.sDta.GYRO_TemperatureAim[gyro]-0.5f);
 				}
+				
 				JudgeStatic();
         if(RoughHandle())
 				{

@@ -16,13 +16,13 @@
 /* Includes -------------------------------------------------------------------*/
 
 #include "config.h"
+#include "usart.h"
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
 
 extern AllPara_t allPara;
-
 
 /*
 chartMode·½Ê½  
@@ -234,7 +234,7 @@ int UpdateVDoffTable(void)
     if(TempErgodic(gyro,0)==3)
     {
       int32_t sum[GYRO_NUMBER]={ 0 };
-      USART_OUT(USART3,"\r\nfinish %d \r\n ",gyro);
+      USART_OUT(USART_USED,"\r\nfinish %d \r\n ",gyro);
       for(int i=0;i<TempTable_NUMBER;i++)
       {
         if(temp_count[gyro][i]>0){
@@ -261,7 +261,7 @@ int UpdateVDoffTable(void)
         (sum[gyro]*paraXY[gyro][axis]-paraX[gyro]*paraY[gyro][axis])/(sum[gyro]*paraX2[gyro]-paraX[gyro]*paraX[gyro]);
       }
       TempErgodic(gyro,1);
-      USART_OUT(USART3,"Flash Update end\r\n");
+      USART_OUT(USART_USED,"Flash Update end\r\n");
       TempTablePrintf();
       
       for(int i=0;i<roundf((TempTable_max*1000.0-TempTable_min*1000.0));i++)

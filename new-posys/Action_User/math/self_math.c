@@ -1,5 +1,6 @@
 #include "config.h"
 #include "self_math.h"
+#include "usart.h"
 
 extern AllPara_t allPara;
 float safe_asin(float v)
@@ -23,13 +24,13 @@ float safe_asin(float v)
 		/*因为经历中断函数入栈之后，堆栈指针会减小0x10，所以平移回来（可能不具有普遍性）*/
 		r_sp = r_sp+0x10;
 		/*串口发数通知*/
-		USART_OUT(USART3,"sinFault %d",error);
+		USART_OUT(USART_USED,"sinFault %d",error);
 		char sPoint[2]={0};
-		USART_OUT(USART3,"%s","0x");
+		USART_OUT(USART_USED,"%s","0x");
 		/*获取出现异常时程序的地址*/
 		for(int i=3;i>=-28;i--){
 			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
-			USART_OUT(USART3,"%s",sPoint);
+			USART_OUT(USART_USED,"%s",sPoint);
 			if(i%4==0)
 				USART_Enter();
 		}
@@ -83,13 +84,13 @@ double safe_atan2(double x,double y)
 		/*因为经历中断函数入栈之后，堆栈指针会减小0x10，所以平移回来（可能不具有普遍性）*/
 		r_sp = r_sp+0x10;
 		/*串口发数通知*/
-		USART_OUT(USART3,"tanFault %d",error);
+		USART_OUT(USART_USED,"tanFault %d",error);
 		char sPoint[2]={0};
-		USART_OUT(USART3,"%s","0x");
+		USART_OUT(USART_USED,"%s","0x");
 		/*获取出现异常时程序的地址*/
 		for(int i=3;i>=-28;i--){
 			Hex_To_Str((uint8_t*)(r_sp+i+28),sPoint,2);
-			USART_OUT(USART3,"%s",sPoint);
+			USART_OUT(USART_USED,"%s",sPoint);
 			if(i%4==0)
 				USART_Enter();
 		}

@@ -13,7 +13,7 @@
 
 static uint8_t dmaSendBuffer[DMA_SEND_SIZE];
 
-void USART_SendDataToDMA(uint8_t data)
+void USART_SendDataToDMA_USATR3(uint8_t data)
 {
 	static uint8_t tempBuffer[DMA_SEND_SIZE];
 	static uint32_t count=0;
@@ -118,7 +118,97 @@ void USART3_Init(uint32_t BaudRate)
   NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器、
 }
 
+void USART_SendDataToDMA_USATR1(uint8_t data)
+{
+	static uint8_t tempBuffer[DMA_SEND_SIZE];
+	static uint32_t count=0;
+	tempBuffer[count]=data;
+	count++;
+	
+	if(count>=DMA_SEND_SIZE)
+	{
+		while(DMA_GetITStatus(DMA2_Stream7,DMA_IT_TCIF7) == RESET	&&	DMA_GetCmdStatus(DMA2_Stream7)	==	ENABLE	);    
+		DMA_ClearFlag(DMA2_Stream7,DMA_IT_TCIF7);  
+		DMA_Cmd(DMA2_Stream7,DISABLE);  
+		count=0;
+		memcpy(dmaSendBuffer,tempBuffer,DMA_SEND_SIZE);
+		DMA_SetCurrDataCounter(DMA2_Stream7,DMA_SEND_SIZE);
+		DMA_Cmd(DMA2_Stream7,ENABLE);
+	}
+	
+}
 
+void USART1DMAInit(uint32_t BaudRate)
+{
+  GPIO_InitTypeDef GPIO_InitStructure;
+	USART_InitTypeDef USART_InitStructure;
+	NVIC_InitTypeDef NVIC_InitStructure;
+	DMA_InitTypeDef DMA_InitStructure;
+	
+	
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA,ENABLE); //使艤GPIOA时讚
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1,ENABLE);//使艤USART1时讚
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);  
+	
+	DMA_DeInit(DMA2_Stream7);  
+	DMA_InitStructure.DMA_Channel = DMA_Channel_4;   
+	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)(&USART1->DR);  
+	DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)dmaSendBuffer;  
+	DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral;   
+	DMA_InitStructure.DMA_BufferSize = DMA_SEND_SIZE;  
+	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;  
+	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;  
+	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;  
+	DMA_InitStructure.DMA_MemoryDataSize = DMA_PeripheralDataSize_Byte;  
+	DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;  
+	DMA_InitStructure.DMA_Priority = DMA_Priority_High;  
+		 
+	DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;      
+	DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_HalfFull;          
+	DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;         
+	DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;   	 
+	DMA_Init(DMA2_Stream7, &DMA_InitStructure);    
+//	DMA_ITConfig(DMA2_Stream7,DMA_IT_TC,ENABLE);  	
+
+	DMA_ClearFlag(DMA2_Stream7,DMA_IT_TCIF7);  
+	DMA_Cmd(DMA2_Stream7,DISABLE);
+	
+	//援酄?讛应咏迏卮詢映胜
+	GPIO_PinAFConfig(GPIOA,GPIO_PinSource10,GPIO_AF_USART1); //GPIOA9卮詢为USART1
+	GPIO_PinAFConfig(GPIOA,GPIO_PinSource9, GPIO_AF_USART1); //GPIOA10卮詢为USART1
+	
+	//USART1讒酄毱ぷ?
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_9; //GPIOA9垣GPIOA10
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//卮詢佴艤
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	//虣讏50MHz
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; //螁维卮詢摔远
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP; //蕪-
+	GPIO_Init(GPIOA,&GPIO_InitStructure); //缘始郫PA9矛PA10
+
+   //USART1 缘始郫狮變
+	USART_InitStructure.USART_BaudRate = BaudRate;//舀蜆脢狮變
+	USART_InitStructure.USART_WordLength = USART_WordLength_8b;//貣婴为8位私邼俦式
+	USART_InitStructure.USART_StopBits = USART_StopBits_1;//一俣停止位
+	USART_InitStructure.USART_Parity = USART_Parity_No;//蠟铅偶校药位
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//蠟硬菥私邼路酄樧?
+	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//藭注模式
+  USART_Init(USART1, &USART_InitStructure); //缘始郫援酄?
+
+	//Usart1 NVIC 皮變
+  NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;//援酄?讗讖通謤
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1;//葊占詤袌芏3
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority =0;		//負詤袌芏3
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通謤使艤
+	NVIC_Init(&NVIC_InitStructure);	//俟邼指吱謩訋私缘始郫VIC輨咋欠b
+	USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);//擢谴袪跇讗讖
+	USART_ClearFlag(USART1, USART_FLAG_TC);
+	USART_ClearFlag(USART1, USART_FLAG_TXE);
+	
+	
+	USART_DMACmd(USART1,USART_DMAReq_Tx,ENABLE);
+	USART_Cmd(USART1, ENABLE);  //使艤援酄?
+  
+}
 /**
 * @brief  Retargets the C library printf function to the USART.
 * @param  None
@@ -131,10 +221,10 @@ void USART_OUT_F(float value)
 {
   char s[10]={0};
   sprintf(s,"%f\t",value);
-  USART_OUT(USART3,s);
+  USART_OUT(USART_USED,s);
 }
 void USART_Enter(void){
-  USART_OUT(USART3,"\r\n");
+  USART_OUT(USART_USED,"\r\n");
 }
 
 

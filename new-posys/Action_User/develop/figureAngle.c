@@ -81,7 +81,7 @@ int RoughHandle(void)
 //			USART_OUT_F(allPara.sDta.GYRO_Aver[axis]);
 //			USART_OUT_F(mean[axis]);
 //			USART_OUT_F(stdCr[axis]);
-//			USART_OUT(USART3,"NNNNNN");
+//			USART_OUT(USART_USED,"NNNNNN");
 //			USART_Enter();
 		}
 		#endif

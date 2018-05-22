@@ -188,9 +188,9 @@ int TempErgodic(int reset){
   temp_pid_ctr(TempTable_min*100.0+(TempTable_max*100.0-TempTable_min*100.0)*circle_count*PERIOD/(float)HEATTIME/60.f);
   if(circle_count==(int)(HEATTIME*60.f/PERIOD)){
     flag=1;
-    //USART_OUT(USART3,"finish rise\r\n");
+    //USART_OUT(USART_USED,"finish rise\r\n");
   }else if(circle_count==0){
-    //USART_OUT(USART3,"finish decrease\r\n");
+    //USART_OUT(USART_USED,"finish decrease\r\n");
     flag=3;
   }
   return flag;

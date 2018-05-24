@@ -13,7 +13,7 @@
 
 static uint8_t dmaSendBuffer[DMA_SEND_SIZE];
 
-void USART_SendDataToDMA_USATR3(uint8_t data)
+void USART_SendDataToDMA_USART3(uint8_t data)
 {
 	static uint8_t tempBuffer[DMA_SEND_SIZE];
 	static uint32_t count=0;
@@ -226,8 +226,31 @@ void USART_OUT_F(float value)
 void USART_Enter(void){
   USART_OUT(USART_USED,"\r\n");
 }
+void USART_OUTByDMAF(float x){
+     const char *s;
+		 char String[20]={0};
+		 sprintf(String,"%f\t",x);
+		 for (s=String; *s; s++) 
+		 {
+				if(USART_USED==USART3)
+					USART_SendDataToDMA_USART3(*s);
+				else if(USART_USED==USART1)
+					USART_SendDataToDMA_USATR1(*s);
+     }
+}
 
-
+void USART_EnterByDMA(void){
+	if(USART_USED==USART3)
+	{
+		USART_SendDataToDMA_USART3('\r');
+		USART_SendDataToDMA_USART3('\n');
+	}
+	else if(USART_USED==USART1)
+	{
+		USART_SendDataToDMA_USATR1('\r');
+		USART_SendDataToDMA_USATR1('\n');
+	}
+}
 void USART_OUT(USART_TypeDef* USARTx,const char *Data,...){ 
   const char *s;
   int d;

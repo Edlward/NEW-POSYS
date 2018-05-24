@@ -19,6 +19,11 @@
 #ifndef __CUSTOMER_H
 #define __CUSTOMER_H
 
+#ifdef TEST_SUMMER
+#define DMA_SEND_SIZE   100
+#else
+#define DMA_SEND_SIZE   28
+#endif
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/

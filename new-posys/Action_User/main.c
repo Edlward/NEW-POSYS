@@ -30,7 +30,7 @@ void init(void)
 	SoftWareReset();
 	
 	LedNormal();
-  pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz
+//  pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz
   
 	ICM_SPIInit();
 	SPI2_Init();
@@ -38,9 +38,9 @@ void init(void)
   CS_Config();
 	
 	#ifdef TEST_SUMMER
-	USART3DMAInit(921600);
+	USART1DMAInit(921600);
 	#else
-	USART3DMAInit(115200);
+	USART1DMAInit(115200);
 	#endif
 	
 //  Flash_Init();
@@ -50,7 +50,7 @@ void init(void)
 
 		if(!allPara.resetFlag)
 			MEMS_Configure(gyro);
-		ICM_HeatingPower(gyro,0);
+//		ICM_HeatingPower(gyro,0);
 	}
 	
   TIM_Init(TIM2,999,83,2,0);			
@@ -78,11 +78,11 @@ void init(void)
 	
 	IWDG_Init(1,60); // 1.5ms
 	
-	while(!getTempInitSuces())
-	{
-		if(allPara.resetFlag)
-			SetTempInitSuces();
-	}
+//	while(!getTempInitSuces())
+//	{
+//		if(allPara.resetFlag)
+//			SetTempInitSuces();
+//	}
 }
 
 int main(void)
@@ -111,21 +111,21 @@ int main(void)
 			
 			AT_CMD_Handle();
       if(!(allPara.sDta.flag&CORRECT)){
-				if(allPara.sDta.flag&HEATING)
-				{
-					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-						temp_pid_ctr(gyro,allPara.sDta.GYRO_TemperatureAim[gyro]);
-				}
-				else
-				{
-					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-						temp_pid_ctr(gyro,allPara.sDta.GYRO_TemperatureAim[gyro]-0.5f);
-				}
+//				if(allPara.sDta.flag&HEATING)
+//				{
+//					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+//						temp_pid_ctr(gyro,allPara.sDta.GYRO_TemperatureAim[gyro]);
+//				}
+//				else
+//				{
+//					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+//						temp_pid_ctr(gyro,allPara.sDta.GYRO_TemperatureAim[gyro]-0.5f);
+//				}
 				
 				JudgeStatic();
         if(RoughHandle())
 				{
-					if((allPara.sDta.flag&START_COMPETE))
+//					if((allPara.sDta.flag&START_COMPETE))
 					{
 						updateAngle();
 						calculatePos();

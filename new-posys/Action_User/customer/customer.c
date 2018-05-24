@@ -107,11 +107,11 @@ void DataSend(void)
 	valSend.val=(float)allPara.GYRO_Real[2];
   memcpy(tdata+22,valSend.data,4);
 	
-	valSend.val=(float)allPara.sDta.codeData[0];
-  memcpy(tdata+26,valSend.data,4);
-	 
-	valSend.val=(float)allPara.sDta.codeData[1];
-  memcpy(tdata+30,valSend.data,4);
+//	valSend.val=(float)allPara.sDta.codeData[0];
+//  memcpy(tdata+26,valSend.data,4);
+//	 
+//	valSend.val=(float)allPara.sDta.codeData[1];
+//  memcpy(tdata+30,valSend.data,4);
 //	
 	#ifdef TEST_SUMMER
 	i=i;
@@ -158,7 +158,7 @@ void DataSend(void)
 	
 	for(i=0;i<DMA_SEND_SIZE;i++)
 	{
-		if(USART_USED==USART_USED)
+		if(USART_USED==USART3)
 			USART_SendDataToDMA_USART3(tdata[i]);
 		else if(USART_USED==USART1)
 			USART_SendDataToDMA_USATR1(tdata[i]);

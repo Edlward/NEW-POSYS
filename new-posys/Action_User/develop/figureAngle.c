@@ -105,7 +105,7 @@ int RoughHandle(void)
 		
 //		if(ignore>(TIME_STATIC_REAL)*200+STATIC_MAX_NUM+100)
 //		{
-////			if(abs(allPara.sDta.vell[0])>5||abs(allPara.sDta.vell[1])>5)
+////			if(abs(allPara.vell[0])>5||abs(allPara.vell[1])>5)
 ////				SetFlag(START_COMPETE);
 //			ignore=10000;
 //			return 1;
@@ -129,10 +129,10 @@ void updateAngle(void)
     w[1]=0.f;
 
 	#ifdef AUTOCAR
-	if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.sDta.vell[0])<=1&&abs(allPara.sDta.vell[1])<=1&&fabs(w[2])<0.20))//单位 °/s
+	if((allPara.sDta.flag&STATIC_FORCE)||(abs(allPara.vell[0])<=1&&abs(allPara.vell[1])<=1&&fabs(w[2])<0.20))//单位 °/s
     w[2]=0.f;
 	#else
-	if((allPara.sDta.flag&STATIC_FORCE)||(fabs(FilterVell(allPara.sDta.vell[1]))<=20.f))//||(fabs(w[2])<0.3f))
+	if((allPara.sDta.flag&STATIC_FORCE)||(fabs(FilterVell(allPara.vell[1]))<=20.f))//||(fabs(w[2])<0.3f))
     w[2]=0.f;
 	#endif
 	

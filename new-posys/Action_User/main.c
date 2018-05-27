@@ -94,12 +94,6 @@ int main(void)
   {
     while(getTimeFlag())
     {
-	
-//			while(readOrderLast==getReadOrder()){;}
-//				readOrderLast=getReadOrder();
-
-//      				uint8_t test[3];
-//      				test[0]=SPI_Read(SPI1,GPIOA,GPIO_Pin_4,ICM20608G_WHO_AM_I); 
 			allPara.sDta.time++;
 			if(CheckNan()&&allPara.sDta.GYRO_Bais[2]==0.0)
 			{

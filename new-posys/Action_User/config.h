@@ -174,7 +174,7 @@ typedef struct{
 	
   uint32_t data_last[2];
 	
-	int vell[2];
+	float vellF[2];
 	
   uint32_t flag;
 	
@@ -222,6 +222,8 @@ typedef struct{
 	double kalmanZ;
 	
 	int resetFlag;
+	
+	int vell[2];
 }AllPara_t;
 
 

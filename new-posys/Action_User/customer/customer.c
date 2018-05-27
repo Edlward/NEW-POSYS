@@ -139,13 +139,13 @@ void DataSend(void)
 //	USART_OUT_F(allPara.GYRO_Real[2]);
 //	USART_OUT_F(allPara.sDta.posx);
 //	USART_OUT_F(allPara.sDta.posy);
-//	USART_OUT_F(allPara.sDta.vell[0]);
-//	USART_OUT_F(allPara.sDta.vell[1]);
+//	USART_OUT_F(allPara.vell[0]);
+//	USART_OUT_F(allPara.vell[1]);
 //	USART_OUT_F(allPara.isStatic);
 	
 //	static int codesum[2]={0};
-//	codesum[0]+=allPara.sDta.vell[0];
-//	codesum[1]+=allPara.sDta.vell[1];
+//	codesum[0]+=allPara.vell[0];
+//	codesum[1]+=allPara.vell[1];
 ////	USART_OUT_F(codesum[0]);
 ////	USART_OUT_F(codesum[1]);
 //	USART_OUT_F(allPara.sDta.posx);

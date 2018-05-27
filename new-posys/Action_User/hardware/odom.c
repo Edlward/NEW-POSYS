@@ -189,4 +189,152 @@ static void	SPI3_TX_ON(void)
 	GPIOC->MODER |= 0x02000000; 
 }
 
+uint32_t SPI_ReadAS5045All(uint8_t num)
+{
+	uint8_t  buf[3]={0,0,0},i=0;
+	uint32_t AS5045_Val=0;
+	
+	if(num==1)
+	{
+		GPIO_ResetBits(GPIOB,GPIO_Pin_12);
+		SPI_Cmd(SPI2,ENABLE);
+		for(i=0;i<3;i++)
+		{
+			while((SPI2->SR & SPI_I2S_FLAG_RXNE) == (uint16_t)RESET){}
+				buf[i] = SPI2->DR;
+		}
+	  GPIO_SetBits(GPIOB,GPIO_Pin_12);
+		SPI_Cmd(SPI2,DISABLE);
+	}
+	else if(num==0)
+	{
+		GPIO_ResetBits(GPIOA,GPIO_Pin_15);
+		SPI_Cmd(SPI3,ENABLE);
+		for(i=0;i<3;i++)
+		{
+			while((SPI3->SR & SPI_I2S_FLAG_RXNE) == (uint16_t)RESET){}
+				buf[i] = SPI3->DR;
+		}
+	  GPIO_SetBits(GPIOA,GPIO_Pin_15);
+		SPI_Cmd(SPI3,DISABLE);
+	}
+	
+	delay_us(15);
+	
+  AS5045_Val = (((uint32_t)buf[0]<<17) | ((uint32_t)buf[1]<<9) | ((uint32_t)buf[2]<<1) | (uint32_t)0);
+	
+	return AS5045_Val;
+}
 
+uint16_t SPI_ReadAS5045_Parity(uint8_t num)
+{
+	uint32_t  AbsEncData  = SPI_ReadAS5045All(num); //SPI读到的编码器的数据
+	/*编码器数据*/
+	int16_t   tmpAbs      = (AbsEncData >> 12) & 0X0FFF;
+	/*发送来的奇偶校验位*/
+	uint8_t evebParity = (AbsEncData >> 6) & 0x01;
+	/*被校验数*/
+	uint32_t parity = (AbsEncData>>7) & 0x1FFFF;
+	/*计算来的奇偶校验位*/
+	uint8_t evebParityCal = 0;
+	/*获得标志位*/
+	uint16_t MagSta = (AbsEncData >> 7) & 0x1F;
+	static int count=0;
+	while(1)
+	{
+		/*计算奇偶校验结果*/
+		while (parity)
+		{
+			evebParityCal =!evebParityCal;
+			parity = parity & (parity - 1);
+		}
+		/*如果奇偶校验成功，并且标志位正确*/
+		if(evebParityCal==evebParity&&(MagSta==0x10||MagSta==0x13))
+		{
+			//跳出循环
+			count=0;
+			break;
+		}
+		//重新读取
+		else
+		{
+			count++;
+			/*再次获取24位数据*/
+			AbsEncData  = SPI_ReadAS5045All(num);
+			/*取出数据位*/
+			tmpAbs      = (AbsEncData >> 12) & 0X0FFF;
+			/*获得给出的奇偶校验位*/
+			evebParity = (AbsEncData >> 6) & 0x01;
+			/*获得被校验数*/
+			parity = (AbsEncData>>7) & 0x1FFFF;
+			/*获得标志位*/
+			MagSta = (AbsEncData >> 7) & 0x1F;
+			/*初始化奇偶校验结果*/
+			evebParityCal = 0;
+			/*防止多次读不出来*/
+			if(count>3)
+			{
+				count=0;
+				break;
+			}
+		}
+	}
+	return tmpAbs;
+}
+
+#define READ_NUM	3
+/*找到数组最小的值*/
+uint16_t FindMin2(int codes[READ_NUM])
+{
+	uint16_t Min=codes[0]; 
+	uint16_t index = 0;
+  for(int i=1;i<READ_NUM;i++)
+	{
+		if(codes[i]<Min) 
+		{
+			Min=codes[i];
+			index=i;
+		}
+	}
+	return index;
+}
+
+
+uint16_t SPI_ReadAS5045(uint8_t num)
+{
+	/*连读存储区*/
+	uint16_t value[READ_NUM]={0};
+	/*与上一刻值的差值*/
+	int delValue[READ_NUM]={0};
+	/*最终结果*/
+	uint16_t endValue=0;
+	static uint16_t endValueLast[2]={0,0};
+	
+	/*连续读三次*/
+	for(int i=0;i<READ_NUM;i++)
+		value[i]=SPI_ReadAS5045_Parity(num);
+	
+	/*三次与上一次的差值*/
+	for(int i=0;i<READ_NUM;i++)
+	{
+		if(num==0)
+			delValue[i]=(value[i]-endValueLast[0]);
+		else if(num==1)
+			delValue[i]=(value[i]-endValueLast[1]);
+		if(delValue[i]>2048)
+			delValue[i]-=4096;
+		if(delValue[i]<-2048)
+			delValue[i]+=4096;
+		delValue[i]=abs(delValue[i]);
+	}
+	
+	/*找到与上一次差值最小的值的序列号，并传入*/
+	endValue= value[FindMin2(delValue)];
+	
+	if(num==0)
+		endValueLast[0]=endValue;
+	else if(num==1)
+		endValueLast[1]=endValue;
+	return endValue;
+	
+}

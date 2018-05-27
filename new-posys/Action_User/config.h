@@ -30,7 +30,6 @@
 #include "buildExcel.h"
 #include "spi.h"
 #include "figureAngle.h"
-#include "ADXRS453Z.h"
 #include "customer.h"
 #include "timer.h"
 #include "usart.h"

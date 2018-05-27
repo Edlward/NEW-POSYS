@@ -16,6 +16,7 @@
 /* Includes -------------------------------------------------------------------*/
 
 #include "config.h"
+#include "odom.h"
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
@@ -111,6 +112,16 @@ void figureVell(void)
 {
 	static uint8_t flag=0;
 	
+	#ifdef TLE5012_USED
+		//第一次判断静止时可以不用判断角速度
+		allPara.sDta.codeData[0]=TLE5012ReadAbsPos_A();
+		allPara.sDta.codeData[1]=TLE5012ReadAbsPos_B();
+	#else
+		//第一次判断静止时可以不用判断角速度
+		allPara.sDta.codeData[0]=SPI_ReadAS5045(0);
+		allPara.sDta.codeData[1]=SPI_ReadAS5045(1);
+	#endif
+	
 	if(allPara.resetFlag)
 		flag=21;
 	
@@ -130,15 +141,27 @@ void figureVell(void)
 		allPara.sDta.data_last[1]=allPara.sDta.codeData[1];
 	}
 	
-	if(allPara.sDta.vell[0]>2048)
-		allPara.sDta.vell[0]-=4096;
-	if(allPara.sDta.vell[0]<-2048)
-		allPara.sDta.vell[0]+=4096;
-	
-	if(allPara.sDta.vell[1]>2048)
-		allPara.sDta.vell[1]-=4096;
-	if(allPara.sDta.vell[1]<-2048)
-		allPara.sDta.vell[1]+=4096;
+	#ifdef TLE5012_USED
+		if(allPara.sDta.vell[0]>16384)
+			allPara.sDta.vell[0]-=32768;
+		if(allPara.sDta.vell[0]<-16384)
+			allPara.sDta.vell[0]+=32768;
+		
+		if(allPara.sDta.vell[1]>16384)
+			allPara.sDta.vell[1]-=32768;
+		if(allPara.sDta.vell[1]<-16384)
+			allPara.sDta.vell[1]+=32768;
+	#else
+		if(allPara.sDta.vell[0]>2048)
+			allPara.sDta.vell[0]-=4096;
+		if(allPara.sDta.vell[0]<-2048)
+			allPara.sDta.vell[0]+=4096;
+		
+		if(allPara.sDta.vell[1]>2048)
+			allPara.sDta.vell[1]-=4096;
+		if(allPara.sDta.vell[1]<-2048)
+			allPara.sDta.vell[1]+=4096;
+	#endif
 	
 	allPara.vellSum[0]+=allPara.sDta.vell[0];
 	allPara.vellSum[1]+=allPara.sDta.vell[1];

@@ -88,6 +88,8 @@ void TIM2_IRQHandler(void)
 		
 	  if(timeCnt==5)
 		{	
+	
+			figureVell();
 			#ifdef TESTCAR
 			  double percentages[3][3]={
 				1.0,0.0,0.0,
@@ -296,7 +298,8 @@ void NMI_Handler(void)
 
 void HardFault_Handler(void)
 {  
-	LedAbNormal();
+	LED1_ON;
+	LED2_ON;
 	//if(allPara.resetTime<=500&&allPara.sDta.GYRO_Bais[2]!=0.0)
 	{
 		FindResetTime();

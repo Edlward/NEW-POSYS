@@ -15,13 +15,13 @@
 #include "DataRecover.h"
 #include "iwdg.h"
 #include "gpio.h"
+#include "odom.h"
 #include "self_math.h"
 AllPara_t allPara={0};
 
 void init(void)
 {
 	Led_Init();
-	LedAbNormal();
 	
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
 
@@ -29,18 +29,19 @@ void init(void)
 	//StartCount();
 	SoftWareReset();
 	
-	LedNormal();
+	LED1_OFF;
+	LED2_OFF;
   pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz
   
 	ICM_SPIInit();
 	SPI2_Init();
-
+	SPI3_Init();
   CS_Config();
 	
 	#ifdef TEST_SUMMER
-	USART3DMAInit(921600);
+	USART1DMAInit(921600);
 	#else
-	USART3DMAInit(115200);
+	USART1DMAInit(115200);
 	#endif
 	
 //  Flash_Init();
@@ -105,7 +106,6 @@ int main(void)
 				IWDG_Reset();
 			}
 			
-			LedNormal();
 			if(allPara.sDta.time>200*5)
 				allPara.sDta.time--;
 			

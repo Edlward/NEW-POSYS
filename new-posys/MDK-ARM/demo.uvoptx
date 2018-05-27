@@ -118,7 +118,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>犢?p觜v犢?</Name>
+          <Name>囗?</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -156,12 +156,7 @@
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>angle</ItemText>
-        </Ww>
-        <Ww>
-          <count>2</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>allPara.ACC_Angle</ItemText>
+          <ItemText>angle,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>

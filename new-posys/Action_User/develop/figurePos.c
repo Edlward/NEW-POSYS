@@ -85,14 +85,14 @@ void calculatePos(void)
 
 	#ifdef AUTOCAR	//以y为标准
 		real[0]=allPara.sDta.vellF[0];
-		real[1]=1.00008334242607*allPara.sDta.vellF[1]-0.0129109177866286*allPara.sDta.vellF[0];
+		real[1]=1.00008334242607*(double)allPara.sDta.vellF[1]-0.0129109177866286*(double)allPara.sDta.vellF[0];
 	#else			//以x为标准
 		real[0]=allPara.sDta.vellF[0];
 		real[1]=allPara.sDta.vellF[1];
 	#endif
 
-	delPos[0]=(-sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
-	delPos[1]=(cos(zangle*0.017453292519943)*real[1]+sin(zangle*0.017453292519943)*real[0]);
+	delPos[0]=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
+	delPos[1]=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
 
 	allPara.sDta.posx+=delPos[0];
 	allPara.sDta.posy+=delPos[1];

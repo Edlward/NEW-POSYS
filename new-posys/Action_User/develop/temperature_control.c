@@ -21,7 +21,7 @@ void pwm_init(uint32_t arr,uint32_t psc)
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);  				//TIM2时钟使能
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
   
-  GPIO_PinAFConfig(GPIOB, GPIO_PinSource1, GPIO_AF_TIM2); 		//
+  GPIO_PinAFConfig(GPIOB, GPIO_PinSource10, GPIO_AF_TIM2); 		//
   
   
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;        
@@ -120,8 +120,8 @@ void temp_pid_ctr(int gyro,float val_ex)
   static float integral[GYRO_NUMBER];
 	
 	static int count[3]={0};
-  float K_p[GYRO_NUMBER] = { 1000.0f };
-  float K_i[GYRO_NUMBER] = { 0.2f };
+  float K_p[GYRO_NUMBER] = { 20000.0f };
+  float K_i[GYRO_NUMBER] = { 1.0f };
   
   static double ctr[GYRO_NUMBER];
 	
@@ -157,13 +157,12 @@ void temp_pid_ctr(int gyro,float val_ex)
 	
 //	static int cnt=0;
 //	cnt++;
-//	USART_OUT_F(allPara.sDta.GYRO_TemperatureAim[gyro]);
-//	USART_OUT_F(allPara.GYRO_Temperature[gyro]);
-//	USART_OUT_F(K_p[gyro]*err[gyro]);
-//	USART_OUT_F(K_i[gyro]*integral[gyro]);
-//	USART_OUT_F(ctr[gyro]);
-//	USART_OUT_F(cnt);
-//	USART_Enter();
+//	USART_OUTByDMAF(allPara.GYRO_Temperature[0]);
+//	USART_OUTByDMAF(allPara.sDta.GYRO_TemperatureAim[0]);
+//	USART_OUTByDMAF(K_p[gyro]*err[gyro]);
+//	USART_OUTByDMAF(K_i[gyro]*integral[gyro]);
+//	USART_OUTByDMAF(ctr[gyro]);
+//	USART_EnterByDMA();
 	/*#define ICM_HeatingPower(a)  TIM_SetCompare3(TIM3,a/100.0*1000); */
 	/*之所以最大值为1000,是因为该定时器的装载值为1000*/
 	ICM_HeatingPower(gyro,ctr[gyro]);

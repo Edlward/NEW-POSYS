@@ -115,11 +115,12 @@ void DataSend(void)
 //	
 	#ifdef TEST_SUMMER
 	i=i;
-	USART_OUTByDMAF(allPara.GYRO_Temperature[0]);
-	for(int i=0;i<AXIS_NUMBER;i++)
-		USART_OUTByDMAF(allPara.sDta.GYRO_Aver[i]);
-	for(int i=0;i<AXIS_NUMBER;i++)
-		USART_OUTByDMAF(allPara.ACC_Raw[0][i]);
+//	USART_OUTByDMAF(allPara.GYRO_Temperature[0]);
+//	USART_OUTByDMAF(allPara.sDta.GYRO_TemperatureAim[0]);
+//	for(int i=0;i<AXIS_NUMBER;i++)
+//		USART_OUTByDMAF(allPara.sDta.GYRO_Aver[i]);
+//	for(int i=0;i<AXIS_NUMBER;i++)
+//		USART_OUTByDMAF(allPara.ACC_Raw[0][i]);
 	
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[0][2]);
 //	USART_OUT_F(allPara.GYROWithoutRemoveDrift[1][2]);
@@ -153,12 +154,12 @@ void DataSend(void)
 //	USART_OUT_F(sqrt(allPara.sDta.posx*allPara.sDta.posx+allPara.sDta.posy*allPara.sDta.posy));
 //	USART_OUT_F(codesum[1]);
 //		USART_OUT(USART_USED,"123\r\n");
-	USART_EnterByDMA();
+//	USART_EnterByDMA();
 	#else
 	
 	for(i=0;i<DMA_SEND_SIZE;i++)
 	{
-		if(USART_USED==USART_USED)
+		if(USART_USED==USART3)
 			USART_SendDataToDMA_USART3(tdata[i]);
 		else if(USART_USED==USART1)
 			USART_SendDataToDMA_USATR1(tdata[i]);

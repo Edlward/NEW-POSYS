@@ -43,7 +43,7 @@ void init(void)
 	#else
 	USART1DMAInit(115200);
 	#endif
-	
+	USART6DMAInit(921600);
 //  Flash_Init();
 	
 	for(int gyro;gyro<GYRO_NUMBER;gyro++)

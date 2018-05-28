@@ -105,19 +105,31 @@ void SPI2_Init(void)
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
   GPIO_Init(GPIOB, &GPIO_InitStructure);
   
-  /* SPI配置------------------------------------------------------*/
-  SPI_I2S_DeInit(SPI2);
-  SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;				/* 双线双向全双工									*/
-  SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* 主SPI													*/
-	SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;													/* SPI接收8位帧结构								*/
-  SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;																/* 串行同步时钟的空闲状态为低电平	*/
-  SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;															/* 第一个跳变沿数据被采样					*/
-  SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS由软件控制									*/
-  SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_32;				/* 预分频  陀螺仪最大10MHz													*/
-  SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/* 数据从MSB位开始								*/
-  SPI_InitStructure.SPI_CRCPolynomial = 10;
-  SPI_Init(SPI2, &SPI_InitStructure);
-  
+	/* SPI配置------------------------------------------------------*/
+	SPI_I2S_DeInit(SPI2);
+	#ifdef TLE5012_USED
+		SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;				/* 双线双向全双工									*/
+		SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* 主SPI													*/
+		SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;													/* SPI接收8位帧结构								*/
+		SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;																/* 串行同步时钟的空闲状态为低电平	*/
+		SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;															/* 第一个跳变沿数据被采样					*/
+		SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS由软件控制									*/
+		SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_32;				/* 预分频  陀螺仪最大10MHz													*/
+		SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/* 数据从MSB位开始								*/
+		SPI_InitStructure.SPI_CRCPolynomial = 10;
+	#else
+		SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_RxOnly;				    /* 双线双向全双工									*/
+		SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* 主SPI													*/
+		SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;													/* SPI接收8位帧结构								*/
+		SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;																/* 串行同步时钟的空闲状态为低电平	*/
+		SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;															/* 第二个跳变沿数据被采样					*/
+		SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS由软件控制									*/
+		SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_128;				/* 预分频	168M/64	*/
+		SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/* 数据从MSB位开始								*/
+		SPI_InitStructure.SPI_CRCPolynomial = 7;
+	#endif
+	SPI_Init(SPI2, &SPI_InitStructure);
+	
   SPI_Cmd(SPI2, ENABLE);
 }
 
@@ -145,15 +157,27 @@ void SPI3_Init(void)
   
   /* SPI配置------------------------------------------------------*/
   SPI_I2S_DeInit(SPI3);
-  SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;				/* 双线双向全双工									*/
-  SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* 主SPI													*/
-	SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;													/* SPI接收8位帧结构								*/
-  SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;																/* 串行同步时钟的空闲状态为低电平	*/
-  SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;															/* 第一个跳变沿数据被采样					*/
-  SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS由软件控制									*/
-  SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_32;				/* 预分频  陀螺仪最大10MHz													*/
-  SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/* 数据从MSB位开始								*/
-  SPI_InitStructure.SPI_CRCPolynomial = 10;
+	#ifdef TLE5012_USED
+		SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;				/* 双线双向全双工									*/
+		SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* 主SPI													*/
+		SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;													/* SPI接收8位帧结构								*/
+		SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;																/* 串行同步时钟的空闲状态为低电平	*/
+		SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;															/* 第一个跳变沿数据被采样					*/
+		SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS由软件控制									*/
+		SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_32;				/* 预分频  陀螺仪最大10MHz													*/
+		SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/* 数据从MSB位开始								*/
+		SPI_InitStructure.SPI_CRCPolynomial = 10;
+	#else
+		SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_RxOnly;				    /* 双线双向全双工									*/
+		SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* 主SPI													*/
+		SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;													/* SPI接收8位帧结构								*/
+		SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;																/* 串行同步时钟的空闲状态为低电平	*/
+		SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;															/* 第二个跳变沿数据被采样					*/
+		SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSS由软件控制									*/
+		SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_128;				/* 预分频	168M/64	*/
+		SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/* 数据从MSB位开始								*/
+		SPI_InitStructure.SPI_CRCPolynomial = 7;
+	#endif
   SPI_Init(SPI3, &SPI_InitStructure);
   
   SPI_Cmd(SPI3, ENABLE);

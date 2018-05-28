@@ -209,6 +209,109 @@ void USART1DMAInit(uint32_t BaudRate)
 	USART_Cmd(USART1, ENABLE);  //使艤援酄?
   
 }
+
+
+void USART6_Init(uint32_t BaudRate)
+{
+  GPIO_InitTypeDef GPIO_InitStructure;
+  USART_InitTypeDef USART_InitStructure;
+  NVIC_InitTypeDef NVIC_InitStructure;
+  
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC,ENABLE); //使能GPIOC时钟
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART6,ENABLE);//使能USART6时钟
+  
+  //串口3对应引脚复用映射
+  GPIO_PinAFConfig(GPIOC,GPIO_PinSource6,GPIO_AF_USART6); //GPIOD8复用为USART6
+  GPIO_PinAFConfig(GPIOC,GPIO_PinSource7, GPIO_AF_USART6); //GPIOD9复用为USART6
+  
+  //USART6端口配置
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7; //GPIOD8与GPIOD9
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//复用功能
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	//速度50MHz
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; //推挽复用输出
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP; //上拉
+  GPIO_Init(GPIOC,&GPIO_InitStructure); //初始化PD8，PD9
+  
+  //USART6 初始化设置
+  USART_InitStructure.USART_BaudRate = BaudRate;//波特率设置
+  USART_InitStructure.USART_WordLength = USART_WordLength_8b;//字长为8位数据格式
+  USART_InitStructure.USART_StopBits = USART_StopBits_1;//一个停止位
+  USART_InitStructure.USART_Parity = USART_Parity_No;//无奇偶校验位
+  USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//无硬件数据流控制
+  USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//收发模式
+  USART_Init(USART6, &USART_InitStructure); //初始化串口3
+  
+  USART_Cmd(USART6, ENABLE);  //使能串口3
+  
+  USART_ClearFlag(USART6, USART_FLAG_TC);
+  
+  USART_ITConfig(USART6, USART_IT_RXNE, ENABLE);//开启相关中断
+  
+  //Usart1 NVIC 配置
+  NVIC_InitStructure.NVIC_IRQChannel = USART6_IRQn;//串口3中断通道
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1;//抢占优先级1
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority =0;		//子优先级1
+  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通道使能
+  NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器、
+}
+
+void USART6DMAInit(uint32_t BaudRate)
+{
+	DMA_InitTypeDef DMA_InitStructure;
+	
+	USART6_Init(BaudRate);
+	
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);  
+	
+	DMA_DeInit(DMA2_Stream6);  
+	DMA_InitStructure.DMA_Channel = DMA_Channel_5;   
+	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)(&USART6->DR);  
+	DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)dmaSendBuffer;  
+	DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral;   
+	DMA_InitStructure.DMA_BufferSize = DMA_SEND_SIZE;  
+	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;  
+	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;  
+	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;  
+	DMA_InitStructure.DMA_MemoryDataSize = DMA_PeripheralDataSize_Byte;  
+	DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;  
+	DMA_InitStructure.DMA_Priority = DMA_Priority_High;  
+		 
+	DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;      
+	DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_HalfFull;          
+	DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;         
+	DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;   	 
+	DMA_Init(DMA2_Stream6, &DMA_InitStructure);    
+//	DMA_ITConfig(DMA1_Stream3,DMA_IT_TC,ENABLE);  	
+
+	DMA_ClearFlag(DMA2_Stream6,DMA_IT_TCIF6);  
+	DMA_Cmd(DMA2_Stream6,DISABLE);
+
+	USART_ITConfig(USART6, USART_IT_RXNE, ENABLE);
+	USART_ClearFlag(USART6, USART_FLAG_TC);
+	USART_ClearFlag(USART6, USART_FLAG_TXE);
+	
+	USART_DMACmd(USART6,USART_DMAReq_Tx,ENABLE);
+	USART_Cmd(USART6, ENABLE); 
+  
+}
+void USART_SendDataToDMA_USATR6(uint8_t data)
+{
+	static uint8_t tempBuffer[DMA_SEND_SIZE];
+	static uint32_t count=0;
+	tempBuffer[count]=data;
+	count++;
+	
+	if(count>=DMA_SEND_SIZE)
+	{
+		while(DMA_GetITStatus(DMA2_Stream6,DMA_IT_TCIF6) == RESET	&&	DMA_GetCmdStatus(DMA2_Stream6)	==	ENABLE	);    
+		DMA_ClearFlag(DMA2_Stream6,DMA_IT_TCIF6);  
+		DMA_Cmd(DMA2_Stream6,DISABLE);  
+		count=0;
+		memcpy(dmaSendBuffer,tempBuffer,DMA_SEND_SIZE);
+		DMA_SetCurrDataCounter(DMA2_Stream6,DMA_SEND_SIZE);
+		DMA_Cmd(DMA2_Stream6,ENABLE);
+	}
+}
 /**
 * @brief  Retargets the C library printf function to the USART.
 * @param  None
@@ -232,24 +335,13 @@ void USART_OUTByDMAF(float x){
 		 sprintf(String,"%f\t",x);
 		 for (s=String; *s; s++) 
 		 {
-				if(USART_USED==USART3)
-					USART_SendDataToDMA_USART3(*s);
-				else if(USART_USED==USART1)
-					USART_SendDataToDMA_USATR1(*s);
+				USART_SendDataToDMA_USATR6(*s);
      }
 }
 
 void USART_EnterByDMA(void){
-	if(USART_USED==USART3)
-	{
-		USART_SendDataToDMA_USART3('\r');
-		USART_SendDataToDMA_USART3('\n');
-	}
-	else if(USART_USED==USART1)
-	{
-		USART_SendDataToDMA_USATR1('\r');
-		USART_SendDataToDMA_USATR1('\n');
-	}
+	USART_SendDataToDMA_USATR6('\r');
+	USART_SendDataToDMA_USATR6('\n');
 }
 void USART_OUT(USART_TypeDef* USARTx,const char *Data,...){ 
   const char *s;

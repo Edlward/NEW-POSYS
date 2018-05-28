@@ -170,7 +170,7 @@ float FilterVell(float newValue)
 
 
 
-#define STATIC_ARRAY_NUM	7
+#define STATIC_ARRAY_NUM	5
 
 uint16_t FindMax(uint16_t codes[STATIC_ARRAY_NUM])
 {
@@ -196,7 +196,8 @@ void JudgeStatic(void)
 {
 	static uint16_t codes0[STATIC_ARRAY_NUM];
 	static uint16_t codes1[STATIC_ARRAY_NUM];
-	int difCode=0;
+	int difCode[2]={0,0};
+	static uint32_t count=0;
 	
 //	static int staticCount=0;
 	for(int i=0;i<STATIC_ARRAY_NUM-1;i++)
@@ -207,26 +208,44 @@ void JudgeStatic(void)
 	codes0[STATIC_ARRAY_NUM-1]=allPara.sDta.codeData[0];
 	codes1[STATIC_ARRAY_NUM-1]=allPara.sDta.codeData[1];
 
-	difCode=FindMin(codes0)-FindMax(codes0);
-	if(difCode>2048)
-		difCode-=4096;
-	if(difCode<-2048)
-		difCode+=4096;
-	#ifndef AUTOCAR
-	//如果条件真的恶劣，那就说明强制静止有错
-//	if(abs(difCode)<=20)
-//	{
-//		staticCount++;
-//	}
-//	else
-//		staticCount=0;
-//	
-//	staticCount=staticCount;
-//	if(staticCount>=5)
-//		SetFlag(STATIC_FORCE);
-//	else
-//		SetFlag(~STATIC_FORCE);
+	difCode[0]=FindMax(codes0)-FindMin(codes0);
+	difCode[1]=FindMax(codes1)-FindMin(codes1);
 	
+	#ifdef TLE5012_USED
+		if(difCode[0]>16384)
+			difCode[0]-=32768;
+		if(difCode[0]<-16384)
+			difCode[0]+=32768;
+		
+		if(difCode[1]>16384)
+			difCode[1]-=32768;
+		if(difCode[1]<-16384)
+			difCode[1]+=32768;
+		
+		if(abs(difCode[0])<5&&abs(difCode[1])<5&&fabs(allPara.GYRO_Real[2])<0.20)
+			count++;
+		else
+			count=0;
+	#else
+		if(difCode[0]>2048)
+			difCode[0]-=4096;
+		if(difCode[0]<-2048)
+			difCode[0]+=4096;
+		
+		if(difCode[1]>2048)
+			difCode[1]-=4096;
+		if(difCode[1]<-2048)
+			difCode[1]+=4096;
+		
+		if(abs(difCode[0])<3&&abs(difCode[1])<3&&fabs(allPara.GYRO_Real[2])<0.20)
+			count++;
+		else
+			count=0;
 	#endif
+	
+	if(count>20)
+		SetFlag(STATIC_FORCE);
+	else
+		SetFlag(~STATIC_FORCE);
 	
 }

@@ -154,7 +154,8 @@ void DataSend(void)
 //	USART_OUT_F(sqrt(allPara.sDta.posx*allPara.sDta.posx+allPara.sDta.posy*allPara.sDta.posy));
 //	USART_OUT_F(codesum[1]);
 //		USART_OUT(USART_USED,"123\r\n");
-//	USART_EnterByDMA();
+	USART_OUT_F(allPara.sDta.flag&STATIC_FORCE);
+	USART_Enter();
 	#else
 	
 	for(i=0;i<DMA_SEND_SIZE;i++)

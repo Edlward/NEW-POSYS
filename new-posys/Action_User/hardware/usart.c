@@ -22,7 +22,16 @@ void USART_SendDataToDMA_USART3(uint8_t data)
 	
 	if(count>=DMA_SEND_SIZE)
 	{
-		while(DMA_GetITStatus(DMA1_Stream3,DMA_IT_TCIF3) == RESET	&&	DMA_GetCmdStatus(DMA1_Stream3)	==	ENABLE	);    
+		StartCount();
+		while(DMA_GetITStatus(DMA1_Stream3,DMA_IT_TCIF3) == RESET	&&	DMA_GetCmdStatus(DMA1_Stream3)	==	ENABLE)
+		{
+			if(getCount()>1000)
+			{
+				DeadWhileReport(33);
+				break;
+			}
+		}
+		EndCnt();
 		DMA_ClearFlag(DMA1_Stream3,DMA_IT_TCIF3);  
 		DMA_Cmd(DMA1_Stream3,DISABLE);  
 		count=0;
@@ -127,7 +136,16 @@ void USART_SendDataToDMA_USATR1(uint8_t data)
 	
 	if(count>=DMA_SEND_SIZE)
 	{
-		while(DMA_GetITStatus(DMA2_Stream7,DMA_IT_TCIF7) == RESET	&&	DMA_GetCmdStatus(DMA2_Stream7)	==	ENABLE	);    
+		StartCount();
+		while(DMA_GetITStatus(DMA2_Stream7,DMA_IT_TCIF7) == RESET	&&	DMA_GetCmdStatus(DMA2_Stream7)	==	ENABLE)
+		{
+			if(getCount()>1000)
+			{
+				DeadWhileReport(34);
+				break;
+			}
+		}
+		EndCnt(); 
 		DMA_ClearFlag(DMA2_Stream7,DMA_IT_TCIF7);  
 		DMA_Cmd(DMA2_Stream7,DISABLE);  
 		count=0;
@@ -303,7 +321,16 @@ void USART_SendDataToDMA_USATR6(uint8_t data)
 	
 	if(count>=DMA_SEND_SIZE)
 	{
-		while(DMA_GetITStatus(DMA2_Stream6,DMA_IT_TCIF6) == RESET	&&	DMA_GetCmdStatus(DMA2_Stream6)	==	ENABLE	);    
+		StartCount();
+		while(DMA_GetITStatus(DMA2_Stream6,DMA_IT_TCIF6) == RESET	&&	DMA_GetCmdStatus(DMA2_Stream6)	==	ENABLE)
+		{
+			if(getCount()>1000)
+			{
+				DeadWhileReport(35);
+				break;
+			}
+		}
+		EndCnt(); 
 		DMA_ClearFlag(DMA2_Stream6,DMA_IT_TCIF6);  
 		DMA_Cmd(DMA2_Stream6,DISABLE);  
 		count=0;

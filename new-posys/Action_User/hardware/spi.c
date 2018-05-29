@@ -213,8 +213,6 @@ void SPI_Write(SPI_TypeDef *SPI,
 {
 //  SPI_Cmd(SPI,ENABLE);	
   GPIO_ResetBits(GPIOx,GPIO_Pin);
-	
-	Delay_us(1);//min 2ns
   
   while (SPI_I2S_GetFlagStatus(SPI, SPI_I2S_FLAG_TXE) == RESET){}		//等待发送区空  
   
@@ -236,9 +234,7 @@ void SPI_Write(SPI_TypeDef *SPI,
   // while (SPI_I2S_GetFlagStatus(SPI, SPI_I2S_FLAG_BSY) == SET){}	
 //  SPI_Cmd(SPI,DISABLE);		
   
-	Delay_us(1);//min tcs.hd 63ns
 	GPIO_SetBits(GPIOx,GPIO_Pin);	
-	Delay_us(1);//tsdo.dis 20ns
 }
 
 
@@ -304,27 +300,73 @@ void SPI_MultiRead(SPI_TypeDef *SPIx,
   
   SPI_Cmd(SPIx,ENABLE);	
   GPIO_ResetBits(GPIOx,GPIO_Pin);
-  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  //等待发送区空  
+	
+	StartCount();
+	while(SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET)
+	{
+		if(getCount()>1000)
+		{
+			DeadWhileReport(38);
+			break;
+		}
+	}
+	EndCnt(); 
   
   SPI_I2S_SendData(SPIx, address); 																		//通过外设SPIx发送一个byte  数据
   
-  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  //等待接收完一个byte  
+	StartCount();
+	while(SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET)
+	{
+		if(getCount()>1000)
+		{
+			DeadWhileReport(39);
+			break;
+		}
+	}
+	EndCnt(); 
   
   SPI_I2S_ReceiveData(SPIx); 																	        //返回通过SPIx最近接收的数据
   
   /* Receive the data that will be read from the device (MSB First) */
   for(uint32_t i=0;i<len;i++)
   {
-    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET){}		  //等待发送区空  
+    StartCount();
+		while(SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET)
+		{
+			if(getCount()>1000)
+			{
+				DeadWhileReport(40);
+				break;
+			}
+		}
+		EndCnt();   
     
     SPI_I2S_SendData(SPIx, DUMMY_BYTE); 																	//通过外设SPIx发送一个byte  数据
     
-    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET){} 	  //等待接收完一个byte  
+    
+		StartCount();
+		while(SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET)
+		{
+			if(getCount()>1000)
+			{
+				DeadWhileReport(41);
+				break;
+			}
+		}
+		EndCnt();   
     
     data[i]=SPI_I2S_ReceiveData(SPIx); 																	        //返回通过SPIx最近接收的数据
   }
-  
-  while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_BSY) == SET){}	
+  StartCount();
+	while(SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_BSY) == SET)
+	{
+		if(getCount()>1000)
+		{
+			DeadWhileReport(42);
+			break;
+		}
+	}
+	EndCnt(); 
   SPI_Cmd(SPIx,DISABLE);		
   GPIO_SetBits(GPIOx,GPIO_Pin);	
 }

@@ -37,6 +37,9 @@
 //每1ms调用一次  用于读取编码器的值和计算坐标
 
 
+uint32_t startCnt=0;
+uint32_t Cnt=0;
+
 extern AllPara_t allPara;
 static uint32_t timeCount=0;
 static uint8_t timeFlag=1;
@@ -86,9 +89,12 @@ void TIM2_IRQHandler(void)
 		if(!getTempInitSuces())
 			HeatingInit(temp_temp);
 		
+		if(startCnt==1)
+			Cnt++;
+	  IWDG_Feed();
+		
 	  if(timeCnt==5)
-		{	
-	
+		{
 			figureVell();
 			#ifdef TESTCAR
 			  double percentages[3][3]={
@@ -191,9 +197,6 @@ uint32_t getTimeCount(void)
 }
 
 
-uint32_t startCnt=0;
-uint32_t Cnt=0;
-
 void TIM7_IRQHandler(void)
 {
   if(TIM_GetITStatus(TIM7, TIM_IT_Update)==SET)
@@ -213,13 +216,15 @@ void StartCount(void)
 	Cnt=0;
 }
 
-uint32_t returnEndUs(void)
+uint32_t getCount(void)
 {
-	uint32_t	end;
-	end=Cnt*100;
+	return Cnt;
+}
+
+void EndCnt(void)
+{
 	Cnt=0;
 	startCnt=0;
-	return end;
 }	
 
 void TIM1_UP_TIM10_IRQHandler(void)

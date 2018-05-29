@@ -24,13 +24,12 @@ void init(void)
 	Led_Init();
 	
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
-
-  TIM_Init(TIM7,99,83,0,0);				
+		
 	//StartCount();
 	SoftWareReset();
 	
-	LED1_OFF;
-	LED2_OFF;
+//	LED1_OFF;
+//	LED2_OFF;
   pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz
   
 	ICM_SPIInit();
@@ -77,13 +76,20 @@ void init(void)
 	
   //driftCoffecientInit();
 	
-	IWDG_Init(1,60); // 1.5ms
+	IWDG_Init(4,100); // 200ms//时间计算(大概):Tout=((4*2^prer)*rlr)/32 (ms).
 	
+	StartCount();
 	while(!getTempInitSuces())
 	{
 		if(allPara.resetFlag)
 			SetTempInitSuces();
+		if(getCount()>2000)
+		{
+			DeadWhileReport(31);
+			break;
+		}
 	}
+	EndCnt();
 }
 
 int main(void)

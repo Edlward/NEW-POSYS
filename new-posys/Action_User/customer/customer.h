@@ -28,6 +28,7 @@ void DataSend(void);
 void SetFlag(int val);
 void AT_CMD_Handle(void);
 void ReportHardFault(void);
+void DeadWhileReport(uint8_t a);
 #endif
 
 /******************* (C) COPYRIGHT 2015 ACTION *****END OF FILE****/

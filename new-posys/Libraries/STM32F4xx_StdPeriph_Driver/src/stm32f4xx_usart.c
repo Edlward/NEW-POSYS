@@ -90,7 +90,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_usart.h"
 #include "stm32f4xx_rcc.h"
-
+#include "stm32f4xx_it.h"
 /** @addtogroup STM32F4xx_StdPeriph_Driver
   * @{
   */
@@ -545,8 +545,17 @@ void USART_SendData(USART_TypeDef* USARTx, uint16_t Data)
 {
   /* Check the parameters */
   assert_param(IS_USART_ALL_PERIPH(USARTx));
-  assert_param(IS_USART_DATA(Data)); 
-   while(USART_GetFlagStatus(USARTx,USART_FLAG_TXE)==RESET);
+  assert_param(IS_USART_DATA(Data));
+	StartCount();
+  while(USART_GetFlagStatus(USARTx,USART_FLAG_TXE)==RESET)
+	{
+		if(getCount()>1000)
+		{
+			DeadWhileReport(32);
+			break;
+		}
+	}
+	EndCnt();
 	USART_ClearFlag(USARTx,USART_FLAG_TXE);
 	USART_ClearFlag(USARTx,USART_FLAG_TC);
   /* Transmit Data */

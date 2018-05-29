@@ -319,7 +319,66 @@ void SetParaDefault(void)
 
 }
 
+void DeadWhileReport(uint8_t a)
+{
+	if(USART_USED==USART3)
+	{
+		USART_SendDataToDMA_USART3('h');
+		USART_SendDataToDMA_USART3('a');
+		USART_SendDataToDMA_USART3('r');
+		USART_SendDataToDMA_USART3('d');
+		USART_SendDataToDMA_USART3('f');
+		USART_SendDataToDMA_USART3('a');
+		USART_SendDataToDMA_USART3('u');
+		USART_SendDataToDMA_USART3('l');
+		USART_SendDataToDMA_USART3('t');
+		USART_SendDataToDMA_USART3('\r');
+		USART_SendDataToDMA_USART3(a);
+	}
+	else if(USART_USED==USART1)
+	{
+		USART_SendDataToDMA_USATR1('h');
+		USART_SendDataToDMA_USATR1('a');
+		USART_SendDataToDMA_USATR1('r');
+		USART_SendDataToDMA_USATR1('d');
+		USART_SendDataToDMA_USATR1('f');
+		USART_SendDataToDMA_USATR1('a');
+		USART_SendDataToDMA_USATR1('u');
+		USART_SendDataToDMA_USATR1('l');
+		USART_SendDataToDMA_USATR1('t');
+		USART_SendDataToDMA_USATR1('\r');
+		USART_SendDataToDMA_USATR1(a);
+	}
+}
+
 void ReportHardFault(void)
 {
-	USART_OUT(USART_USED,"hardfault\r\n");
+	if(USART_USED==USART3)
+	{
+		USART_SendDataToDMA_USART3('h');
+		USART_SendDataToDMA_USART3('a');
+		USART_SendDataToDMA_USART3('r');
+		USART_SendDataToDMA_USART3('d');
+		USART_SendDataToDMA_USART3('f');
+		USART_SendDataToDMA_USART3('a');
+		USART_SendDataToDMA_USART3('u');
+		USART_SendDataToDMA_USART3('l');
+		USART_SendDataToDMA_USART3('t');
+		USART_SendDataToDMA_USART3('\r');
+		USART_SendDataToDMA_USART3('\n');
+	}
+	else if(USART_USED==USART1)
+	{
+		USART_SendDataToDMA_USATR1('h');
+		USART_SendDataToDMA_USATR1('a');
+		USART_SendDataToDMA_USATR1('r');
+		USART_SendDataToDMA_USATR1('d');
+		USART_SendDataToDMA_USATR1('f');
+		USART_SendDataToDMA_USATR1('a');
+		USART_SendDataToDMA_USATR1('u');
+		USART_SendDataToDMA_USATR1('l');
+		USART_SendDataToDMA_USATR1('t');
+		USART_SendDataToDMA_USATR1('\r');
+		USART_SendDataToDMA_USATR1('\n');
+	}
 }

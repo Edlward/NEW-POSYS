@@ -86,7 +86,6 @@ void init(void)
 		if(getCount()>2000)
 		{
 			DeadWhileReport(31);
-			break;
 		}
 	}
 	EndCnt();

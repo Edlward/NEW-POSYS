@@ -552,7 +552,6 @@ void USART_SendData(USART_TypeDef* USARTx, uint16_t Data)
 		if(getCount()>1000)
 		{
 			DeadWhileReport(32);
-			break;
 		}
 	}
 	EndCnt();

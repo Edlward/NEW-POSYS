@@ -206,7 +206,6 @@ uint32_t SPI_ReadAS5045All(uint8_t num)
 				if(getCount()>1000)
 				{
 					DeadWhileReport(36);
-					break;
 				}
 			}
 			EndCnt(); 
@@ -227,7 +226,6 @@ uint32_t SPI_ReadAS5045All(uint8_t num)
 				if(getCount()>1000)
 				{
 					DeadWhileReport(37);
-					break;
 				}
 			}
 			EndCnt(); 

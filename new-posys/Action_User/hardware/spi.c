@@ -307,7 +307,6 @@ void SPI_MultiRead(SPI_TypeDef *SPIx,
 		if(getCount()>1000)
 		{
 			DeadWhileReport(38);
-			break;
 		}
 	}
 	EndCnt(); 
@@ -320,7 +319,6 @@ void SPI_MultiRead(SPI_TypeDef *SPIx,
 		if(getCount()>1000)
 		{
 			DeadWhileReport(39);
-			break;
 		}
 	}
 	EndCnt(); 
@@ -336,7 +334,6 @@ void SPI_MultiRead(SPI_TypeDef *SPIx,
 			if(getCount()>1000)
 			{
 				DeadWhileReport(40);
-				break;
 			}
 		}
 		EndCnt();   
@@ -350,7 +347,6 @@ void SPI_MultiRead(SPI_TypeDef *SPIx,
 			if(getCount()>1000)
 			{
 				DeadWhileReport(41);
-				break;
 			}
 		}
 		EndCnt();   
@@ -363,7 +359,6 @@ void SPI_MultiRead(SPI_TypeDef *SPIx,
 		if(getCount()>1000)
 		{
 			DeadWhileReport(42);
-			break;
 		}
 	}
 	EndCnt(); 

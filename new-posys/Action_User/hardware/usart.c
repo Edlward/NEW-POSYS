@@ -28,7 +28,6 @@ void USART_SendDataToDMA_USART3(uint8_t data)
 			if(getCount()>1000)
 			{
 				DeadWhileReport(33);
-				break;
 			}
 		}
 		EndCnt();
@@ -142,7 +141,6 @@ void USART_SendDataToDMA_USATR1(uint8_t data)
 			if(getCount()>1000)
 			{
 				DeadWhileReport(34);
-				break;
 			}
 		}
 		EndCnt(); 
@@ -327,7 +325,6 @@ void USART_SendDataToDMA_USATR6(uint8_t data)
 			if(getCount()>1000)
 			{
 				DeadWhileReport(35);
-				break;
 			}
 		}
 		EndCnt(); 

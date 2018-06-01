@@ -55,10 +55,10 @@ void USART1_IRQHandler(void)
 void USART3_IRQHandler(void)
 {
   uint8_t data;
-  if(USART_GetITStatus(USART_USED,USART_IT_RXNE)==SET)
+  if(USART_GetITStatus(USART3,USART_IT_RXNE)==SET)
   {
-    USART_ClearITPendingBit(USART_USED,USART_IT_RXNE);
-    data=USART_ReceiveData(USART_USED);
+    USART_ClearITPendingBit(USART3,USART_IT_RXNE);
+    data=USART_ReceiveData(USART3);
     buffer[bufferI]=data;
     bufferI++;
 		if(bufferI>=20)
@@ -71,7 +71,30 @@ void USART3_IRQHandler(void)
       }
     }
   }else{
-    data=USART_ReceiveData(USART_USED);
+    data=USART_ReceiveData(USART3);
+  }
+}
+
+void USART6_IRQHandler(void)
+{
+  uint8_t data;
+  if(USART_GetITStatus(USART6,USART_IT_RXNE)==SET)
+  {
+    USART_ClearITPendingBit(USART6,USART_IT_RXNE);
+    data=USART_ReceiveData(USART6);
+    buffer[bufferI]=data;
+    bufferI++;
+		if(bufferI>=20)
+			bufferI=0;
+    if(bufferI>1&&buffer[bufferI-1]=='\n'&&buffer[bufferI-2]=='\r'){
+      AT_CMD_Judge();
+    }else{
+      if(buffer[0]!='A'){
+        bufferInit();
+      }
+    }
+  }else{
+    data=USART_ReceiveData(USART6);
   }
 }
 
@@ -153,9 +176,9 @@ void DataSend(void)
 //	USART_OUT_F(allPara.sDta.posy);
 //	USART_OUT_F(sqrt(allPara.sDta.posx*allPara.sDta.posx+allPara.sDta.posy*allPara.sDta.posy));
 //	USART_OUT_F(codesum[1]);
-//		USART_OUT(USART_USED,"123\r\n");
-	USART_OUT_F(allPara.sDta.flag&STATIC_FORCE);
-	USART_Enter();
+		USART_OUT(USART6,"123\r\n");
+//	USART_OUTByDMAF(allPara.sDta.flag&STATIC_FORCE);
+//	USART_EnterByDMA();
 	#else
 	
 	for(i=0;i<DMA_SEND_SIZE;i++)

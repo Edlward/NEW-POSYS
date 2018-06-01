@@ -206,12 +206,15 @@ void SoftWareReset(void)
   if(allPara.resetTime==0||dataSave.isReset==0||allPara.resetTime>=500)
   {
     STMFLASH_ERASE();
-		
+		LED1_OFF;
+		LED2_OFF;
 		AllParaInit();
   }
   /*进了硬件中断后重启*/
   else
   {
+		LED1_ON;
+		LED2_ON;
     //将进硬件中断前的数据恢复
 		copyDataSave_tFromOther(&allPara.sDta,&dataSave);
 		

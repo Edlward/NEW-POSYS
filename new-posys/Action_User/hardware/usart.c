@@ -126,7 +126,7 @@ void USART3_Init(uint32_t BaudRate)
   NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器、
 }
 
-void USART_SendDataToDMA_USATR1(uint8_t data)
+void USART_SendDataToDMA_USART1(uint8_t data)
 {
 	static uint8_t tempBuffer[DMA_SEND_SIZE];
 	static uint32_t count=0;
@@ -359,13 +359,13 @@ void USART_OUTByDMAF(float x){
 		 sprintf(String,"%f\t",x);
 		 for (s=String; *s; s++) 
 		 {
-				USART_SendDataToDMA_USATR6(*s);
+				USART_SendDataToDMA_USART3(*s);
      }
 }
 
 void USART_EnterByDMA(void){
-	USART_SendDataToDMA_USATR6('\r');
-	USART_SendDataToDMA_USATR6('\n');
+	USART_SendDataToDMA_USART3('\r');
+	USART_SendDataToDMA_USART3('\n');
 }
 void USART_OUT(USART_TypeDef* USARTx,const char *Data,...){ 
   const char *s;

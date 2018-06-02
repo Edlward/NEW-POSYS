@@ -5,10 +5,8 @@
 #include "stm32f4xx_gpio.h"
 #include "config.h"
 
-#define LED1_ON 			GPIO_SetBits(GPIOB, GPIO_Pin_0);
-#define LED1_OFF		  GPIO_ResetBits(GPIOB, GPIO_Pin_0);
-#define LED2_ON			  GPIO_SetBits(GPIOB, GPIO_Pin_1);
-#define LED2_OFF 			GPIO_ResetBits(GPIOB, GPIO_Pin_1);
+#define LED_ON 				GPIO_SetBits(GPIOA, GPIO_Pin_3);GPIO_ResetBits(GPIOA, GPIO_Pin_2);
+#define LED_OFF 			GPIO_ResetBits(GPIOA, GPIO_Pin_3);GPIO_SetBits(GPIOA, GPIO_Pin_2);
  
 void GPIO_Init_Pins(GPIO_TypeDef * GPIOx,
 					uint16_t GPIO_Pin,

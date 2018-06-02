@@ -22,16 +22,7 @@
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
 extern AllPara_t allPara; 
-/*
-自动车  以y方向为基准
-	//1/4096*wheelR*2*pi
-	allPara.sDta.posx=convert_X*0.0385305294301115;
-	allPara.sDta.posy=convert_Y*0.0383709954281714;
-	a=1.371/180*pi;测得到的误差角
-  real=[1/cos(a) -tan(a);0 1]*[allPara.sDta.vell1';allPara.sDta.vell2'];
-			real[0]=1.00028635401126*allPara.vell[0]*0.0387451841901678-0.0239330320090246*allPara.vell[1]*0.0387451841901678;
-			real[1]=allPara.vell[1]*0.0387451841901678;
-*/
+
 /*
 25.18 25.19用改进算法后拟合得出的
 手动车	以x方向为基准  
@@ -43,17 +34,6 @@ extern AllPara_t allPara;
   real=[1 0;-tan(a) 1/cos(a)]*[allPara.sDta.vell1';allPara.sDta.vell2'];
 	real[0]=allPara.vell[0]*0.0385959339263024;
   real[1]=0.00227591327416601*allPara.vell[0]*0.0385959339263024+1.00000258988726*allPara.vell[1]*0.038690160280225;
-*/
-/*
--0.3819
-轮一25.2100214096499  轮二25.1926480912484
-	//1/4096*wheelR*2*pi
-	allPara.sDta.posx=convert_X;
-	allPara.sDta.posy=convert_Y;
-	a=-0.3819/180*pi;测得到的误差角
-  real=[1 0;-tan(a) 1/cos(a)]*[allPara.sDta.vell1';allPara.sDta.vell2'];
-	real[0]=allPara.vell[0]*0.0386716885045886;
-  real[1]=0.00666551112481855*allPara.vell[0]*0.0386716885045886+1.00002221427254*allPara.vell[1]*0.0386450381679389;
 */
 void calculatePos(void)
 {
@@ -85,7 +65,8 @@ void calculatePos(void)
 
 	#ifdef AUTOCAR	//以y为标准
 		real[0]=allPara.sDta.vellF[0];
-		real[1]=1.00008334242607*(double)allPara.sDta.vellF[1]-0.0129109177866286*(double)allPara.sDta.vellF[0];
+		// 一号机加件 1.00005377860061 -0.0103711182308368
+		real[1]=1.00005377860061*(double)allPara.sDta.vellF[1]-0.0103711182308368*(double)allPara.sDta.vellF[0];
 	#else			//以x为标准
 		real[0]=allPara.sDta.vellF[0];
 		real[1]=allPara.sDta.vellF[1];
@@ -160,8 +141,10 @@ void figureVell(void)
 		if(allPara.vell[1]<-2048)
 			allPara.vell[1]+=4096;
 		
-		allPara.sDta.vellF[0]=allPara.vell[0]*0.0387838161359827;
-		allPara.sDta.vellF[1]=allPara.vell[1]*0.0387498006697496;
+		// 一号机加件 0.0387225283845694 0.0387374461979914
+		// 二号机加件 0.0387225283845694 0.0387374461979914
+		allPara.sDta.vellF[0]=allPara.vell[0]*0.0387225283845694;
+		allPara.sDta.vellF[1]=allPara.vell[1]*0.0387374461979914;
 	#endif
 	
 	allPara.vellSum[0]+=allPara.vell[0];

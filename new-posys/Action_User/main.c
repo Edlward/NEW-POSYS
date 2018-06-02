@@ -25,24 +25,20 @@ void init(void)
 	
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
 		
-	//StartCount();
 	SoftWareReset();
 	
-//	LED1_OFF;
-//	LED2_OFF;
-  pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz
+//  pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz
   
 	ICM_SPIInit();
 	SPI2_Init();
-	SPI3_Init();
   CS_Config();
 	
 	#ifdef TEST_SUMMER
-	USART1DMAInit(921600);
+	USART3DMAInit(115200);
 	#else
-	USART1DMAInit(115200);
+	USART3DMAInit(115200);
 	#endif
-	USART6DMAInit(921600);
+
 //  Flash_Init();
 	
 	for(int gyro;gyro<GYRO_NUMBER;gyro++)
@@ -110,16 +106,16 @@ int main(void)
 			
 			AT_CMD_Handle();
       if(!(allPara.sDta.flag&CORRECT)){
-				if(allPara.sDta.flag&HEATING)
-				{
-					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-						temp_pid_ctr(gyro,allPara.sDta.GYRO_TemperatureAim[gyro]);
-				}
-				else
-				{
-					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-						temp_pid_ctr(gyro,allPara.sDta.GYRO_TemperatureAim[gyro]-0.5f);
-				}
+//				if(allPara.sDta.flag&HEATING)
+//				{
+//					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+//						temp_pid_ctr(gyro,allPara.sDta.GYRO_TemperatureAim[gyro]);
+//				}
+//				else
+//				{
+//					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+//						temp_pid_ctr(gyro,allPara.sDta.GYRO_TemperatureAim[gyro]-0.5f);
+//				}
 				
 				JudgeStatic();
         if(RoughHandle())

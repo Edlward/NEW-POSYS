@@ -216,12 +216,12 @@ uint32_t SPI_ReadAS5045All(uint8_t num)
 	}
 	else if(num==0)
 	{
-		GPIO_ResetBits(GPIOA,GPIO_Pin_15);
-		SPI_Cmd(SPI3,ENABLE);
+		GPIO_ResetBits(GPIOB,GPIO_Pin_15);
+		SPI_Cmd(SPI2,ENABLE);
 		for(i=0;i<3;i++)
 		{
 			StartCount();
-			while((SPI3->SR & SPI_I2S_FLAG_RXNE) == (uint16_t)RESET)
+			while((SPI2->SR & SPI_I2S_FLAG_RXNE) == (uint16_t)RESET)
 			{
 				if(getCount()>1000)
 				{
@@ -229,10 +229,10 @@ uint32_t SPI_ReadAS5045All(uint8_t num)
 				}
 			}
 			EndCnt(); 
-			buf[i] = SPI3->DR;
+			buf[i] = SPI2->DR;
 		}
-	  GPIO_SetBits(GPIOA,GPIO_Pin_15);
-		SPI_Cmd(SPI3,DISABLE);
+	  GPIO_SetBits(GPIOB,GPIO_Pin_15);
+		SPI_Cmd(SPI2,DISABLE);
 	}
 	
 	delay_us(15);

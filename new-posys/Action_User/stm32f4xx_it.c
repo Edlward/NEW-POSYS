@@ -302,9 +302,8 @@ void NMI_Handler(void)
 */	
 
 void HardFault_Handler(void)
-{  
-	LED1_ON;
-	LED2_ON;
+{ 
+	LED_OFF;
 	//if(allPara.resetTime<=500&&allPara.sDta.GYRO_Bais[2]!=0.0)
 	{
 		FindResetTime();
@@ -322,7 +321,7 @@ void HardFault_Handler(void)
 	}
 	
 		ReportHardFault();
-//		ReportHardFault();
+		ReportHardFault();
 //	  static uint32_t r_sp ;
 //		if(__get_PSP()!=0x00) 
 //			r_sp = __get_PSP(); 

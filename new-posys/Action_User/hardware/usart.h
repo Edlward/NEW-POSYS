@@ -9,7 +9,7 @@
 #define DMA_SEND_SIZE   36
 #endif
 
-#define USART_USED   		USART3
+#define USART_USED   		USART1
 
 
 void USART3DMAInit(uint32_t BaudRate);

@@ -66,7 +66,8 @@ void calculatePos(void)
 	#ifdef AUTOCAR	//以y为标准
 		real[0]=allPara.sDta.vellF[0];
 		// 一号机加件 1.00005377860061 -0.0103711182308368
-		real[1]=1.00005377860061*(double)allPara.sDta.vellF[1]-0.0103711182308368*(double)allPara.sDta.vellF[0];
+		real[1]=allPara.sDta.vellF[1];
+//		real[1]=1.00005377860061*(double)allPara.sDta.vellF[1]-0.0103711182308368*(double)allPara.sDta.vellF[0];
 	#else			//以x为标准
 		real[0]=allPara.sDta.vellF[0];
 		real[1]=allPara.sDta.vellF[1];

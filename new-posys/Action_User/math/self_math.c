@@ -237,7 +237,7 @@ void JudgeStatic(void)
 		if(difCode[1]<-2048)
 			difCode[1]+=4096;
 		
-		if(abs(difCode[0])<3&&abs(difCode[1])<3&&fabs(allPara.GYRO_Real[2])<0.20)
+		if(abs(difCode[0])<3&&abs(difCode[1])<3&&fabs(allPara.GYRO_Real[2])<0.40)
 			count++;
 		else
 			count=0;

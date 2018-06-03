@@ -34,9 +34,9 @@ void init(void)
   CS_Config();
 	
 	#ifdef TEST_SUMMER
-	USART3DMAInit(115200);
+	USART1DMAInit(115200);
 	#else
-	USART3DMAInit(115200);
+	USART1DMAInit(115200);
 	#endif
 
 //  Flash_Init();
@@ -104,7 +104,7 @@ int main(void)
 			if(allPara.sDta.time>200*5)
 				allPara.sDta.time--;
 			
-			AT_CMD_Handle();
+		//	AT_CMD_Handle();
       if(!(allPara.sDta.flag&CORRECT)){
 //				if(allPara.sDta.flag&HEATING)
 //				{

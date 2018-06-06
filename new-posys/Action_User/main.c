@@ -34,7 +34,7 @@ void init(void)
   CS_Config();
 	
 	#ifdef TEST_SUMMER
-	USART1DMAInit(115200);
+	USART1DMAInit(921600);
 	#else
 	USART1DMAInit(115200);
 	#endif
@@ -46,7 +46,7 @@ void init(void)
 
 		if(!allPara.resetFlag)
 			MEMS_Configure(gyro);
-		ICM_HeatingPower(gyro,0);
+//		ICM_HeatingPower(gyro,0);
 	}
 	
   TIM_Init(TIM2,999,83,2,0);			

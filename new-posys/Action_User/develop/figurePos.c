@@ -66,15 +66,15 @@ void calculatePos(void)
 	#ifdef AUTOCAR	//以y为标准
 		real[0]=allPara.sDta.vellF[0];
 		// 一号机加件 1.00005377860061 -0.0103711182308368
-		real[1]=allPara.sDta.vellF[1];
-//		real[1]=1.00005377860061*(double)allPara.sDta.vellF[1]-0.0103711182308368*(double)allPara.sDta.vellF[0];
+//		real[1]=allPara.sDta.vellF[1];
+		real[1]=1.0000276669728*(double)allPara.sDta.vellF[1]-0.0074387304741118*(double)allPara.sDta.vellF[0];
 	#else			//以x为标准
 		real[0]=allPara.sDta.vellF[0];
 		real[1]=allPara.sDta.vellF[1];
 	#endif
 
-	delPos[0]=(-sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
-	delPos[1]=(cos(zangle*0.017453292519943)*real[1]+sin(zangle*0.017453292519943)*real[0]);
+	delPos[0]=(sin(zangle*0.017453292519943)*real[1]+cos(zangle*0.017453292519943)*real[0]);
+	delPos[1]=(cos(zangle*0.017453292519943)*real[1]-sin(zangle*0.017453292519943)*real[0]);
 
 	allPara.sDta.posx+=delPos[0];
 	allPara.sDta.posy+=delPos[1];
@@ -142,10 +142,10 @@ void figureVell(void)
 		if(allPara.vell[1]<-2048)
 			allPara.vell[1]+=4096;
 		
-		// 一号机加件 0.0387225283845694 0.0387374461979914
-		// 二号机加件 0.0387225283845694 0.0387374461979914
-		allPara.sDta.vellF[0]=allPara.vell[0]*0.0387225283845694;
-		allPara.sDta.vellF[1]=allPara.vell[1]*0.0387374461979914;
+		// 一号机加件 0.0386727142516114 
+		// 二号机加件 0.0386102431015306 
+		allPara.sDta.vellF[0]=allPara.vell[0]*0.0386727142516114;
+		allPara.sDta.vellF[1]=allPara.vell[1]*0.0386102431015306;
 	#endif
 	
 	allPara.vellSum[0]+=allPara.vell[0];

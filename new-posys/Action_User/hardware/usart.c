@@ -359,13 +359,28 @@ void USART_OUTByDMAF(float x){
 		 sprintf(String,"%f\t",x);
 		 for (s=String; *s; s++) 
 		 {
-				USART_SendDataToDMA_USART3(*s);
+				if(USART_USED==USART1)
+				{
+					USART_SendDataToDMA_USART1(*s);
+				}
+				else if(USART_USED==USART3)
+				{
+					USART_SendDataToDMA_USART3(*s);
+				}
      }
 }
 
 void USART_EnterByDMA(void){
-	USART_SendDataToDMA_USART3('\r');
-	USART_SendDataToDMA_USART3('\n');
+	if(USART_USED==USART1)
+	{
+		USART_SendDataToDMA_USART1('\r');
+		USART_SendDataToDMA_USART1('\n');
+	}
+	else if(USART_USED==USART3)
+	{
+		USART_SendDataToDMA_USART3('\r');
+		USART_SendDataToDMA_USART3('\n');
+	}
 }
 void USART_OUT(USART_TypeDef* USARTx,const char *Data,...){ 
   const char *s;

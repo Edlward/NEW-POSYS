@@ -379,9 +379,10 @@ void CS_Config(void)
   
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE); 
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);	
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);	
   
   /* ≈‰÷√∆¨—°“˝Ω≈------------------------- */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1|GPIO_Pin_2;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
@@ -391,10 +392,14 @@ void CS_Config(void)
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12|GPIO_Pin_15;            
   GPIO_Init(GPIOB, &GPIO_InitStructure);   
   
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;            
+  GPIO_Init(GPIOC, &GPIO_InitStructure);   
   /* Deselect : Chip Select high ---------*/
-  GPIO_SetBits(GPIOA, GPIO_Pin_4);
+  GPIO_SetBits(GPIOA, GPIO_Pin_1);
+  GPIO_SetBits(GPIOA, GPIO_Pin_2);
   GPIO_SetBits(GPIOB, GPIO_Pin_15);
   GPIO_SetBits(GPIOB, GPIO_Pin_12);
+  GPIO_SetBits(GPIOC, GPIO_Pin_6);
 }
 
 

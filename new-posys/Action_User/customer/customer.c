@@ -138,7 +138,7 @@ void DataSend(void)
 //	
 	#ifdef TEST_SUMMER
 	i=i;
-//	USART_OUTByDMAF(allPara.GYRO_Temperature[0]);
+	USART_OUTByDMAF(allPara.GYRO_Temperature[0]);
 //	USART_OUTByDMAF(allPara.sDta.GYRO_TemperatureAim[0]);
 //	for(int i=0;i<AXIS_NUMBER;i++)
 //		USART_OUTByDMAF(allPara.sDta.GYRO_Aver[i]);
@@ -156,9 +156,9 @@ void DataSend(void)
 //		USART_OUTByDMAF(allPara.sDta.GYRO_TemperatureAim[i]);
 //		USART_OUTByDMAF(allPara.GYRO_Temperature[i]);
 //	}
-//	USART_OUTByDMAF(allPara.sDta.GYRO_Aver[2]);
+	USART_OUTByDMAF(allPara.sDta.GYRO_Aver[2]);
 //	USART_OUTByDMAF(lowpass);
-	USART_OUTByDMAF(allPara.sDta.Result_Angle[2]);
+//	USART_OUTByDMAF(allPara.sDta.Result_Angle[2]);
 //	USART_OUTByDMAF(allPara.sDta.GYRO_Bais[2]);
 //	USART_OUTByDMAF(allPara.GYRO_Real[2]);
 //	USART_OUTByDMAF(allPara.sDta.posx);
@@ -172,9 +172,9 @@ void DataSend(void)
 //	codesum[1]+=allPara.vell[1];
 //	USART_OUTByDMAF(codesum[0]);
 //	USART_OUTByDMAF(codesum[1]);
-//	USART_OUTByDMAF(sqrt(pow(codesum[0]*0.0387225283845694,2)+pow(codesum[1]*0.0387374461979914,2)));
-	USART_OUTByDMAF(allPara.sDta.posx);
-	USART_OUTByDMAF(allPara.sDta.posy);
+////	USART_OUTByDMAF(sqrt(pow(codesum[0]*0.0387225283845694,2)+pow(codesum[1]*0.0387374461979914,2)));
+//	USART_OUTByDMAF(allPara.sDta.posx);
+//	USART_OUTByDMAF(allPara.sDta.posy);
 //	USART_OUTByDMAF(sqrt(allPara.sDta.posx*allPara.sDta.posx+allPara.sDta.posy*allPara.sDta.posy));
 //	USART_OUTByDMAF(codesum[1]);
 //	USART_OUTByDMAF(allPara.sDta.flag&STATIC_FORCE);

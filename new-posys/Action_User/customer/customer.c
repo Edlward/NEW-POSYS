@@ -144,6 +144,8 @@ void DataSend(void)
 		USART_OUTByDMAF(allPara.sDta.GYRO_Aver[i]);
 	for(int i=0;i<AXIS_NUMBER;i++)
 		USART_OUTByDMAF(allPara.ACC_Raw[0][i]);
+	for(int i=0;i<AXIS_NUMBER;i++)
+		USART_OUTByDMAF(allPara.sDta.Result_Angle[i]);
 	
 //	for(int i=0;i<3;i++)
 //		USART_OUTByDMAF(allPara.GYROWithoutRemoveDrift[i][2]);

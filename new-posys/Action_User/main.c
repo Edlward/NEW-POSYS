@@ -17,6 +17,8 @@
 #include "gpio.h"
 #include "odom.h"
 #include "self_math.h"
+#include "mahony.h"
+
 AllPara_t allPara={0};
 
 void init(void)
@@ -122,16 +124,17 @@ int main(void)
 				{
 					if((allPara.sDta.flag&START_COMPETE))
 					{
-						updateAngle();
+						MahonyFilter();
+						//updateAngle();
 						calculatePos();
 					}
 					#ifndef TEST_SUMMER
 					DataSend();
 					#endif
-				}
 					#ifdef TEST_SUMMER
 					DataSend();
 					#endif
+				}
 			}
       else{
         UpdateVDoffTable();

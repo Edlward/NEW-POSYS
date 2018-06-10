@@ -496,6 +496,11 @@
               <FileType>1</FileType>
               <FilePath>..\Action_User\math\self_math.c</FilePath>
             </File>
+            <File>
+              <FileName>mahony.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Action_User\math\mahony.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

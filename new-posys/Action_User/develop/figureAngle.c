@@ -18,6 +18,7 @@
 #include "config.h"
 #include "kalman.h"
 #include "self_math.h"
+#include "mahony.h"
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
@@ -87,13 +88,13 @@ int RoughHandle(void)
 		#endif
 	}
   if(ignore>(TIME_STATIC_REAL)*200){
+		
 		if(UpdateBais()||allPara.resetFlag)
 		{
 			ignore=(TIME_STATIC_REAL)*200+5;
 			allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.sDta.GYRO_Bais[0]);
 			allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.sDta.GYRO_Bais[1]);
 			allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.sDta.GYRO_Bais[2]);
-			allPara.kalmanZ=KalmanFilterZ(allPara.GYRO_Real[2]);
 			return 1;
 		}
 		else
@@ -117,11 +118,12 @@ int RoughHandle(void)
 
 void updateAngle(void)
 {	
+	
 	double w[3]={0.0};
 	
 	w[0]=allPara.GYRO_Real[0];
 	w[1]=allPara.GYRO_Real[1];
-	w[2]=allPara.GYRO_Real[2];
+	w[2]=-allPara.GYRO_Real[2];
 	
   if(fabs(w[0])<0.3f)//单位 °/s
     w[0]=0.f;
@@ -213,6 +215,7 @@ uint8_t UpdateBais(void)
 				}
 			}
 		}
+		InitQuarternion();
 	}
 	//不静止了，填入矫正参数
 	else 

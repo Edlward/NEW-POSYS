@@ -150,24 +150,3 @@ void QuaternionInt1(double quaternion[4],double data[3] )
 		old_w[i]=data[i];
 }
 
-
-int JudgeAcc(void)
-{
-	float sum[GYRO_NUMBER]={0.f};
-	for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-	{
-		float X_G,Y_G,Z_G;
-		sum[gyro]=sqrt(allPara.ACC_Raw[gyro][0]*allPara.ACC_Raw[gyro][0]+allPara.ACC_Raw[gyro][1]*allPara.ACC_Raw[gyro][1]+allPara.ACC_Raw[gyro][2]*allPara.ACC_Raw[gyro][2]);
-		X_G=allPara.ACC_Raw[gyro][0]/sum[gyro];
-		Y_G=allPara.ACC_Raw[gyro][1]/sum[gyro];
-		Z_G=allPara.ACC_Raw[gyro][2]/sum[gyro];
-		/*初始坐标为0,0,g,然后可以通过坐标变换公式轻易推导*/
-		allPara.ACC_Angle[gyro][0]= safe_atan2(Y_G,Z_G);
-		allPara.ACC_Angle[gyro][1]= safe_asin(-X_G);
-		allPara.ACC_Angle[gyro][0]*=57.2957795130823f;
-		allPara.ACC_Angle[gyro][1]*=57.2957795130823f;
-	}
-
-    return 1;
-}	
-

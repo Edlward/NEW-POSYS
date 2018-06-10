@@ -169,7 +169,7 @@ typedef struct{
   
 	/*最终确定的三轴角度*/
 	double Result_Angle[AXIS_NUMBER];
-  
+	
 	uint32_t codeData[2];
 	
   uint32_t data_last[2];
@@ -179,6 +179,16 @@ typedef struct{
   uint32_t flag;
 	
   uint32_t time;
+	
+	struct{
+		//静止时加速度总和
+		double accSumStatic;
+		//误差累积项
+	  double exInt;
+	  double eyInt;
+	  double ezInt;
+	}mahony_t;
+	
 }DataSave_t;
 
 

@@ -107,7 +107,7 @@ void icm_update_gyro_rate(int gyroNum)
   
 	gyro[0] = data1[0]/131.064998641975;
 	gyro[1] = data1[1]/131.064998641975;
-	gyro[2] = -data1[2]/131.064998641975;
+	gyro[2] = data1[2]/131.064998641975;
 
 }
 void icm_read_gyro_rate(double data[GYRO_NUMBER])

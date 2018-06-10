@@ -140,15 +140,11 @@ void DataSend(void)
 	i=i;
 //	USART_OUTByDMAF(allPara.GYRO_Temperature[0]);
 //	USART_OUTByDMAF(allPara.sDta.GYRO_TemperatureAim[0]);
-//	for(int i=0;i<AXIS_NUMBER;i++)
-//		USART_OUTByDMAF(allPara.sDta.GYRO_Aver[i]);
-//	for(int i=0;i<AXIS_NUMBER;i++)
-//		USART_OUTByDMAF(allPara.ACC_Raw[0][i]);
+	for(int i=0;i<AXIS_NUMBER;i++)
+		USART_OUTByDMAF(allPara.sDta.GYRO_Aver[i]);
+	for(int i=0;i<AXIS_NUMBER;i++)
+		USART_OUTByDMAF(allPara.ACC_Raw[0][i]);
 	
-//	USART_OUTByDMAF(allPara.GYROWithoutRemoveDrift[0][2]);
-//	USART_OUTByDMAF(allPara.GYROWithoutRemoveDrift[1][2]);
-//	USART_OUTByDMAF(allPara.GYROWithoutRemoveDrift[0][2]);
-//	USART_OUTByDMAF(allPara.GYROWithoutRemoveDrift[2][2]);
 //	for(int i=0;i<3;i++)
 //		USART_OUTByDMAF(allPara.GYROWithoutRemoveDrift[i][2]);
 
@@ -159,11 +155,11 @@ void DataSend(void)
 //	}
 //	USART_OUTByDMAF(allPara.sDta.GYRO_Aver[2]);
 //	USART_OUTByDMAF(lowpass);
-	USART_OUTByDMAF(allPara.sDta.Result_Angle[2]);
+//	USART_OUTByDMAF(allPara.sDta.Result_Angle[2]);
 //	USART_OUTByDMAF(allPara.sDta.GYRO_Bais[2]);
 //	USART_OUTByDMAF(allPara.GYRO_Real[2]);
-	USART_OUTByDMAF(allPara.sDta.posx);
-	USART_OUTByDMAF(allPara.sDta.posy);
+//	USART_OUTByDMAF(allPara.sDta.posx);
+//	USART_OUTByDMAF(allPara.sDta.posy);
 //	USART_OUTByDMAF(allPara.vell[0]);
 //	USART_OUTByDMAF(allPara.vell[1]);
 //	USART_OUTByDMAF(allPara.isStatic);

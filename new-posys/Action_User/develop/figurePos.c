@@ -55,6 +55,9 @@ extern AllPara_t allPara;
 	real[0]=allPara.vell[0]*0.0386716885045886;
   real[1]=0.00666551112481855*allPara.vell[0]*0.0386716885045886+1.00002221427254*allPara.vell[1]*0.0386450381679389;
 */
+#define OLD_1
+//#define OLD_2
+//#define NEW_2
 void calculatePos(void)
 {
 	
@@ -84,8 +87,18 @@ void calculatePos(void)
 	//直角坐标系和非直角坐标系的转换  一定要注意坐标系的正方向和角度正方向一样！
 
 	#ifdef AUTOCAR	//以y为标准
-		real[0]=allPara.sDta.vellF[0];
-		real[1]=1.00008334242607*(double)allPara.sDta.vellF[1]-0.0129109177866286*(double)allPara.sDta.vellF[0];
+		#ifdef OLD_1
+			real[0]=allPara.sDta.vellF[0];
+			real[1]=1.00001901160992*(double)allPara.sDta.vellF[1]-0.006166326400784*(double)allPara.sDta.vellF[0];
+		#endif
+		#ifdef OLD_2
+			real[0]=allPara.sDta.vellF[0];
+			real[1]=1.0000276669728*(double)allPara.sDta.vellF[1]-0.0074387304741118*(double)allPara.sDta.vellF[0];
+		#endif
+		#ifdef NEW_2
+			real[0]=allPara.sDta.vellF[0];
+			real[1]=1.00005377860061*(double)allPara.sDta.vellF[1]-0.0103711182308368*(double)allPara.sDta.vellF[0];
+		#endif
 	#else			//以x为标准
 		real[0]=allPara.sDta.vellF[0];
 		real[1]=allPara.sDta.vellF[1];
@@ -160,8 +173,18 @@ void figureVell(void)
 		if(allPara.vell[1]<-2048)
 			allPara.vell[1]+=4096;
 		
-		allPara.sDta.vellF[0]=allPara.vell[0]*0.0387838161359827;
-		allPara.sDta.vellF[1]=allPara.vell[1]*0.0387498006697496;
+		#ifdef OLD_1
+			allPara.sDta.vellF[0]=allPara.vell[0]*0.038622517085838;
+			allPara.sDta.vellF[1]=allPara.vell[1]*0.038651337725656;
+		#endif
+		#ifdef OLD_2
+			allPara.sDta.vellF[0]=allPara.vell[0]*0.0386727142516114;
+			allPara.sDta.vellF[1]=allPara.vell[1]*0.0386102431015306;
+		#endif
+		#ifdef NEW_2
+		allPara.sDta.vellF[0]=allPara.vell[0]*0.0387225283845694;
+		allPara.sDta.vellF[1]=allPara.vell[1]*0.0387374461979914;
+		#endif
 	#endif
 	
 	allPara.vellSum[0]+=allPara.vell[0];

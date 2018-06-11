@@ -46,7 +46,7 @@
 
 
 /* Exported constants --------------------------------------------------------*/
-#define TEST_SUMMER
+//#define TEST_SUMMER
 
 #define AUTOCAR
 //#define TESTCAR
@@ -165,10 +165,10 @@ typedef struct{
 	double GYRO_Bais[AXIS_NUMBER];
   
 	/*用于角度积分的四元数*/
-	double quarternion[4];
+	long double quarternion[4];
   
 	/*最终确定的三轴角度*/
-	double Result_Angle[AXIS_NUMBER];
+	long double Result_Angle[AXIS_NUMBER];
 	
 	uint32_t codeData[2];
 	
@@ -182,11 +182,11 @@ typedef struct{
 	
 	struct{
 		//静止时加速度总和
-		double accSumStatic;
+		long double accSumStatic;
 		//误差累积项
-	  double exInt;
-	  double eyInt;
-	  double ezInt;
+	  long double exInt;
+	  long double eyInt;
+	  long double ezInt;
 	}mahony_t;
 	
 }DataSave_t;

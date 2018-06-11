@@ -55,14 +55,13 @@ static float stdCr[AXIS_NUMBER]={0.f};
 static float mean[AXIS_NUMBER]={0.f};
 int RoughHandle(void)
 {
-  static int ignore=0;
+  static uint32_t ignore=0;
 	static int isCalCrOk=0;
 	
   allPara.GYRO_Real[0]=(allPara.sDta.GYRO_Aver[0]);
   allPara.GYRO_Real[1]=(allPara.sDta.GYRO_Aver[1]);
   allPara.GYRO_Real[2]=(allPara.sDta.GYRO_Aver[2]);
 	
-	lowpass=LowPassFilterGyro(allPara.sDta.GYRO_Aver[2]);
 	if(allPara.resetFlag)
 		ignore=TIME_STATIC_REAL*200+1;
 	
@@ -88,10 +87,12 @@ int RoughHandle(void)
 		#endif
 	}
   if(ignore>(TIME_STATIC_REAL)*200){
-		
+		//初始化四元数
+		if(ignore<(TIME_STATIC_REAL)*200+200)
+			InitQuarternion();
 		if(UpdateBais()||allPara.resetFlag)
 		{
-			ignore=(TIME_STATIC_REAL)*200+5;
+			ignore++;
 			allPara.GYRO_Real[0]=(double)(allPara.GYRO_Real[0]-allPara.sDta.GYRO_Bais[0]);
 			allPara.GYRO_Real[1]=(double)(allPara.GYRO_Real[1]-allPara.sDta.GYRO_Bais[1]);
 			allPara.GYRO_Real[2]=(double)(allPara.GYRO_Real[2]-allPara.sDta.GYRO_Bais[2]);
@@ -215,7 +216,6 @@ uint8_t UpdateBais(void)
 				}
 			}
 		}
-		InitQuarternion();
 	}
 	//不静止了，填入矫正参数
 	else 
@@ -246,13 +246,7 @@ uint8_t UpdateBais(void)
 
 
 
-void SetAngle(float angle){
-	double euler[3];
-	euler[0]=0.0f;
-	euler[1]=0.0f;
-	euler[2]=angle/180.f*PI;
-	Euler_to_Quaternion(euler,allPara.sDta.quarternion);
-}
+
 
 
 /************************ (C) COPYRIGHT 2016 ACTION *****END OF FILE****/

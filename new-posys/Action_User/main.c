@@ -131,10 +131,10 @@ int main(void)
 					#ifndef TEST_SUMMER
 					DataSend();
 					#endif
+				}
 					#ifdef TEST_SUMMER
 					DataSend();
 					#endif
-				}
 			}
       else{
         UpdateVDoffTable();

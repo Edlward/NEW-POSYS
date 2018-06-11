@@ -36,8 +36,6 @@ void TemporaryHandle(void);
 
 void updateAngle(void);
 
-void SetAngle(float angle);
-
 uint8_t UpdateBais(void);
 
 

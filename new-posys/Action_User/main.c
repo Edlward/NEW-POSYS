@@ -17,6 +17,8 @@
 #include "gpio.h"
 #include "odom.h"
 #include "self_math.h"
+#include "mahony.h"
+
 AllPara_t allPara={0};
 
 void init(void)
@@ -25,12 +27,9 @@ void init(void)
 	
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
 		
-	//StartCount();
 	SoftWareReset();
 	
-//	LED1_OFF;
-//	LED2_OFF;
-  pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz
+//  pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz
   
 	ICM_SPIInit();
 	SPI2_Init();
@@ -42,7 +41,8 @@ void init(void)
 	#else
 	USART1DMAInit(115200);
 	#endif
-	USART6DMAInit(921600);
+  USART6DMAInit(921600);
+
 //  Flash_Init();
 	
 	for(int gyro;gyro<GYRO_NUMBER;gyro++)
@@ -50,7 +50,7 @@ void init(void)
 
 		if(!allPara.resetFlag)
 			MEMS_Configure(gyro);
-		ICM_HeatingPower(gyro,0);
+//		ICM_HeatingPower(gyro,0);
 	}
 	
   TIM_Init(TIM2,999,83,2,0);			
@@ -76,7 +76,7 @@ void init(void)
 	
   //driftCoffecientInit();
 	
-	IWDG_Init(4,100); // 200ms//时间计算(大概):Tout=((4*2^prer)*rlr)/32 (ms).
+	//IWDG_Init(4,100); // 200ms//时间计算(大概):Tout=((4*2^prer)*rlr)/32 (ms).
 	
 	StartCount();
 	while(!getTempInitSuces())
@@ -108,29 +108,35 @@ int main(void)
 			if(allPara.sDta.time>200*5)
 				allPara.sDta.time--;
 			
-			AT_CMD_Handle();
+		//	AT_CMD_Handle();
       if(!(allPara.sDta.flag&CORRECT)){
-				if(allPara.sDta.flag&HEATING)
-				{
-					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-						temp_pid_ctr(gyro,allPara.sDta.GYRO_TemperatureAim[gyro]);
-				}
-				else
-				{
-					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
-						temp_pid_ctr(gyro,allPara.sDta.GYRO_TemperatureAim[gyro]-0.5f);
-				}
+//				if(allPara.sDta.flag&HEATING)
+//				{
+//					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+//						temp_pid_ctr(gyro,allPara.sDta.GYRO_TemperatureAim[gyro]);
+//				}
+//				else
+//				{
+//					for(int gyro=0;gyro<GYRO_NUMBER;gyro++)
+//						temp_pid_ctr(gyro,allPara.sDta.GYRO_TemperatureAim[gyro]-0.5f);
+//				}
 				
 				JudgeStatic();
         if(RoughHandle())
 				{
 					if((allPara.sDta.flag&START_COMPETE))
 					{
-						updateAngle();
+						MahonyFilter();
+						//updateAngle();
 						calculatePos();
 					}
-					DataSend();
+					#ifndef TEST_SUMMER
+						DataSend();
+					#endif
 				}
+				#ifdef TEST_SUMMER
+					DataSend();
+				#endif
 			}
       else{
         UpdateVDoffTable();

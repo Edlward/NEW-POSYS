@@ -17,7 +17,7 @@ void USART1DMAInit(uint32_t BaudRate);
 void USART6DMAInit(uint32_t BaudRate);
 void USART_OUTByDMAF(float x);
 void USART_EnterByDMA(void);
-void USART_SendDataToDMA_USATR1(uint8_t data);
+void USART_SendDataToDMA_USART1(uint8_t data);
 void USART_SendDataToDMA_USART3(uint8_t data);
 void USART_SendDataToDMA_USART6(uint8_t data);
 

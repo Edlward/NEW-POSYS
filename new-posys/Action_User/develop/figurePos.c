@@ -22,16 +22,7 @@
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
 extern AllPara_t allPara; 
-/*
-自动车  以y方向为基准
-	//1/4096*wheelR*2*pi
-	allPara.sDta.posx=convert_X*0.0385305294301115;
-	allPara.sDta.posy=convert_Y*0.0383709954281714;
-	a=1.371/180*pi;测得到的误差角
-  real=[1/cos(a) -tan(a);0 1]*[allPara.sDta.vell1';allPara.sDta.vell2'];
-			real[0]=1.00028635401126*allPara.vell[0]*0.0387451841901678-0.0239330320090246*allPara.vell[1]*0.0387451841901678;
-			real[1]=allPara.vell[1]*0.0387451841901678;
-*/
+
 /*
 25.18 25.19用改进算法后拟合得出的
 手动车	以x方向为基准  
@@ -44,6 +35,7 @@ extern AllPara_t allPara;
 	real[0]=allPara.vell[0]*0.0385959339263024;
   real[1]=0.00227591327416601*allPara.vell[0]*0.0385959339263024+1.00000258988726*allPara.vell[1]*0.038690160280225;
 */
+
 /*
 -0.3819
 轮一25.2100214096499  轮二25.1926480912484
@@ -126,8 +118,8 @@ void figureVell(void)
 		allPara.sDta.codeData[1]=TLE5012ReadAbsPos_B();
 	#else
 		//第一次判断静止时可以不用判断角速度
-		allPara.sDta.codeData[0]=SPI_ReadAS5045(0);
 		allPara.sDta.codeData[1]=SPI_ReadAS5045(1);
+		allPara.sDta.codeData[0]=SPI_ReadAS5045(0);
 	#endif
 	
 	if(allPara.resetFlag)

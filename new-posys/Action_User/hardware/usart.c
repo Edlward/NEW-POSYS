@@ -126,7 +126,7 @@ void USART3_Init(uint32_t BaudRate)
   NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器、
 }
 
-void USART_SendDataToDMA_USATR1(uint8_t data)
+void USART_SendDataToDMA_USART1(uint8_t data)
 {
 	static uint8_t tempBuffer[DMA_SEND_SIZE];
 	static uint32_t count=0;

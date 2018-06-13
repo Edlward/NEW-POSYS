@@ -115,25 +115,25 @@ void DataSend(void)
 	valSend.val=(float)allPara.sDta.Result_Angle[2];
   memcpy(tdata+2,valSend.data,4);
 	
-	valSend.val=(float)allPara.sDta.vellx;
+	valSend.val=-(float)allPara.sDta.vellx;
   memcpy(tdata+6,valSend.data,4);
 	
-	valSend.val=(float)allPara.sDta.velly;
+	valSend.val=-(float)allPara.sDta.velly;
   memcpy(tdata+10,valSend.data,4);
 	
-	valSend.val=(float)allPara.sDta.posx;
+	valSend.val=-(float)allPara.sDta.posx;
   memcpy(tdata+14,valSend.data,4);
 	 
-	valSend.val=(float)allPara.sDta.posy;
+	valSend.val=-(float)allPara.sDta.posy;
   memcpy(tdata+18,valSend.data,4);
 	 
 	valSend.val=(float)allPara.GYRO_Real[2];
   memcpy(tdata+22,valSend.data,4);
 	
-	valSend.val=(float)allPara.sDta.codeData[0];
+	valSend.val=(float)(4096-allPara.sDta.codeData[0]);
   memcpy(tdata+26,valSend.data,4);
 	 
-	valSend.val=(float)allPara.sDta.codeData[1];
+	valSend.val=(float)(4096-allPara.sDta.codeData[1]);
   memcpy(tdata+30,valSend.data,4);
 //	
 	#ifdef TEST_SUMMER
@@ -173,8 +173,8 @@ void DataSend(void)
 //	USART_OUTByDMAF(codesum[0]);
 //	USART_OUTByDMAF(codesum[1]);
 ////	USART_OUTByDMAF(sqrt(pow(codesum[0]*0.0387225283845694,2)+pow(codesum[1]*0.0387374461979914,2)));
-//	USART_OUTByDMAF(allPara.sDta.posx);
-//	USART_OUTByDMAF(allPara.sDta.posy);
+	USART_OUTByDMAF(allPara.sDta.posx);
+	USART_OUTByDMAF(allPara.sDta.posy);
 //	USART_OUTByDMAF(sqrt(allPara.sDta.posx*allPara.sDta.posx+allPara.sDta.posy*allPara.sDta.posy));
 //	USART_OUTByDMAF(codesum[1]);
 //	USART_OUTByDMAF(allPara.sDta.flag&STATIC_FORCE);

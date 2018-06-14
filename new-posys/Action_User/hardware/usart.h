@@ -6,10 +6,10 @@
 #ifdef TEST_SUMMER
 #define DMA_SEND_SIZE   100
 #else
-#define DMA_SEND_SIZE   36
+#define DMA_SEND_SIZE   8
 #endif
 
-#define USART_USED   		USART1
+#define USART_USED   		USART6
 
 
 void USART3DMAInit(uint32_t BaudRate);

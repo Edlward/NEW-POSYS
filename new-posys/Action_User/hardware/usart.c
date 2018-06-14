@@ -310,7 +310,7 @@ void USART6DMAInit(uint32_t BaudRate)
 	USART_Cmd(USART6, ENABLE); 
   
 }
-void USART_SendDataToDMA_USATR6(uint8_t data)
+void USART_SendDataToDMA_USART6(uint8_t data)
 {
 	static uint8_t tempBuffer[DMA_SEND_SIZE];
 	static uint32_t count=0;
@@ -359,13 +359,13 @@ void USART_OUTByDMAF(float x){
 		 sprintf(String,"%f\t",x);
 		 for (s=String; *s; s++) 
 		 {
-				USART_SendDataToDMA_USATR6(*s);
+				USART_SendDataToDMA_USART6(*s);
      }
 }
 
 void USART_EnterByDMA(void){
-	USART_SendDataToDMA_USATR6('\r');
-	USART_SendDataToDMA_USATR6('\n');
+	USART_SendDataToDMA_USART6('\r');
+	USART_SendDataToDMA_USART6('\n');
 }
 void USART_OUT(USART_TypeDef* USARTx,const char *Data,...){ 
   const char *s;

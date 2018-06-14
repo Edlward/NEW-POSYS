@@ -95,7 +95,7 @@ void TIM2_IRQHandler(void)
 		
 	  if(timeCnt==5)
 		{
-			figureVell();
+	//		figureVell();
 			#ifdef TESTCAR
 			  double percentages[3][3]={
 				1.0,0.0,0.0,

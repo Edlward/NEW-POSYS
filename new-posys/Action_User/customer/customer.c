@@ -114,27 +114,6 @@ void DataSend(void)
 	
 	valSend.val=(float)allPara.sDta.Result_Angle[2];
   memcpy(tdata+2,valSend.data,4);
-	
-	valSend.val=(float)allPara.sDta.vellx;
-  memcpy(tdata+6,valSend.data,4);
-	
-	valSend.val=(float)allPara.sDta.velly;
-  memcpy(tdata+10,valSend.data,4);
-	
-	valSend.val=(float)allPara.sDta.posx;
-  memcpy(tdata+14,valSend.data,4);
-	 
-	valSend.val=(float)allPara.sDta.posy;
-  memcpy(tdata+18,valSend.data,4);
-	 
-	valSend.val=(float)allPara.GYRO_Real[2];
-  memcpy(tdata+22,valSend.data,4);
-	
-	valSend.val=(float)allPara.sDta.codeData[0];
-  memcpy(tdata+26,valSend.data,4);
-	 
-	valSend.val=(float)allPara.sDta.codeData[1];
-  memcpy(tdata+30,valSend.data,4);
 //	
 	#ifdef TEST_SUMMER
 	i=i;
@@ -186,6 +165,8 @@ void DataSend(void)
 			USART_SendDataToDMA_USART3(tdata[i]);
 		else if(USART_USED==USART1)
 			USART_SendDataToDMA_USATR1(tdata[i]);
+		else if(USART_USED==USART6)
+			USART_SendDataToDMA_USART6(tdata[i]);
 	}
 
 	#endif
@@ -370,6 +351,20 @@ void DeadWhileReport(uint8_t a)
 		USART_SendDataToDMA_USATR1('t');
 		USART_SendDataToDMA_USATR1('\r');
 		USART_SendDataToDMA_USATR1(a);
+	}
+	else if(USART_USED==USART6)
+	{	
+		USART_SendDataToDMA_USART6('h');
+		USART_SendDataToDMA_USART6('a');
+		USART_SendDataToDMA_USART6('r');
+		USART_SendDataToDMA_USART6('d');
+		USART_SendDataToDMA_USART6('f');
+		USART_SendDataToDMA_USART6('a');
+		USART_SendDataToDMA_USART6('u');
+		USART_SendDataToDMA_USART6('l');
+		USART_SendDataToDMA_USART6('t');
+		USART_SendDataToDMA_USART6('\r');
+		USART_SendDataToDMA_USART6(a);
 	}
 }
 

@@ -197,6 +197,7 @@ uint32_t SPI_ReadAS5045All(uint8_t num)
 	if(num==1)
 	{
 		GPIO_ResetBits(GPIOB,GPIO_Pin_12);
+		Delay_us(1);
 		SPI_Cmd(SPI2,ENABLE);
 		for(i=0;i<3;i++)
 		{
@@ -217,6 +218,7 @@ uint32_t SPI_ReadAS5045All(uint8_t num)
 	else if(num==0)
 	{
 		GPIO_ResetBits(GPIOA,GPIO_Pin_15);
+		Delay_us(1);
 		SPI_Cmd(SPI3,ENABLE);
 		for(i=0;i<3;i++)
 		{

@@ -129,8 +129,13 @@ int main(void)
 						updateAngle();
 						calculatePos();
 					}
-					DataSend();
+					#ifndef TEST_SUMMER
+						DataSend();
+					#endif
 				}
+					#ifdef TEST_SUMMER
+						DataSend();
+					#endif
 			}
       else{
         UpdateVDoffTable();

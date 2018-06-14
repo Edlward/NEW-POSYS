@@ -6,9 +6,9 @@
 extern AllPara_t allPara;
 
 //mahony滤波器Kp系数初始值
-float KpInit=4.f;
+float KpInit=2.f;
 //mahony滤波器Ki系数初始值
-float KiInit=0.1f;
+float KiInit=0.005f;
 
 void InitQuarternion(void)
 {
@@ -127,15 +127,15 @@ void MahonyFilter(void)
   gyroMahony[1] = w[1] + Kp*ey + allPara.sDta.mahony_t.eyInt;
   gyroMahony[2] = w[2] + Kp*ez + allPara.sDta.mahony_t.ezInt;
 	
-	#ifdef AUTOCAR
-		if((allPara.sDta.flag&STATIC_FORCE))//单位 °/s
-			for(int i=0;i<3;i++)
-				gyroMahony[i]=0.0;
-	#else
-		if((allPara.sDta.flag&STATIC_FORCE)||(fabs(FilterVell(allPara.vell[1]))<=20.f)))
-			for(int i=0;i<3;i++)
-				gyroMahony[i]=0.0;
-	#endif
+//	#ifdef AUTOCAR
+//		if((allPara.sDta.flag&STATIC_FORCE))//单位 °/s
+//			for(int i=0;i<3;i++)
+//				gyroMahony[i]=0.0;
+//	#else
+//		if((allPara.sDta.flag&STATIC_FORCE)||(fabs(FilterVell(allPara.vell[1]))<=20.f)))
+//			for(int i=0;i<3;i++)
+//				gyroMahony[i]=0.0;
+//	#endif
 		
 	QuaternionInt(allPara.sDta.quarternion,gyroMahony);
 	
@@ -147,5 +147,12 @@ void MahonyFilter(void)
 	{
 		allPara.sDta.Result_Angle[i]=allPara.sDta.Result_Angle[i]/PI*180.0;
 	}
+//	USART_OUTByDMAF(gyroMahony[0]);
+//	USART_OUTByDMAF(gyroMahony[1]);
+//	USART_OUTByDMAF(gyroMahony[2]);
+//	USART_OUTByDMAF(allPara.sDta.Result_Angle[0]);
+//	USART_OUTByDMAF(allPara.sDta.Result_Angle[1]);
+//	USART_OUTByDMAF(allPara.sDta.Result_Angle[2]);
+//	USART_EnterByDMA();
 }
 

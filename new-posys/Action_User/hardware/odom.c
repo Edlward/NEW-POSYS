@@ -298,7 +298,7 @@ uint16_t SPI_ReadAS5045_Parity(uint8_t num)
 	return tmpAbs;
 }
 
-#define READ_NUM	3
+#define READ_NUM	1
 /*找到数组最小的值*/
 uint16_t FindMin2(int codes[READ_NUM])
 {

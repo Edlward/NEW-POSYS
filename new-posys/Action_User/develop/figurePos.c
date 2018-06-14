@@ -55,8 +55,8 @@ extern AllPara_t allPara;
 	real[0]=allPara.vell[0]*0.0386716885045886;
   real[1]=0.00666551112481855*allPara.vell[0]*0.0386716885045886+1.00002221427254*allPara.vell[1]*0.0386450381679389;
 */
-#define OLD_1
-//#define OLD_2
+//#define OLD_1
+#define OLD_2
 //#define NEW_2
 void calculatePos(void)
 {

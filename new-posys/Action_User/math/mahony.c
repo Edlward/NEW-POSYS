@@ -141,12 +141,15 @@ void MahonyFilter(void)
 	
 	Quaternion_to_Euler(allPara.sDta.quarternion,allPara.sDta.Result_Angle);
 	
-	allPara.sDta.Result_Angle[2]*=-1;
+	allPara.sDta.Result_Angle[0]=allPara.sDta.Result_Angle[0]/PI*180.0;
+	if(allPara.sDta.Result_Angle[0]>0.0)
+		allPara.sDta.Result_Angle[0]-=180.0;
+	else if(allPara.sDta.Result_Angle[0]<-0.0)
+		allPara.sDta.Result_Angle[0]+=180.0;
+	allPara.sDta.Result_Angle[1]=-allPara.sDta.Result_Angle[1]/PI*180.0;
+	allPara.sDta.Result_Angle[2]=-allPara.sDta.Result_Angle[2]/PI*180.0;
 	
-	for(int i=0;i<3;i++)
-	{
-		allPara.sDta.Result_Angle[i]=allPara.sDta.Result_Angle[i]/PI*180.0;
-	}
+	
 //	USART_OUTByDMAF(gyroMahony[0]);
 //	USART_OUTByDMAF(gyroMahony[1]);
 //	USART_OUTByDMAF(gyroMahony[2]);

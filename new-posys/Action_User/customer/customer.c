@@ -112,13 +112,13 @@ void DataSend(void)
   tdata[DMA_SEND_SIZE-2]=0x0a;
   tdata[DMA_SEND_SIZE-1]=0x0d;
 	
-	valSend.val=(float)allPara.sDta.Result_Angle[2];
+	valSend.val=(float)allPara.sDta.Result_Angle[0];
   memcpy(tdata+2,valSend.data,4);
 	
-	valSend.val=(float)allPara.sDta.vellx;
+	valSend.val=(float)allPara.sDta.Result_Angle[1];
   memcpy(tdata+6,valSend.data,4);
 	
-	valSend.val=(float)allPara.sDta.velly;
+	valSend.val=(float)allPara.sDta.Result_Angle[2];
   memcpy(tdata+10,valSend.data,4);
 	
 	valSend.val=(float)allPara.sDta.posx;
@@ -168,13 +168,13 @@ void DataSend(void)
 //	USART_OUTByDMAF(allPara.sDta.codeData[0]);
 //	USART_OUTByDMAF(allPara.sDta.codeData[1]);
 //	USART_OUTByDMAF(sqrt(pow(codesum[0]*0.0387225283845694,2)+pow(codesum[1]*0.0387374461979914,2)));
-//	USART_OUTByDMAF(allPara.sDta.posx);
-//	USART_OUTByDMAF(allPara.sDta.posy);
+	USART_OUTByDMAF(allPara.sDta.posx);
+	USART_OUTByDMAF(allPara.sDta.posy);
 //	USART_OUTByDMAF(sqrt(allPara.sDta.posx*allPara.sDta.posx+allPara.sDta.posy*allPara.sDta.posy));
 //	USART_OUTByDMAF(codesum[1]);
 //	USART_OUTByDMAF(allPara.sDta.flag&STATIC_FORCE);
-	for(int i=0;i<AXIS_NUMBER;i++)
-		USART_OUTByDMAF(allPara.sDta.GYRO_Aver[i]);
+//	for(int i=0;i<AXIS_NUMBER;i++)
+//		USART_OUTByDMAF(allPara.sDta.GYRO_Aver[i]);
 	for(int i=0;i<AXIS_NUMBER;i++)
 		USART_OUTByDMAF(allPara.ACC_Raw[0][i]);
 	for(int i=0;i<AXIS_NUMBER;i++)

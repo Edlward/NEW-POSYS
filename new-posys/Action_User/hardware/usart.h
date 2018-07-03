@@ -19,7 +19,7 @@ void USART_OUTByDMAF(float x);
 void USART_EnterByDMA(void);
 void USART_SendDataToDMA_USART1(uint8_t data);
 void USART_SendDataToDMA_USART3(uint8_t data);
-void USART_SendDataToDMA_USART6(uint8_t data);
+void USART_SendDataToDMA_USATR6(uint8_t data);
 
 void USART_OUT(USART_TypeDef* USARTx,const char *Data,...);
 char *itoa(int value, char *string, int radix);

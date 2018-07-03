@@ -151,21 +151,6 @@ void DataSend(void)
 //	}
 
 //	USART_OUTByDMAF(allPara.sDta.GYRO_Aver[2]);
-//	USART_OUTByDMAF(lowpass);
-//	USART_OUTByDMAF(allPara.sDta.GYRO_Bais[2]);
-//	USART_OUTByDMAF(allPara.GYRO_Real[2]);
-//	USART_OUTByDMAF(allPara.sDta.posx);
-//	USART_OUTByDMAF(allPara.sDta.posy);
-//	USART_OUTByDMAF(allPara.vell[0]);
-//	USART_OUTByDMAF(allPara.vell[1]);
-//	USART_OUTByDMAF(allPara.isStatic);
-	
-//	static int codesum[2]={0};
-//	codesum[0]+=allPara.vell[0];
-//	codesum[1]+=allPara.vell[1];
-//	USART_OUTByDMAF(codesum[0]);
-//	USART_OUTByDMAF(codesum[1]);
-//	USART_OUTByDMAF(allPara.sDta.codeData[0]);
 //	USART_OUTByDMAF(allPara.sDta.codeData[1]);
 //	USART_OUTByDMAF(sqrt(pow(codesum[0]*0.0387225283845694,2)+pow(codesum[1]*0.0387374461979914,2)));
 	USART_OUTByDMAF(allPara.sDta.posx);
@@ -188,9 +173,9 @@ void DataSend(void)
 	for(i=0;i<DMA_SEND_SIZE;i++)
 	{
 		if(USART_USED==USART3)
-			USART_SendDataToDMA_USART3(tdata[i]);
+			USART_SendDataToDMA_USATR6(tdata[i]);
 		else if(USART_USED==USART1)
-			USART_SendDataToDMA_USART1(tdata[i]);
+			USART_SendDataToDMA_USATR6(tdata[i]);
 	}
 	#endif
 }
@@ -204,6 +189,21 @@ void AT_CMD_Judge(void){
 	
 	union{
 		uint8_t data[4];
+//	USART_OUTByDMAF(lowpass);
+//	USART_OUTByDMAF(allPara.sDta.GYRO_Bais[2]);
+//	USART_OUTByDMAF(allPara.GYRO_Real[2]);
+//	USART_OUTByDMAF(allPara.sDta.posx);
+//	USART_OUTByDMAF(allPara.sDta.posy);
+//	USART_OUTByDMAF(allPara.vell[0]);
+//	USART_OUTByDMAF(allPara.vell[1]);
+//	USART_OUTByDMAF(allPara.isStatic);
+	
+//	static int codesum[2]={0};
+//	codesum[0]+=allPara.vell[0];
+//	codesum[1]+=allPara.vell[1];
+//	USART_OUTByDMAF(codesum[0]);
+//	USART_OUTByDMAF(codesum[1]);
+//	USART_OUTByDMAF(allPara.sDta.codeData[0]);
 		float value;
 	}convert_u;
 	

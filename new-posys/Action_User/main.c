@@ -37,11 +37,11 @@ void init(void)
   CS_Config();
 	
 	#ifdef TEST_SUMMER
-	USART1DMAInit(921600);
+	USART1DMAInit(115200);
 	#else
 	USART1DMAInit(115200);
 	#endif
-  USART6DMAInit(921600);
+  USART6DMAInit(115200);
 
 //  Flash_Init();
 	
@@ -124,7 +124,7 @@ int main(void)
 				JudgeStatic();
         if(RoughHandle())
 				{
-					if((allPara.sDta.flag&START_COMPETE))
+//					if((allPara.sDta.flag&START_COMPETE))
 					{
 						MahonyFilter();
 						//updateAngle();

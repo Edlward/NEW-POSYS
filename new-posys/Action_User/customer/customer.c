@@ -153,17 +153,17 @@ void DataSend(void)
 //	USART_OUTByDMAF(allPara.sDta.GYRO_Aver[2]);
 //	USART_OUTByDMAF(allPara.sDta.codeData[1]);
 //	USART_OUTByDMAF(sqrt(pow(codesum[0]*0.0387225283845694,2)+pow(codesum[1]*0.0387374461979914,2)));
-	USART_OUTByDMAF(allPara.sDta.posx);
-	USART_OUTByDMAF(allPara.sDta.posy);
+//	USART_OUTByDMAF(allPara.sDta.posx);
+//	USART_OUTByDMAF(allPara.sDta.posy);
 //	USART_OUTByDMAF(sqrt(allPara.sDta.posx*allPara.sDta.posx+allPara.sDta.posy*allPara.sDta.posy));
 //	USART_OUTByDMAF(codesum[1]);
 //	USART_OUTByDMAF(allPara.sDta.flag&STATIC_FORCE);
-//	for(int i=0;i<AXIS_NUMBER;i++)
-//		USART_OUTByDMAF(allPara.sDta.GYRO_Aver[i]);
+	for(int i=0;i<AXIS_NUMBER;i++)
+		USART_OUTByDMAF(allPara.sDta.GYRO_Aver[i]);
 	for(int i=0;i<AXIS_NUMBER;i++)
 		USART_OUTByDMAF(allPara.ACC_Raw[0][i]);
-	for(int i=0;i<AXIS_NUMBER;i++)
-		USART_OUTByDMAF(allPara.sDta.Result_Angle[i]);
+//	for(int i=0;i<AXIS_NUMBER;i++)
+//		USART_OUTByDMAF(allPara.sDta.Result_Angle[i]);
 //	USART_OUTByDMAF(allPara.sDta.Result_Angle[0]);
 //	USART_OUTByDMAF(allPara.sDta.Result_Angle[1]);
 //	USART_OUTByDMAF(allPara.sDta.Result_Angle[2]);

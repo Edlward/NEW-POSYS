@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F4XX, USE_STDPERIPH_DRIVER,__FPU_PRESENT=1,__FPU_USED=1,ARM_MATH_CM4,__CC_ARM</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\Action_User;..\Libraries\CMSIS;..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\MDK-ARM;..\MAA;..\MAA\AHRS;..\MAA\MAA_Driver;..\Libraries\dsplib\Include;..\Libraries\dsplib;..\Action_User\hardware;..\Action_User\baseConfig;..\Action_User\develop;..\Action_User\customer;..\Action_User\math</IncludePath>
+              <IncludePath>..\;..\Action_User;..\Libraries\CMSIS;..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\MDK-ARM;..\MAA;..\MAA\AHRS;..\MAA\MAA_Driver;..\Libraries\dsplib\Include;..\Libraries\dsplib;..\Action_User\hardware;..\Action_User\baseConfig;..\Action_User\develop;..\Action_User\customer;..\Action_User\math;..\Libraries\dsplib</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -495,6 +495,11 @@
               <FileName>self_math.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Action_User\math\self_math.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_cortexM4lf_math.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\Libraries\dsplib\Include\arm_cortexM4lf_math.lib</FilePath>
             </File>
           </Files>
         </Group>
@@ -655,11 +660,6 @@
               <FileName>stm32f4xx_wwdg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_wwdg.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_cortexM4lf_math.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\Libraries\dsplib\arm_cortexM4lf_math.lib</FilePath>
             </File>
           </Files>
         </Group>

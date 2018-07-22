@@ -57,6 +57,7 @@ char getReadOrder(void);
 void StartCount(void);
 void EndCnt(void);
 uint32_t getCount(void);
+uint16_t SPI_ReadAS5045(uint8_t num);
 #endif /* __STM32F4xx_IT_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

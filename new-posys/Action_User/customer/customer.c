@@ -75,13 +75,13 @@ void USART3_IRQHandler(void)
   }
 }
 
-void USART6_IRQHandler(void)
+void USART2_IRQHandler(void)
 {
   uint8_t data;
-  if(USART_GetITStatus(USART6,USART_IT_RXNE)==SET)
+  if(USART_GetITStatus(USART2,USART_IT_RXNE)==SET)
   {
-    USART_ClearITPendingBit(USART6,USART_IT_RXNE);
-    data=USART_ReceiveData(USART6);
+    USART_ClearITPendingBit(USART2,USART_IT_RXNE);
+    data=USART_ReceiveData(USART2);
     buffer[bufferI]=data;
     bufferI++;
 		if(bufferI>=20)
@@ -94,7 +94,7 @@ void USART6_IRQHandler(void)
       }
     }
   }else{
-    data=USART_ReceiveData(USART6);
+    data=USART_ReceiveData(USART2);
   }
 }
 

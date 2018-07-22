@@ -14,13 +14,14 @@
 
 void USART3DMAInit(uint32_t BaudRate);
 void USART1DMAInit(uint32_t BaudRate);
-void USART6DMAInit(uint32_t BaudRate);
+void USART2DMAInit(uint32_t BaudRate);
 void USART_OUTByDMAF(float x);
 void USART_EnterByDMA(void);
 void USART_SendDataToDMA_USATR1(uint8_t data);
 void USART_SendDataToDMA_USART3(uint8_t data);
-void USART_SendDataToDMA_USART6(uint8_t data);
-
+void USART_SendDataToDMA_USART2(uint8_t data);
+void USART6_Init(uint32_t BaudRate);
+void UART5_Init(uint32_t BaudRate);
 void USART_OUT(USART_TypeDef* USARTx,const char *Data,...);
 char *itoa(int value, char *string, int radix);
 void USART_OUT_F(float value);

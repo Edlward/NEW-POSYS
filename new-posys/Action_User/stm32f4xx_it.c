@@ -270,19 +270,182 @@ void TIM4_IRQHandler(void)
   }
 }
 
+static uint16_t encoder[2]={0,0};
+	
 void UART5_IRQHandler(void)
 {
-  //uint8_t data = 0;
+  uint8_t ch = 0;
+	static int count=0;
+	static int i=0;
+	static struct{
+		union{
+			uint8_t codeData8[2];
+			uint16_t codeData16;
+		}codeData;
+		uint8_t errorSts;
+	}dataUnion;
+	
   if(USART_GetITStatus(UART5, USART_IT_RXNE)==SET)   
   {
     USART_ClearITPendingBit( UART5,USART_IT_RXNE);
-    //data=USART_ReceiveData(UART5);
-    
+    ch=USART_ReceiveData(UART5);
+    //USART_SendDataToDMA_USART2(ch);
+		switch (count)
+    {
+			case 0:
+				if (ch == 0x08)
+					count++;
+				else
+					count = 0;
+				break;
+				
+			case 1:
+				if (ch == 0xaa)
+				{
+					i = 0;
+					count++;
+				}
+				else if(ch == 0x08);
+				else
+					count = 0;
+				break;
+				
+			case 2:
+				i++;
+				if(i==1)
+					dataUnion.codeData.codeData8[0] = ch;
+				else if(i==2)
+					dataUnion.codeData.codeData8[1] = ch;
+				else if(i==3)
+				{
+					dataUnion.errorSts=ch;
+					i=0;
+					count++;
+				}	
+				break;
+				
+			case 3:
+				if (ch == 0xaa)
+					count++;
+				else
+					count = 0;
+				break;
+				
+			case 4:
+				if (ch == 0x08)
+				{
+					if(dataUnion.errorSts!=0x10)
+					{
+						dataUnion.errorSts=dataUnion.errorSts;
+					}
+					encoder[0]=dataUnion.codeData.codeData16;
+					count = 0;
+					i=0;
+				}
+				break;
+			default:
+				count = 0;
+				break;
+    }
   }
+	else
+		USART_ReceiveData(UART5);
+  
+}
+
+void USART6_IRQHandler(void)
+{
+  uint8_t ch = 0;
+	static int count=0;
+	static int i=0;
+	static struct{
+		union{
+			uint8_t codeData8[2];
+			uint16_t codeData16;
+		}codeData;
+		uint8_t errorSts;
+	}dataUnion;
+	
+  if(USART_GetITStatus(USART6, USART_IT_RXNE)==SET)   
+  {
+    USART_ClearITPendingBit( USART6,USART_IT_RXNE);
+    ch=USART_ReceiveData(USART6);
+    
+		switch (count)
+    {
+    case 0:
+      if (ch == 0x08)
+        count++;
+      else
+        count = 0;
+      break;
+      
+    case 1:
+      if (ch == 0xaa)
+      {
+        i = 0;
+        count++;
+      }
+      else if (ch == 0x0d)
+        ;
+      else
+        count = 0;
+      break;
+      
+    case 2:
+      i++;
+			if(i==1)
+				dataUnion.codeData.codeData8[0] = ch;
+			else if(i==2)
+				dataUnion.codeData.codeData8[1] = ch;
+			else if(i==3)
+			{
+				dataUnion.errorSts=ch;
+				i=0;
+        count++;
+			}	
+      break;
+      
+    case 3:
+      if (ch == 0xaa)
+        count++;
+      else
+        count = 0;
+      break;
+      
+    case 4:
+      if (ch == 0x08)
+      {
+				if(dataUnion.errorSts!=0x10)
+				{
+					dataUnion.errorSts=dataUnion.errorSts;
+				}
+				encoder[1]=dataUnion.codeData.codeData16;
+				count = 0;
+				i=0;
+			}
+      break;
+    default:
+      count = 0;
+      break;
+    }
+  }
+	else
+		USART_ReceiveData(USART6);
   
 }
 
 
+uint16_t SPI_ReadAS5045(uint8_t num)
+{
+	
+	if(num==0)
+		return encoder[0];
+	else if(num==1)
+		return encoder[1];
+	else
+		return 0;
+}
 /**
 * @brief   This function handles NMI exception.
 * @param  None

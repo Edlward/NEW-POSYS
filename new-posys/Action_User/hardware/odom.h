@@ -32,7 +32,6 @@ void 			TurnOffTLE5012(void);
 uint16_t 	TLE5012_RW_SPIx(SPI_TypeDef* SPIx, uint16_t u16Command, uint16_t  *p_u16StartAddr, uint8_t u8DataSize, uint8_t u8Operate);
 uint16_t	TLE5012ReadReg(SPI_TypeDef* SPIx, uint16_t u16Command, uint16_t* pu16Data);
 uint16_t	TLE5012WriteReg(SPI_TypeDef* SPIx, uint16_t u16Command, uint16_t* pu16Data);
-uint16_t SPI_ReadAS5045(uint8_t num);
 /* Exported functions ------------------------------------------------------- */
 
 /**

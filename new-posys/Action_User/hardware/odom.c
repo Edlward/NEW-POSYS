@@ -318,41 +318,4 @@ uint16_t FindMin2(int codes[READ_NUM])
 }
 
 
-uint16_t SPI_ReadAS5045(uint8_t num)
-{
-	/*连读存储区*/
-	uint16_t value[READ_NUM]={0};
-	/*与上一刻值的差值*/
-	int delValue[READ_NUM]={0};
-	/*最终结果*/
-	uint16_t endValue=0;
-	static uint16_t endValueLast[2]={0,0};
-	
-	/*连续读三次*/
-	for(int i=0;i<READ_NUM;i++)
-		value[i]=SPI_ReadAS5045_Parity(num);
-	
-	/*三次与上一次的差值*/
-	for(int i=0;i<READ_NUM;i++)
-	{
-		if(num==0)
-			delValue[i]=(value[i]-endValueLast[0]);
-		else if(num==1)
-			delValue[i]=(value[i]-endValueLast[1]);
-		if(delValue[i]>2048)
-			delValue[i]-=4096;
-		if(delValue[i]<-2048)
-			delValue[i]+=4096;
-		delValue[i]=abs(delValue[i]);
-	}
-	
-	/*找到与上一次差值最小的值的序列号，并传入*/
-	endValue= value[FindMin2(delValue)];
-	
-	if(num==0)
-		endValueLast[0]=endValue;
-	else if(num==1)
-		endValueLast[1]=endValue;
-	return endValue;
-	
-}
+

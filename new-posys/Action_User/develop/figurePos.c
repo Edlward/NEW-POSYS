@@ -120,15 +120,10 @@ void figureVell(void)
 {
 	static uint8_t flag=0;
 	
-	#ifdef TLE5012_USED
-		//第一次判断静止时可以不用判断角速度
-		allPara.sDta.codeData[0]=TLE5012ReadAbsPos_A();
-		allPara.sDta.codeData[1]=TLE5012ReadAbsPos_B();
-	#else
-		//第一次判断静止时可以不用判断角速度
-		allPara.sDta.codeData[0]=SPI_ReadAS5045(0);
-		allPara.sDta.codeData[1]=SPI_ReadAS5045(1);
-	#endif
+
+	//第一次判断静止时可以不用判断角速度
+	allPara.sDta.codeData[0]=SPI_ReadAS5045(0);
+	allPara.sDta.codeData[1]=SPI_ReadAS5045(1);
 	
 	if(allPara.resetFlag)
 		flag=21;
@@ -149,43 +144,29 @@ void figureVell(void)
 		allPara.sDta.data_last[1]=allPara.sDta.codeData[1];
 	}
 	
-	#ifdef TLE5012_USED
-		if(allPara.vell[0]>16384)
-			allPara.vell[0]-=32768;
-		if(allPara.vell[0]<-16384)
-			allPara.vell[0]+=32768;
-		
-		if(allPara.vell[1]>16384)
-			allPara.vell[1]-=32768;
-		if(allPara.vell[1]<-16384)
-			allPara.vell[1]+=32768;
-		
-		allPara.sDta.vellF[0]=allPara.vell[0]*0.310270529087862;
-		allPara.sDta.vellF[1]=allPara.vell[1]*0.309998405357997;
-	#else
-		if(allPara.vell[0]>2048)
-			allPara.vell[0]-=4096;
-		if(allPara.vell[0]<-2048)
-			allPara.vell[0]+=4096;
-		
-		if(allPara.vell[1]>2048)
-			allPara.vell[1]-=4096;
-		if(allPara.vell[1]<-2048)
-			allPara.vell[1]+=4096;
-		
-		#ifdef OLD_1
-			allPara.sDta.vellF[0]=allPara.vell[0]*0.038622517085838;
-			allPara.sDta.vellF[1]=allPara.vell[1]*0.038651337725656;
-		#endif
-		#ifdef OLD_2
-			allPara.sDta.vellF[0]=allPara.vell[0]*0.0386727142516114;
-			allPara.sDta.vellF[1]=allPara.vell[1]*0.0386102431015306;
-		#endif
-		#ifdef NEW_2
-		allPara.sDta.vellF[0]=allPara.vell[0]*0.0387225283845694;
-		allPara.sDta.vellF[1]=allPara.vell[1]*0.0387374461979914;
-		#endif
+	if(allPara.vell[0]>2048)
+	allPara.vell[0]-=4096;
+	if(allPara.vell[0]<-2048)
+	allPara.vell[0]+=4096;
+
+	if(allPara.vell[1]>2048)
+	allPara.vell[1]-=4096;
+	if(allPara.vell[1]<-2048)
+	allPara.vell[1]+=4096;
+
+	#ifdef OLD_1
+	allPara.sDta.vellF[0]=allPara.vell[0]*0.038622517085838;
+	allPara.sDta.vellF[1]=allPara.vell[1]*0.038651337725656;
 	#endif
+	#ifdef OLD_2
+	allPara.sDta.vellF[0]=allPara.vell[0]*0.0386727142516114;
+	allPara.sDta.vellF[1]=allPara.vell[1]*0.0386102431015306;
+	#endif
+	#ifdef NEW_2
+	allPara.sDta.vellF[0]=allPara.vell[0]*0.0387225283845694;
+	allPara.sDta.vellF[1]=allPara.vell[1]*0.0387374461979914;
+	#endif
+
 	
 	allPara.vellSum[0]+=allPara.vell[0];
 	allPara.vellSum[1]+=allPara.vell[1];

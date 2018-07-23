@@ -38,7 +38,7 @@ extern AllPara_t allPara;
 */
 
 #ifdef AUTOCAR
-#define TIME_STATIC					(20)
+#define TIME_STATIC					(10)
 #define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #else
 #define TIME_STATIC					(3)
@@ -47,7 +47,7 @@ extern AllPara_t allPara;
 
 
 #define STATIC_MAX_NUM	1000
-#define STATIC_MIN_NUM	600
+#define STATIC_MIN_NUM	800
 
 double lowpass=0.0;
 static float stdCr[AXIS_NUMBER]={0.f};        
@@ -223,12 +223,12 @@ uint8_t UpdateBais(void)
 		{
 			for(int axis=0;axis<AXIS_NUMBER;axis++)
 			{
-				for(int i=0;i<index-1;i++)
+				for(int i=0;i<index-200;i++)
 				{
 					sum[axis]=sum[axis]+data[axis][i];
 				}
-				if((fabs(sum[axis]/(index-1)-allPara.sDta.GYRO_Bais[axis])<0.009&&allPara.sDta.GYRO_Bais[axis]!=0.0)||(allPara.sDta.GYRO_Bais[axis]==0.0))
-					allPara.sDta.GYRO_Bais[axis]=sum[axis]/(index-1);
+				if((fabs(sum[axis]/(index-200)-allPara.sDta.GYRO_Bais[axis])<0.009&&allPara.sDta.GYRO_Bais[axis]!=0.0)||(allPara.sDta.GYRO_Bais[axis]==0.0))
+					allPara.sDta.GYRO_Bais[axis]=sum[axis]/(index-200);
 			}
 		}
 		for(int axis=0;axis<AXIS_NUMBER;axis++)

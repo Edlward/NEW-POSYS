@@ -471,6 +471,11 @@
               <FileType>1</FileType>
               <FilePath>..\Action_User\hardware\odom.c</FilePath>
             </File>
+            <File>
+              <FileName>arm_cortexM4lf_math.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\Libraries\dsplib\arm_cortexM4lf_math.lib</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -655,11 +660,6 @@
               <FileName>stm32f4xx_wwdg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_wwdg.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_cortexM4lf_math.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\Libraries\dsplib\arm_cortexM4lf_math.lib</FilePath>
             </File>
           </Files>
         </Group>

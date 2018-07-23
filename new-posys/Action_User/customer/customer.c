@@ -112,7 +112,7 @@ void DataSend(void)
   tdata[DMA_SEND_SIZE-2]=0x0a;
   tdata[DMA_SEND_SIZE-1]=0x0d;
 	
-	valSend.val=(float)allPara.sDta.Result_Angle[2];
+	valSend.val=(float)allPara.GYRO_Real[2];
   memcpy(tdata+2,valSend.data,4);
 //	
 	#ifdef TEST_SUMMER

@@ -386,7 +386,7 @@ void USART6_IRQHandler(void)
         i = 0;
         count++;
       }
-      else if (ch == 0x0d)
+      else if (ch == 0x08)
         ;
       else
         count = 0;

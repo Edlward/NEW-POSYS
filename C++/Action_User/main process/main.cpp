@@ -63,7 +63,7 @@ int main(void)
   */
 static void running(void)
 {
-	AHRS_Init();
+	initAHRS();
 	while(DEVICE_IS_RUNNING)
 	{
 		while(!getTimeFlag());

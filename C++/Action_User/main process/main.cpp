@@ -81,17 +81,4 @@ static void running(void)
 	running();
 }
 
-//	initAHRS();
-//	while(DEVICE_IS_RUNNING)
-//	{
-//		while(!getTimeFlag());
-//		getLSM303AGR_Acc().UpdateData();
-//		getLSM303AGR_Mag().UpdateData();
-//		getI3G4250D().UpdateData();
-//		UpdateEncoder();
-//		updateAHRS();
-//		calculatePos();
-//		dataSend();
-//	}
-//	running();
 /************************ (C) COPYRIGHT 2016 ACTION *****END OF FILE****/

@@ -17,13 +17,12 @@
 #include "flash.h"
 #include "stm32f4xx_flash.h"
 #include "string.h"
-#include "maa_config.h"
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
 #define FLASH_USER_ADDRESS 0x08040000   //FLASH起始地址
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
-static uint8_t  flashdata[160*(TempTable_max-TempTable_min)];  //从flash中取出的数据
+static uint8_t  flashdata[(160*(TempTable_max-TempTable_min))];  //从flash中取出的数据
 static float    *Result;
 static uint32_t *countnum;
 static uint8_t  flag=0;

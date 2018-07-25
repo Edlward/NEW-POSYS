@@ -82,19 +82,24 @@ int main(void)
 						temp_pid_ctr(gyro,allPara.GYRO_TemperatureAim[gyro]-0.5f);
 				}
         //计算角度 
-        if(!RoughHandle())
-          TemporaryHandle();
-        else {
-         // if(GetCommand()&ACCUMULATE)
-					{
-            updateAngle();
-            calculatePos();	
-						#ifndef TEST_SUMMER
-						//串口被中断打断依然能正常发送（试验了几分钟）
-					//	 DataSend();
-						#endif
-          }
-        }
+//        if(!RoughHandle())
+//          TemporaryHandle();
+//        else {
+//         // if(GetCommand()&ACCUMULATE)
+//					{
+//            updateAngle();
+//            calculatePos();	
+//						#ifndef TEST_SUMMER
+//						//串口被中断打断依然能正常发送（试验了几分钟）
+//						 DataSend();
+//						#else
+//						#endif
+//          }
+//        }
+							USART_OUT_F(allPara.GYROWithoutRemoveDrift[0][2]);
+							USART_OUT_F(allPara.GYROWithoutRemoveDrift[1][2]);
+							USART_OUT_F(allPara.GYROWithoutRemoveDrift[2][2]);
+							USART_Enter();
       }
       else{
         UpdateVDoffTable();

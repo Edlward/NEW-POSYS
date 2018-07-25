@@ -1,0 +1,32 @@
+.\szw_stm32f407\main.o: ..\Action_User\main process\main.cpp
+.\szw_stm32f407\main.o: ..\Action_User\hardware\timer.h
+.\szw_stm32f407\main.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h
+.\szw_stm32f407\main.o: ..\Libraries\CMSIS\stm32f4xx.h
+.\szw_stm32f407\main.o: ..\Libraries\CMSIS\core_cm4.h
+.\szw_stm32f407\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\szw_stm32f407\main.o: ..\Libraries\CMSIS\core_cmInstr.h
+.\szw_stm32f407\main.o: ..\Libraries\CMSIS\core_cmFunc.h
+.\szw_stm32f407\main.o: ..\Libraries\CMSIS\core_cm4_simd.h
+.\szw_stm32f407\main.o: ..\Libraries\CMSIS\system_stm32f4xx.h
+.\szw_stm32f407\main.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h
+.\szw_stm32f407\main.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h
+.\szw_stm32f407\main.o: ..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h
+.\szw_stm32f407\main.o: ..\Action_User\hardware\spi.h
+.\szw_stm32f407\main.o: ..\Action_User\devices\device.h
+.\szw_stm32f407\main.o: ..\Libraries\dsplib\Include\arm_math.h
+.\szw_stm32f407\main.o: ..\Libraries\dsplib\Include\core_cm4.h
+.\szw_stm32f407\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\szw_stm32f407\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\szw_stm32f407\main.o: ..\MAA\action_matrix.h
+.\szw_stm32f407\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\cstdint
+.\szw_stm32f407\main.o: ..\Action_User\hardware\usart.h
+.\szw_stm32f407\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\szw_stm32f407\main.o: ..\MAA\kalmanFilter.h
+.\szw_stm32f407\main.o: ..\MAA\calculateAttitude.h
+.\szw_stm32f407\main.o: ..\Action_User\devices\LSM303AGR.h
+.\szw_stm32f407\main.o: ..\Action_User\devices\I3G4250D.h
+.\szw_stm32f407\main.o: ..\Action_User\devices\ICM20602.h
+.\szw_stm32f407\main.o: ..\MAA\signalProcess.h
+.\szw_stm32f407\main.o: ..\Action_User\pos\pos.h
+.\szw_stm32f407\main.o: ..\MAA\AHRS\ahrs.h
+.\szw_stm32f407\main.o: ..\Action_User\main process\user.h

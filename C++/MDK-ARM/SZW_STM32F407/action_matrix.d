@@ -1,0 +1,13 @@
+.\szw_stm32f407\action_matrix.o: ..\MAA\action_matrix.cpp
+.\szw_stm32f407\action_matrix.o: ..\Libraries\dsplib\Include\arm_math.h
+.\szw_stm32f407\action_matrix.o: ..\Libraries\dsplib\Include\core_cm4.h
+.\szw_stm32f407\action_matrix.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\szw_stm32f407\action_matrix.o: ..\Libraries\CMSIS\core_cmInstr.h
+.\szw_stm32f407\action_matrix.o: ..\Libraries\CMSIS\core_cmFunc.h
+.\szw_stm32f407\action_matrix.o: ..\Libraries\CMSIS\core_cm4_simd.h
+.\szw_stm32f407\action_matrix.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\szw_stm32f407\action_matrix.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\szw_stm32f407\action_matrix.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\cstdint
+.\szw_stm32f407\action_matrix.o: ..\MAA\action_matrix.h
+.\szw_stm32f407\action_matrix.o: ..\Action_User\hardware\usart.h
+.\szw_stm32f407\action_matrix.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h

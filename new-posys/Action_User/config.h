@@ -47,7 +47,7 @@
 
 /* Exported constants --------------------------------------------------------*/
 
-//#define TEST_SUMMER
+#define TEST_SUMMER
 
 /* Flash Read Protection */
 //#define FLASH_ENCRYP

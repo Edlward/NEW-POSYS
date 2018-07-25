@@ -37,10 +37,11 @@
 	#define endl ("\r\n")	 	 
 #endif	 
 /* Exported functions ------------------------------------------------------- */
-void USART1_INIT(void);
-//void DMA2_Stream7_IRQHandler(void);	 
+void USART1_Init(void);
+void USART_SendDataToDMA_USATR6(uint8_t data);
+void USART6DMAInit(uint32_t BaudRate);
 void USART1_IRQHandler(void);	 
-void USART_SendDataToDMA(uint8_t data);
+void USART_SendDataToDMA_USART1(uint8_t data);
 #ifdef __cplusplus
 }
 /* Exported functions ------------------------------------------------------- */
@@ -75,14 +76,14 @@ void USART_SendDataToDMA(uint8_t data);
 		
 		for(uint8_t i=0;i<len;i++)
 		{
-			USART_SendDataToDMA(p[i]);
+			USART_SendDataToDMA_USART1(p[i]);
 		}
 		#endif
 	}
 	inline void USART_SendByteData(uint8_t data)
 	{
 		#ifdef HEX_SEND
-			USART_SendDataToDMA(data);
+			USART_SendDataToDMA_USART1(data);
 		#endif
 	}
 	

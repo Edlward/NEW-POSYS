@@ -44,16 +44,16 @@ static void running(void);
 int main(void)
 {	
 	NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
-	USART1_INIT();
+	USART1_Init();
+	USART6DMAInit(921600);
 	SPI1_Init();
 	SPI2_Init();
 	CS_Config();
 	delay_ms(500);
 	//devices all initiate
 	deviceBase::devicesAllInit();
-	delay_ms(1000);
 	TIM_Init(TIM7,999,83,1,0);
-  running(); 
+	running(); 
 }
 /* Private  functions ---------------------------------------------------------*/
 /**
@@ -68,11 +68,7 @@ static void running(void)
 	{
 		while(!getTimeFlag());
 		//judeg getICM20602_Gyro() return null
-		if(getICM20602_Gyro())
-		{
-			for(int i=0;i<getICM20602_Gyro()[0]->getInstanceNum();i++)
-				getICM20602_Gyro()[i]->UpdateData();
-		}
+		getICM20602_Gyro().UpdateData();
 		UpdateEncoder();
 		updateAHRS();
 		calculatePos();

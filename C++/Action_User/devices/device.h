@@ -34,9 +34,7 @@
 //#define ADXRS453_USED
 //#define I3G4250D_USED
 //#define LSM303AGR_USED
-#define ICM_20602_USED_1
-#define ICM_20602_USED_2
-#define ICM_20602_USED_3
+#define ICM_20602_USED
 
 /* Exported Class ----------------------------------------------------------- */
 class deviceBase

@@ -411,11 +411,6 @@
               <FilePath>..\Action_User\devices\device.cpp</FilePath>
             </File>
             <File>
-              <FileName>gyro.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Action_User\devices\gyro.cpp</FilePath>
-            </File>
-            <File>
               <FileName>I3G4250D.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Action_User\devices\I3G4250D.cpp</FilePath>

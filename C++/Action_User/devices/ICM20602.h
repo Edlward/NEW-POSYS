@@ -103,22 +103,20 @@ class ICM20602_Gyro:public device<threeAxis,uint8_t>
 {	
 	private:
 		void multiRead(uint8_t address,uint8_t *data,uint32_t len);
-		static uint8_t instanceNum;
 		threeAxis rateSeq[ICM_OVER_SAMPLE_NUM]={0.f};
 	  float tempSeq[ICM_OVER_SAMPLE_NUM]={0.f};
 	public:
 		int16_t temp;
 		class BaisHandle<threeAxis> baisHandle;
-		ICM20602_Gyro(SPI_TypeDef* SPI,GPIO_TypeDef* GPIO,uint16_t Pin);
-		static uint8_t getInstanceNum(void);
+		ICM20602_Gyro(SPI_TypeDef* SPI,GPIO_TypeDef* GPIO,uint16_t Pin):device(SPI,GPIO,Pin){};
 		virtual ~ICM20602_Gyro()=default;
-		virtual uint8_t 		rawDataRead(uint8_t address);
+		virtual uint8_t 	rawDataRead(uint8_t address);
 		virtual void 		 	rawDataWrite(uint8_t address,uint8_t value);
 		virtual void 		 	init(void);
 		virtual void     	UpdateData(void);
 		virtual void 			UpdateBais(void);
 };
-ICM20602_Gyro** getICM20602_Gyro(void);
+ICM20602_Gyro& getICM20602_Gyro(void);
 #endif
 
 /******************* (C) COPYRIGHT 2016 ACTION *****END OF FILE****/

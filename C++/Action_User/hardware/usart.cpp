@@ -26,11 +26,12 @@
 #include "string.h"
 #include "flash.h"
 #include "user.h"
+
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
 #ifndef HEX_SEND
 	#define DMA_SEND_SIZE   200
-	#define USART_PRINT(a)  (USART_SendDataToDMA_USART1(a))
+	#define USART_PRINT(a)  (USART_SendDataToDMA_USART6(a))
 #else
 	#define DMA_SEND_SIZE   28
 	#define USART_PRINT(a)	
@@ -228,7 +229,7 @@ void USART6DMAInit(uint32_t BaudRate)
 	USART_Cmd(USART6, ENABLE); 
   
 }
-void USART_SendDataToDMA_USATR6(uint8_t data)
+void USART_SendDataToDMA_USART6(uint8_t data)
 {
 	static uint8_t tempBuffer[DMA_SEND_SIZE];
 	static uint32_t count=0;

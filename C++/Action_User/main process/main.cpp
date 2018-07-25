@@ -48,6 +48,7 @@ int main(void)
 	USART6DMAInit(921600);
 	SPI1_Init();
 	SPI2_Init();
+	SPI3_Init();
 	CS_Config();
 	delay_ms(500);
 	//devices all initiate
@@ -63,15 +64,19 @@ int main(void)
   */
 static void running(void)
 {
-	initAHRS();
+	#ifdef HEX_SEND
+		AHRS_Init();
+	#else
+		SetCmdState(START_COMPETE);
+	#endif
 	while(DEVICE_IS_RUNNING)
 	{
 		while(!getTimeFlag());
 		//judeg getICM20602_Gyro() return null
 		getICM20602_Gyro().UpdateData();
 		UpdateEncoder();
-		updateAHRS();
-		calculatePos();
+		//updateAHRS();
+		//calculatePos();
 		dataSend();
 	}
 	running();

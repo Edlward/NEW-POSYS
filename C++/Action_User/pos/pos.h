@@ -36,7 +36,8 @@ void UpdateEncoder();
 uint16_t  getEncoder(uint8_t num); 
 float* getPos(void);
 uint16_t readEncoder(uint8_t num);	 
-
+int32_t getEncoderSum(int num);
+double getDirectLine(float wheel1,float wheel2,float errorAngle);
 void resetPos(void);
 #ifdef __cplusplus
 }

@@ -19,6 +19,7 @@
 #include "pos.h"
 #include "usart.h"
 #include "ADXRS453.h"
+#include "ICM20602.h"
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
 /* Private  macro -------------------------------------------------------------*/
@@ -138,7 +139,7 @@ void dataSend(void)
 {
 	auto angle=getEulerAngle();
 	uint64_t* pos=reinterpret_cast<uint64_t*>(getPos());
-	auto wz=getADXRS453().getData();
+	auto wz=getICM20602_Gyro().getData();
 	
 	static float lastPos[2]={0,0};
 	float vell[2]={0,0};
@@ -161,9 +162,11 @@ void dataSend(void)
 	USART_SendByteData(0x0A);
 	USART_SendByteData(0x0D);
 	
-	
-	cout<<getPos()[0]<<'\t'<<getPos()[1]<<'\t';
-	cout<<endl;
+	#ifdef DEBUG
+		cout<<getEncoderSum(0)<<'\t'<<getEncoderSum(1)<<'\t';
+		cout<<getDirectLine(25.4f,25.4f,0.f);
+		cout<<endl;
+	#endif
 	
 }
 /************************ (C) COPYRIGHT 2016 ACTION *****END OF FILE ***********/

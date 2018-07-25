@@ -47,7 +47,7 @@ void UpdateEncoder()
 	uint8_t temp[3];
 	SPI_OnlyRead(SPI2,GPIOB,GPIO_Pin_12,temp,3);
 	encoder[0]=((temp[0]&0x7f)<<5)|(temp[1]>>3);
-	SPI_OnlyRead(SPI2,GPIOB,GPIO_Pin_15,temp,3);
+	SPI_OnlyRead(SPI3,GPIOA,GPIO_Pin_15,temp,3);
 	encoder[1]=((temp[0]&0x7f)<<5)|(temp[1]>>3);
 }
 
@@ -94,6 +94,61 @@ void calculatePos(void)
 	pos[0]+=(vell[0]*cosVal[0]*wheelDiameter[0]+vell[1]*cosVal[1]*wheelDiameter[1])/encoderRange*PI;
 	pos[1]+=(vell[0]*sinVal[0]*wheelDiameter[0]+vell[1]*sinVal[1]*wheelDiameter[1])/encoderRange*PI;
 }
+
+int32_t getEncoderSum(int num)
+{	
+	uint16_t encoder[2]={getEncoder(0),getEncoder(1)};
+	static uint16_t encoderLast[2]={encoder[0],encoder[1]};
+	int32_t vell[2]={encoder[0]-encoderLast[0],encoder[1]-encoderLast[1]};
+	static int sum[2]={0};
+	
+	encoderLast[0]=encoder[0];
+	encoderLast[1]=encoder[1];
+	
+	vell[0]-=(vell[0]>(encoderRange/2))*encoderRange;
+	vell[0]+=(vell[0]<(-(encoderRange/2)))*encoderRange;
+	
+	vell[1]-=(vell[1]>(encoderRange/2))*encoderRange;
+	vell[1]+=(vell[1]<(-(encoderRange/2)))*encoderRange;
+	
+	sum[0]=sum[0]+vell[0];
+	sum[1]=sum[1]+vell[1];
+	
+	return sum[num];
+}
+
+//return the length of PPS's measured value when it walks directly
+double getDirectLine(float wheel1,float wheel2,float errorAngle)
+{	
+	uint16_t encoder[2]={getEncoder(0),getEncoder(1)};
+	static uint16_t encoderLast[2]={encoder[0],encoder[1]};
+	int32_t vell[2]={encoder[0]-encoderLast[0],encoder[1]-encoderLast[1]};
+	double sumF[2]={0.0};
+	static int sum[2]={0};
+	
+	encoderLast[0]=encoder[0];
+	encoderLast[1]=encoder[1];
+	
+	vell[0]-=(vell[0]>(encoderRange/2))*encoderRange;
+	vell[0]+=(vell[0]<(-(encoderRange/2)))*encoderRange;
+	
+	vell[1]-=(vell[1]>(encoderRange/2))*encoderRange;
+	vell[1]+=(vell[1]<(-(encoderRange/2)))*encoderRange;
+	
+	sum[0]=sum[0]+vell[0];
+	sum[1]=sum[1]+vell[1];
+	
+	double real[2]={0.0,0.0};
+	
+	real[0]=sum[0];
+	real[1]=1.0/cos(errorAngle/180.0*PI)*sum[1]-tan(errorAngle/180.0*PI)*sum[0];
+	
+	sumF[0]=real[0]/4096*2*PI*wheel1;
+	sumF[1]=real[1]/4096*2*PI*wheel2;
+	
+	return sqrt(pow(sumF[0],2)+pow(sumF[1],2));
+}
+
 float* getPos(void)
 {
 	return pos;

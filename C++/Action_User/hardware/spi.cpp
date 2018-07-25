@@ -79,55 +79,55 @@ void SPI2_Init(void)
   SPI_Cmd(SPI2, DISABLE);
 }
 
-
-/**
-  * @brief  SPI3³õÊ¼»¯
-  * @retval None
-  */
 void SPI3_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
   SPI_InitTypeDef  SPI_InitStructure;
-
-	/* Ê¹ÄÜSPIºÍGPIOµÄÊ±ÖÓ------------------------------------------*/
+  
+  /* ä½¿èƒ½SPIå’ŒGPIOçš„æ—¶é’Ÿ------------------------------------------*/
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI3, ENABLE);
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
-
-	/* Òı½Å¸´ÓÃÎªSPI1----------------------------------------------*/
+  
+  /* å¼•è„šå¤ç”¨ä¸ºSPI1----------------------------------------------*/
   GPIO_PinAFConfig(GPIOC, GPIO_PinSource10, GPIO_AF_SPI3);
-  //GPIO_PinAFConfig(GPIOC, GPIO_PinSource11, GPIO_AF_SPI3);  //°ëË«¹¤Ä£Ê½ Ö÷»ú ÏÂ£¬SPIÖ»ÓÃCLK ºÍ MOSI 
+  GPIO_PinAFConfig(GPIOC, GPIO_PinSource11, GPIO_AF_SPI3);
   GPIO_PinAFConfig(GPIOC, GPIO_PinSource12, GPIO_AF_SPI3);
-	
-	/* Ó²¼şSPI1Òı½ÅÅäÖÃ---------------------------------------------*/
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 /*| GPIO_Pin_11*/ | GPIO_Pin_12;
+  
+  /* ç¡¬ä»¶SPI1å¼•è„šé…ç½®---------------------------------------------*/
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
   GPIO_Init(GPIOC, &GPIO_InitStructure);
-	
-	GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_11;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_Init(GPIOC, &GPIO_InitStructure);
-	
-	/* SPIÅäÖÃ------------------------------------------------------*/
+  
+  /* SPIé…ç½®------------------------------------------------------*/
   SPI_I2S_DeInit(SPI3);
-  SPI_InitStructure.SPI_Direction = SPI_Direction_1Line_Tx;									/* Ë«ÏßË«ÏòÈ«Ë«¹¤									*/
-  SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* Ö÷SPI													*/
-	SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;													/* SPI½ÓÊÕ8Î»Ö¡½á¹¹								*/
-  SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;																/* ´®ĞĞÍ¬²½Ê±ÖÓµÄ¿ÕÏĞ×´Ì¬ÎªµÍµçÆ½	*/
-  SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;															/* µÚÒ»¸öÌø±äÑØÊı¾İ±»²ÉÑù					*/
-  SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSSÓÉÈí¼ş¿ØÖÆ									*/
-  SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_128;				/* Ô¤·ÖÆµ													*/
-  SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/* Êı¾İ´ÓMSBÎ»¿ªÊ¼								*/
-  SPI_InitStructure.SPI_CRCPolynomial = 7;
+	#ifdef TLE5012_USED
+		SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;				/* åŒçº¿åŒå‘å…¨åŒå·¥									*/
+		SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* ä¸»SPI													*/
+		SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;													/* SPIæ¥æ”¶8ä½å¸§ç»“æ„								*/
+		SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;																/* ä¸²è¡ŒåŒæ­¥æ—¶é’Ÿçš„ç©ºé—²çŠ¶æ€ä¸ºä½ç”µå¹³	*/
+		SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;															/* ç¬¬ä¸€ä¸ªè·³å˜æ²¿æ•°æ®è¢«é‡‡æ ·					*/
+		SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSSç”±è½¯ä»¶æ§åˆ¶									*/
+		SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_32;				/* é¢„åˆ†é¢‘  é™€èºä»ªæœ€å¤§10MHz													*/
+		SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/* æ•°æ®ä»MSBä½å¼€å§‹								*/
+		SPI_InitStructure.SPI_CRCPolynomial = 10;
+	#else
+		SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_RxOnly;				    /* åŒçº¿åŒå‘å…¨åŒå·¥									*/
+		SPI_InitStructure.SPI_Mode = SPI_Mode_Master;															/* ä¸»SPI													*/
+		SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;													/* SPIæ¥æ”¶8ä½å¸§ç»“æ„								*/
+		SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;																/* ä¸²è¡ŒåŒæ­¥æ—¶é’Ÿçš„ç©ºé—²çŠ¶æ€ä¸ºä½ç”µå¹³	*/
+		SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;															/* ç¬¬äºŒä¸ªè·³å˜æ²¿æ•°æ®è¢«é‡‡æ ·					*/
+		SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;																	/* NSSç”±è½¯ä»¶æ§åˆ¶									*/
+		SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_128;				/* é¢„åˆ†é¢‘	168M/64	*/
+		SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;												/* æ•°æ®ä»MSBä½å¼€å§‹								*/
+		SPI_InitStructure.SPI_CRCPolynomial = 7;
+	#endif
   SPI_Init(SPI3, &SPI_InitStructure);
-
+  
   SPI_Cmd(SPI3, ENABLE);
-}			
+}
 
 
 /**
@@ -142,39 +142,25 @@ void CS_Config(void)
   
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE); 
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);	
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);	
   
   /* é…ç½®ç‰‡é€‰å¼•è„š------------------------- */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1|GPIO_Pin_2;
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4|GPIO_Pin_15;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
   GPIO_Init(GPIOA, &GPIO_InitStructure);                 //ICM20608G
-	
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;             
-  GPIO_Init(GPIOC, &GPIO_InitStructure);   
   
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12|GPIO_Pin_15;             
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;             
   GPIO_Init(GPIOB, &GPIO_InitStructure);   
   
   /* Deselect : Chip Select high ---------*/
-  GPIO_SetBits(GPIOA, GPIO_Pin_1);
-  GPIO_SetBits(GPIOA, GPIO_Pin_2);
-  GPIO_SetBits(GPIOC, GPIO_Pin_6);
+  GPIO_SetBits(GPIOA, GPIO_Pin_4);
   GPIO_SetBits(GPIOB, GPIO_Pin_12);
-  GPIO_SetBits(GPIOB, GPIO_Pin_15);
+  GPIO_SetBits(GPIOA, GPIO_Pin_15);
 }
 
-
-/**
-  * @brief     ÏòSPI´Ó»úÉè±¸Ğ´ÈëÊı¾İ
-  * @param     SPI: SPIx
-  * @param     GPIOx,GPIO_Pin: Æ¬Ñ¡Òı½Å
-  * @param     address: ÒªĞ´ÈëµÃ¼Ä´æÆ÷µÄµØÖ·
-  * @param     value£ºÒªĞ´ÈëµÄÖµ
-  * @retval    None
-  */                            
+        
 void SPI_Write(SPI_TypeDef *SPI,
 	            GPIO_TypeDef *GPIOx,
 	                uint16_t GPIO_Pin,
@@ -209,15 +195,6 @@ void SPI_Write(SPI_TypeDef *SPI,
 }
 
 
-
-
-/**
-  * @brief     ÏòSPI´Ó»úÉè±¸¶ÁÈ¡Êı¾İ
-  * @param     SPI: SPIx
-  * @param     GPIOx,GPIO_Pin: Æ¬Ñ¡Òı½Å
-  * @param     address: Òª¶ÁÈ¡µÄ¼Ä´æÆ÷µÄµØÖ·
-  * @retval    value£º¼Ä´æÆ÷µÄÖµ
-  */
 uint8_t SPI_Read(SPI_TypeDef *SPIx,
 								 GPIO_TypeDef* GPIOx,
 	               uint16_t GPIO_Pin,

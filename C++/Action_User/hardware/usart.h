@@ -36,10 +36,11 @@
 	#define cout (getUsartOut())
 	#define endl ("\r\n")	 	 
 #endif	 
+
 /* Exported functions ------------------------------------------------------- */
 void USART1_Init(void);
-void USART_SendDataToDMA_USATR6(uint8_t data);
 void USART6DMAInit(uint32_t BaudRate);
+void USART_SendDataToDMA_USART6(uint8_t data);
 void USART1_IRQHandler(void);	 
 void USART_SendDataToDMA_USART1(uint8_t data);
 #ifdef __cplusplus

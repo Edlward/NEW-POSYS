@@ -395,6 +395,41 @@
               <FileType>8</FileType>
               <FilePath>..\Action_User\pos\pos.cpp</FilePath>
             </File>
+            <File>
+              <FileName>ahrs.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\MAA\AHRS\ahrs.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>hardware</GroupName>
+          <Files>
+            <File>
+              <FileName>flash.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Action_User\hardware\flash.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>gpio.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Action_User\hardware\gpio.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>spi.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Action_User\hardware\spi.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>timer.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Action_User\hardware\timer.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>usart.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Action_User\hardware\usart.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -649,36 +684,6 @@
               <FileName>startup_stm32f4xx.s</FileName>
               <FileType>2</FileType>
               <FilePath>..\Libraries\CMSIS\startup\startup_stm32f4xx.s</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>hardware</GroupName>
-          <Files>
-            <File>
-              <FileName>flash.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Action_User\hardware\flash.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>gpio.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Action_User\hardware\gpio.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>spi.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Action_User\hardware\spi.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>timer.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Action_User\hardware\timer.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>usart.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Action_User\hardware\usart.cpp</FilePath>
             </File>
           </Files>
         </Group>

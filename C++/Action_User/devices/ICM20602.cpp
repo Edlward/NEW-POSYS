@@ -33,7 +33,7 @@
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
 #ifdef ICM_20602_USED
-static ICM20602_Gyro ICM20602(SPI1,GPIOA,GPIO_Pin_1);
+static ICM20602_Gyro ICM20602(SPI1,GPIOA,GPIO_Pin_4);
 //static deviceICM20602 ICM20602_Acc1(SPI1,GPIOA,GPIO_Pin_1);
 #endif
 
@@ -92,13 +92,8 @@ void 		ICM20602_Gyro::init(void)
 	
 	/*first: register address; second: value written*/
 	regWriteCheck[ICM20608G_GYRO_CONFIG]=0x00;
-	#ifdef	AUTOCAR
 	regWriteCheck[ICM20608G_CONFIG]=0x00;
 	regWriteCheck[ICM20608G_SMPLRT_DIV]=0x07;
-	#else
-	regWriteCheck[ICM20608G_CONFIG]=0x06;
-	regWriteCheck[ICM20608G_SMPLRT_DIV]=0x00;
-	#endif
 	regWriteCheck[ICM20608G_ACCEL_CONFIG]=0x00;
 	regWriteCheck[ICM20608G_ACCEL_CONFIG2]=0x02;
 	regWriteCheck[ICM20608G_SIGNAL_PATH_RESET]=0x00;

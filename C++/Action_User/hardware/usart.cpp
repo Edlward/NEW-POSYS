@@ -261,7 +261,7 @@ _out_stream& getUsartOut(void)
 	return usart_io;
 }
 
-const _out_stream& _out_stream::operator<<(const int32_t value) const
+ _out_stream& _out_stream::operator<<(const int32_t value) 
 {
 	char buf[10];
 	uint8_t len;
@@ -272,7 +272,7 @@ const _out_stream& _out_stream::operator<<(const int32_t value) const
 	}
 	return usart_io;
 }
-const _out_stream& _out_stream::operator<<(const uint32_t value) const
+ _out_stream& _out_stream::operator<<(const uint32_t value) 
 {
 	char buf[10];
 	uint8_t len;
@@ -288,7 +288,7 @@ const _out_stream& _out_stream::operator<<(const uint32_t value) const
 	* @param   value: 
 	* @retval  usart_io
   */
-const _out_stream& _out_stream::operator<<(const float value) const
+ _out_stream& _out_stream::operator<<(const float value) 
 {
 	char buf[20];
 	uint8_t len;
@@ -304,7 +304,7 @@ const _out_stream& _out_stream::operator<<(const float value) const
 	* @param   value: 需要解析的字符串
 	* @retval  usart_io
   */
-const _out_stream& _out_stream::operator<<(const char* value) const
+ _out_stream& _out_stream::operator<<(const char* value) 
 {
 	uint8_t len=0;
 	while(1)
@@ -325,7 +325,7 @@ const _out_stream& _out_stream::operator<<(const char* value) const
 	* @param   value: 需要解析的字符型数据
 	* @retval  usart_io
   */
-const _out_stream& _out_stream::operator<<(const char value) const
+ _out_stream& _out_stream::operator<<(const char value) 
 {
   USART_PRINT(value);
 	return usart_io;

@@ -42,12 +42,12 @@ Section Cross References
     user.o(i.dataSend) refers to user.o(t._Z18USART_SendByteDataIyEvPT_) for void USART_SendByteData<unsigned long long>(T1*)
     user.o(i.dataSend) refers to pos.o(i.getEncoderSum) for getEncoderSum
     user.o(i.dataSend) refers to usart.o(i._Z11getUsartOutv) for getUsartOut()
-    user.o(i.dataSend) refers to usart.o(i._ZNK11_out_streamlsEi) for _out_stream::operator <<(int) const
-    user.o(i.dataSend) refers to usart.o(i._ZNK11_out_streamlsEc) for _out_stream::operator <<(char) const
+    user.o(i.dataSend) refers to usart.o(i._ZN11_out_streamlsEi) for _out_stream::operator <<(int)
+    user.o(i.dataSend) refers to usart.o(i._ZN11_out_streamlsEc) for _out_stream::operator <<(char)
     user.o(i.dataSend) refers to pos.o(i.getDirectLine) for getDirectLine
     user.o(i.dataSend) refers to d2f.o(x$fpl$d2f) for __aeabi_d2f
-    user.o(i.dataSend) refers to usart.o(i._ZNK11_out_streamlsEf) for _out_stream::operator <<(float) const
-    user.o(i.dataSend) refers to usart.o(i._ZNK11_out_streamlsEPKc) for _out_stream::operator <<(const char*) const
+    user.o(i.dataSend) refers to usart.o(i._ZN11_out_streamlsEf) for _out_stream::operator <<(float)
+    user.o(i.dataSend) refers to usart.o(i._ZN11_out_streamlsEPKc) for _out_stream::operator <<(const char*)
     user.o(i.dataSend) refers to user.o(.data) for dataSend::lastPos
     user.o(i.getCmdState) refers to user.o(.data) for cmdState
     user.o(i.usartCmdInput) refers to user.o(i._ZN29_INTERNAL_8_user_cpp_6a3cf8a19usartACCTEhRt) for [local to user_cpp]::usartACCT(unsigned char, unsigned short&)
@@ -357,29 +357,29 @@ Section Cross References
     usart.o(i._Z11USART6_Initj) refers to stm32f4xx_usart.o(i.USART_ITConfig) for USART_ITConfig
     usart.o(i._Z11USART6_Initj) refers to misc.o(i.NVIC_Init) for NVIC_Init
     usart.o(i._Z11getUsartOutv) refers to usart.o(.data) for usart_io
-    usart.o(i._ZNK11_out_streamlsEPKc) refers to usart.o(i.USART_SendDataToDMA_USART6) for USART_SendDataToDMA_USART6
-    usart.o(i._ZNK11_out_streamlsEPKc) refers to usart.o(.data) for usart_io
-    usart.o(i._ZNK11_out_streamlsEc) refers to usart.o(i.USART_SendDataToDMA_USART6) for USART_SendDataToDMA_USART6
-    usart.o(i._ZNK11_out_streamlsEc) refers to usart.o(.data) for usart_io
-    usart.o(i._ZNK11_out_streamlsEf) refers to _printf_percent.o(.ARM.Collect$$_printf_percent$$00000000) for _printf_percent
-    usart.o(i._ZNK11_out_streamlsEf) refers to _printf_f.o(.ARM.Collect$$_printf_percent$$00000003) for _printf_f
-    usart.o(i._ZNK11_out_streamlsEf) refers to printf1.o(x$fpl$printf1) for _printf_fp_dec
-    usart.o(i._ZNK11_out_streamlsEf) refers to f2d.o(x$fpl$f2d) for __aeabi_f2d
-    usart.o(i._ZNK11_out_streamlsEf) refers to __2sprintf.o(.text) for __2sprintf
-    usart.o(i._ZNK11_out_streamlsEf) refers to usart.o(i.USART_SendDataToDMA_USART6) for USART_SendDataToDMA_USART6
-    usart.o(i._ZNK11_out_streamlsEf) refers to usart.o(.data) for usart_io
-    usart.o(i._ZNK11_out_streamlsEi) refers to _printf_percent.o(.ARM.Collect$$_printf_percent$$00000000) for _printf_percent
-    usart.o(i._ZNK11_out_streamlsEi) refers to _printf_d.o(.ARM.Collect$$_printf_percent$$00000009) for _printf_d
-    usart.o(i._ZNK11_out_streamlsEi) refers to _printf_dec.o(.text) for _printf_int_dec
-    usart.o(i._ZNK11_out_streamlsEi) refers to __2sprintf.o(.text) for __2sprintf
-    usart.o(i._ZNK11_out_streamlsEi) refers to usart.o(i.USART_SendDataToDMA_USART6) for USART_SendDataToDMA_USART6
-    usart.o(i._ZNK11_out_streamlsEi) refers to usart.o(.data) for usart_io
-    usart.o(i._ZNK11_out_streamlsEj) refers to _printf_percent.o(.ARM.Collect$$_printf_percent$$00000000) for _printf_percent
-    usart.o(i._ZNK11_out_streamlsEj) refers to _printf_u.o(.ARM.Collect$$_printf_percent$$0000000A) for _printf_u
-    usart.o(i._ZNK11_out_streamlsEj) refers to _printf_dec.o(.text) for _printf_int_dec
-    usart.o(i._ZNK11_out_streamlsEj) refers to __2sprintf.o(.text) for __2sprintf
-    usart.o(i._ZNK11_out_streamlsEj) refers to usart.o(i.USART_SendDataToDMA_USART6) for USART_SendDataToDMA_USART6
-    usart.o(i._ZNK11_out_streamlsEj) refers to usart.o(.data) for usart_io
+    usart.o(i._ZN11_out_streamlsEPKc) refers to usart.o(i.USART_SendDataToDMA_USART6) for USART_SendDataToDMA_USART6
+    usart.o(i._ZN11_out_streamlsEPKc) refers to usart.o(.data) for usart_io
+    usart.o(i._ZN11_out_streamlsEc) refers to usart.o(i.USART_SendDataToDMA_USART6) for USART_SendDataToDMA_USART6
+    usart.o(i._ZN11_out_streamlsEc) refers to usart.o(.data) for usart_io
+    usart.o(i._ZN11_out_streamlsEf) refers to _printf_percent.o(.ARM.Collect$$_printf_percent$$00000000) for _printf_percent
+    usart.o(i._ZN11_out_streamlsEf) refers to _printf_f.o(.ARM.Collect$$_printf_percent$$00000003) for _printf_f
+    usart.o(i._ZN11_out_streamlsEf) refers to printf1.o(x$fpl$printf1) for _printf_fp_dec
+    usart.o(i._ZN11_out_streamlsEf) refers to f2d.o(x$fpl$f2d) for __aeabi_f2d
+    usart.o(i._ZN11_out_streamlsEf) refers to __2sprintf.o(.text) for __2sprintf
+    usart.o(i._ZN11_out_streamlsEf) refers to usart.o(i.USART_SendDataToDMA_USART6) for USART_SendDataToDMA_USART6
+    usart.o(i._ZN11_out_streamlsEf) refers to usart.o(.data) for usart_io
+    usart.o(i._ZN11_out_streamlsEi) refers to _printf_percent.o(.ARM.Collect$$_printf_percent$$00000000) for _printf_percent
+    usart.o(i._ZN11_out_streamlsEi) refers to _printf_d.o(.ARM.Collect$$_printf_percent$$00000009) for _printf_d
+    usart.o(i._ZN11_out_streamlsEi) refers to _printf_dec.o(.text) for _printf_int_dec
+    usart.o(i._ZN11_out_streamlsEi) refers to __2sprintf.o(.text) for __2sprintf
+    usart.o(i._ZN11_out_streamlsEi) refers to usart.o(i.USART_SendDataToDMA_USART6) for USART_SendDataToDMA_USART6
+    usart.o(i._ZN11_out_streamlsEi) refers to usart.o(.data) for usart_io
+    usart.o(i._ZN11_out_streamlsEj) refers to _printf_percent.o(.ARM.Collect$$_printf_percent$$00000000) for _printf_percent
+    usart.o(i._ZN11_out_streamlsEj) refers to _printf_u.o(.ARM.Collect$$_printf_percent$$0000000A) for _printf_u
+    usart.o(i._ZN11_out_streamlsEj) refers to _printf_dec.o(.text) for _printf_int_dec
+    usart.o(i._ZN11_out_streamlsEj) refers to __2sprintf.o(.text) for __2sprintf
+    usart.o(i._ZN11_out_streamlsEj) refers to usart.o(i.USART_SendDataToDMA_USART6) for USART_SendDataToDMA_USART6
+    usart.o(i._ZN11_out_streamlsEj) refers to usart.o(.data) for usart_io
     usart.o(.ARM.exidx) refers to usart.o(i.USART_SendDataToDMA_USART1) for i.USART_SendDataToDMA_USART1
     usart.o(.ARM.exidx) refers to unwind_pr0.o(.text) for __aeabi_unwind_cpp_pr0
     usart.o(.ARM.exidx) refers to usart.o(i.USART1_Init) for i.USART1_Init
@@ -393,15 +393,15 @@ Section Cross References
     usart.o(.ARM.exidx) refers to usart.o(i.USART_SendDataToDMA_USART6) for i.USART_SendDataToDMA_USART6
     usart.o(.ARM.exidx) refers to unwind_pr0.o(.text) for __aeabi_unwind_cpp_pr0
     usart.o(.ARM.exidx) refers to usart.o(i._Z11getUsartOutv) for i._Z11getUsartOutv
-    usart.o(.ARM.exidx) refers to usart.o(i._ZNK11_out_streamlsEi) for i._ZNK11_out_streamlsEi
+    usart.o(.ARM.exidx) refers to usart.o(i._ZN11_out_streamlsEi) for i._ZN11_out_streamlsEi
     usart.o(.ARM.exidx) refers to unwind_pr0.o(.text) for __aeabi_unwind_cpp_pr0
-    usart.o(.ARM.exidx) refers to usart.o(i._ZNK11_out_streamlsEj) for i._ZNK11_out_streamlsEj
+    usart.o(.ARM.exidx) refers to usart.o(i._ZN11_out_streamlsEj) for i._ZN11_out_streamlsEj
     usart.o(.ARM.exidx) refers to unwind_pr0.o(.text) for __aeabi_unwind_cpp_pr0
-    usart.o(.ARM.exidx) refers to usart.o(i._ZNK11_out_streamlsEf) for i._ZNK11_out_streamlsEf
+    usart.o(.ARM.exidx) refers to usart.o(i._ZN11_out_streamlsEf) for i._ZN11_out_streamlsEf
     usart.o(.ARM.exidx) refers to unwind_pr0.o(.text) for __aeabi_unwind_cpp_pr0
-    usart.o(.ARM.exidx) refers to usart.o(i._ZNK11_out_streamlsEc) for i._ZNK11_out_streamlsEc
+    usart.o(.ARM.exidx) refers to usart.o(i._ZN11_out_streamlsEc) for i._ZN11_out_streamlsEc
     usart.o(.ARM.exidx) refers to unwind_pr0.o(.text) for __aeabi_unwind_cpp_pr0
-    usart.o(.ARM.exidx) refers to usart.o(i._ZNK11_out_streamlsEPKc) for i._ZNK11_out_streamlsEPKc
+    usart.o(.ARM.exidx) refers to usart.o(i._ZN11_out_streamlsEPKc) for i._ZN11_out_streamlsEPKc
     usart.o(.ARM.exidx) refers to unwind_pr0.o(.text) for __aeabi_unwind_cpp_pr0
     adxrs453.o(.ARM.exidx) refers to adxrs453.o(.rev16_text) for __asm___12_ADXRS453_cpp_7756ef88___ZN34_INTERNAL_12_ADXRS453_cpp_7756ef887__REV16Ej
     adxrs453.o(.ARM.exidx) refers to adxrs453.o(.revsh_text) for __asm___12_ADXRS453_cpp_7756ef88___ZN34_INTERNAL_12_ADXRS453_cpp_7756ef887__REVSHEi
@@ -917,7 +917,7 @@ Section Cross References
     adaptiveunscentedkalmanfilter.o(i._ZN4AUKF14unscentedTransERK13action_matrixS2_) refers to adaptiveunscentedkalmanfilter.o(t._ZNSt6vectorI13action_matrixSaIS0_EE9push_backERKS0_) for std::vector<action_matrix, std::allocator<action_matrix>>::push_back(const action_matrix&)
     adaptiveunscentedkalmanfilter.o(i._ZN4AUKF14unscentedTransERK13action_matrixS2_) refers to action_matrix.o(i._ZNK13action_matrixixEj) for action_matrix::operator [](unsigned) const
     adaptiveunscentedkalmanfilter.o(i._ZN4AUKF14unscentedTransERK13action_matrixS2_) refers to usart.o(i._Z11getUsartOutv) for getUsartOut()
-    adaptiveunscentedkalmanfilter.o(i._ZN4AUKF14unscentedTransERK13action_matrixS2_) refers to usart.o(i._ZNK11_out_streamlsEPKc) for _out_stream::operator <<(const char*) const
+    adaptiveunscentedkalmanfilter.o(i._ZN4AUKF14unscentedTransERK13action_matrixS2_) refers to usart.o(i._ZN11_out_streamlsEPKc) for _out_stream::operator <<(const char*)
     adaptiveunscentedkalmanfilter.o(i._ZN4AUKF14unscentedTransERK13action_matrixS2_) refers to adaptiveunscentedkalmanfilter.o(i._ZSt4sqrtf) for std::sqrt(float)
     adaptiveunscentedkalmanfilter.o(i._ZN4AUKF14unscentedTransERK13action_matrixS2_) refers to action_matrix.o(i._ZplRK13action_matrixS1_) for operator +(const action_matrix&, const action_matrix&)
     adaptiveunscentedkalmanfilter.o(i._ZN4AUKF14unscentedTransERK13action_matrixS2_) refers to action_matrix.o(i._ZN13action_matrixD1Ev) for action_matrix::~action_matrix()
@@ -1203,8 +1203,8 @@ Section Cross References
     calculateattitude.o(i.updateAHRS) refers to adxrs453.o(i._Z11getADXRS453v) for getADXRS453()
     calculateattitude.o(i.updateAHRS) refers to pos.o(i._Z13encoderMagFixR9threeAxis) for encoderMagFix(threeAxis&)
     calculateattitude.o(i.updateAHRS) refers to usart.o(i._Z11getUsartOutv) for getUsartOut()
-    calculateattitude.o(i.updateAHRS) refers to usart.o(i._ZNK11_out_streamlsEf) for _out_stream::operator <<(float) const
-    calculateattitude.o(i.updateAHRS) refers to usart.o(i._ZNK11_out_streamlsEc) for _out_stream::operator <<(char) const
+    calculateattitude.o(i.updateAHRS) refers to usart.o(i._ZN11_out_streamlsEf) for _out_stream::operator <<(float)
+    calculateattitude.o(i.updateAHRS) refers to usart.o(i._ZN11_out_streamlsEc) for _out_stream::operator <<(char)
     calculateattitude.o(i.updateAHRS) refers to device.o(i._Zmi9threeAxisS_) for operator -(threeAxis, threeAxis)
     calculateattitude.o(i.updateAHRS) refers to ahrs.o(i._ZN9threeAxisaSERKS_) for threeAxis::operator =(const threeAxis&)
     calculateattitude.o(i.updateAHRS) refers to calculateattitude.o(i._Z3abs9threeAxis) for abs(threeAxis)
@@ -8342,8 +8342,8 @@ Image Symbol Table
     .text                                    0x080039e8   Section      128  strcmpv7m.o(.text)
     .text                                    0x08003a68   Section        0  sys_wrch.o(.text)
     .text                                    0x08003a76   Section        2  use_no_semi.o(.text)
-    .text                                    0x08003a78   Section        0  indicate_semi.o(.text)
     .text                                    0x08003a78   Section        0  isspace.o(.text)
+    .text                                    0x08003a78   Section        0  indicate_semi.o(.text)
     .text                                    0x08003a8c   Section        0  _printf_fp_hex.o(.text)
     .text                                    0x08003d88   Section        0  _printf_char.o(.text)
     .text                                    0x08003db4   Section        0  _printf_wchar.o(.text)
@@ -8472,137 +8472,137 @@ Image Symbol Table
     i._ZN10deviceBase16devicesAllUpdateEv    0x08007c84   Section        0  device.o(i._ZN10deviceBase16devicesAllUpdateEv)
     i._ZN10deviceBaseC2Ev                    0x08007cb0   Section        0  device.o(i._ZN10deviceBaseC2Ev)
     i._ZN10deviceBaseD2Ev                    0x08007ce4   Section        0  adxrs453.o(i._ZN10deviceBaseD2Ev)
-    i._ZN13ICM20602_Gyro10UpdateDataEv       0x08007ce8   Section        0  icm20602.o(i._ZN13ICM20602_Gyro10UpdateDataEv)
-    i._ZN13ICM20602_Gyro11rawDataReadEh      0x08007e6c   Section        0  icm20602.o(i._ZN13ICM20602_Gyro11rawDataReadEh)
-    i._ZN13ICM20602_Gyro12rawDataWriteEhh    0x08007e86   Section        0  icm20602.o(i._ZN13ICM20602_Gyro12rawDataWriteEhh)
-    i._ZN13ICM20602_Gyro4initEv              0x08007ea4   Section        0  icm20602.o(i._ZN13ICM20602_Gyro4initEv)
-    i._ZN13ICM20602_Gyro4initEv.clean        0x080080b2   Section        0  icm20602.o(i._ZN13ICM20602_Gyro4initEv.clean)
-    i._ZN13ICM20602_Gyro9multiReadEhPhj      0x080080bc   Section        0  icm20602.o(i._ZN13ICM20602_Gyro9multiReadEhPhj)
-    i._ZN13ICM20602_GyroC1EP11SPI_TypeDefP12GPIO_TypeDeft 0x080080e4   Section        0  icm20602.o(i._ZN13ICM20602_GyroC1EP11SPI_TypeDefP12GPIO_TypeDeft)
-    i._ZN13ICM20602_GyroC1EP11SPI_TypeDefP12GPIO_TypeDeft.clean 0x08008190   Section        0  icm20602.o(i._ZN13ICM20602_GyroC1EP11SPI_TypeDefP12GPIO_TypeDeft.clean)
-    i._ZN13ICM20602_GyroD0Ev                 0x0800819a   Section        0  icm20602.o(i._ZN13ICM20602_GyroD0Ev)
-    i._ZN13ICM20602_GyroD1Ev                 0x080081ac   Section        0  icm20602.o(i._ZN13ICM20602_GyroD1Ev)
-    i._ZN13action_matrixC1ERKS_              0x080081ba   Section        0  action_matrix.o(i._ZN13action_matrixC1ERKS_)
-    i._ZN13action_matrixC1Ejjh               0x080081d4   Section        0  action_matrix.o(i._ZN13action_matrixC1Ejjh)
-    i._ZN13action_matrixD1Ev                 0x080082f0   Section        0  action_matrix.o(i._ZN13action_matrixD1Ev)
-    i._ZN13action_matrixaSERKS_              0x08008316   Section        0  action_matrix.o(i._ZN13action_matrixaSERKS_)
-    i._ZN13action_matrixaSEf                 0x080083b6   Section        0  action_matrix.o(i._ZN13action_matrixaSEf)
-    i._ZN14deviceADXRS45310UpdateDataEv      0x0800843c   Section        0  adxrs453.o(i._ZN14deviceADXRS45310UpdateDataEv)
-    i._ZN14deviceADXRS453D0Ev                0x080084e8   Section        0  adxrs453.o(i._ZN14deviceADXRS453D0Ev)
-    i._ZN14deviceADXRS453D1Ev                0x080084fa   Section        0  adxrs453.o(i._ZN14deviceADXRS453D1Ev)
-    i._ZN14deviceI3G4250D4initEv             0x08008508   Section        0  i3g4250d.o(i._ZN14deviceI3G4250D4initEv)
-    i._ZN14deviceI3G4250D4initEv.clean       0x080086ba   Section        0  i3g4250d.o(i._ZN14deviceI3G4250D4initEv.clean)
-    i._ZN14deviceI3G4250DD0Ev                0x080086c4   Section        0  i3g4250d.o(i._ZN14deviceI3G4250DD0Ev)
-    i._ZN14deviceI3G4250DD1Ev                0x080086d6   Section        0  i3g4250d.o(i._ZN14deviceI3G4250DD1Ev)
-    i._ZN25_INTERNAL_8_main_cpp_main7runningEv 0x080086e4   Section        0  main.o(i._ZN25_INTERNAL_8_main_cpp_main7runningEv)
-    [local to main_cpp]::running()           0x080086e5   Thumb Code    62  main.o(i._ZN25_INTERNAL_8_main_cpp_main7runningEv)
-    i._ZN27_INTERNAL_6_rtti_c_066a44b012tbc_downcastEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE 0x08008722   Section        0  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b012tbc_downcastEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE)
-    [local to rtti_c]::tbc_downcast(void*, const std::type_info*, a_base_class_traversal_block*, __cxxabiv1::__base_class_type_info*) 0x08008723   Thumb Code    70  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b012tbc_downcastEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE)
-    i._ZN27_INTERNAL_6_rtti_c_066a44b017tbc_post_downcastEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE 0x08008768   Section        0  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b017tbc_post_downcastEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE)
-    [local to rtti_c]::tbc_post_downcast(void*, const std::type_info*, a_base_class_traversal_block*, __cxxabiv1::__base_class_type_info*) 0x08008769   Thumb Code    22  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b017tbc_post_downcastEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE)
-    i._ZN27_INTERNAL_6_rtti_c_066a44b021traverse_base_classesEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE 0x08008780   Section        0  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b021traverse_base_classesEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE)
-    [local to rtti_c]::traverse_base_classes(void*, const std::type_info*, a_base_class_traversal_block*, __cxxabiv1::__base_class_type_info*) 0x08008781   Thumb Code   156  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b021traverse_base_classesEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE)
-    i._ZN27_INTERNAL_6_rtti_c_066a44b023find_base_class_at_addrEPvS0_PKSt9type_infoS3_Pi 0x08008824   Section        0  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b023find_base_class_at_addrEPvS0_PKSt9type_infoS3_Pi)
-    [local to rtti_c]::find_base_class_at_addr(void*, void*, const std::type_info*, const std::type_info*, int*) 0x08008825   Thumb Code   182  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b023find_base_class_at_addrEPvS0_PKSt9type_infoS3_Pi)
-    i._ZN27_INTERNAL_6_rtti_c_066a44b024get_virtual_base_pointerEPvPN10__cxxabiv122__base_class_type_infoE 0x080088e4   Section        0  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b024get_virtual_base_pointerEPvPN10__cxxabiv122__base_class_type_infoE)
-    [local to rtti_c]::get_virtual_base_pointer(void*, __cxxabiv1::__base_class_type_info*) 0x080088e5   Thumb Code    14  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b024get_virtual_base_pointerEPvPN10__cxxabiv122__base_class_type_infoE)
-    i._ZN27_INTERNAL_6_rtti_c_066a44b028derived_to_base_conversion_rEPvPS0_PKSt9type_infoS4_jPiiPS4_P19a_result_virtualityS5_ 0x080088f4   Section        0  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b028derived_to_base_conversion_rEPvPS0_PKSt9type_infoS4_jPiiPS4_P19a_result_virtualityS5_)
-    [local to rtti_c]::derived_to_base_conversion_r(void*, void**, const std::type_info*, const std::type_info*, unsigned, int*, int, const std::type_info**, a_result_virtuality*, int*) 0x080088f5   Thumb Code   476  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b028derived_to_base_conversion_rEPvPS0_PKSt9type_infoS4_jPiiPS4_P19a_result_virtualityS5_)
-    i._ZN29_INTERNAL_8_user_cpp_6a3cf8a19usartACCTEhRt 0x08008ad8   Section        0  user.o(i._ZN29_INTERNAL_8_user_cpp_6a3cf8a19usartACCTEhRt)
-    [local to user_cpp]::usartACCT(unsigned char, unsigned short&) 0x08008ad9   Thumb Code   170  user.o(i._ZN29_INTERNAL_8_user_cpp_6a3cf8a19usartACCTEhRt)
-    i._ZN34_INTERNAL_12_ICM20602_cpp_816a8cfb18changeSPIconfigureEP11SPI_TypeDef 0x08008b8c   Section        0  icm20602.o(i._ZN34_INTERNAL_12_ICM20602_cpp_816a8cfb18changeSPIconfigureEP11SPI_TypeDef)
-    [local to ICM20602_cpp]::changeSPIconfigure(SPI_TypeDef*) 0x08008b8d   Thumb Code    94  icm20602.o(i._ZN34_INTERNAL_12_ICM20602_cpp_816a8cfb18changeSPIconfigureEP11SPI_TypeDef)
-    i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjPKcSt9__va_list 0x08008bea   Section        0  rwstdexcept.o(i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjPKcSt9__va_list)
-    [local to rwstdexcept_cpp]::__rw::__rw_vfmatstr(char*, unsigned, const char*, std::__va_list) 0x08008beb   Thumb Code    88  rwstdexcept.o(i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjPKcSt9__va_list)
-    i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjiSt9__va_list 0x08008c44   Section        0  rwstdexcept.o(i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjiSt9__va_list)
-    [local to rwstdexcept_cpp]::__rw::__rw_vfmatstr(char*, unsigned, int, std::__va_list) 0x08008c45   Thumb Code   296  rwstdexcept.o(i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjiSt9__va_list)
-    i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjiSt9__va_list.clean 0x08008d90   Section        0  rwstdexcept.o(i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjiSt9__va_list.clean)
-    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS10UKFmeasureERK13action_matrix 0x08008dc4   Section        0  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS10UKFmeasureERK13action_matrix)
-    [local to calculateAttitude_cpp]::UKFmeasure(const action_matrix&) 0x08008dc5   Thumb Code   112  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS10UKFmeasureERK13action_matrix)
-    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS10UKFmeasureERK13action_matrix.clean 0x08008e38   Section        0  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS10UKFmeasureERK13action_matrix.clean)
-    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS17magAccFixZeroRateEv 0x08008e5c   Section        0  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS17magAccFixZeroRateEv)
-    [local to calculateAttitude_cpp]::magAccFixZeroRate() 0x08008e5d   Thumb Code   620  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS17magAccFixZeroRateEv)
-    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS19Quaternion_to_EulerERK13action_matrix 0x080090f0   Section        0  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS19Quaternion_to_EulerERK13action_matrix)
-    [local to calculateAttitude_cpp]::Quaternion_to_Euler(const action_matrix&) 0x080090f1   Thumb Code   278  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS19Quaternion_to_EulerERK13action_matrix)
-    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS6UKFpreERK13action_matrixS2_ 0x08009208   Section        0  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS6UKFpreERK13action_matrixS2_)
-    [local to calculateAttitude_cpp]::UKFpre(const action_matrix&, const action_matrix&) 0x08009209   Thumb Code    64  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS6UKFpreERK13action_matrixS2_)
-    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS6UKFpreERK13action_matrixS2_.clean 0x08009254   Section        0  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS6UKFpreERK13action_matrixS2_.clean)
-    i._ZN4AUKF14unscentedTransERK13action_matrixS2_ 0x08009264   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF14unscentedTransERK13action_matrixS2_)
-    i._ZN4AUKF14unscentedTransERK13action_matrixS2_.clean 0x080094c8   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF14unscentedTransERK13action_matrixS2_.clean)
-    i._ZN4AUKF6filterERK13action_matrixS2_   0x080094ec   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF6filterERK13action_matrixS2_)
-    i._ZN4AUKF7updateCESt6vectorI13action_matrixSaIS1_EERKS1_S3_S5_ 0x08009526   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF7updateCESt6vectorI13action_matrixSaIS1_EERKS1_S3_S5_)
-    i._ZN4AUKF7updateCESt6vectorI13action_matrixSaIS1_EERKS1_S3_S5_.clean 0x080096ec   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF7updateCESt6vectorI13action_matrixSaIS1_EERKS1_S3_S5_.clean)
-    i._ZN4AUKF7updateMESt6vectorI13action_matrixSaIS1_EE 0x08009746   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF7updateMESt6vectorI13action_matrixSaIS1_EE)
-    i._ZN4AUKF7updateMESt6vectorI13action_matrixSaIS1_EE.clean 0x08009794   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF7updateMESt6vectorI13action_matrixSaIS1_EE.clean)
-    i._ZN4AUKF8predictXERK13action_matrix    0x0800979e   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF8predictXERK13action_matrix)
-    i._ZN4AUKF8predictXERK13action_matrix.clean 0x080098fa   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF8predictXERK13action_matrix.clean)
-    i._ZN4AUKF8predictZEv                    0x0800995a   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF8predictZEv)
-    i._ZN4AUKF8predictZEv.clean              0x08009aa2   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF8predictZEv.clean)
-    i._ZN4AUKF9adaptiveRERK13action_matrix   0x08009afc   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF9adaptiveRERK13action_matrix)
-    i._ZN4AUKF9adaptiveRERK13action_matrix.clean 0x08009c58   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF9adaptiveRERK13action_matrix.clean)
-    i._ZN4AUKF9estimateXERK13action_matrix   0x08009c94   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF9estimateXERK13action_matrix)
-    i._ZN4AUKF9estimateXERK13action_matrix.clean 0x08009d90   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF9estimateXERK13action_matrix.clean)
-    i._ZN4AUKFC1EfffRK13action_matrixS2_S2_S2_S2_PFS0_S2_S2_EPFS0_S2_Ej 0x08009ddc   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFC1EfffRK13action_matrixS2_S2_S2_S2_PFS0_S2_S2_EPFS0_S2_Ej)
-    i._ZN4AUKFC1EfffRK13action_matrixS2_S2_S2_S2_PFS0_S2_S2_EPFS0_S2_Ej.clean 0x08009f20   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFC1EfffRK13action_matrixS2_S2_S2_S2_PFS0_S2_S2_EPFS0_S2_Ej.clean)
-    i._ZN4AUKFD0Ev                           0x08009f8c   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFD0Ev)
-    i._ZN4AUKFD1Ev                           0x08009fa0   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFD1Ev)
-    i._ZN4AUKFD1Ev.clean                     0x0800a028   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFD1Ev.clean)
-    i._ZN4__rw10__rw_throwEiz                0x0800a094   Section        0  rwstdexcept.o(i._ZN4__rw10__rw_throwEiz)
-    i._ZN4__rw13__rw_allocateEji             0x0800a0f0   Section        0  rwalloc.o(i._ZN4__rw13__rw_allocateEji)
-    i._ZN4__rw15__rw_deallocateEPvji         0x0800a110   Section        0  rwalloc.o(i._ZN4__rw15__rw_deallocateEPvji)
-    i._ZN4__rw15__rw_facet_base12_C_initfacetERKSt6locale 0x0800a114   Section        0  char.o(i._ZN4__rw15__rw_facet_base12_C_initfacetERKSt6locale)
-    i._ZN4__rw15__rw_locale_imp13_C_parse_nameERNS_18__rw_locale_vectorISsEEPKc 0x0800a118   Section        0  vendor.o(i._ZN4__rw15__rw_locale_imp13_C_parse_nameERNS_18__rw_locale_vectorISsEEPKc)
-    i._ZN4__rw15__rw_locale_imp13_C_parse_nameERNS_18__rw_locale_vectorISsEEPKc.clean 0x0800a1e8   Section        0  vendor.o(i._ZN4__rw15__rw_locale_imp13_C_parse_nameERNS_18__rw_locale_vectorISsEEPKc.clean)
-    i._ZN4__rw15__rw_locale_imp15_C_map_categoryEi 0x0800a1f2   Section        0  vendor.o(i._ZN4__rw15__rw_locale_imp15_C_map_categoryEi)
-    i._ZN4__rw15__rw_locale_impC1EPKcjj      0x0800a230   Section        0  locale.o(i._ZN4__rw15__rw_locale_impC1EPKcjj)
-    i._ZN4__rw15__rw_locale_impC1EPKcjj.clean 0x0800a31c   Section        0  locale.o(i._ZN4__rw15__rw_locale_impC1EPKcjj.clean)
-    i._ZN4__rw15__rw_locale_impC1ERKS0_PKcj  0x0800a338   Section        0  locale.o(i._ZN4__rw15__rw_locale_impC1ERKS0_PKcj)
-    i._ZN4__rw15__rw_locale_impC1ERKS0_PKcj.clean 0x0800a410   Section        0  locale.o(i._ZN4__rw15__rw_locale_impC1ERKS0_PKcj.clean)
-    i._ZN4__rw15__rw_locale_impD1Ev          0x0800a426   Section        0  locale.o(i._ZN4__rw15__rw_locale_impD1Ev)
-    i._ZN4__rw15__rw_punct_dataIcED1Ev       0x0800a440   Section        0  char.o(i._ZN4__rw15__rw_punct_dataIcED1Ev)
-    i._ZN4__rw18__rw_numpunct_implIcED1Ev    0x0800a44c   Section        0  char.o(i._ZN4__rw18__rw_numpunct_implIcED1Ev)
-    i._ZN4__rw20__rw_throw_exceptionEiPc     0x0800a454   Section        0  rwthrowproc_impl.o(i._ZN4__rw20__rw_throw_exceptionEiPc)
-    i._ZN4__rw20__rw_throw_exceptionEiPc.clean 0x0800a7d0   Section        0  rwthrowproc_impl.o(i._ZN4__rw20__rw_throw_exceptionEiPc.clean)
-    i._ZN4__rw21__rw_use_c_lib_localeC1EPKci 0x0800a83e   Section        0  locale.o(i._ZN4__rw21__rw_use_c_lib_localeC1EPKci)
-    i._ZN4__rw21__rw_use_c_lib_localeD1Ev    0x0800a878   Section        0  char.o(i._ZN4__rw21__rw_use_c_lib_localeD1Ev)
-    i._ZN4__rw23__rw_numpunct_impl_base18_C_get_named_init_EPKc 0x0800a890   Section        0  locale.o(i._ZN4__rw23__rw_numpunct_impl_base18_C_get_named_init_EPKc)
-    i._ZN4__rw23__rw_numpunct_impl_base18_C_get_named_init_EPKc.clean 0x0800a924   Section        0  locale.o(i._ZN4__rw23__rw_numpunct_impl_base18_C_get_named_init_EPKc.clean)
-    i._ZN4__rw23__rw_numpunct_impl_dataIcED1Ev 0x0800a92e   Section        0  char.o(i._ZN4__rw23__rw_numpunct_impl_dataIcED1Ev)
-    i._ZN4__rw9__catfindEPNS_8__rw_catE      0x0800a944   Section        0  rwcats.o(i._ZN4__rw9__catfindEPNS_8__rw_catE)
-    i._ZN9aukf9axis4fuseERK13action_matrixS2_S2_ 0x0800a974   Section        0  calculateattitude.o(i._ZN9aukf9axis4fuseERK13action_matrixS2_S2_)
-    i._ZN9aukf9axis4fuseERK13action_matrixS2_S2_.clean 0x0800ab34   Section        0  calculateattitude.o(i._ZN9aukf9axis4fuseERK13action_matrixS2_S2_.clean)
-    i._ZN9aukf9axisC1Ev                      0x0800ab54   Section        0  calculateattitude.o(i._ZN9aukf9axisC1Ev)
-    i._ZN9aukf9axisC1Ev.clean                0x0800ac3c   Section        0  calculateattitude.o(i._ZN9aukf9axisC1Ev.clean)
-    i._ZN9aukf9axisD0Ev                      0x0800ac66   Section        0  calculateattitude.o(i._ZN9aukf9axisD0Ev)
-    i._ZN9aukf9axisD1Ev                      0x0800ac78   Section        0  calculateattitude.o(i._ZN9aukf9axisD1Ev)
-    i._ZN9aukf9axisD1Ev.clean                0x0800aca0   Section        0  calculateattitude.o(i._ZN9aukf9axisD1Ev.clean)
-    i._ZN9threeAxisaSERKS_                   0x0800acaa   Section        0  ahrs.o(i._ZN9threeAxisaSERKS_)
-    i._ZN9threeAxisaSEf                      0x0800acc4   Section        0  ahrs.o(i._ZN9threeAxisaSEf)
-    i._ZNK11_out_streamlsEPKc                0x0800acd4   Section        0  usart.o(i._ZNK11_out_streamlsEPKc)
-    i._ZNK11_out_streamlsEc                  0x0800ad04   Section        0  usart.o(i._ZNK11_out_streamlsEc)
-    i._ZNK11_out_streamlsEf                  0x0800ad18   Section        0  usart.o(i._ZNK11_out_streamlsEf)
-    i._ZNK11_out_streamlsEi                  0x0800ad68   Section        0  usart.o(i._ZNK11_out_streamlsEi)
-    i._ZNK11_out_streamlsEj                  0x0800ad9c   Section        0  usart.o(i._ZNK11_out_streamlsEj)
-    i._ZNK13action_matrix10get_columnEv      0x0800add0   Section        0  action_matrix.o(i._ZNK13action_matrix10get_columnEv)
-    i._ZNK13action_matrix7get_rowEv          0x0800add6   Section        0  action_matrix.o(i._ZNK13action_matrix7get_rowEv)
-    i._ZNK13action_matrix8get_dataEjj        0x0800addc   Section        0  action_matrix.o(i._ZNK13action_matrix8get_dataEjj)
-    i._ZNK13action_matrix8set_dataEjjf       0x0800adf0   Section        0  action_matrix.o(i._ZNK13action_matrix8set_dataEjjf)
-    i._ZNK13action_matrixixEj                0x0800ae04   Section        0  action_matrix.o(i._ZNK13action_matrixixEj)
-    i._ZNKSt14__rw_exception4whatEv          0x0800ae12   Section        0  rwstdexcept.o(i._ZNKSt14__rw_exception4whatEv)
-    i._ZNKSt14collate_bynameIcE10do_compareEPKcS2_S2_S2_ 0x0800ae16   Section        0  char.o(i._ZNKSt14collate_bynameIcE10do_compareEPKcS2_S2_S2_)
-    i._ZNKSt14collate_bynameIcE10do_compareEPKcS2_S2_S2_.clean 0x0800aeb0   Section        0  char.o(i._ZNKSt14collate_bynameIcE10do_compareEPKcS2_S2_S2_.clean)
-    i._ZNKSt14collate_bynameIcE12do_transformEPKcS2_ 0x0800aeba   Section        0  char.o(i._ZNKSt14collate_bynameIcE12do_transformEPKcS2_)
-    i._ZNKSt14collate_bynameIcE12do_transformEPKcS2_.clean 0x0800af2e   Section        0  char.o(i._ZNKSt14collate_bynameIcE12do_transformEPKcS2_.clean)
-    i._ZNKSt18__rw_messages_base11_C_cat_openERKSsRKSt6locale 0x0800af3e   Section        0  messages.o(i._ZNKSt18__rw_messages_base11_C_cat_openERKSsRKSt6locale)
-    i._ZNKSt18__rw_messages_base11_C_cat_openERKSsRKSt6locale.clean 0x0800afb0   Section        0  messages.o(i._ZNKSt18__rw_messages_base11_C_cat_openERKSsRKSt6locale.clean)
-    i._ZNKSt18__rw_messages_base12_C_cat_closeEi 0x0800afba   Section        0  messages.o(i._ZNKSt18__rw_messages_base12_C_cat_closeEi)
-    i._ZNKSt18__rw_messages_base13_C_get_localeEi 0x0800affa   Section        0  messages.o(i._ZNKSt18__rw_messages_base13_C_get_localeEi)
-    i._ZNKSt18__rw_messages_base14_C_get_messageEiii 0x0800b01a   Section        0  messages.o(i._ZNKSt18__rw_messages_base14_C_get_messageEiii)
-    i._ZNKSt5ctypeIcE10do_tolowerEPcPKc      0x0800b04e   Section        0  char.o(i._ZNKSt5ctypeIcE10do_tolowerEPcPKc)
-    i._ZNKSt5ctypeIcE10do_tolowerEc          0x0800b07a   Section        0  char.o(i._ZNKSt5ctypeIcE10do_tolowerEc)
-    i._ZNKSt5ctypeIcE10do_toupperEPcPKc      0x0800b098   Section        0  char.o(i._ZNKSt5ctypeIcE10do_toupperEPcPKc)
-    i._ZNKSt5ctypeIcE10do_toupperEc          0x0800b0c4   Section        0  char.o(i._ZNKSt5ctypeIcE10do_toupperEc)
-    i._ZNKSt5ctypeIcE2isENSt10ctype_base4maskEc 0x0800b0e2   Section        0  char.o(i._ZNKSt5ctypeIcE2isENSt10ctype_base4maskEc)
+    i._ZN11_out_streamlsEPKc                 0x08007ce8   Section        0  usart.o(i._ZN11_out_streamlsEPKc)
+    i._ZN11_out_streamlsEc                   0x08007d18   Section        0  usart.o(i._ZN11_out_streamlsEc)
+    i._ZN11_out_streamlsEf                   0x08007d2c   Section        0  usart.o(i._ZN11_out_streamlsEf)
+    i._ZN11_out_streamlsEi                   0x08007d7c   Section        0  usart.o(i._ZN11_out_streamlsEi)
+    i._ZN11_out_streamlsEj                   0x08007db0   Section        0  usart.o(i._ZN11_out_streamlsEj)
+    i._ZN13ICM20602_Gyro10UpdateDataEv       0x08007de4   Section        0  icm20602.o(i._ZN13ICM20602_Gyro10UpdateDataEv)
+    i._ZN13ICM20602_Gyro11rawDataReadEh      0x08007f68   Section        0  icm20602.o(i._ZN13ICM20602_Gyro11rawDataReadEh)
+    i._ZN13ICM20602_Gyro12rawDataWriteEhh    0x08007f82   Section        0  icm20602.o(i._ZN13ICM20602_Gyro12rawDataWriteEhh)
+    i._ZN13ICM20602_Gyro4initEv              0x08007fa0   Section        0  icm20602.o(i._ZN13ICM20602_Gyro4initEv)
+    i._ZN13ICM20602_Gyro4initEv.clean        0x080081ae   Section        0  icm20602.o(i._ZN13ICM20602_Gyro4initEv.clean)
+    i._ZN13ICM20602_Gyro9multiReadEhPhj      0x080081b8   Section        0  icm20602.o(i._ZN13ICM20602_Gyro9multiReadEhPhj)
+    i._ZN13ICM20602_GyroC1EP11SPI_TypeDefP12GPIO_TypeDeft 0x080081e0   Section        0  icm20602.o(i._ZN13ICM20602_GyroC1EP11SPI_TypeDefP12GPIO_TypeDeft)
+    i._ZN13ICM20602_GyroC1EP11SPI_TypeDefP12GPIO_TypeDeft.clean 0x0800828c   Section        0  icm20602.o(i._ZN13ICM20602_GyroC1EP11SPI_TypeDefP12GPIO_TypeDeft.clean)
+    i._ZN13ICM20602_GyroD0Ev                 0x08008296   Section        0  icm20602.o(i._ZN13ICM20602_GyroD0Ev)
+    i._ZN13ICM20602_GyroD1Ev                 0x080082a8   Section        0  icm20602.o(i._ZN13ICM20602_GyroD1Ev)
+    i._ZN13action_matrixC1ERKS_              0x080082b6   Section        0  action_matrix.o(i._ZN13action_matrixC1ERKS_)
+    i._ZN13action_matrixC1Ejjh               0x080082d0   Section        0  action_matrix.o(i._ZN13action_matrixC1Ejjh)
+    i._ZN13action_matrixD1Ev                 0x080083ec   Section        0  action_matrix.o(i._ZN13action_matrixD1Ev)
+    i._ZN13action_matrixaSERKS_              0x08008412   Section        0  action_matrix.o(i._ZN13action_matrixaSERKS_)
+    i._ZN13action_matrixaSEf                 0x080084b2   Section        0  action_matrix.o(i._ZN13action_matrixaSEf)
+    i._ZN14deviceADXRS45310UpdateDataEv      0x08008538   Section        0  adxrs453.o(i._ZN14deviceADXRS45310UpdateDataEv)
+    i._ZN14deviceADXRS453D0Ev                0x080085e4   Section        0  adxrs453.o(i._ZN14deviceADXRS453D0Ev)
+    i._ZN14deviceADXRS453D1Ev                0x080085f6   Section        0  adxrs453.o(i._ZN14deviceADXRS453D1Ev)
+    i._ZN14deviceI3G4250D4initEv             0x08008604   Section        0  i3g4250d.o(i._ZN14deviceI3G4250D4initEv)
+    i._ZN14deviceI3G4250D4initEv.clean       0x080087b6   Section        0  i3g4250d.o(i._ZN14deviceI3G4250D4initEv.clean)
+    i._ZN14deviceI3G4250DD0Ev                0x080087c0   Section        0  i3g4250d.o(i._ZN14deviceI3G4250DD0Ev)
+    i._ZN14deviceI3G4250DD1Ev                0x080087d2   Section        0  i3g4250d.o(i._ZN14deviceI3G4250DD1Ev)
+    i._ZN25_INTERNAL_8_main_cpp_main7runningEv 0x080087e0   Section        0  main.o(i._ZN25_INTERNAL_8_main_cpp_main7runningEv)
+    [local to main_cpp]::running()           0x080087e1   Thumb Code    62  main.o(i._ZN25_INTERNAL_8_main_cpp_main7runningEv)
+    i._ZN27_INTERNAL_6_rtti_c_066a44b012tbc_downcastEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE 0x0800881e   Section        0  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b012tbc_downcastEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE)
+    [local to rtti_c]::tbc_downcast(void*, const std::type_info*, a_base_class_traversal_block*, __cxxabiv1::__base_class_type_info*) 0x0800881f   Thumb Code    70  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b012tbc_downcastEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE)
+    i._ZN27_INTERNAL_6_rtti_c_066a44b017tbc_post_downcastEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE 0x08008864   Section        0  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b017tbc_post_downcastEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE)
+    [local to rtti_c]::tbc_post_downcast(void*, const std::type_info*, a_base_class_traversal_block*, __cxxabiv1::__base_class_type_info*) 0x08008865   Thumb Code    22  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b017tbc_post_downcastEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE)
+    i._ZN27_INTERNAL_6_rtti_c_066a44b021traverse_base_classesEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE 0x0800887c   Section        0  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b021traverse_base_classesEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE)
+    [local to rtti_c]::traverse_base_classes(void*, const std::type_info*, a_base_class_traversal_block*, __cxxabiv1::__base_class_type_info*) 0x0800887d   Thumb Code   156  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b021traverse_base_classesEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE)
+    i._ZN27_INTERNAL_6_rtti_c_066a44b023find_base_class_at_addrEPvS0_PKSt9type_infoS3_Pi 0x08008920   Section        0  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b023find_base_class_at_addrEPvS0_PKSt9type_infoS3_Pi)
+    [local to rtti_c]::find_base_class_at_addr(void*, void*, const std::type_info*, const std::type_info*, int*) 0x08008921   Thumb Code   182  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b023find_base_class_at_addrEPvS0_PKSt9type_infoS3_Pi)
+    i._ZN27_INTERNAL_6_rtti_c_066a44b024get_virtual_base_pointerEPvPN10__cxxabiv122__base_class_type_infoE 0x080089e0   Section        0  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b024get_virtual_base_pointerEPvPN10__cxxabiv122__base_class_type_infoE)
+    [local to rtti_c]::get_virtual_base_pointer(void*, __cxxabiv1::__base_class_type_info*) 0x080089e1   Thumb Code    14  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b024get_virtual_base_pointerEPvPN10__cxxabiv122__base_class_type_infoE)
+    i._ZN27_INTERNAL_6_rtti_c_066a44b028derived_to_base_conversion_rEPvPS0_PKSt9type_infoS4_jPiiPS4_P19a_result_virtualityS5_ 0x080089f0   Section        0  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b028derived_to_base_conversion_rEPvPS0_PKSt9type_infoS4_jPiiPS4_P19a_result_virtualityS5_)
+    [local to rtti_c]::derived_to_base_conversion_r(void*, void**, const std::type_info*, const std::type_info*, unsigned, int*, int, const std::type_info**, a_result_virtuality*, int*) 0x080089f1   Thumb Code   476  rtti.o(i._ZN27_INTERNAL_6_rtti_c_066a44b028derived_to_base_conversion_rEPvPS0_PKSt9type_infoS4_jPiiPS4_P19a_result_virtualityS5_)
+    i._ZN29_INTERNAL_8_user_cpp_6a3cf8a19usartACCTEhRt 0x08008bd4   Section        0  user.o(i._ZN29_INTERNAL_8_user_cpp_6a3cf8a19usartACCTEhRt)
+    [local to user_cpp]::usartACCT(unsigned char, unsigned short&) 0x08008bd5   Thumb Code   170  user.o(i._ZN29_INTERNAL_8_user_cpp_6a3cf8a19usartACCTEhRt)
+    i._ZN34_INTERNAL_12_ICM20602_cpp_816a8cfb18changeSPIconfigureEP11SPI_TypeDef 0x08008c88   Section        0  icm20602.o(i._ZN34_INTERNAL_12_ICM20602_cpp_816a8cfb18changeSPIconfigureEP11SPI_TypeDef)
+    [local to ICM20602_cpp]::changeSPIconfigure(SPI_TypeDef*) 0x08008c89   Thumb Code    94  icm20602.o(i._ZN34_INTERNAL_12_ICM20602_cpp_816a8cfb18changeSPIconfigureEP11SPI_TypeDef)
+    i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjPKcSt9__va_list 0x08008ce6   Section        0  rwstdexcept.o(i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjPKcSt9__va_list)
+    [local to rwstdexcept_cpp]::__rw::__rw_vfmatstr(char*, unsigned, const char*, std::__va_list) 0x08008ce7   Thumb Code    88  rwstdexcept.o(i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjPKcSt9__va_list)
+    i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjiSt9__va_list 0x08008d40   Section        0  rwstdexcept.o(i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjiSt9__va_list)
+    [local to rwstdexcept_cpp]::__rw::__rw_vfmatstr(char*, unsigned, int, std::__va_list) 0x08008d41   Thumb Code   296  rwstdexcept.o(i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjiSt9__va_list)
+    i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjiSt9__va_list.clean 0x08008e8c   Section        0  rwstdexcept.o(i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjiSt9__va_list.clean)
+    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS10UKFmeasureERK13action_matrix 0x08008ec0   Section        0  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS10UKFmeasureERK13action_matrix)
+    [local to calculateAttitude_cpp]::UKFmeasure(const action_matrix&) 0x08008ec1   Thumb Code   112  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS10UKFmeasureERK13action_matrix)
+    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS10UKFmeasureERK13action_matrix.clean 0x08008f34   Section        0  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS10UKFmeasureERK13action_matrix.clean)
+    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS17magAccFixZeroRateEv 0x08008f58   Section        0  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS17magAccFixZeroRateEv)
+    [local to calculateAttitude_cpp]::magAccFixZeroRate() 0x08008f59   Thumb Code   620  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS17magAccFixZeroRateEv)
+    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS19Quaternion_to_EulerERK13action_matrix 0x080091ec   Section        0  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS19Quaternion_to_EulerERK13action_matrix)
+    [local to calculateAttitude_cpp]::Quaternion_to_Euler(const action_matrix&) 0x080091ed   Thumb Code   278  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS19Quaternion_to_EulerERK13action_matrix)
+    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS6UKFpreERK13action_matrixS2_ 0x08009304   Section        0  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS6UKFpreERK13action_matrixS2_)
+    [local to calculateAttitude_cpp]::UKFpre(const action_matrix&, const action_matrix&) 0x08009305   Thumb Code    64  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS6UKFpreERK13action_matrixS2_)
+    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS6UKFpreERK13action_matrixS2_.clean 0x08009350   Section        0  calculateattitude.o(i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS6UKFpreERK13action_matrixS2_.clean)
+    i._ZN4AUKF14unscentedTransERK13action_matrixS2_ 0x08009360   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF14unscentedTransERK13action_matrixS2_)
+    i._ZN4AUKF14unscentedTransERK13action_matrixS2_.clean 0x080095c4   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF14unscentedTransERK13action_matrixS2_.clean)
+    i._ZN4AUKF6filterERK13action_matrixS2_   0x080095e8   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF6filterERK13action_matrixS2_)
+    i._ZN4AUKF7updateCESt6vectorI13action_matrixSaIS1_EERKS1_S3_S5_ 0x08009622   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF7updateCESt6vectorI13action_matrixSaIS1_EERKS1_S3_S5_)
+    i._ZN4AUKF7updateCESt6vectorI13action_matrixSaIS1_EERKS1_S3_S5_.clean 0x080097e8   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF7updateCESt6vectorI13action_matrixSaIS1_EERKS1_S3_S5_.clean)
+    i._ZN4AUKF7updateMESt6vectorI13action_matrixSaIS1_EE 0x08009842   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF7updateMESt6vectorI13action_matrixSaIS1_EE)
+    i._ZN4AUKF7updateMESt6vectorI13action_matrixSaIS1_EE.clean 0x08009890   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF7updateMESt6vectorI13action_matrixSaIS1_EE.clean)
+    i._ZN4AUKF8predictXERK13action_matrix    0x0800989a   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF8predictXERK13action_matrix)
+    i._ZN4AUKF8predictXERK13action_matrix.clean 0x080099f6   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF8predictXERK13action_matrix.clean)
+    i._ZN4AUKF8predictZEv                    0x08009a56   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF8predictZEv)
+    i._ZN4AUKF8predictZEv.clean              0x08009b9e   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF8predictZEv.clean)
+    i._ZN4AUKF9adaptiveRERK13action_matrix   0x08009bf8   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF9adaptiveRERK13action_matrix)
+    i._ZN4AUKF9adaptiveRERK13action_matrix.clean 0x08009d54   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF9adaptiveRERK13action_matrix.clean)
+    i._ZN4AUKF9estimateXERK13action_matrix   0x08009d90   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF9estimateXERK13action_matrix)
+    i._ZN4AUKF9estimateXERK13action_matrix.clean 0x08009e8c   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF9estimateXERK13action_matrix.clean)
+    i._ZN4AUKFC1EfffRK13action_matrixS2_S2_S2_S2_PFS0_S2_S2_EPFS0_S2_Ej 0x08009ed8   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFC1EfffRK13action_matrixS2_S2_S2_S2_PFS0_S2_S2_EPFS0_S2_Ej)
+    i._ZN4AUKFC1EfffRK13action_matrixS2_S2_S2_S2_PFS0_S2_S2_EPFS0_S2_Ej.clean 0x0800a01c   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFC1EfffRK13action_matrixS2_S2_S2_S2_PFS0_S2_S2_EPFS0_S2_Ej.clean)
+    i._ZN4AUKFD0Ev                           0x0800a088   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFD0Ev)
+    i._ZN4AUKFD1Ev                           0x0800a09c   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFD1Ev)
+    i._ZN4AUKFD1Ev.clean                     0x0800a124   Section        0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFD1Ev.clean)
+    i._ZN4__rw10__rw_throwEiz                0x0800a190   Section        0  rwstdexcept.o(i._ZN4__rw10__rw_throwEiz)
+    i._ZN4__rw13__rw_allocateEji             0x0800a1ec   Section        0  rwalloc.o(i._ZN4__rw13__rw_allocateEji)
+    i._ZN4__rw15__rw_deallocateEPvji         0x0800a20c   Section        0  rwalloc.o(i._ZN4__rw15__rw_deallocateEPvji)
+    i._ZN4__rw15__rw_facet_base12_C_initfacetERKSt6locale 0x0800a210   Section        0  char.o(i._ZN4__rw15__rw_facet_base12_C_initfacetERKSt6locale)
+    i._ZN4__rw15__rw_locale_imp13_C_parse_nameERNS_18__rw_locale_vectorISsEEPKc 0x0800a214   Section        0  vendor.o(i._ZN4__rw15__rw_locale_imp13_C_parse_nameERNS_18__rw_locale_vectorISsEEPKc)
+    i._ZN4__rw15__rw_locale_imp13_C_parse_nameERNS_18__rw_locale_vectorISsEEPKc.clean 0x0800a2e4   Section        0  vendor.o(i._ZN4__rw15__rw_locale_imp13_C_parse_nameERNS_18__rw_locale_vectorISsEEPKc.clean)
+    i._ZN4__rw15__rw_locale_imp15_C_map_categoryEi 0x0800a2ee   Section        0  vendor.o(i._ZN4__rw15__rw_locale_imp15_C_map_categoryEi)
+    i._ZN4__rw15__rw_locale_impC1EPKcjj      0x0800a32c   Section        0  locale.o(i._ZN4__rw15__rw_locale_impC1EPKcjj)
+    i._ZN4__rw15__rw_locale_impC1EPKcjj.clean 0x0800a418   Section        0  locale.o(i._ZN4__rw15__rw_locale_impC1EPKcjj.clean)
+    i._ZN4__rw15__rw_locale_impC1ERKS0_PKcj  0x0800a434   Section        0  locale.o(i._ZN4__rw15__rw_locale_impC1ERKS0_PKcj)
+    i._ZN4__rw15__rw_locale_impC1ERKS0_PKcj.clean 0x0800a50c   Section        0  locale.o(i._ZN4__rw15__rw_locale_impC1ERKS0_PKcj.clean)
+    i._ZN4__rw15__rw_locale_impD1Ev          0x0800a522   Section        0  locale.o(i._ZN4__rw15__rw_locale_impD1Ev)
+    i._ZN4__rw15__rw_punct_dataIcED1Ev       0x0800a53c   Section        0  char.o(i._ZN4__rw15__rw_punct_dataIcED1Ev)
+    i._ZN4__rw18__rw_numpunct_implIcED1Ev    0x0800a548   Section        0  char.o(i._ZN4__rw18__rw_numpunct_implIcED1Ev)
+    i._ZN4__rw20__rw_throw_exceptionEiPc     0x0800a550   Section        0  rwthrowproc_impl.o(i._ZN4__rw20__rw_throw_exceptionEiPc)
+    i._ZN4__rw20__rw_throw_exceptionEiPc.clean 0x0800a8cc   Section        0  rwthrowproc_impl.o(i._ZN4__rw20__rw_throw_exceptionEiPc.clean)
+    i._ZN4__rw21__rw_use_c_lib_localeC1EPKci 0x0800a93a   Section        0  locale.o(i._ZN4__rw21__rw_use_c_lib_localeC1EPKci)
+    i._ZN4__rw21__rw_use_c_lib_localeD1Ev    0x0800a974   Section        0  char.o(i._ZN4__rw21__rw_use_c_lib_localeD1Ev)
+    i._ZN4__rw23__rw_numpunct_impl_base18_C_get_named_init_EPKc 0x0800a98c   Section        0  locale.o(i._ZN4__rw23__rw_numpunct_impl_base18_C_get_named_init_EPKc)
+    i._ZN4__rw23__rw_numpunct_impl_base18_C_get_named_init_EPKc.clean 0x0800aa20   Section        0  locale.o(i._ZN4__rw23__rw_numpunct_impl_base18_C_get_named_init_EPKc.clean)
+    i._ZN4__rw23__rw_numpunct_impl_dataIcED1Ev 0x0800aa2a   Section        0  char.o(i._ZN4__rw23__rw_numpunct_impl_dataIcED1Ev)
+    i._ZN4__rw9__catfindEPNS_8__rw_catE      0x0800aa40   Section        0  rwcats.o(i._ZN4__rw9__catfindEPNS_8__rw_catE)
+    i._ZN9aukf9axis4fuseERK13action_matrixS2_S2_ 0x0800aa70   Section        0  calculateattitude.o(i._ZN9aukf9axis4fuseERK13action_matrixS2_S2_)
+    i._ZN9aukf9axis4fuseERK13action_matrixS2_S2_.clean 0x0800ac30   Section        0  calculateattitude.o(i._ZN9aukf9axis4fuseERK13action_matrixS2_S2_.clean)
+    i._ZN9aukf9axisC1Ev                      0x0800ac50   Section        0  calculateattitude.o(i._ZN9aukf9axisC1Ev)
+    i._ZN9aukf9axisC1Ev.clean                0x0800ad38   Section        0  calculateattitude.o(i._ZN9aukf9axisC1Ev.clean)
+    i._ZN9aukf9axisD0Ev                      0x0800ad62   Section        0  calculateattitude.o(i._ZN9aukf9axisD0Ev)
+    i._ZN9aukf9axisD1Ev                      0x0800ad74   Section        0  calculateattitude.o(i._ZN9aukf9axisD1Ev)
+    i._ZN9aukf9axisD1Ev.clean                0x0800ad9c   Section        0  calculateattitude.o(i._ZN9aukf9axisD1Ev.clean)
+    i._ZN9threeAxisaSERKS_                   0x0800ada6   Section        0  ahrs.o(i._ZN9threeAxisaSERKS_)
+    i._ZN9threeAxisaSEf                      0x0800adc0   Section        0  ahrs.o(i._ZN9threeAxisaSEf)
+    i._ZNK13action_matrix10get_columnEv      0x0800adce   Section        0  action_matrix.o(i._ZNK13action_matrix10get_columnEv)
+    i._ZNK13action_matrix7get_rowEv          0x0800add4   Section        0  action_matrix.o(i._ZNK13action_matrix7get_rowEv)
+    i._ZNK13action_matrix8get_dataEjj        0x0800adda   Section        0  action_matrix.o(i._ZNK13action_matrix8get_dataEjj)
+    i._ZNK13action_matrix8set_dataEjjf       0x0800adee   Section        0  action_matrix.o(i._ZNK13action_matrix8set_dataEjjf)
+    i._ZNK13action_matrixixEj                0x0800ae02   Section        0  action_matrix.o(i._ZNK13action_matrixixEj)
+    i._ZNKSt14__rw_exception4whatEv          0x0800ae10   Section        0  rwstdexcept.o(i._ZNKSt14__rw_exception4whatEv)
+    i._ZNKSt14collate_bynameIcE10do_compareEPKcS2_S2_S2_ 0x0800ae14   Section        0  char.o(i._ZNKSt14collate_bynameIcE10do_compareEPKcS2_S2_S2_)
+    i._ZNKSt14collate_bynameIcE10do_compareEPKcS2_S2_S2_.clean 0x0800aeae   Section        0  char.o(i._ZNKSt14collate_bynameIcE10do_compareEPKcS2_S2_S2_.clean)
+    i._ZNKSt14collate_bynameIcE12do_transformEPKcS2_ 0x0800aeb8   Section        0  char.o(i._ZNKSt14collate_bynameIcE12do_transformEPKcS2_)
+    i._ZNKSt14collate_bynameIcE12do_transformEPKcS2_.clean 0x0800af2c   Section        0  char.o(i._ZNKSt14collate_bynameIcE12do_transformEPKcS2_.clean)
+    i._ZNKSt18__rw_messages_base11_C_cat_openERKSsRKSt6locale 0x0800af3c   Section        0  messages.o(i._ZNKSt18__rw_messages_base11_C_cat_openERKSsRKSt6locale)
+    i._ZNKSt18__rw_messages_base11_C_cat_openERKSsRKSt6locale.clean 0x0800afae   Section        0  messages.o(i._ZNKSt18__rw_messages_base11_C_cat_openERKSsRKSt6locale.clean)
+    i._ZNKSt18__rw_messages_base12_C_cat_closeEi 0x0800afb8   Section        0  messages.o(i._ZNKSt18__rw_messages_base12_C_cat_closeEi)
+    i._ZNKSt18__rw_messages_base13_C_get_localeEi 0x0800aff8   Section        0  messages.o(i._ZNKSt18__rw_messages_base13_C_get_localeEi)
+    i._ZNKSt18__rw_messages_base14_C_get_messageEiii 0x0800b018   Section        0  messages.o(i._ZNKSt18__rw_messages_base14_C_get_messageEiii)
+    i._ZNKSt5ctypeIcE10do_tolowerEPcPKc      0x0800b04c   Section        0  char.o(i._ZNKSt5ctypeIcE10do_tolowerEPcPKc)
+    i._ZNKSt5ctypeIcE10do_tolowerEc          0x0800b078   Section        0  char.o(i._ZNKSt5ctypeIcE10do_tolowerEc)
+    i._ZNKSt5ctypeIcE10do_toupperEPcPKc      0x0800b096   Section        0  char.o(i._ZNKSt5ctypeIcE10do_toupperEPcPKc)
+    i._ZNKSt5ctypeIcE10do_toupperEc          0x0800b0c2   Section        0  char.o(i._ZNKSt5ctypeIcE10do_toupperEc)
+    i._ZNKSt5ctypeIcE2isENSt10ctype_base4maskEc 0x0800b0e0   Section        0  char.o(i._ZNKSt5ctypeIcE2isENSt10ctype_base4maskEc)
     i._ZNKSt6locale13_C_make_facetERKNS_2idEbiPFPN4__rw15__rw_facet_baseEiPKcjE 0x0800b0f0   Section        0  locale.o(i._ZNKSt6locale13_C_make_facetERKNS_2idEbiPFPN4__rw15__rw_facet_baseEiPKcjE)
     i._ZNKSt6locale13_C_make_facetERKNS_2idEbiPFPN4__rw15__rw_facet_baseEiPKcjE.clean 0x0800b1f8   Section        0  locale.o(i._ZNKSt6locale13_C_make_facetERKNS_2idEbiPFPN4__rw15__rw_facet_baseEiPKcjE.clean)
     i._ZNKSt6locale16_C_install_facetEPN4__rw15__rw_facet_baseERKNS_2idE 0x0800b204   Section        0  locale.o(i._ZNKSt6locale16_C_install_facetEPN4__rw15__rw_facet_baseERKNS_2idE)
@@ -9311,8 +9311,8 @@ Image Symbol Table
     .init_array                              0x080162c8   Section        4  icm20602.o(.init_array)
     __lcmon_c_end                            0x080162c8   Data           0  lc_monetary_c.o(locale$$data)
     .init_array                              0x080162cc   Section        4  calculateattitude.o(.init_array)
-    .init_array                              0x080162d0   Section        4  char.o(.init_array)
     .init_array                              0x080162d0   Section        0  init_aeabi.o(.init_array)
+    .init_array                              0x080162d0   Section        4  char.o(.init_array)
     .init_array                              0x080162d4   Section        4  locale.o(.init_array)
     .init_array                              0x080162d8   Section        4  rwcats.o(.init_array)
     .data                                    0x20000000   Section       16  user.o(.data)
@@ -9908,100 +9908,100 @@ Image Symbol Table
     deviceBase::devicesAllUpdate()           0x08007c85   Thumb Code    36  device.o(i._ZN10deviceBase16devicesAllUpdateEv)
     deviceBase::deviceBase__sub_object()     0x08007cb1   Thumb Code    38  device.o(i._ZN10deviceBaseC2Ev)
     deviceBase::~deviceBase__sub_object()    0x08007ce5   Thumb Code     2  adxrs453.o(i._ZN10deviceBaseD2Ev)
-    ICM20602_Gyro::UpdateData()              0x08007ce9   Thumb Code   376  icm20602.o(i._ZN13ICM20602_Gyro10UpdateDataEv)
-    ICM20602_Gyro::rawDataRead(unsigned char) 0x08007e6d   Thumb Code    26  icm20602.o(i._ZN13ICM20602_Gyro11rawDataReadEh)
-    ICM20602_Gyro::rawDataWrite(unsigned char, unsigned char) 0x08007e87   Thumb Code    30  icm20602.o(i._ZN13ICM20602_Gyro12rawDataWriteEhh)
-    ICM20602_Gyro::init()                    0x08007ea5   Thumb Code   526  icm20602.o(i._ZN13ICM20602_Gyro4initEv)
-    ICM20602_Gyro::multiRead(unsigned char, unsigned char*, unsigned) 0x080080bd   Thumb Code    38  icm20602.o(i._ZN13ICM20602_Gyro9multiReadEhPhj)
-    ICM20602_Gyro::ICM20602_Gyro(SPI_TypeDef*, GPIO_TypeDef*, unsigned short) 0x080080e5   Thumb Code   152  icm20602.o(i._ZN13ICM20602_GyroC1EP11SPI_TypeDefP12GPIO_TypeDeft)
-    ICM20602_Gyro::ICM20602_Gyro__sub_object(SPI_TypeDef*, GPIO_TypeDef*, unsigned short) 0x080080e5   Thumb Code     0  icm20602.o(i._ZN13ICM20602_GyroC1EP11SPI_TypeDefP12GPIO_TypeDeft)
-    ICM20602_Gyro::~ICM20602_Gyro__deallocating() 0x0800819b   Thumb Code    18  icm20602.o(i._ZN13ICM20602_GyroD0Ev)
-    ICM20602_Gyro::~ICM20602_Gyro()          0x080081ad   Thumb Code    14  icm20602.o(i._ZN13ICM20602_GyroD1Ev)
-    ICM20602_Gyro::~ICM20602_Gyro__sub_object() 0x080081ad   Thumb Code     0  icm20602.o(i._ZN13ICM20602_GyroD1Ev)
-    action_matrix::action_matrix(const action_matrix&) 0x080081bb   Thumb Code    24  action_matrix.o(i._ZN13action_matrixC1ERKS_)
-    action_matrix::action_matrix__sub_object(const action_matrix&) 0x080081bb   Thumb Code     0  action_matrix.o(i._ZN13action_matrixC1ERKS_)
-    action_matrix::action_matrix(unsigned, unsigned, unsigned char) 0x080081d5   Thumb Code   278  action_matrix.o(i._ZN13action_matrixC1Ejjh)
-    action_matrix::action_matrix__sub_object(unsigned, unsigned, unsigned char) 0x080081d5   Thumb Code     0  action_matrix.o(i._ZN13action_matrixC1Ejjh)
-    action_matrix::~action_matrix()          0x080082f1   Thumb Code    38  action_matrix.o(i._ZN13action_matrixD1Ev)
-    action_matrix::~action_matrix__sub_object() 0x080082f1   Thumb Code     0  action_matrix.o(i._ZN13action_matrixD1Ev)
-    action_matrix::operator =(const action_matrix&) 0x08008317   Thumb Code   160  action_matrix.o(i._ZN13action_matrixaSERKS_)
-    action_matrix::operator =(float)         0x080083b7   Thumb Code   134  action_matrix.o(i._ZN13action_matrixaSEf)
-    deviceADXRS453::UpdateData()             0x0800843d   Thumb Code   154  adxrs453.o(i._ZN14deviceADXRS45310UpdateDataEv)
-    deviceADXRS453::~deviceADXRS453__deallocating() 0x080084e9   Thumb Code    18  adxrs453.o(i._ZN14deviceADXRS453D0Ev)
-    deviceADXRS453::~deviceADXRS453()        0x080084fb   Thumb Code    14  adxrs453.o(i._ZN14deviceADXRS453D1Ev)
-    deviceADXRS453::~deviceADXRS453__sub_object() 0x080084fb   Thumb Code     0  adxrs453.o(i._ZN14deviceADXRS453D1Ev)
-    deviceI3G4250D::init()                   0x08008509   Thumb Code   434  i3g4250d.o(i._ZN14deviceI3G4250D4initEv)
-    deviceI3G4250D::~deviceI3G4250D__deallocating() 0x080086c5   Thumb Code    18  i3g4250d.o(i._ZN14deviceI3G4250DD0Ev)
-    deviceI3G4250D::~deviceI3G4250D()        0x080086d7   Thumb Code    14  i3g4250d.o(i._ZN14deviceI3G4250DD1Ev)
-    deviceI3G4250D::~deviceI3G4250D__sub_object() 0x080086d7   Thumb Code     0  i3g4250d.o(i._ZN14deviceI3G4250DD1Ev)
-    AUKF::unscentedTrans(const action_matrix&, const action_matrix&) 0x08009265   Thumb Code   586  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF14unscentedTransERK13action_matrixS2_)
-    AUKF::filter(const action_matrix&, const action_matrix&) 0x080094ed   Thumb Code    58  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF6filterERK13action_matrixS2_)
-    AUKF::updateC(std::vector<action_matrix, std::allocator<action_matrix>>, const action_matrix&, std::vector<action_matrix, std::allocator<action_matrix>>, const action_matrix&) 0x08009527   Thumb Code   454  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF7updateCESt6vectorI13action_matrixSaIS1_EERKS1_S3_S5_)
-    AUKF::updateM(std::vector<action_matrix, std::allocator<action_matrix>>) 0x08009747   Thumb Code    78  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF7updateMESt6vectorI13action_matrixSaIS1_EE)
-    AUKF::predictX(const action_matrix&)     0x0800979f   Thumb Code   348  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF8predictXERK13action_matrix)
-    AUKF::predictZ()                         0x0800995b   Thumb Code   328  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF8predictZEv)
-    AUKF::adaptiveR(const action_matrix&)    0x08009afd   Thumb Code   348  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF9adaptiveRERK13action_matrix)
-    AUKF::estimateX(const action_matrix&)    0x08009c95   Thumb Code   252  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF9estimateXERK13action_matrix)
-    AUKF::AUKF(float, float, float, const action_matrix&, const action_matrix&, const action_matrix&, const action_matrix&, const action_matrix&, action_matrix(*)(const action_matrix&, const action_matrix&), action_matrix(*)(const action_matrix&), unsigned) 0x08009ddd   Thumb Code   308  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFC1EfffRK13action_matrixS2_S2_S2_S2_PFS0_S2_S2_EPFS0_S2_Ej)
-    AUKF::AUKF__sub_object(float, float, float, const action_matrix&, const action_matrix&, const action_matrix&, const action_matrix&, const action_matrix&, action_matrix(*)(const action_matrix&, const action_matrix&), action_matrix(*)(const action_matrix&), unsigned) 0x08009ddd   Thumb Code     0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFC1EfffRK13action_matrixS2_S2_S2_S2_PFS0_S2_S2_EPFS0_S2_Ej)
-    AUKF::~AUKF__deallocating()              0x08009f8d   Thumb Code    18  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFD0Ev)
-    AUKF::~AUKF()                            0x08009fa1   Thumb Code   128  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFD1Ev)
-    AUKF::~AUKF__sub_object()                0x08009fa1   Thumb Code     0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFD1Ev)
-    __rw::__rw_throw(int, ...)               0x0800a095   Thumb Code    86  rwstdexcept.o(i._ZN4__rw10__rw_throwEiz)
-    __rw::__rw_allocate(unsigned, int)       0x0800a0f1   Thumb Code    32  rwalloc.o(i._ZN4__rw13__rw_allocateEji)
-    __rw::__rw_deallocate(void*, unsigned, int) 0x0800a111   Thumb Code     4  rwalloc.o(i._ZN4__rw15__rw_deallocateEPvji)
-    __rw::__rw_facet_base::_C_initfacet(const std::locale&) 0x0800a115   Thumb Code     2  char.o(i._ZN4__rw15__rw_facet_base12_C_initfacetERKSt6locale)
-    __rw::__rw_locale_imp::_C_parse_name(__rw::__rw_locale_vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>>&, const char*) 0x0800a119   Thumb Code   202  vendor.o(i._ZN4__rw15__rw_locale_imp13_C_parse_nameERNS_18__rw_locale_vectorISsEEPKc)
-    __rw::__rw_locale_imp::_C_map_category(int) 0x0800a1f3   Thumb Code    60  vendor.o(i._ZN4__rw15__rw_locale_imp15_C_map_categoryEi)
-    __rw::__rw_locale_imp::__rw_locale_imp(const char*, unsigned, unsigned) 0x0800a231   Thumb Code   226  locale.o(i._ZN4__rw15__rw_locale_impC1EPKcjj)
-    __rw::__rw_locale_imp::__rw_locale_imp__sub_object(const char*, unsigned, unsigned) 0x0800a231   Thumb Code     0  locale.o(i._ZN4__rw15__rw_locale_impC1EPKcjj)
-    __rw::__rw_locale_imp::__rw_locale_imp(const __rw::__rw_locale_imp&, const char*, unsigned) 0x0800a339   Thumb Code   202  locale.o(i._ZN4__rw15__rw_locale_impC1ERKS0_PKcj)
-    __rw::__rw_locale_imp::__rw_locale_imp__sub_object(const __rw::__rw_locale_imp&, const char*, unsigned) 0x0800a339   Thumb Code     0  locale.o(i._ZN4__rw15__rw_locale_impC1ERKS0_PKcj)
-    __rw::__rw_locale_imp::~__rw_locale_imp() 0x0800a427   Thumb Code    26  locale.o(i._ZN4__rw15__rw_locale_impD1Ev)
-    __rw::__rw_locale_imp::~__rw_locale_imp__sub_object() 0x0800a427   Thumb Code     0  locale.o(i._ZN4__rw15__rw_locale_impD1Ev)
-    __rw::__rw_punct_data<char>::~__rw_punct_data() 0x0800a441   Thumb Code    12  char.o(i._ZN4__rw15__rw_punct_dataIcED1Ev)
-    __rw::__rw_punct_data<char>::~__rw_punct_data__sub_object() 0x0800a441   Thumb Code     0  char.o(i._ZN4__rw15__rw_punct_dataIcED1Ev)
-    __rw::__rw_numpunct_impl<char>::~__rw_numpunct_impl() 0x0800a44d   Thumb Code     8  char.o(i._ZN4__rw18__rw_numpunct_implIcED1Ev)
-    __rw::__rw_numpunct_impl<char>::~__rw_numpunct_impl__sub_object() 0x0800a44d   Thumb Code     0  char.o(i._ZN4__rw18__rw_numpunct_implIcED1Ev)
-    __rw::__rw_throw_exception(int, char*)   0x0800a455   Thumb Code   742  rwthrowproc_impl.o(i._ZN4__rw20__rw_throw_exceptionEiPc)
-    __rw::__rw_use_c_lib_locale::__rw_use_c_lib_locale(const char*, int) 0x0800a83f   Thumb Code    58  locale.o(i._ZN4__rw21__rw_use_c_lib_localeC1EPKci)
-    __rw::__rw_use_c_lib_locale::__rw_use_c_lib_locale__sub_object(const char*, int) 0x0800a83f   Thumb Code     0  locale.o(i._ZN4__rw21__rw_use_c_lib_localeC1EPKci)
-    __rw::__rw_use_c_lib_locale::~__rw_use_c_lib_locale() 0x0800a879   Thumb Code    24  char.o(i._ZN4__rw21__rw_use_c_lib_localeD1Ev)
-    __rw::__rw_use_c_lib_locale::~__rw_use_c_lib_locale__sub_object() 0x0800a879   Thumb Code     0  char.o(i._ZN4__rw21__rw_use_c_lib_localeD1Ev)
-    __rw::__rw_numpunct_impl_base::_C_get_named_init_(const char*) 0x0800a891   Thumb Code   128  locale.o(i._ZN4__rw23__rw_numpunct_impl_base18_C_get_named_init_EPKc)
-    __rw::__rw_numpunct_impl_data<char>::~__rw_numpunct_impl_data() 0x0800a92f   Thumb Code    22  char.o(i._ZN4__rw23__rw_numpunct_impl_dataIcED1Ev)
-    __rw::__rw_numpunct_impl_data<char>::~__rw_numpunct_impl_data__sub_object() 0x0800a92f   Thumb Code     0  char.o(i._ZN4__rw23__rw_numpunct_impl_dataIcED1Ev)
-    __rw::__catfind(__rw::__rw_cat*)         0x0800a945   Thumb Code    42  rwcats.o(i._ZN4__rw9__catfindEPNS_8__rw_catE)
-    aukf9axis::fuse(const action_matrix&, const action_matrix&, const action_matrix&) 0x0800a975   Thumb Code   434  calculateattitude.o(i._ZN9aukf9axis4fuseERK13action_matrixS2_S2_)
-    aukf9axis::aukf9axis()                   0x0800ab55   Thumb Code   200  calculateattitude.o(i._ZN9aukf9axisC1Ev)
-    aukf9axis::aukf9axis__sub_object()       0x0800ab55   Thumb Code     0  calculateattitude.o(i._ZN9aukf9axisC1Ev)
-    aukf9axis::~aukf9axis__deallocating()    0x0800ac67   Thumb Code    18  calculateattitude.o(i._ZN9aukf9axisD0Ev)
-    aukf9axis::~aukf9axis()                  0x0800ac79   Thumb Code    30  calculateattitude.o(i._ZN9aukf9axisD1Ev)
-    aukf9axis::~aukf9axis__sub_object()      0x0800ac79   Thumb Code     0  calculateattitude.o(i._ZN9aukf9axisD1Ev)
-    threeAxis::operator =(const threeAxis&)  0x0800acab   Thumb Code    26  ahrs.o(i._ZN9threeAxisaSERKS_)
-    threeAxis::operator =(float)             0x0800acc5   Thumb Code    14  ahrs.o(i._ZN9threeAxisaSEf)
-    _out_stream::operator <<(const char*) const 0x0800acd5   Thumb Code    42  usart.o(i._ZNK11_out_streamlsEPKc)
-    _out_stream::operator <<(char) const     0x0800ad05   Thumb Code    16  usart.o(i._ZNK11_out_streamlsEc)
-    _out_stream::operator <<(float) const    0x0800ad19   Thumb Code    70  usart.o(i._ZNK11_out_streamlsEf)
-    _out_stream::operator <<(int) const      0x0800ad69   Thumb Code    42  usart.o(i._ZNK11_out_streamlsEi)
-    _out_stream::operator <<(unsigned) const 0x0800ad9d   Thumb Code    42  usart.o(i._ZNK11_out_streamlsEj)
-    action_matrix::get_column() const        0x0800add1   Thumb Code     6  action_matrix.o(i._ZNK13action_matrix10get_columnEv)
-    action_matrix::get_row() const           0x0800add7   Thumb Code     6  action_matrix.o(i._ZNK13action_matrix7get_rowEv)
-    action_matrix::get_data(unsigned, unsigned) const 0x0800addd   Thumb Code    20  action_matrix.o(i._ZNK13action_matrix8get_dataEjj)
-    action_matrix::set_data(unsigned, unsigned, float) const 0x0800adf1   Thumb Code    20  action_matrix.o(i._ZNK13action_matrix8set_dataEjjf)
-    action_matrix::operator [](unsigned) const 0x0800ae05   Thumb Code    14  action_matrix.o(i._ZNK13action_matrixixEj)
-    std::__rw_exception::what() const        0x0800ae13   Thumb Code     4  rwstdexcept.o(i._ZNKSt14__rw_exception4whatEv)
-    std::collate_byname<char>::do_compare(const char*, const char*, const char*, const char*) const 0x0800ae17   Thumb Code   154  char.o(i._ZNKSt14collate_bynameIcE10do_compareEPKcS2_S2_S2_)
-    std::collate_byname<char>::do_transform(const char*, const char*) const 0x0800aebb   Thumb Code   116  char.o(i._ZNKSt14collate_bynameIcE12do_transformEPKcS2_)
-    std::__rw_messages_base::_C_cat_open(const std::basic_string<char, std::char_traits<char>, std::allocator<char>>&, const std::locale&) const 0x0800af3f   Thumb Code   114  messages.o(i._ZNKSt18__rw_messages_base11_C_cat_openERKSsRKSt6locale)
-    std::__rw_messages_base::_C_cat_close(int) const 0x0800afbb   Thumb Code    64  messages.o(i._ZNKSt18__rw_messages_base12_C_cat_closeEi)
-    std::__rw_messages_base::_C_get_locale(int) const 0x0800affb   Thumb Code    32  messages.o(i._ZNKSt18__rw_messages_base13_C_get_localeEi)
-    std::__rw_messages_base::_C_get_message(int, int, int) const 0x0800b01b   Thumb Code    52  messages.o(i._ZNKSt18__rw_messages_base14_C_get_messageEiii)
-    std::ctype<char>::do_tolower(char*, const char*) const 0x0800b04f   Thumb Code    44  char.o(i._ZNKSt5ctypeIcE10do_tolowerEPcPKc)
-    std::ctype<char>::do_tolower(char) const 0x0800b07b   Thumb Code    30  char.o(i._ZNKSt5ctypeIcE10do_tolowerEc)
-    std::ctype<char>::do_toupper(char*, const char*) const 0x0800b099   Thumb Code    44  char.o(i._ZNKSt5ctypeIcE10do_toupperEPcPKc)
-    std::ctype<char>::do_toupper(char) const 0x0800b0c5   Thumb Code    30  char.o(i._ZNKSt5ctypeIcE10do_toupperEc)
-    std::ctype<char>::is(std::ctype_base::mask, char) const 0x0800b0e3   Thumb Code    14  char.o(i._ZNKSt5ctypeIcE2isENSt10ctype_base4maskEc)
+    _out_stream::operator <<(const char*)    0x08007ce9   Thumb Code    42  usart.o(i._ZN11_out_streamlsEPKc)
+    _out_stream::operator <<(char)           0x08007d19   Thumb Code    16  usart.o(i._ZN11_out_streamlsEc)
+    _out_stream::operator <<(float)          0x08007d2d   Thumb Code    70  usart.o(i._ZN11_out_streamlsEf)
+    _out_stream::operator <<(int)            0x08007d7d   Thumb Code    42  usart.o(i._ZN11_out_streamlsEi)
+    _out_stream::operator <<(unsigned)       0x08007db1   Thumb Code    42  usart.o(i._ZN11_out_streamlsEj)
+    ICM20602_Gyro::UpdateData()              0x08007de5   Thumb Code   376  icm20602.o(i._ZN13ICM20602_Gyro10UpdateDataEv)
+    ICM20602_Gyro::rawDataRead(unsigned char) 0x08007f69   Thumb Code    26  icm20602.o(i._ZN13ICM20602_Gyro11rawDataReadEh)
+    ICM20602_Gyro::rawDataWrite(unsigned char, unsigned char) 0x08007f83   Thumb Code    30  icm20602.o(i._ZN13ICM20602_Gyro12rawDataWriteEhh)
+    ICM20602_Gyro::init()                    0x08007fa1   Thumb Code   526  icm20602.o(i._ZN13ICM20602_Gyro4initEv)
+    ICM20602_Gyro::multiRead(unsigned char, unsigned char*, unsigned) 0x080081b9   Thumb Code    38  icm20602.o(i._ZN13ICM20602_Gyro9multiReadEhPhj)
+    ICM20602_Gyro::ICM20602_Gyro(SPI_TypeDef*, GPIO_TypeDef*, unsigned short) 0x080081e1   Thumb Code   152  icm20602.o(i._ZN13ICM20602_GyroC1EP11SPI_TypeDefP12GPIO_TypeDeft)
+    ICM20602_Gyro::ICM20602_Gyro__sub_object(SPI_TypeDef*, GPIO_TypeDef*, unsigned short) 0x080081e1   Thumb Code     0  icm20602.o(i._ZN13ICM20602_GyroC1EP11SPI_TypeDefP12GPIO_TypeDeft)
+    ICM20602_Gyro::~ICM20602_Gyro__deallocating() 0x08008297   Thumb Code    18  icm20602.o(i._ZN13ICM20602_GyroD0Ev)
+    ICM20602_Gyro::~ICM20602_Gyro()          0x080082a9   Thumb Code    14  icm20602.o(i._ZN13ICM20602_GyroD1Ev)
+    ICM20602_Gyro::~ICM20602_Gyro__sub_object() 0x080082a9   Thumb Code     0  icm20602.o(i._ZN13ICM20602_GyroD1Ev)
+    action_matrix::action_matrix(const action_matrix&) 0x080082b7   Thumb Code    24  action_matrix.o(i._ZN13action_matrixC1ERKS_)
+    action_matrix::action_matrix__sub_object(const action_matrix&) 0x080082b7   Thumb Code     0  action_matrix.o(i._ZN13action_matrixC1ERKS_)
+    action_matrix::action_matrix(unsigned, unsigned, unsigned char) 0x080082d1   Thumb Code   278  action_matrix.o(i._ZN13action_matrixC1Ejjh)
+    action_matrix::action_matrix__sub_object(unsigned, unsigned, unsigned char) 0x080082d1   Thumb Code     0  action_matrix.o(i._ZN13action_matrixC1Ejjh)
+    action_matrix::~action_matrix()          0x080083ed   Thumb Code    38  action_matrix.o(i._ZN13action_matrixD1Ev)
+    action_matrix::~action_matrix__sub_object() 0x080083ed   Thumb Code     0  action_matrix.o(i._ZN13action_matrixD1Ev)
+    action_matrix::operator =(const action_matrix&) 0x08008413   Thumb Code   160  action_matrix.o(i._ZN13action_matrixaSERKS_)
+    action_matrix::operator =(float)         0x080084b3   Thumb Code   134  action_matrix.o(i._ZN13action_matrixaSEf)
+    deviceADXRS453::UpdateData()             0x08008539   Thumb Code   154  adxrs453.o(i._ZN14deviceADXRS45310UpdateDataEv)
+    deviceADXRS453::~deviceADXRS453__deallocating() 0x080085e5   Thumb Code    18  adxrs453.o(i._ZN14deviceADXRS453D0Ev)
+    deviceADXRS453::~deviceADXRS453()        0x080085f7   Thumb Code    14  adxrs453.o(i._ZN14deviceADXRS453D1Ev)
+    deviceADXRS453::~deviceADXRS453__sub_object() 0x080085f7   Thumb Code     0  adxrs453.o(i._ZN14deviceADXRS453D1Ev)
+    deviceI3G4250D::init()                   0x08008605   Thumb Code   434  i3g4250d.o(i._ZN14deviceI3G4250D4initEv)
+    deviceI3G4250D::~deviceI3G4250D__deallocating() 0x080087c1   Thumb Code    18  i3g4250d.o(i._ZN14deviceI3G4250DD0Ev)
+    deviceI3G4250D::~deviceI3G4250D()        0x080087d3   Thumb Code    14  i3g4250d.o(i._ZN14deviceI3G4250DD1Ev)
+    deviceI3G4250D::~deviceI3G4250D__sub_object() 0x080087d3   Thumb Code     0  i3g4250d.o(i._ZN14deviceI3G4250DD1Ev)
+    AUKF::unscentedTrans(const action_matrix&, const action_matrix&) 0x08009361   Thumb Code   586  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF14unscentedTransERK13action_matrixS2_)
+    AUKF::filter(const action_matrix&, const action_matrix&) 0x080095e9   Thumb Code    58  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF6filterERK13action_matrixS2_)
+    AUKF::updateC(std::vector<action_matrix, std::allocator<action_matrix>>, const action_matrix&, std::vector<action_matrix, std::allocator<action_matrix>>, const action_matrix&) 0x08009623   Thumb Code   454  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF7updateCESt6vectorI13action_matrixSaIS1_EERKS1_S3_S5_)
+    AUKF::updateM(std::vector<action_matrix, std::allocator<action_matrix>>) 0x08009843   Thumb Code    78  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF7updateMESt6vectorI13action_matrixSaIS1_EE)
+    AUKF::predictX(const action_matrix&)     0x0800989b   Thumb Code   348  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF8predictXERK13action_matrix)
+    AUKF::predictZ()                         0x08009a57   Thumb Code   328  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF8predictZEv)
+    AUKF::adaptiveR(const action_matrix&)    0x08009bf9   Thumb Code   348  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF9adaptiveRERK13action_matrix)
+    AUKF::estimateX(const action_matrix&)    0x08009d91   Thumb Code   252  adaptiveunscentedkalmanfilter.o(i._ZN4AUKF9estimateXERK13action_matrix)
+    AUKF::AUKF(float, float, float, const action_matrix&, const action_matrix&, const action_matrix&, const action_matrix&, const action_matrix&, action_matrix(*)(const action_matrix&, const action_matrix&), action_matrix(*)(const action_matrix&), unsigned) 0x08009ed9   Thumb Code   308  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFC1EfffRK13action_matrixS2_S2_S2_S2_PFS0_S2_S2_EPFS0_S2_Ej)
+    AUKF::AUKF__sub_object(float, float, float, const action_matrix&, const action_matrix&, const action_matrix&, const action_matrix&, const action_matrix&, action_matrix(*)(const action_matrix&, const action_matrix&), action_matrix(*)(const action_matrix&), unsigned) 0x08009ed9   Thumb Code     0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFC1EfffRK13action_matrixS2_S2_S2_S2_PFS0_S2_S2_EPFS0_S2_Ej)
+    AUKF::~AUKF__deallocating()              0x0800a089   Thumb Code    18  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFD0Ev)
+    AUKF::~AUKF()                            0x0800a09d   Thumb Code   128  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFD1Ev)
+    AUKF::~AUKF__sub_object()                0x0800a09d   Thumb Code     0  adaptiveunscentedkalmanfilter.o(i._ZN4AUKFD1Ev)
+    __rw::__rw_throw(int, ...)               0x0800a191   Thumb Code    86  rwstdexcept.o(i._ZN4__rw10__rw_throwEiz)
+    __rw::__rw_allocate(unsigned, int)       0x0800a1ed   Thumb Code    32  rwalloc.o(i._ZN4__rw13__rw_allocateEji)
+    __rw::__rw_deallocate(void*, unsigned, int) 0x0800a20d   Thumb Code     4  rwalloc.o(i._ZN4__rw15__rw_deallocateEPvji)
+    __rw::__rw_facet_base::_C_initfacet(const std::locale&) 0x0800a211   Thumb Code     2  char.o(i._ZN4__rw15__rw_facet_base12_C_initfacetERKSt6locale)
+    __rw::__rw_locale_imp::_C_parse_name(__rw::__rw_locale_vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>>&, const char*) 0x0800a215   Thumb Code   202  vendor.o(i._ZN4__rw15__rw_locale_imp13_C_parse_nameERNS_18__rw_locale_vectorISsEEPKc)
+    __rw::__rw_locale_imp::_C_map_category(int) 0x0800a2ef   Thumb Code    60  vendor.o(i._ZN4__rw15__rw_locale_imp15_C_map_categoryEi)
+    __rw::__rw_locale_imp::__rw_locale_imp(const char*, unsigned, unsigned) 0x0800a32d   Thumb Code   226  locale.o(i._ZN4__rw15__rw_locale_impC1EPKcjj)
+    __rw::__rw_locale_imp::__rw_locale_imp__sub_object(const char*, unsigned, unsigned) 0x0800a32d   Thumb Code     0  locale.o(i._ZN4__rw15__rw_locale_impC1EPKcjj)
+    __rw::__rw_locale_imp::__rw_locale_imp(const __rw::__rw_locale_imp&, const char*, unsigned) 0x0800a435   Thumb Code   202  locale.o(i._ZN4__rw15__rw_locale_impC1ERKS0_PKcj)
+    __rw::__rw_locale_imp::__rw_locale_imp__sub_object(const __rw::__rw_locale_imp&, const char*, unsigned) 0x0800a435   Thumb Code     0  locale.o(i._ZN4__rw15__rw_locale_impC1ERKS0_PKcj)
+    __rw::__rw_locale_imp::~__rw_locale_imp() 0x0800a523   Thumb Code    26  locale.o(i._ZN4__rw15__rw_locale_impD1Ev)
+    __rw::__rw_locale_imp::~__rw_locale_imp__sub_object() 0x0800a523   Thumb Code     0  locale.o(i._ZN4__rw15__rw_locale_impD1Ev)
+    __rw::__rw_punct_data<char>::~__rw_punct_data() 0x0800a53d   Thumb Code    12  char.o(i._ZN4__rw15__rw_punct_dataIcED1Ev)
+    __rw::__rw_punct_data<char>::~__rw_punct_data__sub_object() 0x0800a53d   Thumb Code     0  char.o(i._ZN4__rw15__rw_punct_dataIcED1Ev)
+    __rw::__rw_numpunct_impl<char>::~__rw_numpunct_impl() 0x0800a549   Thumb Code     8  char.o(i._ZN4__rw18__rw_numpunct_implIcED1Ev)
+    __rw::__rw_numpunct_impl<char>::~__rw_numpunct_impl__sub_object() 0x0800a549   Thumb Code     0  char.o(i._ZN4__rw18__rw_numpunct_implIcED1Ev)
+    __rw::__rw_throw_exception(int, char*)   0x0800a551   Thumb Code   742  rwthrowproc_impl.o(i._ZN4__rw20__rw_throw_exceptionEiPc)
+    __rw::__rw_use_c_lib_locale::__rw_use_c_lib_locale(const char*, int) 0x0800a93b   Thumb Code    58  locale.o(i._ZN4__rw21__rw_use_c_lib_localeC1EPKci)
+    __rw::__rw_use_c_lib_locale::__rw_use_c_lib_locale__sub_object(const char*, int) 0x0800a93b   Thumb Code     0  locale.o(i._ZN4__rw21__rw_use_c_lib_localeC1EPKci)
+    __rw::__rw_use_c_lib_locale::~__rw_use_c_lib_locale() 0x0800a975   Thumb Code    24  char.o(i._ZN4__rw21__rw_use_c_lib_localeD1Ev)
+    __rw::__rw_use_c_lib_locale::~__rw_use_c_lib_locale__sub_object() 0x0800a975   Thumb Code     0  char.o(i._ZN4__rw21__rw_use_c_lib_localeD1Ev)
+    __rw::__rw_numpunct_impl_base::_C_get_named_init_(const char*) 0x0800a98d   Thumb Code   128  locale.o(i._ZN4__rw23__rw_numpunct_impl_base18_C_get_named_init_EPKc)
+    __rw::__rw_numpunct_impl_data<char>::~__rw_numpunct_impl_data() 0x0800aa2b   Thumb Code    22  char.o(i._ZN4__rw23__rw_numpunct_impl_dataIcED1Ev)
+    __rw::__rw_numpunct_impl_data<char>::~__rw_numpunct_impl_data__sub_object() 0x0800aa2b   Thumb Code     0  char.o(i._ZN4__rw23__rw_numpunct_impl_dataIcED1Ev)
+    __rw::__catfind(__rw::__rw_cat*)         0x0800aa41   Thumb Code    42  rwcats.o(i._ZN4__rw9__catfindEPNS_8__rw_catE)
+    aukf9axis::fuse(const action_matrix&, const action_matrix&, const action_matrix&) 0x0800aa71   Thumb Code   434  calculateattitude.o(i._ZN9aukf9axis4fuseERK13action_matrixS2_S2_)
+    aukf9axis::aukf9axis()                   0x0800ac51   Thumb Code   200  calculateattitude.o(i._ZN9aukf9axisC1Ev)
+    aukf9axis::aukf9axis__sub_object()       0x0800ac51   Thumb Code     0  calculateattitude.o(i._ZN9aukf9axisC1Ev)
+    aukf9axis::~aukf9axis__deallocating()    0x0800ad63   Thumb Code    18  calculateattitude.o(i._ZN9aukf9axisD0Ev)
+    aukf9axis::~aukf9axis()                  0x0800ad75   Thumb Code    30  calculateattitude.o(i._ZN9aukf9axisD1Ev)
+    aukf9axis::~aukf9axis__sub_object()      0x0800ad75   Thumb Code     0  calculateattitude.o(i._ZN9aukf9axisD1Ev)
+    threeAxis::operator =(const threeAxis&)  0x0800ada7   Thumb Code    26  ahrs.o(i._ZN9threeAxisaSERKS_)
+    threeAxis::operator =(float)             0x0800adc1   Thumb Code    14  ahrs.o(i._ZN9threeAxisaSEf)
+    action_matrix::get_column() const        0x0800adcf   Thumb Code     6  action_matrix.o(i._ZNK13action_matrix10get_columnEv)
+    action_matrix::get_row() const           0x0800add5   Thumb Code     6  action_matrix.o(i._ZNK13action_matrix7get_rowEv)
+    action_matrix::get_data(unsigned, unsigned) const 0x0800addb   Thumb Code    20  action_matrix.o(i._ZNK13action_matrix8get_dataEjj)
+    action_matrix::set_data(unsigned, unsigned, float) const 0x0800adef   Thumb Code    20  action_matrix.o(i._ZNK13action_matrix8set_dataEjjf)
+    action_matrix::operator [](unsigned) const 0x0800ae03   Thumb Code    14  action_matrix.o(i._ZNK13action_matrixixEj)
+    std::__rw_exception::what() const        0x0800ae11   Thumb Code     4  rwstdexcept.o(i._ZNKSt14__rw_exception4whatEv)
+    std::collate_byname<char>::do_compare(const char*, const char*, const char*, const char*) const 0x0800ae15   Thumb Code   154  char.o(i._ZNKSt14collate_bynameIcE10do_compareEPKcS2_S2_S2_)
+    std::collate_byname<char>::do_transform(const char*, const char*) const 0x0800aeb9   Thumb Code   116  char.o(i._ZNKSt14collate_bynameIcE12do_transformEPKcS2_)
+    std::__rw_messages_base::_C_cat_open(const std::basic_string<char, std::char_traits<char>, std::allocator<char>>&, const std::locale&) const 0x0800af3d   Thumb Code   114  messages.o(i._ZNKSt18__rw_messages_base11_C_cat_openERKSsRKSt6locale)
+    std::__rw_messages_base::_C_cat_close(int) const 0x0800afb9   Thumb Code    64  messages.o(i._ZNKSt18__rw_messages_base12_C_cat_closeEi)
+    std::__rw_messages_base::_C_get_locale(int) const 0x0800aff9   Thumb Code    32  messages.o(i._ZNKSt18__rw_messages_base13_C_get_localeEi)
+    std::__rw_messages_base::_C_get_message(int, int, int) const 0x0800b019   Thumb Code    52  messages.o(i._ZNKSt18__rw_messages_base14_C_get_messageEiii)
+    std::ctype<char>::do_tolower(char*, const char*) const 0x0800b04d   Thumb Code    44  char.o(i._ZNKSt5ctypeIcE10do_tolowerEPcPKc)
+    std::ctype<char>::do_tolower(char) const 0x0800b079   Thumb Code    30  char.o(i._ZNKSt5ctypeIcE10do_tolowerEc)
+    std::ctype<char>::do_toupper(char*, const char*) const 0x0800b097   Thumb Code    44  char.o(i._ZNKSt5ctypeIcE10do_toupperEPcPKc)
+    std::ctype<char>::do_toupper(char) const 0x0800b0c3   Thumb Code    30  char.o(i._ZNKSt5ctypeIcE10do_toupperEc)
+    std::ctype<char>::is(std::ctype_base::mask, char) const 0x0800b0e1   Thumb Code    14  char.o(i._ZNKSt5ctypeIcE2isENSt10ctype_base4maskEc)
     std::locale::_C_make_facet(const std::locale::id&, bool, int, __rw::__rw_facet_base*(*)(int, const char*, unsigned)) const 0x0800b0f1   Thumb Code   252  locale.o(i._ZNKSt6locale13_C_make_facetERKNS_2idEbiPFPN4__rw15__rw_facet_baseEiPKcjE)
     std::locale::_C_install_facet(__rw::__rw_facet_base*, const std::locale::id&) const 0x0800b205   Thumb Code   112  locale.o(i._ZNKSt6locale16_C_install_facetEPN4__rw15__rw_facet_baseERKNS_2idE)
     std::locale::name() const                0x0800b279   Thumb Code    44  locale.o(i._ZNKSt6locale4nameEv)
@@ -10584,7 +10584,7 @@ Image Symbol Table
     SHT$$INIT_ARRAY$$Base                    0x080162c8   Number         0  icm20602.o(.init_array)
     SHT$$ARM_EXIDX$$Base                     0x080162dc   Number         0  __rtentry4.o(.ARM.exidx)
     SHT$$INIT_ARRAY$$Limit                   0x080162dc   Number         0  rwcats.o(.init_array)
-    SHT$$ARM_EXIDX$$Limit                    0x08016ddc   Number         0  adaptiveunscentedkalmanfilter.o(.ARM.exidx)
+    SHT$$ARM_EXIDX$$Limit                    0x08016dd4   Number         0  adaptiveunscentedkalmanfilter.o(.ARM.exidx)
     std::ctype<char>::id                     0x200000ac   Data           4  char.o(.data)
     std::ctype<wchar_t>::id                  0x200000b0   Data           4  char.o(.data)
     std::locale::_C_classic                  0x200000bc   Data           4  locale.o(.data)
@@ -10608,9 +10608,9 @@ Memory Map of the image
 
   Image Entry point : 0x08000189
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00016ec8, Max: 0x00100000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00016ec0, Max: 0x00100000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00016ddc, Max: 0x00100000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00016dd4, Max: 0x00100000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -10946,133 +10946,133 @@ Memory Map of the image
     0x08007cb0   0x08007cb0   0x00000034   Code   RO         1204    i._ZN10deviceBaseC2Ev  device.o
     0x08007ce4   0x08007ce4   0x00000002   Code   RO         1157    i._ZN10deviceBaseD2Ev  adxrs453.o
     0x08007ce6   0x08007ce6   0x00000002   PAD
-    0x08007ce8   0x08007ce8   0x00000184   Code   RO         1883    i._ZN13ICM20602_Gyro10UpdateDataEv  icm20602.o
-    0x08007e6c   0x08007e6c   0x0000001a   Code   RO         1884    i._ZN13ICM20602_Gyro11rawDataReadEh  icm20602.o
-    0x08007e86   0x08007e86   0x0000001e   Code   RO         1885    i._ZN13ICM20602_Gyro12rawDataWriteEhh  icm20602.o
-    0x08007ea4   0x08007ea4   0x0000020e   Code   RO         1886    i._ZN13ICM20602_Gyro4initEv  icm20602.o
-    0x080080b2   0x080080b2   0x0000000a   Code   RO         1887    i._ZN13ICM20602_Gyro4initEv.clean  icm20602.o
-    0x080080bc   0x080080bc   0x00000026   Code   RO         1888    i._ZN13ICM20602_Gyro9multiReadEhPhj  icm20602.o
-    0x080080e2   0x080080e2   0x00000002   PAD
-    0x080080e4   0x080080e4   0x000000ac   Code   RO         1956    i._ZN13ICM20602_GyroC1EP11SPI_TypeDefP12GPIO_TypeDeft  icm20602.o
-    0x08008190   0x08008190   0x0000000a   Code   RO         1957    i._ZN13ICM20602_GyroC1EP11SPI_TypeDefP12GPIO_TypeDeft.clean  icm20602.o
-    0x0800819a   0x0800819a   0x00000012   Code   RO         1971    i._ZN13ICM20602_GyroD0Ev  icm20602.o
-    0x080081ac   0x080081ac   0x0000000e   Code   RO         1965    i._ZN13ICM20602_GyroD1Ev  icm20602.o
-    0x080081ba   0x080081ba   0x00000018   Code   RO         2328    i._ZN13action_matrixC1ERKS_  action_matrix.o
-    0x080081d2   0x080081d2   0x00000002   PAD
-    0x080081d4   0x080081d4   0x0000011c   Code   RO         2329    i._ZN13action_matrixC1Ejjh  action_matrix.o
-    0x080082f0   0x080082f0   0x00000026   Code   RO         2330    i._ZN13action_matrixD1Ev  action_matrix.o
-    0x08008316   0x08008316   0x000000a0   Code   RO         2331    i._ZN13action_matrixaSERKS_  action_matrix.o
-    0x080083b6   0x080083b6   0x00000086   Code   RO         2332    i._ZN13action_matrixaSEf  action_matrix.o
-    0x0800843c   0x0800843c   0x000000ac   Code   RO         1077    i._ZN14deviceADXRS45310UpdateDataEv  adxrs453.o
-    0x080084e8   0x080084e8   0x00000012   Code   RO         1154    i._ZN14deviceADXRS453D0Ev  adxrs453.o
-    0x080084fa   0x080084fa   0x0000000e   Code   RO         1130    i._ZN14deviceADXRS453D1Ev  adxrs453.o
-    0x08008508   0x08008508   0x000001b2   Code   RO         1314    i._ZN14deviceI3G4250D4initEv  i3g4250d.o
-    0x080086ba   0x080086ba   0x0000000a   Code   RO         1315    i._ZN14deviceI3G4250D4initEv.clean  i3g4250d.o
-    0x080086c4   0x080086c4   0x00000012   Code   RO         1499    i._ZN14deviceI3G4250DD0Ev  i3g4250d.o
-    0x080086d6   0x080086d6   0x0000000e   Code   RO         1374    i._ZN14deviceI3G4250DD1Ev  i3g4250d.o
-    0x080086e4   0x080086e4   0x0000003e   Code   RO            7    i._ZN25_INTERNAL_8_main_cpp_main7runningEv  main.o
-    0x08008722   0x08008722   0x00000046   Code   RO         9305    i._ZN27_INTERNAL_6_rtti_c_066a44b012tbc_downcastEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE  cpprt_w.l(rtti.o)
-    0x08008768   0x08008768   0x00000016   Code   RO         9306    i._ZN27_INTERNAL_6_rtti_c_066a44b017tbc_post_downcastEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE  cpprt_w.l(rtti.o)
-    0x0800877e   0x0800877e   0x00000002   PAD
-    0x08008780   0x08008780   0x000000a4   Code   RO         9307    i._ZN27_INTERNAL_6_rtti_c_066a44b021traverse_base_classesEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE  cpprt_w.l(rtti.o)
-    0x08008824   0x08008824   0x000000c0   Code   RO         9308    i._ZN27_INTERNAL_6_rtti_c_066a44b023find_base_class_at_addrEPvS0_PKSt9type_infoS3_Pi  cpprt_w.l(rtti.o)
-    0x080088e4   0x080088e4   0x0000000e   Code   RO         9309    i._ZN27_INTERNAL_6_rtti_c_066a44b024get_virtual_base_pointerEPvPN10__cxxabiv122__base_class_type_infoE  cpprt_w.l(rtti.o)
-    0x080088f2   0x080088f2   0x00000002   PAD
-    0x080088f4   0x080088f4   0x000001e4   Code   RO         9310    i._ZN27_INTERNAL_6_rtti_c_066a44b028derived_to_base_conversion_rEPvPS0_PKSt9type_infoS4_jPiiPS4_P19a_result_virtualityS5_  cpprt_w.l(rtti.o)
-    0x08008ad8   0x08008ad8   0x000000b4   Code   RO          142    i._ZN29_INTERNAL_8_user_cpp_6a3cf8a19usartACCTEhRt  user.o
-    0x08008b8c   0x08008b8c   0x0000005e   Code   RO         1889    i._ZN34_INTERNAL_12_ICM20602_cpp_816a8cfb18changeSPIconfigureEP11SPI_TypeDef  icm20602.o
-    0x08008bea   0x08008bea   0x00000058   Code   RO         9180    i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjPKcSt9__va_list  cpp_ws.l(rwstdexcept.o)
-    0x08008c42   0x08008c42   0x00000002   PAD
-    0x08008c44   0x08008c44   0x0000014c   Code   RO         9181    i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjiSt9__va_list  cpp_ws.l(rwstdexcept.o)
-    0x08008d90   0x08008d90   0x00000034   Code   RO         9182    i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjiSt9__va_list.clean  cpp_ws.l(rwstdexcept.o)
-    0x08008dc4   0x08008dc4   0x00000074   Code   RO         3078    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS10UKFmeasureERK13action_matrix  calculateattitude.o
-    0x08008e38   0x08008e38   0x00000024   Code   RO         3079    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS10UKFmeasureERK13action_matrix.clean  calculateattitude.o
-    0x08008e5c   0x08008e5c   0x00000294   Code   RO         3080    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS17magAccFixZeroRateEv  calculateattitude.o
-    0x080090f0   0x080090f0   0x00000116   Code   RO         3081    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS19Quaternion_to_EulerERK13action_matrix  calculateattitude.o
-    0x08009206   0x08009206   0x00000002   PAD
-    0x08009208   0x08009208   0x0000004c   Code   RO         3082    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS6UKFpreERK13action_matrixS2_  calculateattitude.o
-    0x08009254   0x08009254   0x00000010   Code   RO         3083    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS6UKFpreERK13action_matrixS2_.clean  calculateattitude.o
-    0x08009264   0x08009264   0x00000264   Code   RO         2661    i._ZN4AUKF14unscentedTransERK13action_matrixS2_  adaptiveunscentedkalmanfilter.o
-    0x080094c8   0x080094c8   0x00000024   Code   RO         2662    i._ZN4AUKF14unscentedTransERK13action_matrixS2_.clean  adaptiveunscentedkalmanfilter.o
-    0x080094ec   0x080094ec   0x0000003a   Code   RO         2663    i._ZN4AUKF6filterERK13action_matrixS2_  adaptiveunscentedkalmanfilter.o
-    0x08009526   0x08009526   0x000001c6   Code   RO         2664    i._ZN4AUKF7updateCESt6vectorI13action_matrixSaIS1_EERKS1_S3_S5_  adaptiveunscentedkalmanfilter.o
-    0x080096ec   0x080096ec   0x0000005a   Code   RO         2665    i._ZN4AUKF7updateCESt6vectorI13action_matrixSaIS1_EERKS1_S3_S5_.clean  adaptiveunscentedkalmanfilter.o
-    0x08009746   0x08009746   0x0000004e   Code   RO         2666    i._ZN4AUKF7updateMESt6vectorI13action_matrixSaIS1_EE  adaptiveunscentedkalmanfilter.o
-    0x08009794   0x08009794   0x0000000a   Code   RO         2667    i._ZN4AUKF7updateMESt6vectorI13action_matrixSaIS1_EE.clean  adaptiveunscentedkalmanfilter.o
-    0x0800979e   0x0800979e   0x0000015c   Code   RO         2668    i._ZN4AUKF8predictXERK13action_matrix  adaptiveunscentedkalmanfilter.o
-    0x080098fa   0x080098fa   0x00000060   Code   RO         2669    i._ZN4AUKF8predictXERK13action_matrix.clean  adaptiveunscentedkalmanfilter.o
-    0x0800995a   0x0800995a   0x00000148   Code   RO         2670    i._ZN4AUKF8predictZEv  adaptiveunscentedkalmanfilter.o
-    0x08009aa2   0x08009aa2   0x0000005a   Code   RO         2671    i._ZN4AUKF8predictZEv.clean  adaptiveunscentedkalmanfilter.o
-    0x08009afc   0x08009afc   0x0000015c   Code   RO         2672    i._ZN4AUKF9adaptiveRERK13action_matrix  adaptiveunscentedkalmanfilter.o
-    0x08009c58   0x08009c58   0x0000003c   Code   RO         2673    i._ZN4AUKF9adaptiveRERK13action_matrix.clean  adaptiveunscentedkalmanfilter.o
-    0x08009c94   0x08009c94   0x000000fc   Code   RO         2674    i._ZN4AUKF9estimateXERK13action_matrix  adaptiveunscentedkalmanfilter.o
-    0x08009d90   0x08009d90   0x0000004c   Code   RO         2675    i._ZN4AUKF9estimateXERK13action_matrix.clean  adaptiveunscentedkalmanfilter.o
-    0x08009ddc   0x08009ddc   0x00000144   Code   RO         2676    i._ZN4AUKFC1EfffRK13action_matrixS2_S2_S2_S2_PFS0_S2_S2_EPFS0_S2_Ej  adaptiveunscentedkalmanfilter.o
-    0x08009f20   0x08009f20   0x0000006c   Code   RO         2677    i._ZN4AUKFC1EfffRK13action_matrixS2_S2_S2_S2_PFS0_S2_S2_EPFS0_S2_Ej.clean  adaptiveunscentedkalmanfilter.o
-    0x08009f8c   0x08009f8c   0x00000012   Code   RO         2678    i._ZN4AUKFD0Ev      adaptiveunscentedkalmanfilter.o
-    0x08009f9e   0x08009f9e   0x00000002   PAD
-    0x08009fa0   0x08009fa0   0x00000088   Code   RO         2679    i._ZN4AUKFD1Ev      adaptiveunscentedkalmanfilter.o
-    0x0800a028   0x0800a028   0x0000006c   Code   RO         2680    i._ZN4AUKFD1Ev.clean  adaptiveunscentedkalmanfilter.o
-    0x0800a094   0x0800a094   0x0000005c   Code   RO         9183    i._ZN4__rw10__rw_throwEiz  cpp_ws.l(rwstdexcept.o)
-    0x0800a0f0   0x0800a0f0   0x00000020   Code   RO         8557    i._ZN4__rw13__rw_allocateEji  cpp_ws.l(rwalloc.o)
-    0x0800a110   0x0800a110   0x00000004   Code   RO         8558    i._ZN4__rw15__rw_deallocateEPvji  cpp_ws.l(rwalloc.o)
-    0x0800a114   0x0800a114   0x00000002   Code   RO         9854    i._ZN4__rw15__rw_facet_base12_C_initfacetERKSt6locale  cpp_ws.l(char.o)
-    0x0800a116   0x0800a116   0x00000002   PAD
-    0x0800a118   0x0800a118   0x000000d0   Code   RO        10598    i._ZN4__rw15__rw_locale_imp13_C_parse_nameERNS_18__rw_locale_vectorISsEEPKc  cpp_ws.l(vendor.o)
-    0x0800a1e8   0x0800a1e8   0x0000000a   Code   RO        10599    i._ZN4__rw15__rw_locale_imp13_C_parse_nameERNS_18__rw_locale_vectorISsEEPKc.clean  cpp_ws.l(vendor.o)
-    0x0800a1f2   0x0800a1f2   0x0000003c   Code   RO        10600    i._ZN4__rw15__rw_locale_imp15_C_map_categoryEi  cpp_ws.l(vendor.o)
-    0x0800a22e   0x0800a22e   0x00000002   PAD
-    0x0800a230   0x0800a230   0x000000ec   Code   RO        10007    i._ZN4__rw15__rw_locale_impC1EPKcjj  cpp_ws.l(locale.o)
-    0x0800a31c   0x0800a31c   0x0000001c   Code   RO        10008    i._ZN4__rw15__rw_locale_impC1EPKcjj.clean  cpp_ws.l(locale.o)
-    0x0800a338   0x0800a338   0x000000d8   Code   RO        10017    i._ZN4__rw15__rw_locale_impC1ERKS0_PKcj  cpp_ws.l(locale.o)
-    0x0800a410   0x0800a410   0x00000016   Code   RO        10018    i._ZN4__rw15__rw_locale_impC1ERKS0_PKcj.clean  cpp_ws.l(locale.o)
-    0x0800a426   0x0800a426   0x0000001a   Code   RO        10045    i._ZN4__rw15__rw_locale_impD1Ev  cpp_ws.l(locale.o)
-    0x0800a440   0x0800a440   0x0000000c   Code   RO         9860    i._ZN4__rw15__rw_punct_dataIcED1Ev  cpp_ws.l(char.o)
-    0x0800a44c   0x0800a44c   0x00000008   Code   RO         9848    i._ZN4__rw18__rw_numpunct_implIcED1Ev  cpp_ws.l(char.o)
-    0x0800a454   0x0800a454   0x0000037c   Code   RO        10381    i._ZN4__rw20__rw_throw_exceptionEiPc  cpp_ws.l(rwthrowproc_impl.o)
-    0x0800a7d0   0x0800a7d0   0x0000006e   Code   RO        10382    i._ZN4__rw20__rw_throw_exceptionEiPc.clean  cpp_ws.l(rwthrowproc_impl.o)
-    0x0800a83e   0x0800a83e   0x0000003a   Code   RO         9905    i._ZN4__rw21__rw_use_c_lib_localeC1EPKci  cpp_ws.l(locale.o)
-    0x0800a878   0x0800a878   0x00000018   Code   RO         9824    i._ZN4__rw21__rw_use_c_lib_localeD1Ev  cpp_ws.l(char.o)
-    0x0800a890   0x0800a890   0x00000094   Code   RO         9906    i._ZN4__rw23__rw_numpunct_impl_base18_C_get_named_init_EPKc  cpp_ws.l(locale.o)
-    0x0800a924   0x0800a924   0x0000000a   Code   RO         9907    i._ZN4__rw23__rw_numpunct_impl_base18_C_get_named_init_EPKc.clean  cpp_ws.l(locale.o)
-    0x0800a92e   0x0800a92e   0x00000016   Code   RO         9857    i._ZN4__rw23__rw_numpunct_impl_dataIcED1Ev  cpp_ws.l(char.o)
-    0x0800a944   0x0800a944   0x00000030   Code   RO        10361    i._ZN4__rw9__catfindEPNS_8__rw_catE  cpp_ws.l(rwcats.o)
-    0x0800a974   0x0800a974   0x000001c0   Code   RO         3168    i._ZN9aukf9axis4fuseERK13action_matrixS2_S2_  calculateattitude.o
-    0x0800ab34   0x0800ab34   0x0000001e   Code   RO         3169    i._ZN9aukf9axis4fuseERK13action_matrixS2_S2_.clean  calculateattitude.o
-    0x0800ab52   0x0800ab52   0x00000002   PAD
-    0x0800ab54   0x0800ab54   0x000000e8   Code   RO         3177    i._ZN9aukf9axisC1Ev  calculateattitude.o
-    0x0800ac3c   0x0800ac3c   0x0000002a   Code   RO         3178    i._ZN9aukf9axisC1Ev.clean  calculateattitude.o
-    0x0800ac66   0x0800ac66   0x00000012   Code   RO         3217    i._ZN9aukf9axisD0Ev  calculateattitude.o
-    0x0800ac78   0x0800ac78   0x00000028   Code   RO         3186    i._ZN9aukf9axisD1Ev  calculateattitude.o
-    0x0800aca0   0x0800aca0   0x0000000a   Code   RO         3187    i._ZN9aukf9axisD1Ev.clean  calculateattitude.o
-    0x0800acaa   0x0800acaa   0x0000001a   Code   RO          437    i._ZN9threeAxisaSERKS_  ahrs.o
-    0x0800acc4   0x0800acc4   0x0000000e   Code   RO          443    i._ZN9threeAxisaSEf  ahrs.o
-    0x0800acd2   0x0800acd2   0x00000002   PAD
-    0x0800acd4   0x0800acd4   0x00000030   Code   RO          971    i._ZNK11_out_streamlsEPKc  usart.o
-    0x0800ad04   0x0800ad04   0x00000014   Code   RO          972    i._ZNK11_out_streamlsEc  usart.o
-    0x0800ad18   0x0800ad18   0x00000050   Code   RO          973    i._ZNK11_out_streamlsEf  usart.o
-    0x0800ad68   0x0800ad68   0x00000034   Code   RO          974    i._ZNK11_out_streamlsEi  usart.o
-    0x0800ad9c   0x0800ad9c   0x00000034   Code   RO          975    i._ZNK11_out_streamlsEj  usart.o
-    0x0800add0   0x0800add0   0x00000006   Code   RO         2527    i._ZNK13action_matrix10get_columnEv  action_matrix.o
-    0x0800add6   0x0800add6   0x00000006   Code   RO         2533    i._ZNK13action_matrix7get_rowEv  action_matrix.o
-    0x0800addc   0x0800addc   0x00000014   Code   RO         2333    i._ZNK13action_matrix8get_dataEjj  action_matrix.o
-    0x0800adf0   0x0800adf0   0x00000014   Code   RO         2334    i._ZNK13action_matrix8set_dataEjjf  action_matrix.o
-    0x0800ae04   0x0800ae04   0x0000000e   Code   RO         2335    i._ZNK13action_matrixixEj  action_matrix.o
-    0x0800ae12   0x0800ae12   0x00000004   Code   RO         9299    i._ZNKSt14__rw_exception4whatEv  cpp_ws.l(rwstdexcept.o)
-    0x0800ae16   0x0800ae16   0x0000009a   Code   RO         9651    i._ZNKSt14collate_bynameIcE10do_compareEPKcS2_S2_S2_  cpp_ws.l(char.o)
-    0x0800aeb0   0x0800aeb0   0x0000000a   Code   RO         9652    i._ZNKSt14collate_bynameIcE10do_compareEPKcS2_S2_S2_.clean  cpp_ws.l(char.o)
-    0x0800aeba   0x0800aeba   0x00000074   Code   RO         9653    i._ZNKSt14collate_bynameIcE12do_transformEPKcS2_  cpp_ws.l(char.o)
-    0x0800af2e   0x0800af2e   0x00000010   Code   RO         9654    i._ZNKSt14collate_bynameIcE12do_transformEPKcS2_.clean  cpp_ws.l(char.o)
-    0x0800af3e   0x0800af3e   0x00000072   Code   RO        10082    i._ZNKSt18__rw_messages_base11_C_cat_openERKSsRKSt6locale  cpp_ws.l(messages.o)
-    0x0800afb0   0x0800afb0   0x0000000a   Code   RO        10083    i._ZNKSt18__rw_messages_base11_C_cat_openERKSsRKSt6locale.clean  cpp_ws.l(messages.o)
-    0x0800afba   0x0800afba   0x00000040   Code   RO        10084    i._ZNKSt18__rw_messages_base12_C_cat_closeEi  cpp_ws.l(messages.o)
-    0x0800affa   0x0800affa   0x00000020   Code   RO        10085    i._ZNKSt18__rw_messages_base13_C_get_localeEi  cpp_ws.l(messages.o)
-    0x0800b01a   0x0800b01a   0x00000034   Code   RO        10086    i._ZNKSt18__rw_messages_base14_C_get_messageEiii  cpp_ws.l(messages.o)
-    0x0800b04e   0x0800b04e   0x0000002c   Code   RO         9803    i._ZNKSt5ctypeIcE10do_tolowerEPcPKc  cpp_ws.l(char.o)
-    0x0800b07a   0x0800b07a   0x0000001e   Code   RO         9809    i._ZNKSt5ctypeIcE10do_tolowerEc  cpp_ws.l(char.o)
-    0x0800b098   0x0800b098   0x0000002c   Code   RO         9800    i._ZNKSt5ctypeIcE10do_toupperEPcPKc  cpp_ws.l(char.o)
-    0x0800b0c4   0x0800b0c4   0x0000001e   Code   RO         9806    i._ZNKSt5ctypeIcE10do_toupperEc  cpp_ws.l(char.o)
-    0x0800b0e2   0x0800b0e2   0x0000000e   Code   RO         9794    i._ZNKSt5ctypeIcE2isENSt10ctype_base4maskEc  cpp_ws.l(char.o)
+    0x08007ce8   0x08007ce8   0x00000030   Code   RO          971    i._ZN11_out_streamlsEPKc  usart.o
+    0x08007d18   0x08007d18   0x00000014   Code   RO          972    i._ZN11_out_streamlsEc  usart.o
+    0x08007d2c   0x08007d2c   0x00000050   Code   RO          973    i._ZN11_out_streamlsEf  usart.o
+    0x08007d7c   0x08007d7c   0x00000034   Code   RO          974    i._ZN11_out_streamlsEi  usart.o
+    0x08007db0   0x08007db0   0x00000034   Code   RO          975    i._ZN11_out_streamlsEj  usart.o
+    0x08007de4   0x08007de4   0x00000184   Code   RO         1883    i._ZN13ICM20602_Gyro10UpdateDataEv  icm20602.o
+    0x08007f68   0x08007f68   0x0000001a   Code   RO         1884    i._ZN13ICM20602_Gyro11rawDataReadEh  icm20602.o
+    0x08007f82   0x08007f82   0x0000001e   Code   RO         1885    i._ZN13ICM20602_Gyro12rawDataWriteEhh  icm20602.o
+    0x08007fa0   0x08007fa0   0x0000020e   Code   RO         1886    i._ZN13ICM20602_Gyro4initEv  icm20602.o
+    0x080081ae   0x080081ae   0x0000000a   Code   RO         1887    i._ZN13ICM20602_Gyro4initEv.clean  icm20602.o
+    0x080081b8   0x080081b8   0x00000026   Code   RO         1888    i._ZN13ICM20602_Gyro9multiReadEhPhj  icm20602.o
+    0x080081de   0x080081de   0x00000002   PAD
+    0x080081e0   0x080081e0   0x000000ac   Code   RO         1956    i._ZN13ICM20602_GyroC1EP11SPI_TypeDefP12GPIO_TypeDeft  icm20602.o
+    0x0800828c   0x0800828c   0x0000000a   Code   RO         1957    i._ZN13ICM20602_GyroC1EP11SPI_TypeDefP12GPIO_TypeDeft.clean  icm20602.o
+    0x08008296   0x08008296   0x00000012   Code   RO         1971    i._ZN13ICM20602_GyroD0Ev  icm20602.o
+    0x080082a8   0x080082a8   0x0000000e   Code   RO         1965    i._ZN13ICM20602_GyroD1Ev  icm20602.o
+    0x080082b6   0x080082b6   0x00000018   Code   RO         2328    i._ZN13action_matrixC1ERKS_  action_matrix.o
+    0x080082ce   0x080082ce   0x00000002   PAD
+    0x080082d0   0x080082d0   0x0000011c   Code   RO         2329    i._ZN13action_matrixC1Ejjh  action_matrix.o
+    0x080083ec   0x080083ec   0x00000026   Code   RO         2330    i._ZN13action_matrixD1Ev  action_matrix.o
+    0x08008412   0x08008412   0x000000a0   Code   RO         2331    i._ZN13action_matrixaSERKS_  action_matrix.o
+    0x080084b2   0x080084b2   0x00000086   Code   RO         2332    i._ZN13action_matrixaSEf  action_matrix.o
+    0x08008538   0x08008538   0x000000ac   Code   RO         1077    i._ZN14deviceADXRS45310UpdateDataEv  adxrs453.o
+    0x080085e4   0x080085e4   0x00000012   Code   RO         1154    i._ZN14deviceADXRS453D0Ev  adxrs453.o
+    0x080085f6   0x080085f6   0x0000000e   Code   RO         1130    i._ZN14deviceADXRS453D1Ev  adxrs453.o
+    0x08008604   0x08008604   0x000001b2   Code   RO         1314    i._ZN14deviceI3G4250D4initEv  i3g4250d.o
+    0x080087b6   0x080087b6   0x0000000a   Code   RO         1315    i._ZN14deviceI3G4250D4initEv.clean  i3g4250d.o
+    0x080087c0   0x080087c0   0x00000012   Code   RO         1499    i._ZN14deviceI3G4250DD0Ev  i3g4250d.o
+    0x080087d2   0x080087d2   0x0000000e   Code   RO         1374    i._ZN14deviceI3G4250DD1Ev  i3g4250d.o
+    0x080087e0   0x080087e0   0x0000003e   Code   RO            7    i._ZN25_INTERNAL_8_main_cpp_main7runningEv  main.o
+    0x0800881e   0x0800881e   0x00000046   Code   RO         9305    i._ZN27_INTERNAL_6_rtti_c_066a44b012tbc_downcastEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE  cpprt_w.l(rtti.o)
+    0x08008864   0x08008864   0x00000016   Code   RO         9306    i._ZN27_INTERNAL_6_rtti_c_066a44b017tbc_post_downcastEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE  cpprt_w.l(rtti.o)
+    0x0800887a   0x0800887a   0x00000002   PAD
+    0x0800887c   0x0800887c   0x000000a4   Code   RO         9307    i._ZN27_INTERNAL_6_rtti_c_066a44b021traverse_base_classesEPvPKSt9type_infoP28a_base_class_traversal_blockPN10__cxxabiv122__base_class_type_infoE  cpprt_w.l(rtti.o)
+    0x08008920   0x08008920   0x000000c0   Code   RO         9308    i._ZN27_INTERNAL_6_rtti_c_066a44b023find_base_class_at_addrEPvS0_PKSt9type_infoS3_Pi  cpprt_w.l(rtti.o)
+    0x080089e0   0x080089e0   0x0000000e   Code   RO         9309    i._ZN27_INTERNAL_6_rtti_c_066a44b024get_virtual_base_pointerEPvPN10__cxxabiv122__base_class_type_infoE  cpprt_w.l(rtti.o)
+    0x080089ee   0x080089ee   0x00000002   PAD
+    0x080089f0   0x080089f0   0x000001e4   Code   RO         9310    i._ZN27_INTERNAL_6_rtti_c_066a44b028derived_to_base_conversion_rEPvPS0_PKSt9type_infoS4_jPiiPS4_P19a_result_virtualityS5_  cpprt_w.l(rtti.o)
+    0x08008bd4   0x08008bd4   0x000000b4   Code   RO          142    i._ZN29_INTERNAL_8_user_cpp_6a3cf8a19usartACCTEhRt  user.o
+    0x08008c88   0x08008c88   0x0000005e   Code   RO         1889    i._ZN34_INTERNAL_12_ICM20602_cpp_816a8cfb18changeSPIconfigureEP11SPI_TypeDef  icm20602.o
+    0x08008ce6   0x08008ce6   0x00000058   Code   RO         9180    i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjPKcSt9__va_list  cpp_ws.l(rwstdexcept.o)
+    0x08008d3e   0x08008d3e   0x00000002   PAD
+    0x08008d40   0x08008d40   0x0000014c   Code   RO         9181    i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjiSt9__va_list  cpp_ws.l(rwstdexcept.o)
+    0x08008e8c   0x08008e8c   0x00000034   Code   RO         9182    i._ZN37_INTERNAL_15_rwstdexcept_cpp_8697b68a4__rw13__rw_vfmatstrEPcjiSt9__va_list.clean  cpp_ws.l(rwstdexcept.o)
+    0x08008ec0   0x08008ec0   0x00000074   Code   RO         3078    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS10UKFmeasureERK13action_matrix  calculateattitude.o
+    0x08008f34   0x08008f34   0x00000024   Code   RO         3079    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS10UKFmeasureERK13action_matrix.clean  calculateattitude.o
+    0x08008f58   0x08008f58   0x00000294   Code   RO         3080    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS17magAccFixZeroRateEv  calculateattitude.o
+    0x080091ec   0x080091ec   0x00000116   Code   RO         3081    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS19Quaternion_to_EulerERK13action_matrix  calculateattitude.o
+    0x08009302   0x08009302   0x00000002   PAD
+    0x08009304   0x08009304   0x0000004c   Code   RO         3082    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS6UKFpreERK13action_matrixS2_  calculateattitude.o
+    0x08009350   0x08009350   0x00000010   Code   RO         3083    i._ZN43_INTERNAL_21_calculateAttitude_cpp_initAHRS6UKFpreERK13action_matrixS2_.clean  calculateattitude.o
+    0x08009360   0x08009360   0x00000264   Code   RO         2661    i._ZN4AUKF14unscentedTransERK13action_matrixS2_  adaptiveunscentedkalmanfilter.o
+    0x080095c4   0x080095c4   0x00000024   Code   RO         2662    i._ZN4AUKF14unscentedTransERK13action_matrixS2_.clean  adaptiveunscentedkalmanfilter.o
+    0x080095e8   0x080095e8   0x0000003a   Code   RO         2663    i._ZN4AUKF6filterERK13action_matrixS2_  adaptiveunscentedkalmanfilter.o
+    0x08009622   0x08009622   0x000001c6   Code   RO         2664    i._ZN4AUKF7updateCESt6vectorI13action_matrixSaIS1_EERKS1_S3_S5_  adaptiveunscentedkalmanfilter.o
+    0x080097e8   0x080097e8   0x0000005a   Code   RO         2665    i._ZN4AUKF7updateCESt6vectorI13action_matrixSaIS1_EERKS1_S3_S5_.clean  adaptiveunscentedkalmanfilter.o
+    0x08009842   0x08009842   0x0000004e   Code   RO         2666    i._ZN4AUKF7updateMESt6vectorI13action_matrixSaIS1_EE  adaptiveunscentedkalmanfilter.o
+    0x08009890   0x08009890   0x0000000a   Code   RO         2667    i._ZN4AUKF7updateMESt6vectorI13action_matrixSaIS1_EE.clean  adaptiveunscentedkalmanfilter.o
+    0x0800989a   0x0800989a   0x0000015c   Code   RO         2668    i._ZN4AUKF8predictXERK13action_matrix  adaptiveunscentedkalmanfilter.o
+    0x080099f6   0x080099f6   0x00000060   Code   RO         2669    i._ZN4AUKF8predictXERK13action_matrix.clean  adaptiveunscentedkalmanfilter.o
+    0x08009a56   0x08009a56   0x00000148   Code   RO         2670    i._ZN4AUKF8predictZEv  adaptiveunscentedkalmanfilter.o
+    0x08009b9e   0x08009b9e   0x0000005a   Code   RO         2671    i._ZN4AUKF8predictZEv.clean  adaptiveunscentedkalmanfilter.o
+    0x08009bf8   0x08009bf8   0x0000015c   Code   RO         2672    i._ZN4AUKF9adaptiveRERK13action_matrix  adaptiveunscentedkalmanfilter.o
+    0x08009d54   0x08009d54   0x0000003c   Code   RO         2673    i._ZN4AUKF9adaptiveRERK13action_matrix.clean  adaptiveunscentedkalmanfilter.o
+    0x08009d90   0x08009d90   0x000000fc   Code   RO         2674    i._ZN4AUKF9estimateXERK13action_matrix  adaptiveunscentedkalmanfilter.o
+    0x08009e8c   0x08009e8c   0x0000004c   Code   RO         2675    i._ZN4AUKF9estimateXERK13action_matrix.clean  adaptiveunscentedkalmanfilter.o
+    0x08009ed8   0x08009ed8   0x00000144   Code   RO         2676    i._ZN4AUKFC1EfffRK13action_matrixS2_S2_S2_S2_PFS0_S2_S2_EPFS0_S2_Ej  adaptiveunscentedkalmanfilter.o
+    0x0800a01c   0x0800a01c   0x0000006c   Code   RO         2677    i._ZN4AUKFC1EfffRK13action_matrixS2_S2_S2_S2_PFS0_S2_S2_EPFS0_S2_Ej.clean  adaptiveunscentedkalmanfilter.o
+    0x0800a088   0x0800a088   0x00000012   Code   RO         2678    i._ZN4AUKFD0Ev      adaptiveunscentedkalmanfilter.o
+    0x0800a09a   0x0800a09a   0x00000002   PAD
+    0x0800a09c   0x0800a09c   0x00000088   Code   RO         2679    i._ZN4AUKFD1Ev      adaptiveunscentedkalmanfilter.o
+    0x0800a124   0x0800a124   0x0000006c   Code   RO         2680    i._ZN4AUKFD1Ev.clean  adaptiveunscentedkalmanfilter.o
+    0x0800a190   0x0800a190   0x0000005c   Code   RO         9183    i._ZN4__rw10__rw_throwEiz  cpp_ws.l(rwstdexcept.o)
+    0x0800a1ec   0x0800a1ec   0x00000020   Code   RO         8557    i._ZN4__rw13__rw_allocateEji  cpp_ws.l(rwalloc.o)
+    0x0800a20c   0x0800a20c   0x00000004   Code   RO         8558    i._ZN4__rw15__rw_deallocateEPvji  cpp_ws.l(rwalloc.o)
+    0x0800a210   0x0800a210   0x00000002   Code   RO         9854    i._ZN4__rw15__rw_facet_base12_C_initfacetERKSt6locale  cpp_ws.l(char.o)
+    0x0800a212   0x0800a212   0x00000002   PAD
+    0x0800a214   0x0800a214   0x000000d0   Code   RO        10598    i._ZN4__rw15__rw_locale_imp13_C_parse_nameERNS_18__rw_locale_vectorISsEEPKc  cpp_ws.l(vendor.o)
+    0x0800a2e4   0x0800a2e4   0x0000000a   Code   RO        10599    i._ZN4__rw15__rw_locale_imp13_C_parse_nameERNS_18__rw_locale_vectorISsEEPKc.clean  cpp_ws.l(vendor.o)
+    0x0800a2ee   0x0800a2ee   0x0000003c   Code   RO        10600    i._ZN4__rw15__rw_locale_imp15_C_map_categoryEi  cpp_ws.l(vendor.o)
+    0x0800a32a   0x0800a32a   0x00000002   PAD
+    0x0800a32c   0x0800a32c   0x000000ec   Code   RO        10007    i._ZN4__rw15__rw_locale_impC1EPKcjj  cpp_ws.l(locale.o)
+    0x0800a418   0x0800a418   0x0000001c   Code   RO        10008    i._ZN4__rw15__rw_locale_impC1EPKcjj.clean  cpp_ws.l(locale.o)
+    0x0800a434   0x0800a434   0x000000d8   Code   RO        10017    i._ZN4__rw15__rw_locale_impC1ERKS0_PKcj  cpp_ws.l(locale.o)
+    0x0800a50c   0x0800a50c   0x00000016   Code   RO        10018    i._ZN4__rw15__rw_locale_impC1ERKS0_PKcj.clean  cpp_ws.l(locale.o)
+    0x0800a522   0x0800a522   0x0000001a   Code   RO        10045    i._ZN4__rw15__rw_locale_impD1Ev  cpp_ws.l(locale.o)
+    0x0800a53c   0x0800a53c   0x0000000c   Code   RO         9860    i._ZN4__rw15__rw_punct_dataIcED1Ev  cpp_ws.l(char.o)
+    0x0800a548   0x0800a548   0x00000008   Code   RO         9848    i._ZN4__rw18__rw_numpunct_implIcED1Ev  cpp_ws.l(char.o)
+    0x0800a550   0x0800a550   0x0000037c   Code   RO        10381    i._ZN4__rw20__rw_throw_exceptionEiPc  cpp_ws.l(rwthrowproc_impl.o)
+    0x0800a8cc   0x0800a8cc   0x0000006e   Code   RO        10382    i._ZN4__rw20__rw_throw_exceptionEiPc.clean  cpp_ws.l(rwthrowproc_impl.o)
+    0x0800a93a   0x0800a93a   0x0000003a   Code   RO         9905    i._ZN4__rw21__rw_use_c_lib_localeC1EPKci  cpp_ws.l(locale.o)
+    0x0800a974   0x0800a974   0x00000018   Code   RO         9824    i._ZN4__rw21__rw_use_c_lib_localeD1Ev  cpp_ws.l(char.o)
+    0x0800a98c   0x0800a98c   0x00000094   Code   RO         9906    i._ZN4__rw23__rw_numpunct_impl_base18_C_get_named_init_EPKc  cpp_ws.l(locale.o)
+    0x0800aa20   0x0800aa20   0x0000000a   Code   RO         9907    i._ZN4__rw23__rw_numpunct_impl_base18_C_get_named_init_EPKc.clean  cpp_ws.l(locale.o)
+    0x0800aa2a   0x0800aa2a   0x00000016   Code   RO         9857    i._ZN4__rw23__rw_numpunct_impl_dataIcED1Ev  cpp_ws.l(char.o)
+    0x0800aa40   0x0800aa40   0x00000030   Code   RO        10361    i._ZN4__rw9__catfindEPNS_8__rw_catE  cpp_ws.l(rwcats.o)
+    0x0800aa70   0x0800aa70   0x000001c0   Code   RO         3168    i._ZN9aukf9axis4fuseERK13action_matrixS2_S2_  calculateattitude.o
+    0x0800ac30   0x0800ac30   0x0000001e   Code   RO         3169    i._ZN9aukf9axis4fuseERK13action_matrixS2_S2_.clean  calculateattitude.o
+    0x0800ac4e   0x0800ac4e   0x00000002   PAD
+    0x0800ac50   0x0800ac50   0x000000e8   Code   RO         3177    i._ZN9aukf9axisC1Ev  calculateattitude.o
+    0x0800ad38   0x0800ad38   0x0000002a   Code   RO         3178    i._ZN9aukf9axisC1Ev.clean  calculateattitude.o
+    0x0800ad62   0x0800ad62   0x00000012   Code   RO         3217    i._ZN9aukf9axisD0Ev  calculateattitude.o
+    0x0800ad74   0x0800ad74   0x00000028   Code   RO         3186    i._ZN9aukf9axisD1Ev  calculateattitude.o
+    0x0800ad9c   0x0800ad9c   0x0000000a   Code   RO         3187    i._ZN9aukf9axisD1Ev.clean  calculateattitude.o
+    0x0800ada6   0x0800ada6   0x0000001a   Code   RO          437    i._ZN9threeAxisaSERKS_  ahrs.o
+    0x0800adc0   0x0800adc0   0x0000000e   Code   RO          443    i._ZN9threeAxisaSEf  ahrs.o
+    0x0800adce   0x0800adce   0x00000006   Code   RO         2527    i._ZNK13action_matrix10get_columnEv  action_matrix.o
+    0x0800add4   0x0800add4   0x00000006   Code   RO         2533    i._ZNK13action_matrix7get_rowEv  action_matrix.o
+    0x0800adda   0x0800adda   0x00000014   Code   RO         2333    i._ZNK13action_matrix8get_dataEjj  action_matrix.o
+    0x0800adee   0x0800adee   0x00000014   Code   RO         2334    i._ZNK13action_matrix8set_dataEjjf  action_matrix.o
+    0x0800ae02   0x0800ae02   0x0000000e   Code   RO         2335    i._ZNK13action_matrixixEj  action_matrix.o
+    0x0800ae10   0x0800ae10   0x00000004   Code   RO         9299    i._ZNKSt14__rw_exception4whatEv  cpp_ws.l(rwstdexcept.o)
+    0x0800ae14   0x0800ae14   0x0000009a   Code   RO         9651    i._ZNKSt14collate_bynameIcE10do_compareEPKcS2_S2_S2_  cpp_ws.l(char.o)
+    0x0800aeae   0x0800aeae   0x0000000a   Code   RO         9652    i._ZNKSt14collate_bynameIcE10do_compareEPKcS2_S2_S2_.clean  cpp_ws.l(char.o)
+    0x0800aeb8   0x0800aeb8   0x00000074   Code   RO         9653    i._ZNKSt14collate_bynameIcE12do_transformEPKcS2_  cpp_ws.l(char.o)
+    0x0800af2c   0x0800af2c   0x00000010   Code   RO         9654    i._ZNKSt14collate_bynameIcE12do_transformEPKcS2_.clean  cpp_ws.l(char.o)
+    0x0800af3c   0x0800af3c   0x00000072   Code   RO        10082    i._ZNKSt18__rw_messages_base11_C_cat_openERKSsRKSt6locale  cpp_ws.l(messages.o)
+    0x0800afae   0x0800afae   0x0000000a   Code   RO        10083    i._ZNKSt18__rw_messages_base11_C_cat_openERKSsRKSt6locale.clean  cpp_ws.l(messages.o)
+    0x0800afb8   0x0800afb8   0x00000040   Code   RO        10084    i._ZNKSt18__rw_messages_base12_C_cat_closeEi  cpp_ws.l(messages.o)
+    0x0800aff8   0x0800aff8   0x00000020   Code   RO        10085    i._ZNKSt18__rw_messages_base13_C_get_localeEi  cpp_ws.l(messages.o)
+    0x0800b018   0x0800b018   0x00000034   Code   RO        10086    i._ZNKSt18__rw_messages_base14_C_get_messageEiii  cpp_ws.l(messages.o)
+    0x0800b04c   0x0800b04c   0x0000002c   Code   RO         9803    i._ZNKSt5ctypeIcE10do_tolowerEPcPKc  cpp_ws.l(char.o)
+    0x0800b078   0x0800b078   0x0000001e   Code   RO         9809    i._ZNKSt5ctypeIcE10do_tolowerEc  cpp_ws.l(char.o)
+    0x0800b096   0x0800b096   0x0000002c   Code   RO         9800    i._ZNKSt5ctypeIcE10do_toupperEPcPKc  cpp_ws.l(char.o)
+    0x0800b0c2   0x0800b0c2   0x0000001e   Code   RO         9806    i._ZNKSt5ctypeIcE10do_toupperEc  cpp_ws.l(char.o)
+    0x0800b0e0   0x0800b0e0   0x0000000e   Code   RO         9794    i._ZNKSt5ctypeIcE2isENSt10ctype_base4maskEc  cpp_ws.l(char.o)
+    0x0800b0ee   0x0800b0ee   0x00000002   PAD
     0x0800b0f0   0x0800b0f0   0x00000108   Code   RO         9910    i._ZNKSt6locale13_C_make_facetERKNS_2idEbiPFPN4__rw15__rw_facet_baseEiPKcjE  cpp_ws.l(locale.o)
     0x0800b1f8   0x0800b1f8   0x0000000a   Code   RO         9911    i._ZNKSt6locale13_C_make_facetERKNS_2idEbiPFPN4__rw15__rw_facet_baseEiPKcjE.clean  cpp_ws.l(locale.o)
     0x0800b202   0x0800b202   0x00000002   PAD
@@ -11823,308 +11823,307 @@ Memory Map of the image
     0x0801651c   0x080162c8   0x00000008   Data   RO          395    .ARM.exidx          ahrs.o
     0x08016524   0x080162c8   0x00000008   Data   RO         1214    .ARM.exidx          device.o
     0x0801652c   0x080162c8   0x00000008   Data   RO         1213    .ARM.exidx          device.o
-    0x08016534   0x080162c8   0x00000008   Data   RO         1898    .ARM.exidx          icm20602.o
-    0x0801653c   0x080162c8   0x00000008   Data   RO         1894    .ARM.exidx          icm20602.o
-    0x08016544   0x080162c8   0x00000008   Data   RO         1895    .ARM.exidx          icm20602.o
-    0x0801654c   0x080162c8   0x00000008   Data   RO         1896    .ARM.exidx          icm20602.o
-    0x08016554   0x080162c8   0x00000008   Data   RO         1897    .ARM.exidx          icm20602.o
-    0x0801655c   0x080162c8   0x00000008   Data   RO         1893    .ARM.exidx          icm20602.o
-    0x08016564   0x080162c8   0x00000008   Data   RO         1959    .ARM.exidx          icm20602.o
-    0x0801656c   0x080162c8   0x00000008   Data   RO         1960    .ARM.exidx          icm20602.o
-    0x08016574   0x080162c8   0x00000008   Data   RO         2364    .ARM.exidx          action_matrix.o
-    0x0801657c   0x080162c8   0x00000008   Data   RO         2361    .ARM.exidx          action_matrix.o
-    0x08016584   0x080162c8   0x00000008   Data   RO         2388    .ARM.exidx          action_matrix.o
-    0x0801658c   0x080162c8   0x00000008   Data   RO         2395    .ARM.exidx          action_matrix.o
-    0x08016594   0x080162c8   0x00000008   Data   RO         1087    .ARM.exidx          adxrs453.o
-    0x0801659c   0x080162c8   0x00000008   Data   RO         1155    .ARM.exidx          adxrs453.o
-    0x080165a4   0x080162c8   0x00000008   Data   RO         1323    .ARM.exidx          i3g4250d.o
-    0x080165ac   0x080162c8   0x00000008   Data   RO         1324    .ARM.exidx          i3g4250d.o
-    0x080165b4   0x080162c8   0x00000008   Data   RO            9    .ARM.exidx          main.o
-    0x080165bc   0x080162c8   0x00000008   Data   RO         9317    .ARM.exidx          cpprt_w.l(rtti.o)
-    0x080165c4   0x080162c8   0x00000008   Data   RO         9318    .ARM.exidx          cpprt_w.l(rtti.o)
-    0x080165cc   0x080162c8   0x00000008   Data   RO         9313    .ARM.exidx          cpprt_w.l(rtti.o)
-    0x080165d4   0x080162c8   0x00000008   Data   RO         9316    .ARM.exidx          cpprt_w.l(rtti.o)
-    0x080165dc   0x080162c8   0x00000008   Data   RO         9320    .ARM.exidx          cpprt_w.l(rtti.o)
-    0x080165e4   0x080162c8   0x00000008   Data   RO         9314    .ARM.exidx          cpprt_w.l(rtti.o)
-    0x080165ec   0x080162c8   0x00000008   Data   RO          146    .ARM.exidx          user.o
-    0x080165f4   0x080162c8   0x00000008   Data   RO         1891    .ARM.exidx          icm20602.o
-    0x080165fc   0x080162c8   0x00000008   Data   RO         9189    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
-    0x08016604   0x080162c8   0x00000008   Data   RO         9190    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
-    0x0801660c   0x080162c8   0x00000008   Data   RO         9191    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
-    0x08016614   0x080162c8   0x00000008   Data   RO         3093    .ARM.exidx          calculateattitude.o
-    0x0801661c   0x080162c8   0x00000008   Data   RO         3094    .ARM.exidx          calculateattitude.o
-    0x08016624   0x080162c8   0x00000008   Data   RO         3095    .ARM.exidx          calculateattitude.o
-    0x0801662c   0x080162c8   0x00000008   Data   RO         3096    .ARM.exidx          calculateattitude.o
-    0x08016634   0x080162c8   0x00000008   Data   RO         3091    .ARM.exidx          calculateattitude.o
-    0x0801663c   0x080162c8   0x00000008   Data   RO         3092    .ARM.exidx          calculateattitude.o
-    0x08016644   0x080162c8   0x00000008   Data   RO         2682    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x0801664c   0x080162c8   0x00000008   Data   RO         2683    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016654   0x080162c8   0x00000008   Data   RO         2698    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x0801665c   0x080162c8   0x00000008   Data   RO         2686    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016664   0x080162c8   0x00000008   Data   RO         2687    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x0801666c   0x080162c8   0x00000008   Data   RO         2684    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016674   0x080162c8   0x00000008   Data   RO         2685    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x0801667c   0x080162c8   0x00000008   Data   RO         2688    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016684   0x080162c8   0x00000008   Data   RO         2689    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x0801668c   0x080162c8   0x00000008   Data   RO         2690    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016694   0x080162c8   0x00000008   Data   RO         2691    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x0801669c   0x080162c8   0x00000008   Data   RO         2694    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x080166a4   0x080162c8   0x00000008   Data   RO         2695    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x080166ac   0x080162c8   0x00000008   Data   RO         2692    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x080166b4   0x080162c8   0x00000008   Data   RO         2693    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x080166bc   0x080162c8   0x00000008   Data   RO         2696    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x080166c4   0x080162c8   0x00000008   Data   RO         2697    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x080166cc   0x080162c8   0x00000008   Data   RO         2699    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x080166d4   0x080162c8   0x00000008   Data   RO         2700    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x080166dc   0x080162c8   0x00000008   Data   RO         9193    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
-    0x080166e4   0x080162c8   0x00000008   Data   RO         8559    .ARM.exidx          cpp_ws.l(rwalloc.o)
-    0x080166ec   0x080162c8   0x00000008   Data   RO         8560    .ARM.exidx          cpp_ws.l(rwalloc.o)
-    0x080166f4   0x080162c8   0x00000008   Data   RO        10619    .ARM.exidx          cpp_ws.l(vendor.o)
-    0x080166fc   0x080162c8   0x00000008   Data   RO        10620    .ARM.exidx          cpp_ws.l(vendor.o)
-    0x08016704   0x080162c8   0x00000008   Data   RO        10010    .ARM.exidx          cpp_ws.l(locale.o)
-    0x0801670c   0x080162c8   0x00000008   Data   RO        10011    .ARM.exidx          cpp_ws.l(locale.o)
-    0x08016714   0x080162c8   0x00000008   Data   RO        10020    .ARM.exidx          cpp_ws.l(locale.o)
-    0x0801671c   0x080162c8   0x00000008   Data   RO        10021    .ARM.exidx          cpp_ws.l(locale.o)
-    0x08016724   0x080162c8   0x00000008   Data   RO        10383    .ARM.exidx          cpp_ws.l(rwthrowproc_impl.o)
-    0x0801672c   0x080162c8   0x00000008   Data   RO        10384    .ARM.exidx          cpp_ws.l(rwthrowproc_impl.o)
-    0x08016734   0x080162c8   0x00000008   Data   RO         9948    .ARM.exidx          cpp_ws.l(locale.o)
-    0x0801673c   0x080162c8   0x00000008   Data   RO         9825    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016744   0x080162c8   0x00000008   Data   RO         9949    .ARM.exidx          cpp_ws.l(locale.o)
-    0x0801674c   0x080162c8   0x00000008   Data   RO         9950    .ARM.exidx          cpp_ws.l(locale.o)
-    0x08016754   0x080162c8   0x00000008   Data   RO         3171    .ARM.exidx          calculateattitude.o
-    0x0801675c   0x080162c8   0x00000008   Data   RO         3172    .ARM.exidx          calculateattitude.o
-    0x08016764   0x080162c8   0x00000008   Data   RO         3180    .ARM.exidx          calculateattitude.o
-    0x0801676c   0x080162c8   0x00000008   Data   RO         3181    .ARM.exidx          calculateattitude.o
-    0x08016774   0x080162c8   0x00000008   Data   RO         3189    .ARM.exidx          calculateattitude.o
-    0x0801677c   0x080162c8   0x00000008   Data   RO         3190    .ARM.exidx          calculateattitude.o
-    0x08016784   0x080162c8   0x00000008   Data   RO          987    .ARM.exidx          usart.o
-    0x0801678c   0x080162c8   0x00000008   Data   RO          985    .ARM.exidx          usart.o
-    0x08016794   0x080162c8   0x00000008   Data   RO          983    .ARM.exidx          usart.o
-    0x0801679c   0x080162c8   0x00000008   Data   RO         2528    .ARM.exidx          action_matrix.o
-    0x080167a4   0x080162c8   0x00000008   Data   RO         9672    .ARM.exidx          cpp_ws.l(char.o)
-    0x080167ac   0x080162c8   0x00000008   Data   RO         9673    .ARM.exidx          cpp_ws.l(char.o)
-    0x080167b4   0x080162c8   0x00000008   Data   RO         9674    .ARM.exidx          cpp_ws.l(char.o)
-    0x080167bc   0x080162c8   0x00000008   Data   RO         9675    .ARM.exidx          cpp_ws.l(char.o)
-    0x080167c4   0x080162c8   0x00000008   Data   RO        10089    .ARM.exidx          cpp_ws.l(messages.o)
-    0x080167cc   0x080162c8   0x00000008   Data   RO        10090    .ARM.exidx          cpp_ws.l(messages.o)
-    0x080167d4   0x080162c8   0x00000008   Data   RO        10093    .ARM.exidx          cpp_ws.l(messages.o)
-    0x080167dc   0x080162c8   0x00000008   Data   RO        10092    .ARM.exidx          cpp_ws.l(messages.o)
-    0x080167e4   0x080162c8   0x00000008   Data   RO        10091    .ARM.exidx          cpp_ws.l(messages.o)
-    0x080167ec   0x080162c8   0x00000008   Data   RO         9804    .ARM.exidx          cpp_ws.l(char.o)
-    0x080167f4   0x080162c8   0x00000008   Data   RO         9795    .ARM.exidx          cpp_ws.l(char.o)
-    0x080167fc   0x080162c8   0x00000008   Data   RO         9944    .ARM.exidx          cpp_ws.l(locale.o)
-    0x08016804   0x080162c8   0x00000008   Data   RO         9945    .ARM.exidx          cpp_ws.l(locale.o)
-    0x0801680c   0x080162c8   0x00000008   Data   RO         9943    .ARM.exidx          cpp_ws.l(locale.o)
-    0x08016814   0x080162c8   0x00000008   Data   RO         9938    .ARM.exidx          cpp_ws.l(locale.o)
-    0x0801681c   0x080162c8   0x00000008   Data   RO         9373    .ARM.exidx          cpprt_w.l(type_info_eq.o)
-    0x08016824   0x080162c8   0x00000008   Data   RO         9668    .ARM.exidx          cpp_ws.l(char.o)
-    0x0801682c   0x080162c8   0x00000008   Data   RO         9670    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016834   0x080162c8   0x00000008   Data   RO         9671    .ARM.exidx          cpp_ws.l(char.o)
-    0x0801683c   0x080162c8   0x00000008   Data   RO         9195    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
-    0x08016844   0x080162c8   0x00000008   Data   RO         9192    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
-    0x0801684c   0x080162c8   0x00000008   Data   RO         9194    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
-    0x08016854   0x080162c8   0x00000008   Data   RO        10504    .ARM.exidx          cpp_ws.l(rwthrowproc_impl.o)
-    0x0801685c   0x080162c8   0x00000008   Data   RO        10392    .ARM.exidx          cpp_ws.l(rwthrowproc_impl.o)
-    0x08016864   0x080162c8   0x00000008   Data   RO        10393    .ARM.exidx          cpp_ws.l(rwthrowproc_impl.o)
-    0x0801686c   0x080162c8   0x00000008   Data   RO        10123    .ARM.exidx          cpp_ws.l(messages.o)
-    0x08016874   0x080162c8   0x00000008   Data   RO        10120    .ARM.exidx          cpp_ws.l(messages.o)
-    0x0801687c   0x080162c8   0x00000008   Data   RO         9664    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016884   0x080162c8   0x00000008   Data   RO         9665    .ARM.exidx          cpp_ws.l(char.o)
-    0x0801688c   0x080162c8   0x00000008   Data   RO         9666    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016894   0x080162c8   0x00000008   Data   RO         9667    .ARM.exidx          cpp_ws.l(char.o)
-    0x0801689c   0x080162c8   0x00000008   Data   RO        10015    .ARM.exidx          cpp_ws.l(locale.o)
-    0x080168a4   0x080162c8   0x00000008   Data   RO         9291    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
-    0x080168ac   0x080162c8   0x00000008   Data   RO         9939    .ARM.exidx          cpp_ws.l(locale.o)
-    0x080168b4   0x080162c8   0x00000008   Data   RO         9940    .ARM.exidx          cpp_ws.l(locale.o)
-    0x080168bc   0x080162c8   0x00000008   Data   RO         9929    .ARM.exidx          cpp_ws.l(locale.o)
-    0x080168c4   0x080162c8   0x00000008   Data   RO         9930    .ARM.exidx          cpp_ws.l(locale.o)
-    0x080168cc   0x080162c8   0x00000008   Data   RO         9941    .ARM.exidx          cpp_ws.l(locale.o)
-    0x080168d4   0x080162c8   0x00000008   Data   RO         9942    .ARM.exidx          cpp_ws.l(locale.o)
-    0x080168dc   0x080162c8   0x00000008   Data   RO         9931    .ARM.exidx          cpp_ws.l(locale.o)
-    0x080168e4   0x080162c8   0x00000008   Data   RO         9932    .ARM.exidx          cpp_ws.l(locale.o)
-    0x080168ec   0x080162c8   0x00000008   Data   RO        10049    .ARM.exidx          cpp_ws.l(locale.o)
-    0x080168f4   0x080162c8   0x00000008   Data   RO        10129    .ARM.exidx          cpp_ws.l(messages.o)
-    0x080168fc   0x080162c8   0x00000008   Data   RO         9933    .ARM.exidx          cpp_ws.l(locale.o)
-    0x08016904   0x080162c8   0x00000008   Data   RO         9934    .ARM.exidx          cpp_ws.l(locale.o)
-    0x0801690c   0x080162c8   0x00000008   Data   RO         9935    .ARM.exidx          cpp_ws.l(locale.o)
-    0x08016914   0x080162c8   0x00000008   Data   RO         9936    .ARM.exidx          cpp_ws.l(locale.o)
-    0x0801691c   0x080162c8   0x00000008   Data   RO         9244    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
-    0x08016924   0x080162c8   0x00000008   Data   RO        10024    .ARM.exidx          cpp_ws.l(locale.o)
-    0x0801692c   0x080162c8   0x00000008   Data   RO        10106    .ARM.exidx          cpp_ws.l(messages.o)
-    0x08016934   0x080162c8   0x00000008   Data   RO        10107    .ARM.exidx          cpp_ws.l(messages.o)
-    0x0801693c   0x080162c8   0x00000008   Data   RO         2389    .ARM.exidx          action_matrix.o
-    0x08016944   0x080162c8   0x00000008   Data   RO         2390    .ARM.exidx          action_matrix.o
-    0x0801694c   0x080162c8   0x00000008   Data   RO         2391    .ARM.exidx          action_matrix.o
-    0x08016954   0x080162c8   0x00000008   Data   RO         2392    .ARM.exidx          action_matrix.o
-    0x0801695c   0x080162c8   0x00000008   Data   RO         2384    .ARM.exidx          action_matrix.o
-    0x08016964   0x080162c8   0x00000008   Data   RO         2385    .ARM.exidx          action_matrix.o
-    0x0801696c   0x080162c8   0x00000008   Data   RO         2373    .ARM.exidx          action_matrix.o
-    0x08016974   0x080162c8   0x00000008   Data   RO         2374    .ARM.exidx          action_matrix.o
-    0x0801697c   0x080162c8   0x00000008   Data   RO         2375    .ARM.exidx          action_matrix.o
-    0x08016984   0x080162c8   0x00000008   Data   RO         2376    .ARM.exidx          action_matrix.o
-    0x0801698c   0x080162c8   0x00000008   Data   RO         2377    .ARM.exidx          action_matrix.o
-    0x08016994   0x080162c8   0x00000008   Data   RO         2378    .ARM.exidx          action_matrix.o
-    0x0801699c   0x080162c8   0x00000008   Data   RO         2379    .ARM.exidx          action_matrix.o
-    0x080169a4   0x080162c8   0x00000008   Data   RO         2380    .ARM.exidx          action_matrix.o
-    0x080169ac   0x080162c8   0x00000008   Data   RO         2381    .ARM.exidx          action_matrix.o
-    0x080169b4   0x080162c8   0x00000008   Data   RO         2382    .ARM.exidx          action_matrix.o
-    0x080169bc   0x080162c8   0x00000008   Data   RO         2383    .ARM.exidx          action_matrix.o
-    0x080169c4   0x080162c8   0x00000008   Data   RO         8713    .ARM.exidx          cpprt_w.l(array_new.o)
-    0x080169cc   0x080162c8   0x00000008   Data   RO         2386    .ARM.exidx          action_matrix.o
-    0x080169d4   0x080162c8   0x00000008   Data   RO         2387    .ARM.exidx          action_matrix.o
-    0x080169dc   0x080162c8   0x00000008   Data   RO         8720    .ARM.exidx          cpprt_w.l(new.o)
-    0x080169e4   0x080162c8   0x00000008   Data   RO         1209    .ARM.exidx          device.o
-    0x080169ec   0x080162c8   0x00000008   Data   RO         2365    .ARM.exidx          action_matrix.o
-    0x080169f4   0x080162c8   0x00000008   Data   RO         2366    .ARM.exidx          action_matrix.o
-    0x080169fc   0x080162c8   0x00000008   Data   RO         2369    .ARM.exidx          action_matrix.o
-    0x08016a04   0x080162c8   0x00000008   Data   RO         2370    .ARM.exidx          action_matrix.o
-    0x08016a0c   0x080162c8   0x00000008   Data   RO         2371    .ARM.exidx          action_matrix.o
-    0x08016a14   0x080162c8   0x00000008   Data   RO         2372    .ARM.exidx          action_matrix.o
-    0x08016a1c   0x080162c8   0x00000008   Data   RO        10136    .ARM.exidx          cpprt_w.l(array_new_general.o)
-    0x08016a24   0x080162c8   0x00000008   Data   RO        10137    .ARM.exidx          cpprt_w.l(array_new_general.o)
-    0x08016a2c   0x080162c8   0x00000008   Data   RO         8885    .ARM.exidx          cpprt_w.l(arm_exceptions_throw.o)
-    0x08016a34   0x080162c8   0x00000008   Data   RO         1170    .ARM.exidx          adxrs453.o
-    0x08016a3c   0x080162c8   0x00000008   Data   RO        10662    .ARM.exidx          cpprt_w.l(ARM_vec_cleanup.o)
-    0x08016a44   0x080162c8   0x00000008   Data   RO        10663    .ARM.exidx          cpprt_w.l(ARM_vec_cleanup.o)
-    0x08016a4c   0x080162c8   0x00000008   Data   RO        10668    .ARM.exidx          cpprt_w.l(ARM_vec_cleanup_rethrow.o)
-    0x08016a54   0x080162c8   0x00000008   Data   RO        10669    .ARM.exidx          cpprt_w.l(ARM_vec_cleanup_rethrow.o)
-    0x08016a5c   0x080162c8   0x00000008   Data   RO         8846    .ARM.exidx          cpprt_w.l(aeabi_vec_delete.o)
-    0x08016a64   0x080162c8   0x00000008   Data   RO         8847    .ARM.exidx          cpprt_w.l(aeabi_vec_delete.o)
-    0x08016a6c   0x080162c8   0x00000008   Data   RO        10195    .ARM.exidx          cpprt_w.l(aeabi_vec_dtor.o)
-    0x08016a74   0x080162c8   0x00000008   Data   RO        10196    .ARM.exidx          cpprt_w.l(aeabi_vec_dtor.o)
-    0x08016a7c   0x080162c8   0x00000008   Data   RO         8842    .ARM.exidx          cpprt_w.l(aeabi_vec_new_cookie.o)
-    0x08016a84   0x080162c8   0x00000008   Data   RO         8730    .ARM.exidx          cpprt_w.l(cxa_guard_acquire.o)
-    0x08016a8c   0x080162c8   0x00000008   Data   RO         9360    .ARM.exidx          cpprt_w.l(cxa_vec_new.o)
-    0x08016a94   0x080162c8   0x00000008   Data   RO         9315    .ARM.exidx          cpprt_w.l(rtti.o)
-    0x08016a9c   0x080162c8   0x00000008   Data   RO         9319    .ARM.exidx          cpprt_w.l(rtti.o)
-    0x08016aa4   0x080162c8   0x00000008   Data   RO         9951    .ARM.exidx          cpp_ws.l(locale.o)
-    0x08016aac   0x080162c8   0x00000008   Data   RO        10368    .ARM.exidx          cpp_ws.l(rwcats.o)
-    0x08016ab4   0x080162c8   0x00000008   Data   RO         1900    .ARM.exidx          icm20602.o
-    0x08016abc   0x080162c8   0x00000008   Data   RO         9676    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016ac4   0x080162c8   0x00000008   Data   RO          281    .ARM.exidx          pos.o
-    0x08016acc   0x080162c8   0x00000008   Data   RO          150    .ARM.exidx          user.o
-    0x08016ad4   0x080162c8   0x00000008   Data   RO          149    .ARM.exidx          user.o
-    0x08016adc   0x080162c8   0x00000008   Data   RO          283    .ARM.exidx          pos.o
-    0x08016ae4   0x080162c8   0x00000008   Data   RO          279    .ARM.exidx          pos.o
-    0x08016aec   0x080162c8   0x00000008   Data   RO          282    .ARM.exidx          pos.o
-    0x08016af4   0x080162c8   0x00000008   Data   RO          284    .ARM.exidx          pos.o
-    0x08016afc   0x080162c8   0x00000008   Data   RO         3097    .ARM.exidx          calculateattitude.o
-    0x08016b04   0x080162c8   0x00000008   Data   RO         3098    .ARM.exidx          calculateattitude.o
-    0x08016b0c   0x080162c8   0x00000008   Data   RO           10    .ARM.exidx          main.o
-    0x08016b14   0x080162c8   0x00000008   Data   RO         3102    .ARM.exidx          calculateattitude.o
-    0x08016b1c   0x080162c8   0x00000008   Data   RO          285    .ARM.exidx          pos.o
-    0x08016b24   0x080162c8   0x00000008   Data   RO         3099    .ARM.exidx          calculateattitude.o
-    0x08016b2c   0x080162c8   0x00000008   Data   RO         3100    .ARM.exidx          calculateattitude.o
-    0x08016b34   0x080162c8   0x00000008   Data   RO          148    .ARM.exidx          user.o
-    0x08016b3c   0x080162c8   0x00000008   Data   RO          884    .ARM.exidx          timer.o
-    0x08016b44   0x080162c8   0x00000008   Data   RO          431    .ARM.exidx          ahrs.o
-    0x08016b4c   0x080162c8   0x00000008   Data   RO          424    .ARM.exidx          ahrs.o
-    0x08016b54   0x080162c8   0x00000008   Data   RO         1470    .ARM.exidx          i3g4250d.o
-    0x08016b5c   0x080162c8   0x00000008   Data   RO         1399    .ARM.exidx          i3g4250d.o
-    0x08016b64   0x080162c8   0x00000008   Data   RO         1393    .ARM.exidx          i3g4250d.o
-    0x08016b6c   0x080162c8   0x00000008   Data   RO         9258    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
-    0x08016b74   0x080162c8   0x00000008   Data   RO         9259    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
-    0x08016b7c   0x080162c8   0x00000008   Data   RO        10027    .ARM.exidx          cpp_ws.l(locale.o)
-    0x08016b84   0x080162c8   0x00000008   Data   RO        10039    .ARM.exidx          cpp_ws.l(locale.o)
-    0x08016b8c   0x080162c8   0x00000008   Data   RO        10043    .ARM.exidx          cpp_ws.l(locale.o)
-    0x08016b94   0x080162c8   0x00000008   Data   RO        10112    .ARM.exidx          cpp_ws.l(messages.o)
-    0x08016b9c   0x080162c8   0x00000008   Data   RO        10113    .ARM.exidx          cpp_ws.l(messages.o)
-    0x08016ba4   0x080162c8   0x00000008   Data   RO        10117    .ARM.exidx          cpp_ws.l(messages.o)
-    0x08016bac   0x080162c8   0x00000008   Data   RO         1457    .ARM.exidx          i3g4250d.o
-    0x08016bb4   0x080162c8   0x00000008   Data   RO         1646    .ARM.exidx          i3g4250d.o
-    0x08016bbc   0x080162c8   0x00000008   Data   RO         1387    .ARM.exidx          i3g4250d.o
-    0x08016bc4   0x080162c8   0x00000008   Data   RO         1581    .ARM.exidx          i3g4250d.o
-    0x08016bcc   0x080162c8   0x00000008   Data   RO         1411    .ARM.exidx          i3g4250d.o
-    0x08016bd4   0x080162c8   0x00000008   Data   RO         1450    .ARM.exidx          i3g4250d.o
-    0x08016bdc   0x080162c8   0x00000008   Data   RO         1451    .ARM.exidx          i3g4250d.o
-    0x08016be4   0x080162c8   0x00000008   Data   RO         1381    .ARM.exidx          i3g4250d.o
-    0x08016bec   0x080162c8   0x00000008   Data   RO         1527    .ARM.exidx          i3g4250d.o
-    0x08016bf4   0x080162c8   0x00000008   Data   RO         1417    .ARM.exidx          i3g4250d.o
-    0x08016bfc   0x080162c8   0x00000008   Data   RO         1429    .ARM.exidx          i3g4250d.o
-    0x08016c04   0x080162c8   0x00000008   Data   RO         1476    .ARM.exidx          i3g4250d.o
-    0x08016c0c   0x080162c8   0x00000008   Data   RO         1423    .ARM.exidx          i3g4250d.o
-    0x08016c14   0x080162c8   0x00000008   Data   RO         1464    .ARM.exidx          i3g4250d.o
-    0x08016c1c   0x080162c8   0x00000008   Data   RO         1659    .ARM.exidx          i3g4250d.o
-    0x08016c24   0x080162c8   0x00000008   Data   RO         1436    .ARM.exidx          i3g4250d.o
-    0x08016c2c   0x080162c8   0x00000008   Data   RO         1587    .ARM.exidx          i3g4250d.o
-    0x08016c34   0x080162c8   0x00000008   Data   RO         1593    .ARM.exidx          i3g4250d.o
-    0x08016c3c   0x080162c8   0x00000008   Data   RO         1488    .ARM.exidx          i3g4250d.o
-    0x08016c44   0x080162c8   0x00000008   Data   RO         1608    .ARM.exidx          i3g4250d.o
-    0x08016c4c   0x080162c8   0x00000008   Data   RO         9730    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016c54   0x080162c8   0x00000008   Data   RO         1539    .ARM.exidx          i3g4250d.o
-    0x08016c5c   0x080162c8   0x00000008   Data   RO         1638    .ARM.exidx          i3g4250d.o
-    0x08016c64   0x080162c8   0x00000008   Data   RO         2910    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016c6c   0x080162c8   0x00000008   Data   RO         2898    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016c74   0x080162c8   0x00000008   Data   RO         9734    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016c7c   0x080162c8   0x00000008   Data   RO         9739    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016c84   0x080162c8   0x00000008   Data   RO         9740    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016c8c   0x080162c8   0x00000008   Data   RO         9746    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016c94   0x080162c8   0x00000008   Data   RO         9233    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
-    0x08016c9c   0x080162c8   0x00000008   Data   RO         9234    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
-    0x08016ca4   0x080162c8   0x00000008   Data   RO         2868    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016cac   0x080162c8   0x00000008   Data   RO         2886    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016cb4   0x080162c8   0x00000008   Data   RO         2916    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016cbc   0x080162c8   0x00000008   Data   RO         2783    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016cc4   0x080162c8   0x00000008   Data   RO         2784    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016ccc   0x080162c8   0x00000008   Data   RO         1509    .ARM.exidx          i3g4250d.o
-    0x08016cd4   0x080162c8   0x00000008   Data   RO         1503    .ARM.exidx          i3g4250d.o
-    0x08016cdc   0x080162c8   0x00000008   Data   RO         9996    .ARM.exidx          cpp_ws.l(locale.o)
-    0x08016ce4   0x080162c8   0x00000008   Data   RO         9724    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016cec   0x080162c8   0x00000008   Data   RO        10036    .ARM.exidx          cpp_ws.l(locale.o)
-    0x08016cf4   0x080162c8   0x00000008   Data   RO         9718    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016cfc   0x080162c8   0x00000008   Data   RO         9705    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016d04   0x080162c8   0x00000008   Data   RO         9714    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016d0c   0x080162c8   0x00000008   Data   RO         9999    .ARM.exidx          cpp_ws.l(locale.o)
-    0x08016d14   0x080162c8   0x00000008   Data   RO         9711    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016d1c   0x080162c8   0x00000008   Data   RO        10033    .ARM.exidx          cpp_ws.l(locale.o)
-    0x08016d24   0x080162c8   0x00000008   Data   RO         9708    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016d2c   0x080162c8   0x00000008   Data   RO         9789    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016d34   0x080162c8   0x00000008   Data   RO        10005    .ARM.exidx          cpp_ws.l(locale.o)
-    0x08016d3c   0x080162c8   0x00000008   Data   RO         1614    .ARM.exidx          i3g4250d.o
-    0x08016d44   0x080162c8   0x00000008   Data   RO         1482    .ARM.exidx          i3g4250d.o
-    0x08016d4c   0x080162c8   0x00000008   Data   RO         1626    .ARM.exidx          i3g4250d.o
-    0x08016d54   0x080162c8   0x00000008   Data   RO         2807    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016d5c   0x080162c8   0x00000008   Data   RO         2808    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016d64   0x080162c8   0x00000008   Data   RO         2816    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016d6c   0x080162c8   0x00000008   Data   RO         2817    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016d74   0x080162c8   0x00000008   Data   RO         2840    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016d7c   0x080162c8   0x00000008   Data   RO         2841    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016d84   0x080162c8   0x00000008   Data   RO         2775    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016d8c   0x080162c8   0x00000008   Data   RO         2855    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016d94   0x080162c8   0x00000008   Data   RO         2856    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016d9c   0x080162c8   0x00000008   Data   RO         2940    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016da4   0x080162c8   0x00000008   Data   RO         9760    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016dac   0x080162c8   0x00000008   Data   RO         9761    .ARM.exidx          cpp_ws.l(char.o)
-    0x08016db4   0x080162c8   0x00000008   Data   RO         2792    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016dbc   0x080162c8   0x00000008   Data   RO         2793    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016dc4   0x080162c8   0x00000008   Data   RO         2831    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016dcc   0x080162c8   0x00000008   Data   RO         2832    .ARM.exidx          adaptiveunscentedkalmanfilter.o
-    0x08016dd4   0x080162c8   0x00000008   Data   RO         2847    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016534   0x080162c8   0x00000008   Data   RO          987    .ARM.exidx          usart.o
+    0x0801653c   0x080162c8   0x00000008   Data   RO          985    .ARM.exidx          usart.o
+    0x08016544   0x080162c8   0x00000008   Data   RO          983    .ARM.exidx          usart.o
+    0x0801654c   0x080162c8   0x00000008   Data   RO         1898    .ARM.exidx          icm20602.o
+    0x08016554   0x080162c8   0x00000008   Data   RO         1894    .ARM.exidx          icm20602.o
+    0x0801655c   0x080162c8   0x00000008   Data   RO         1895    .ARM.exidx          icm20602.o
+    0x08016564   0x080162c8   0x00000008   Data   RO         1896    .ARM.exidx          icm20602.o
+    0x0801656c   0x080162c8   0x00000008   Data   RO         1897    .ARM.exidx          icm20602.o
+    0x08016574   0x080162c8   0x00000008   Data   RO         1893    .ARM.exidx          icm20602.o
+    0x0801657c   0x080162c8   0x00000008   Data   RO         1959    .ARM.exidx          icm20602.o
+    0x08016584   0x080162c8   0x00000008   Data   RO         1960    .ARM.exidx          icm20602.o
+    0x0801658c   0x080162c8   0x00000008   Data   RO         2364    .ARM.exidx          action_matrix.o
+    0x08016594   0x080162c8   0x00000008   Data   RO         2361    .ARM.exidx          action_matrix.o
+    0x0801659c   0x080162c8   0x00000008   Data   RO         2388    .ARM.exidx          action_matrix.o
+    0x080165a4   0x080162c8   0x00000008   Data   RO         2395    .ARM.exidx          action_matrix.o
+    0x080165ac   0x080162c8   0x00000008   Data   RO         1087    .ARM.exidx          adxrs453.o
+    0x080165b4   0x080162c8   0x00000008   Data   RO         1155    .ARM.exidx          adxrs453.o
+    0x080165bc   0x080162c8   0x00000008   Data   RO         1323    .ARM.exidx          i3g4250d.o
+    0x080165c4   0x080162c8   0x00000008   Data   RO         1324    .ARM.exidx          i3g4250d.o
+    0x080165cc   0x080162c8   0x00000008   Data   RO            9    .ARM.exidx          main.o
+    0x080165d4   0x080162c8   0x00000008   Data   RO         9317    .ARM.exidx          cpprt_w.l(rtti.o)
+    0x080165dc   0x080162c8   0x00000008   Data   RO         9318    .ARM.exidx          cpprt_w.l(rtti.o)
+    0x080165e4   0x080162c8   0x00000008   Data   RO         9313    .ARM.exidx          cpprt_w.l(rtti.o)
+    0x080165ec   0x080162c8   0x00000008   Data   RO         9316    .ARM.exidx          cpprt_w.l(rtti.o)
+    0x080165f4   0x080162c8   0x00000008   Data   RO         9320    .ARM.exidx          cpprt_w.l(rtti.o)
+    0x080165fc   0x080162c8   0x00000008   Data   RO         9314    .ARM.exidx          cpprt_w.l(rtti.o)
+    0x08016604   0x080162c8   0x00000008   Data   RO          146    .ARM.exidx          user.o
+    0x0801660c   0x080162c8   0x00000008   Data   RO         1891    .ARM.exidx          icm20602.o
+    0x08016614   0x080162c8   0x00000008   Data   RO         9189    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
+    0x0801661c   0x080162c8   0x00000008   Data   RO         9190    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
+    0x08016624   0x080162c8   0x00000008   Data   RO         9191    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
+    0x0801662c   0x080162c8   0x00000008   Data   RO         3093    .ARM.exidx          calculateattitude.o
+    0x08016634   0x080162c8   0x00000008   Data   RO         3094    .ARM.exidx          calculateattitude.o
+    0x0801663c   0x080162c8   0x00000008   Data   RO         3095    .ARM.exidx          calculateattitude.o
+    0x08016644   0x080162c8   0x00000008   Data   RO         3096    .ARM.exidx          calculateattitude.o
+    0x0801664c   0x080162c8   0x00000008   Data   RO         3091    .ARM.exidx          calculateattitude.o
+    0x08016654   0x080162c8   0x00000008   Data   RO         3092    .ARM.exidx          calculateattitude.o
+    0x0801665c   0x080162c8   0x00000008   Data   RO         2682    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016664   0x080162c8   0x00000008   Data   RO         2683    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x0801666c   0x080162c8   0x00000008   Data   RO         2698    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016674   0x080162c8   0x00000008   Data   RO         2686    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x0801667c   0x080162c8   0x00000008   Data   RO         2687    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016684   0x080162c8   0x00000008   Data   RO         2684    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x0801668c   0x080162c8   0x00000008   Data   RO         2685    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016694   0x080162c8   0x00000008   Data   RO         2688    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x0801669c   0x080162c8   0x00000008   Data   RO         2689    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x080166a4   0x080162c8   0x00000008   Data   RO         2690    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x080166ac   0x080162c8   0x00000008   Data   RO         2691    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x080166b4   0x080162c8   0x00000008   Data   RO         2694    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x080166bc   0x080162c8   0x00000008   Data   RO         2695    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x080166c4   0x080162c8   0x00000008   Data   RO         2692    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x080166cc   0x080162c8   0x00000008   Data   RO         2693    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x080166d4   0x080162c8   0x00000008   Data   RO         2696    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x080166dc   0x080162c8   0x00000008   Data   RO         2697    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x080166e4   0x080162c8   0x00000008   Data   RO         2699    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x080166ec   0x080162c8   0x00000008   Data   RO         2700    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x080166f4   0x080162c8   0x00000008   Data   RO         9193    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
+    0x080166fc   0x080162c8   0x00000008   Data   RO         8559    .ARM.exidx          cpp_ws.l(rwalloc.o)
+    0x08016704   0x080162c8   0x00000008   Data   RO         8560    .ARM.exidx          cpp_ws.l(rwalloc.o)
+    0x0801670c   0x080162c8   0x00000008   Data   RO        10619    .ARM.exidx          cpp_ws.l(vendor.o)
+    0x08016714   0x080162c8   0x00000008   Data   RO        10620    .ARM.exidx          cpp_ws.l(vendor.o)
+    0x0801671c   0x080162c8   0x00000008   Data   RO        10010    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016724   0x080162c8   0x00000008   Data   RO        10011    .ARM.exidx          cpp_ws.l(locale.o)
+    0x0801672c   0x080162c8   0x00000008   Data   RO        10020    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016734   0x080162c8   0x00000008   Data   RO        10021    .ARM.exidx          cpp_ws.l(locale.o)
+    0x0801673c   0x080162c8   0x00000008   Data   RO        10383    .ARM.exidx          cpp_ws.l(rwthrowproc_impl.o)
+    0x08016744   0x080162c8   0x00000008   Data   RO        10384    .ARM.exidx          cpp_ws.l(rwthrowproc_impl.o)
+    0x0801674c   0x080162c8   0x00000008   Data   RO         9948    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016754   0x080162c8   0x00000008   Data   RO         9825    .ARM.exidx          cpp_ws.l(char.o)
+    0x0801675c   0x080162c8   0x00000008   Data   RO         9949    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016764   0x080162c8   0x00000008   Data   RO         9950    .ARM.exidx          cpp_ws.l(locale.o)
+    0x0801676c   0x080162c8   0x00000008   Data   RO         3171    .ARM.exidx          calculateattitude.o
+    0x08016774   0x080162c8   0x00000008   Data   RO         3172    .ARM.exidx          calculateattitude.o
+    0x0801677c   0x080162c8   0x00000008   Data   RO         3180    .ARM.exidx          calculateattitude.o
+    0x08016784   0x080162c8   0x00000008   Data   RO         3181    .ARM.exidx          calculateattitude.o
+    0x0801678c   0x080162c8   0x00000008   Data   RO         3189    .ARM.exidx          calculateattitude.o
+    0x08016794   0x080162c8   0x00000008   Data   RO         3190    .ARM.exidx          calculateattitude.o
+    0x0801679c   0x080162c8   0x00000008   Data   RO         9672    .ARM.exidx          cpp_ws.l(char.o)
+    0x080167a4   0x080162c8   0x00000008   Data   RO         9673    .ARM.exidx          cpp_ws.l(char.o)
+    0x080167ac   0x080162c8   0x00000008   Data   RO         9674    .ARM.exidx          cpp_ws.l(char.o)
+    0x080167b4   0x080162c8   0x00000008   Data   RO         9675    .ARM.exidx          cpp_ws.l(char.o)
+    0x080167bc   0x080162c8   0x00000008   Data   RO        10089    .ARM.exidx          cpp_ws.l(messages.o)
+    0x080167c4   0x080162c8   0x00000008   Data   RO        10090    .ARM.exidx          cpp_ws.l(messages.o)
+    0x080167cc   0x080162c8   0x00000008   Data   RO        10093    .ARM.exidx          cpp_ws.l(messages.o)
+    0x080167d4   0x080162c8   0x00000008   Data   RO        10092    .ARM.exidx          cpp_ws.l(messages.o)
+    0x080167dc   0x080162c8   0x00000008   Data   RO        10091    .ARM.exidx          cpp_ws.l(messages.o)
+    0x080167e4   0x080162c8   0x00000008   Data   RO         9804    .ARM.exidx          cpp_ws.l(char.o)
+    0x080167ec   0x080162c8   0x00000008   Data   RO         9795    .ARM.exidx          cpp_ws.l(char.o)
+    0x080167f4   0x080162c8   0x00000008   Data   RO         9944    .ARM.exidx          cpp_ws.l(locale.o)
+    0x080167fc   0x080162c8   0x00000008   Data   RO         9945    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016804   0x080162c8   0x00000008   Data   RO         9943    .ARM.exidx          cpp_ws.l(locale.o)
+    0x0801680c   0x080162c8   0x00000008   Data   RO         9938    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016814   0x080162c8   0x00000008   Data   RO         9373    .ARM.exidx          cpprt_w.l(type_info_eq.o)
+    0x0801681c   0x080162c8   0x00000008   Data   RO         9668    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016824   0x080162c8   0x00000008   Data   RO         9670    .ARM.exidx          cpp_ws.l(char.o)
+    0x0801682c   0x080162c8   0x00000008   Data   RO         9671    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016834   0x080162c8   0x00000008   Data   RO         9195    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
+    0x0801683c   0x080162c8   0x00000008   Data   RO         9192    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
+    0x08016844   0x080162c8   0x00000008   Data   RO         9194    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
+    0x0801684c   0x080162c8   0x00000008   Data   RO        10504    .ARM.exidx          cpp_ws.l(rwthrowproc_impl.o)
+    0x08016854   0x080162c8   0x00000008   Data   RO        10392    .ARM.exidx          cpp_ws.l(rwthrowproc_impl.o)
+    0x0801685c   0x080162c8   0x00000008   Data   RO        10393    .ARM.exidx          cpp_ws.l(rwthrowproc_impl.o)
+    0x08016864   0x080162c8   0x00000008   Data   RO        10123    .ARM.exidx          cpp_ws.l(messages.o)
+    0x0801686c   0x080162c8   0x00000008   Data   RO        10120    .ARM.exidx          cpp_ws.l(messages.o)
+    0x08016874   0x080162c8   0x00000008   Data   RO         9664    .ARM.exidx          cpp_ws.l(char.o)
+    0x0801687c   0x080162c8   0x00000008   Data   RO         9665    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016884   0x080162c8   0x00000008   Data   RO         9666    .ARM.exidx          cpp_ws.l(char.o)
+    0x0801688c   0x080162c8   0x00000008   Data   RO         9667    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016894   0x080162c8   0x00000008   Data   RO        10015    .ARM.exidx          cpp_ws.l(locale.o)
+    0x0801689c   0x080162c8   0x00000008   Data   RO         9291    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
+    0x080168a4   0x080162c8   0x00000008   Data   RO         9939    .ARM.exidx          cpp_ws.l(locale.o)
+    0x080168ac   0x080162c8   0x00000008   Data   RO         9940    .ARM.exidx          cpp_ws.l(locale.o)
+    0x080168b4   0x080162c8   0x00000008   Data   RO         9929    .ARM.exidx          cpp_ws.l(locale.o)
+    0x080168bc   0x080162c8   0x00000008   Data   RO         9930    .ARM.exidx          cpp_ws.l(locale.o)
+    0x080168c4   0x080162c8   0x00000008   Data   RO         9941    .ARM.exidx          cpp_ws.l(locale.o)
+    0x080168cc   0x080162c8   0x00000008   Data   RO         9942    .ARM.exidx          cpp_ws.l(locale.o)
+    0x080168d4   0x080162c8   0x00000008   Data   RO         9931    .ARM.exidx          cpp_ws.l(locale.o)
+    0x080168dc   0x080162c8   0x00000008   Data   RO         9932    .ARM.exidx          cpp_ws.l(locale.o)
+    0x080168e4   0x080162c8   0x00000008   Data   RO        10049    .ARM.exidx          cpp_ws.l(locale.o)
+    0x080168ec   0x080162c8   0x00000008   Data   RO        10129    .ARM.exidx          cpp_ws.l(messages.o)
+    0x080168f4   0x080162c8   0x00000008   Data   RO         9933    .ARM.exidx          cpp_ws.l(locale.o)
+    0x080168fc   0x080162c8   0x00000008   Data   RO         9934    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016904   0x080162c8   0x00000008   Data   RO         9935    .ARM.exidx          cpp_ws.l(locale.o)
+    0x0801690c   0x080162c8   0x00000008   Data   RO         9936    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016914   0x080162c8   0x00000008   Data   RO         9244    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
+    0x0801691c   0x080162c8   0x00000008   Data   RO        10024    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016924   0x080162c8   0x00000008   Data   RO        10106    .ARM.exidx          cpp_ws.l(messages.o)
+    0x0801692c   0x080162c8   0x00000008   Data   RO        10107    .ARM.exidx          cpp_ws.l(messages.o)
+    0x08016934   0x080162c8   0x00000008   Data   RO         2389    .ARM.exidx          action_matrix.o
+    0x0801693c   0x080162c8   0x00000008   Data   RO         2390    .ARM.exidx          action_matrix.o
+    0x08016944   0x080162c8   0x00000008   Data   RO         2391    .ARM.exidx          action_matrix.o
+    0x0801694c   0x080162c8   0x00000008   Data   RO         2392    .ARM.exidx          action_matrix.o
+    0x08016954   0x080162c8   0x00000008   Data   RO         2384    .ARM.exidx          action_matrix.o
+    0x0801695c   0x080162c8   0x00000008   Data   RO         2385    .ARM.exidx          action_matrix.o
+    0x08016964   0x080162c8   0x00000008   Data   RO         2373    .ARM.exidx          action_matrix.o
+    0x0801696c   0x080162c8   0x00000008   Data   RO         2374    .ARM.exidx          action_matrix.o
+    0x08016974   0x080162c8   0x00000008   Data   RO         2375    .ARM.exidx          action_matrix.o
+    0x0801697c   0x080162c8   0x00000008   Data   RO         2376    .ARM.exidx          action_matrix.o
+    0x08016984   0x080162c8   0x00000008   Data   RO         2377    .ARM.exidx          action_matrix.o
+    0x0801698c   0x080162c8   0x00000008   Data   RO         2378    .ARM.exidx          action_matrix.o
+    0x08016994   0x080162c8   0x00000008   Data   RO         2379    .ARM.exidx          action_matrix.o
+    0x0801699c   0x080162c8   0x00000008   Data   RO         2380    .ARM.exidx          action_matrix.o
+    0x080169a4   0x080162c8   0x00000008   Data   RO         2381    .ARM.exidx          action_matrix.o
+    0x080169ac   0x080162c8   0x00000008   Data   RO         2382    .ARM.exidx          action_matrix.o
+    0x080169b4   0x080162c8   0x00000008   Data   RO         2383    .ARM.exidx          action_matrix.o
+    0x080169bc   0x080162c8   0x00000008   Data   RO         8713    .ARM.exidx          cpprt_w.l(array_new.o)
+    0x080169c4   0x080162c8   0x00000008   Data   RO         2386    .ARM.exidx          action_matrix.o
+    0x080169cc   0x080162c8   0x00000008   Data   RO         2387    .ARM.exidx          action_matrix.o
+    0x080169d4   0x080162c8   0x00000008   Data   RO         8720    .ARM.exidx          cpprt_w.l(new.o)
+    0x080169dc   0x080162c8   0x00000008   Data   RO         1209    .ARM.exidx          device.o
+    0x080169e4   0x080162c8   0x00000008   Data   RO         2365    .ARM.exidx          action_matrix.o
+    0x080169ec   0x080162c8   0x00000008   Data   RO         2366    .ARM.exidx          action_matrix.o
+    0x080169f4   0x080162c8   0x00000008   Data   RO         2369    .ARM.exidx          action_matrix.o
+    0x080169fc   0x080162c8   0x00000008   Data   RO         2370    .ARM.exidx          action_matrix.o
+    0x08016a04   0x080162c8   0x00000008   Data   RO         2371    .ARM.exidx          action_matrix.o
+    0x08016a0c   0x080162c8   0x00000008   Data   RO         2372    .ARM.exidx          action_matrix.o
+    0x08016a14   0x080162c8   0x00000008   Data   RO        10136    .ARM.exidx          cpprt_w.l(array_new_general.o)
+    0x08016a1c   0x080162c8   0x00000008   Data   RO        10137    .ARM.exidx          cpprt_w.l(array_new_general.o)
+    0x08016a24   0x080162c8   0x00000008   Data   RO         8885    .ARM.exidx          cpprt_w.l(arm_exceptions_throw.o)
+    0x08016a2c   0x080162c8   0x00000008   Data   RO         1170    .ARM.exidx          adxrs453.o
+    0x08016a34   0x080162c8   0x00000008   Data   RO        10662    .ARM.exidx          cpprt_w.l(ARM_vec_cleanup.o)
+    0x08016a3c   0x080162c8   0x00000008   Data   RO        10663    .ARM.exidx          cpprt_w.l(ARM_vec_cleanup.o)
+    0x08016a44   0x080162c8   0x00000008   Data   RO        10668    .ARM.exidx          cpprt_w.l(ARM_vec_cleanup_rethrow.o)
+    0x08016a4c   0x080162c8   0x00000008   Data   RO        10669    .ARM.exidx          cpprt_w.l(ARM_vec_cleanup_rethrow.o)
+    0x08016a54   0x080162c8   0x00000008   Data   RO         8846    .ARM.exidx          cpprt_w.l(aeabi_vec_delete.o)
+    0x08016a5c   0x080162c8   0x00000008   Data   RO         8847    .ARM.exidx          cpprt_w.l(aeabi_vec_delete.o)
+    0x08016a64   0x080162c8   0x00000008   Data   RO        10195    .ARM.exidx          cpprt_w.l(aeabi_vec_dtor.o)
+    0x08016a6c   0x080162c8   0x00000008   Data   RO        10196    .ARM.exidx          cpprt_w.l(aeabi_vec_dtor.o)
+    0x08016a74   0x080162c8   0x00000008   Data   RO         8842    .ARM.exidx          cpprt_w.l(aeabi_vec_new_cookie.o)
+    0x08016a7c   0x080162c8   0x00000008   Data   RO         8730    .ARM.exidx          cpprt_w.l(cxa_guard_acquire.o)
+    0x08016a84   0x080162c8   0x00000008   Data   RO         9360    .ARM.exidx          cpprt_w.l(cxa_vec_new.o)
+    0x08016a8c   0x080162c8   0x00000008   Data   RO         9315    .ARM.exidx          cpprt_w.l(rtti.o)
+    0x08016a94   0x080162c8   0x00000008   Data   RO         9319    .ARM.exidx          cpprt_w.l(rtti.o)
+    0x08016a9c   0x080162c8   0x00000008   Data   RO         9951    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016aa4   0x080162c8   0x00000008   Data   RO        10368    .ARM.exidx          cpp_ws.l(rwcats.o)
+    0x08016aac   0x080162c8   0x00000008   Data   RO         1900    .ARM.exidx          icm20602.o
+    0x08016ab4   0x080162c8   0x00000008   Data   RO         9676    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016abc   0x080162c8   0x00000008   Data   RO          281    .ARM.exidx          pos.o
+    0x08016ac4   0x080162c8   0x00000008   Data   RO          150    .ARM.exidx          user.o
+    0x08016acc   0x080162c8   0x00000008   Data   RO          149    .ARM.exidx          user.o
+    0x08016ad4   0x080162c8   0x00000008   Data   RO          283    .ARM.exidx          pos.o
+    0x08016adc   0x080162c8   0x00000008   Data   RO          279    .ARM.exidx          pos.o
+    0x08016ae4   0x080162c8   0x00000008   Data   RO          282    .ARM.exidx          pos.o
+    0x08016aec   0x080162c8   0x00000008   Data   RO          284    .ARM.exidx          pos.o
+    0x08016af4   0x080162c8   0x00000008   Data   RO         3097    .ARM.exidx          calculateattitude.o
+    0x08016afc   0x080162c8   0x00000008   Data   RO         3098    .ARM.exidx          calculateattitude.o
+    0x08016b04   0x080162c8   0x00000008   Data   RO           10    .ARM.exidx          main.o
+    0x08016b0c   0x080162c8   0x00000008   Data   RO         3102    .ARM.exidx          calculateattitude.o
+    0x08016b14   0x080162c8   0x00000008   Data   RO          285    .ARM.exidx          pos.o
+    0x08016b1c   0x080162c8   0x00000008   Data   RO         3099    .ARM.exidx          calculateattitude.o
+    0x08016b24   0x080162c8   0x00000008   Data   RO         3100    .ARM.exidx          calculateattitude.o
+    0x08016b2c   0x080162c8   0x00000008   Data   RO          148    .ARM.exidx          user.o
+    0x08016b34   0x080162c8   0x00000008   Data   RO          884    .ARM.exidx          timer.o
+    0x08016b3c   0x080162c8   0x00000008   Data   RO          431    .ARM.exidx          ahrs.o
+    0x08016b44   0x080162c8   0x00000008   Data   RO          424    .ARM.exidx          ahrs.o
+    0x08016b4c   0x080162c8   0x00000008   Data   RO         1470    .ARM.exidx          i3g4250d.o
+    0x08016b54   0x080162c8   0x00000008   Data   RO         1399    .ARM.exidx          i3g4250d.o
+    0x08016b5c   0x080162c8   0x00000008   Data   RO         1393    .ARM.exidx          i3g4250d.o
+    0x08016b64   0x080162c8   0x00000008   Data   RO         9258    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
+    0x08016b6c   0x080162c8   0x00000008   Data   RO         9259    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
+    0x08016b74   0x080162c8   0x00000008   Data   RO        10027    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016b7c   0x080162c8   0x00000008   Data   RO        10039    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016b84   0x080162c8   0x00000008   Data   RO        10043    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016b8c   0x080162c8   0x00000008   Data   RO        10112    .ARM.exidx          cpp_ws.l(messages.o)
+    0x08016b94   0x080162c8   0x00000008   Data   RO        10113    .ARM.exidx          cpp_ws.l(messages.o)
+    0x08016b9c   0x080162c8   0x00000008   Data   RO        10117    .ARM.exidx          cpp_ws.l(messages.o)
+    0x08016ba4   0x080162c8   0x00000008   Data   RO         1457    .ARM.exidx          i3g4250d.o
+    0x08016bac   0x080162c8   0x00000008   Data   RO         1646    .ARM.exidx          i3g4250d.o
+    0x08016bb4   0x080162c8   0x00000008   Data   RO         1387    .ARM.exidx          i3g4250d.o
+    0x08016bbc   0x080162c8   0x00000008   Data   RO         1581    .ARM.exidx          i3g4250d.o
+    0x08016bc4   0x080162c8   0x00000008   Data   RO         1411    .ARM.exidx          i3g4250d.o
+    0x08016bcc   0x080162c8   0x00000008   Data   RO         1450    .ARM.exidx          i3g4250d.o
+    0x08016bd4   0x080162c8   0x00000008   Data   RO         1451    .ARM.exidx          i3g4250d.o
+    0x08016bdc   0x080162c8   0x00000008   Data   RO         1381    .ARM.exidx          i3g4250d.o
+    0x08016be4   0x080162c8   0x00000008   Data   RO         1527    .ARM.exidx          i3g4250d.o
+    0x08016bec   0x080162c8   0x00000008   Data   RO         1417    .ARM.exidx          i3g4250d.o
+    0x08016bf4   0x080162c8   0x00000008   Data   RO         1429    .ARM.exidx          i3g4250d.o
+    0x08016bfc   0x080162c8   0x00000008   Data   RO         1476    .ARM.exidx          i3g4250d.o
+    0x08016c04   0x080162c8   0x00000008   Data   RO         1423    .ARM.exidx          i3g4250d.o
+    0x08016c0c   0x080162c8   0x00000008   Data   RO         1464    .ARM.exidx          i3g4250d.o
+    0x08016c14   0x080162c8   0x00000008   Data   RO         1659    .ARM.exidx          i3g4250d.o
+    0x08016c1c   0x080162c8   0x00000008   Data   RO         1436    .ARM.exidx          i3g4250d.o
+    0x08016c24   0x080162c8   0x00000008   Data   RO         1587    .ARM.exidx          i3g4250d.o
+    0x08016c2c   0x080162c8   0x00000008   Data   RO         1593    .ARM.exidx          i3g4250d.o
+    0x08016c34   0x080162c8   0x00000008   Data   RO         1488    .ARM.exidx          i3g4250d.o
+    0x08016c3c   0x080162c8   0x00000008   Data   RO         1608    .ARM.exidx          i3g4250d.o
+    0x08016c44   0x080162c8   0x00000008   Data   RO         9730    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016c4c   0x080162c8   0x00000008   Data   RO         1539    .ARM.exidx          i3g4250d.o
+    0x08016c54   0x080162c8   0x00000008   Data   RO         1638    .ARM.exidx          i3g4250d.o
+    0x08016c5c   0x080162c8   0x00000008   Data   RO         2910    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016c64   0x080162c8   0x00000008   Data   RO         2898    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016c6c   0x080162c8   0x00000008   Data   RO         9734    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016c74   0x080162c8   0x00000008   Data   RO         9739    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016c7c   0x080162c8   0x00000008   Data   RO         9740    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016c84   0x080162c8   0x00000008   Data   RO         9746    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016c8c   0x080162c8   0x00000008   Data   RO         9233    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
+    0x08016c94   0x080162c8   0x00000008   Data   RO         9234    .ARM.exidx          cpp_ws.l(rwstdexcept.o)
+    0x08016c9c   0x080162c8   0x00000008   Data   RO         2868    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016ca4   0x080162c8   0x00000008   Data   RO         2886    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016cac   0x080162c8   0x00000008   Data   RO         2916    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016cb4   0x080162c8   0x00000008   Data   RO         2783    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016cbc   0x080162c8   0x00000008   Data   RO         2784    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016cc4   0x080162c8   0x00000008   Data   RO         1509    .ARM.exidx          i3g4250d.o
+    0x08016ccc   0x080162c8   0x00000008   Data   RO         1503    .ARM.exidx          i3g4250d.o
+    0x08016cd4   0x080162c8   0x00000008   Data   RO         9996    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016cdc   0x080162c8   0x00000008   Data   RO         9724    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016ce4   0x080162c8   0x00000008   Data   RO        10036    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016cec   0x080162c8   0x00000008   Data   RO         9718    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016cf4   0x080162c8   0x00000008   Data   RO         9705    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016cfc   0x080162c8   0x00000008   Data   RO         9714    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016d04   0x080162c8   0x00000008   Data   RO         9999    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016d0c   0x080162c8   0x00000008   Data   RO         9711    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016d14   0x080162c8   0x00000008   Data   RO        10033    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016d1c   0x080162c8   0x00000008   Data   RO         9708    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016d24   0x080162c8   0x00000008   Data   RO         9789    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016d2c   0x080162c8   0x00000008   Data   RO        10005    .ARM.exidx          cpp_ws.l(locale.o)
+    0x08016d34   0x080162c8   0x00000008   Data   RO         1614    .ARM.exidx          i3g4250d.o
+    0x08016d3c   0x080162c8   0x00000008   Data   RO         1482    .ARM.exidx          i3g4250d.o
+    0x08016d44   0x080162c8   0x00000008   Data   RO         1626    .ARM.exidx          i3g4250d.o
+    0x08016d4c   0x080162c8   0x00000008   Data   RO         2807    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016d54   0x080162c8   0x00000008   Data   RO         2808    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016d5c   0x080162c8   0x00000008   Data   RO         2816    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016d64   0x080162c8   0x00000008   Data   RO         2817    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016d6c   0x080162c8   0x00000008   Data   RO         2840    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016d74   0x080162c8   0x00000008   Data   RO         2841    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016d7c   0x080162c8   0x00000008   Data   RO         2775    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016d84   0x080162c8   0x00000008   Data   RO         2855    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016d8c   0x080162c8   0x00000008   Data   RO         2856    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016d94   0x080162c8   0x00000008   Data   RO         2940    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016d9c   0x080162c8   0x00000008   Data   RO         9760    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016da4   0x080162c8   0x00000008   Data   RO         9761    .ARM.exidx          cpp_ws.l(char.o)
+    0x08016dac   0x080162c8   0x00000008   Data   RO         2792    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016db4   0x080162c8   0x00000008   Data   RO         2793    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016dbc   0x080162c8   0x00000008   Data   RO         2831    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016dc4   0x080162c8   0x00000008   Data   RO         2832    .ARM.exidx          adaptiveunscentedkalmanfilter.o
+    0x08016dcc   0x080162c8   0x00000008   Data   RO         2847    .ARM.exidx          adaptiveunscentedkalmanfilter.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08016ddc, Size: 0x0001a0c8, Max: 0x00020000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08016dd4, Size: 0x0001a0c8, Max: 0x00020000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x08016ddc   0x00000010   Data   RW          151    .data               user.o
-    0x20000010   0x08016dec   0x00000034   Data   RW          289    .data               pos.o
-    0x20000044   0x08016e20   0x00000004   Data   RW          398    .data               ahrs.o
-    0x20000048   0x08016e24   0x00000004   Data   RW          890    .data               timer.o
-    0x2000004c   0x08016e28   0x0000000c   Data   RW          989    .data               usart.o
-    0x20000058   0x08016e34   0x00000004   Data   RW         1089    .data               adxrs453.o
-    0x2000005c   0x08016e38   0x00000001   Data   RW         1217    .data               device.o
-    0x2000005d   0x08016e39   0x00000003   PAD
-    0x20000060   0x08016e3c   0x0000000c   Data   RW         3043    .data               attitudeangle.o
-    0x2000006c   0x08016e48   0x00000018   Data   RW         3110    .data               calculateattitude.o
-    0x20000084   0x08016e60   0x00000010   Data   RW         6031    .data               stm32f4xx_rcc.o
-    0x20000094   0x08016e70   0x00000017   Data   RW         9208    .data               cpp_ws.l(rwstdexcept.o)
-    0x200000ab   0x08016e87   0x00000001   PAD
-    0x200000ac   0x08016e88   0x00000008   Data   RW         9684    .data               cpp_ws.l(char.o)
-    0x200000b4   0x08016e90   0x0000001c   Data   RW         9974    .data               cpp_ws.l(locale.o)
-    0x200000d0   0x08016eac   0x00000004   Data   RW        10133    .data               cpp_ws.l(rwthrowproc.o)
-    0x200000d4   0x08016eb0   0x00000008   Data   RW        10371    .data               cpp_ws.l(rwcats.o)
-    0x200000dc   0x08016eb8   0x00000004   Data   RW        10075    .data__ZZNKSt6locale2id7_C_initEvE9_C_id_gen  cpp_ws.l(locale.o)
-    0x200000e0   0x08016ebc   0x0000000c   Data   RW        10131    .data__ZZSt13__rw_get_catsvE11__open_cats  cpp_ws.l(messages.o)
+    0x20000000   0x08016dd4   0x00000010   Data   RW          151    .data               user.o
+    0x20000010   0x08016de4   0x00000034   Data   RW          289    .data               pos.o
+    0x20000044   0x08016e18   0x00000004   Data   RW          398    .data               ahrs.o
+    0x20000048   0x08016e1c   0x00000004   Data   RW          890    .data               timer.o
+    0x2000004c   0x08016e20   0x0000000c   Data   RW          989    .data               usart.o
+    0x20000058   0x08016e2c   0x00000004   Data   RW         1089    .data               adxrs453.o
+    0x2000005c   0x08016e30   0x00000001   Data   RW         1217    .data               device.o
+    0x2000005d   0x08016e31   0x00000003   PAD
+    0x20000060   0x08016e34   0x0000000c   Data   RW         3043    .data               attitudeangle.o
+    0x2000006c   0x08016e40   0x00000018   Data   RW         3110    .data               calculateattitude.o
+    0x20000084   0x08016e58   0x00000010   Data   RW         6031    .data               stm32f4xx_rcc.o
+    0x20000094   0x08016e68   0x00000017   Data   RW         9208    .data               cpp_ws.l(rwstdexcept.o)
+    0x200000ab   0x08016e7f   0x00000001   PAD
+    0x200000ac   0x08016e80   0x00000008   Data   RW         9684    .data               cpp_ws.l(char.o)
+    0x200000b4   0x08016e88   0x0000001c   Data   RW         9974    .data               cpp_ws.l(locale.o)
+    0x200000d0   0x08016ea4   0x00000004   Data   RW        10133    .data               cpp_ws.l(rwthrowproc.o)
+    0x200000d4   0x08016ea8   0x00000008   Data   RW        10371    .data               cpp_ws.l(rwcats.o)
+    0x200000dc   0x08016eb0   0x00000004   Data   RW        10075    .data__ZZNKSt6locale2id7_C_initEvE9_C_id_gen  cpp_ws.l(locale.o)
+    0x200000e0   0x08016eb4   0x0000000c   Data   RW        10131    .data__ZZSt13__rw_get_catsvE11__open_cats  cpp_ws.l(messages.o)
     0x200000ec        -       0x00000024   Zero   RW          397    .bss                ahrs.o
     0x20000110        -       0x00000258   Zero   RW          988    .bss                usart.o
     0x20000368        -       0x00000028   Zero   RW         1088    .bss                adxrs453.o
@@ -12132,14 +12131,14 @@ Memory Map of the image
     0x200003b8        -       0x00001ca0   Zero   RW         1902    .bss                icm20602.o
     0x20002058        -       0x00000024   Zero   RW         3042    .bss                attitudeangle.o
     0x2000207c        -       0x00013960   Zero   RW         3109    .bss                calculateattitude.o
-    0x200159dc   0x08016ec8   0x00000004   PAD
+    0x200159dc   0x08016ec0   0x00000004   PAD
     0x200159e0        -       0x00000018   Zero   RW         9205    .bss                cpp_ws.l(rwstdexcept.o)
     0x200159f8        -       0x00000060   Zero   RW         9505    .bss                c_w.l(libspace.o)
     0x20015a58        -       0x0000002a   Zero   RW        10311    .bss                c_w.l(locale.o)
-    0x20015a82   0x08016ec8   0x00000002   PAD
+    0x20015a82   0x08016ec0   0x00000002   PAD
     0x20015a84        -       0x00000030   Zero   RW        10314    .bss                c_w.l(localeconv.o)
     0x20015ab4        -       0x00000010   Zero   RW        10659    .bss__ZNSs9__nullrefE  cpp_ws.l(vendor.o)
-    0x20015ac4   0x08016ec8   0x00000004   PAD
+    0x20015ac4   0x08016ec0   0x00000004   PAD
     0x20015ac8        -       0x00004200   Zero   RW         8287    HEAP                startup_stm32f4xx.o
     0x20019cc8        -       0x00000400   Zero   RW         8286    STACK               startup_stm32f4xx.o
 
@@ -12151,7 +12150,7 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-      2834         60        479          0          0      35506   action_matrix.o
+      2834         60        471          0          0      35506   action_matrix.o
       5330         50       1376          0          0      38099   adaptiveunscentedkalmanfilter.o
        252         18         40          4         40       8451   adxrs453.o
        496         18         24          4         36      12805   ahrs.o
@@ -12163,7 +12162,7 @@ Image component sizes
         12          0          0          0          0       5408   lsm303agr.o
        146         10         16          0          0     227324   main.o
        140         24         16          0          0     215251   misc.o
-      2476        194         96         52          0     224223   pos.o
+      2476        194         96         52          0     224219   pos.o
        408          0         16          0          0       2625   signalprocess.o
       1222         36         32          0          0      34162   spi.o
         64         26        392          0      17920        852   startup_stm32f4xx.o
@@ -12177,12 +12176,12 @@ Image component sizes
        340         32         16          0          0       1533   system_stm32f4xx.o
        644         34         32          4          0       6868   timer.o
       1248        138         64         12        600      27540   usart.o
-       800         50         40         16          0     226327   user.o
+       800         50         40         16          0     226323   user.o
 
     ----------------------------------------------------------------------
-     32452       1248       4219        148     106228    1285513   Object Totals
+     32450       1248       4211        148     106228    1285505   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-        46          0          0          3          4          0   (incl. Padding)
+        44          0          0          3          4          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -12453,8 +12452,8 @@ Image component sizes
        848         84         96          0          0        196   tan_i.o
 
     ----------------------------------------------------------------------
-     47664       2776       9325         88        232      78448   Library Totals
-       122         10         15          1          6          0   (incl. Padding)
+     47666       2776       9325         88        232      78448   Library Totals
+       124         10         15          1          6          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -12468,7 +12467,7 @@ Image component sizes
       9820       1022        560          0          0       5524   m_wm.l
 
     ----------------------------------------------------------------------
-     47664       2776       9325         88        232      78448   Library Totals
+     47666       2776       9325         88        232      78448   Library Totals
 
     ----------------------------------------------------------------------
 
@@ -12477,15 +12476,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     80116       4024      13544        236     106460    1314877   Grand Totals
-     80116       4024      13544        236     106460    1314877   ELF Image Totals
-     80116       4024      13544        236          0          0   ROM Totals
+     80116       4024      13536        236     106460    1314869   Grand Totals
+     80116       4024      13536        236     106460    1314869   ELF Image Totals
+     80116       4024      13536        236          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                93660 (  91.46kB)
+    Total RO  Size (Code + RO Data)                93652 (  91.46kB)
     Total RW  Size (RW Data + ZI Data)            106696 ( 104.20kB)
-    Total ROM Size (Code + RO Data + RW Data)      93896 (  91.70kB)
+    Total ROM Size (Code + RO Data + RW Data)      93888 (  91.69kB)
 
 ==============================================================================
 

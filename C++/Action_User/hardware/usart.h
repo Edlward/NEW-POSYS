@@ -50,18 +50,19 @@ void USART_SendDataToDMA_USART1(uint8_t data);
 	class _out_stream
 	{
 		public:
-			const _out_stream& operator<<(const int32_t value) const;
-			inline const _out_stream& operator<<(const int16_t value) const{	return this->operator<<(static_cast<int32_t>(value));	}
-			inline const _out_stream& operator<<(const int8_t value) const{	return this->operator<<(static_cast<int32_t>(value));	}
+			//双元运算符重载，左参数为本类对象，右参数为传入形参
+		  _out_stream& operator<<(const int32_t value) ;
+			inline  _out_stream& operator<<(const int16_t value) {	return this->operator<<(static_cast<int32_t>(value));	}
+			inline  _out_stream& operator<<(const int8_t value) {	return this->operator<<(static_cast<int32_t>(value));	}
 			
-			const _out_stream& operator<<(const uint32_t value) const;
-			inline const _out_stream& operator<<(const uint16_t value) const{	return this->operator<<(static_cast<uint32_t>(value));	}
+			 _out_stream& operator<<(const uint32_t value) ;
+			inline  _out_stream& operator<<(const uint16_t value) {	return this->operator<<(static_cast<uint32_t>(value));	}
 			
-			const _out_stream& operator<<(const float value) const;
-			inline const _out_stream& operator<<(const double value) const{	return this->operator<<(static_cast<float>(value));	}
+			 _out_stream& operator<<(const float value) ;
+			inline  _out_stream& operator<<(const double value) {	return this->operator<<(static_cast<float>(value));	}
 			
-			const _out_stream& operator<<(const char value) const;
-			const _out_stream& operator<<(const char* value) const;
+			 _out_stream& operator<<(const char value) ;
+			 _out_stream& operator<<(const char* value) ;
 	};
 	
   _out_stream& getUsartOut(void);

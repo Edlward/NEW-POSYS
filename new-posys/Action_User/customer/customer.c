@@ -115,10 +115,10 @@ void DataSend(void)
 	valSend.val=(float)allPara.sDta.Result_Angle[2];
   memcpy(tdata+2,valSend.data,4);
 	
-	valSend.val=(float)allPara.sDta.vellx;
+	valSend.val=(float)allPara.sDta.codeTime[0];
   memcpy(tdata+6,valSend.data,4);
 	
-	valSend.val=(float)allPara.sDta.velly;
+	valSend.val=(float)allPara.sDta.codeTime[1];
   memcpy(tdata+10,valSend.data,4);
 	
 	valSend.val=(float)allPara.sDta.posx;

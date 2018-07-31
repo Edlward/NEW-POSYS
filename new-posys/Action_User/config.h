@@ -179,6 +179,8 @@ typedef struct{
   uint32_t flag;
 	
   uint32_t time;
+	
+	uint32_t codeTime[2];
 }DataSave_t;
 
 

@@ -341,6 +341,7 @@ void UART5_IRQHandler(void)
 					encoder[0]=dataUnion.codeData.codeData16;
 					count = 0;
 					i=0;
+					allPara.sDta.codeTime[0]++;
 				}
 				break;
 			default:
@@ -421,6 +422,7 @@ void USART6_IRQHandler(void)
 					dataUnion.errorSts=dataUnion.errorSts;
 				}
 				encoder[1]=dataUnion.codeData.codeData16;
+				allPara.sDta.codeTime[1]++;
 				count = 0;
 				i=0;
 			}

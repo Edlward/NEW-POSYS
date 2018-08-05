@@ -38,7 +38,7 @@ extern AllPara_t allPara;
 */
 
 #ifdef AUTOCAR
-#define TIME_STATIC					(20)
+#define TIME_STATIC					(2.1)
 #define TIME_STATIC_REAL		(TIME_STATIC-(2))
 #else
 #define TIME_STATIC					(3)

@@ -115,7 +115,7 @@ void DataSend(void)
 	valSend.val=(float)allPara.sDta.Result_Angle[2];
   memcpy(tdata+2,valSend.data,4);
 	
-	valSend.val=(float)allPara.sDta.vellx;
+	valSend.val=(float)getDirectLine(25.4,25.4,0.0);
   memcpy(tdata+6,valSend.data,4);
 	
 	valSend.val=(float)allPara.sDta.velly;
@@ -130,10 +130,10 @@ void DataSend(void)
 	valSend.val=(float)allPara.GYRO_Real[2];
   memcpy(tdata+22,valSend.data,4);
 	
-	valSend.val=(float)allPara.sDta.codeData[0];
+	valSend.val=(float)getEncoderSum(0);
   memcpy(tdata+26,valSend.data,4);
 	 
-	valSend.val=(float)allPara.sDta.codeData[1];
+	valSend.val=(float)getEncoderSum(1);
   memcpy(tdata+30,valSend.data,4);
 //	
 	#ifdef TEST_SUMMER
@@ -191,7 +191,84 @@ void DataSend(void)
 
 	#endif
 }
+int32_t getEncoderSum(int num)
+{	
+	uint16_t encoder[2]={allPara.sDta.codeData[0],allPara.sDta.codeData[1]};
+	static uint16_t encoderLast[2]={0};
+	static int ignore=0;
+	int32_t vell[2]={0};
+	static int sum[2]={0};
+	
+	ignore++;
+	if(ignore<5)
+	{
+		vell[0]=0;
+		vell[1]=0;
+		encoderLast[0]=encoder[0];
+		encoderLast[1]=encoder[1];
+	}else{
+		vell[0]=encoder[0]-encoderLast[0];
+		vell[1]=encoder[1]-encoderLast[1];
+		encoderLast[0]=encoder[0];
+		encoderLast[1]=encoder[1];
+	}
+	
+	
+	vell[0]-=(vell[0]>(4096/2))*4096;
+	vell[0]+=(vell[0]<(-(4096/2)))*4096;
+	
+	vell[1]-=(vell[1]>(4096/2))*4096;
+	vell[1]+=(vell[1]<(-(4096/2)))*4096;
+	
+	sum[0]=sum[0]+vell[0];
+	sum[1]=sum[1]+vell[1];
+	
+	return sum[num];
+}
 
+//return the length of PPS's measured value when it walks directly
+double getDirectLine(float wheel1,float wheel2,float errorAngle)
+{	
+	uint16_t encoder[2]={allPara.sDta.codeData[0],allPara.sDta.codeData[1]};
+	static uint16_t encoderLast[2]={0};
+	static int ignore=0;
+	int32_t vell[2]={0};
+	double sumF[2]={0.0};
+	static int sum[2]={0};
+	
+	ignore++;
+	if(ignore<5)
+	{
+		vell[0]=0;
+		vell[1]=0;
+		encoderLast[0]=encoder[0];
+		encoderLast[1]=encoder[1];
+	}else{
+		vell[0]=encoder[0]-encoderLast[0];
+		vell[1]=encoder[1]-encoderLast[1];
+		encoderLast[0]=encoder[0];
+		encoderLast[1]=encoder[1];
+	}
+	
+	vell[0]-=(vell[0]>(4096/2))*4096;
+	vell[0]+=(vell[0]<(-(4096/2)))*4096;
+	
+	vell[1]-=(vell[1]>(4096/2))*4096;
+	vell[1]+=(vell[1]<(-(4096/2)))*4096;
+	
+	sum[0]=sum[0]+vell[0];
+	sum[1]=sum[1]+vell[1];
+	
+	double real[2]={0.0,0.0};
+	
+	real[0]=sum[0];
+	real[1]=1.0/cos(errorAngle/180.0*PI)*sum[1]-tan(errorAngle/180.0*PI)*sum[0];
+	
+	sumF[0]=real[0]/4096*2*PI*wheel1;
+	sumF[1]=real[1]/4096*2*PI*wheel2;
+	
+	return sqrt(pow(sumF[0],2)+pow(sumF[1],2));
+}
 void bufferInit(void){
   bufferI=0;
   for(int i=0;i<20;i++)

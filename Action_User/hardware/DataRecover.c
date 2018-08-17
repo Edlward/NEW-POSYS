@@ -49,10 +49,10 @@ void STMFLASH_ERASE(void)
 { 
   FLASH_Unlock();									//解锁 
   FLASH_DataCacheCmd(DISABLE);//FLASH擦除期间,必须禁止数据缓存
-  
-  if(FLASH_EraseSector(STMFLASH_GetFlashSector(FLASH_SAVE_ADDR),VoltageRange_3)!=FLASH_COMPLETE) 
+  delay_ms(1);
+  if(FLASH_EraseSector(STMFLASH_GetFlashSector(FLASH_SAVE_ADDR),VoltageRange_4)!=FLASH_COMPLETE) 
   {
-    
+    delay_ms(1);
   }
   FLASH_DataCacheCmd(ENABLE);	//FLASH擦除结束,开启数据缓存
   FLASH_Lock();//上锁
@@ -176,11 +176,12 @@ void SoftWareReset(void)
   /*上电状态  分别对应第一次下程序和以后运行得出的结果*/
   if(allPara.resetTime==0||dataSave.isReset==0||allPara.resetTime>=500)
   {
+//		ReadCharacters();
     STMFLASH_ERASE();
+//		writeCharacters();
 		LED1_OFF;
 		LED2_OFF;
 		AllParaInit();
-		ReadCharacters();
   }
   /*进了硬件中断后重启*/
   else
@@ -194,7 +195,7 @@ void SoftWareReset(void)
     dataSave.isReset=0;
     //再往下一个空位写一个结构体，便于下次开电识别
     STMFLASH_Write(&dataSave,allPara.resetTime);
-		
+//		writeCharacters();
 		/*表示这次是重启程序*/
 		allPara.resetFlag=1;
   }

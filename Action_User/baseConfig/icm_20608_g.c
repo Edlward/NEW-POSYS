@@ -110,9 +110,13 @@ void icm_update_gyro_rate(int gyroNum)
 	data1[1] = (raw[2]<<8) | raw[3];
   data1[2] = (raw[4]<<8) | raw[5];
   
-	gyro[0] = data1[0]/allPara.sDta.para.calibrationFactor;
-	gyro[1] = data1[1]/allPara.sDta.para.calibrationFactor;
-	gyro[2] = -data1[2]/allPara.sDta.para.calibrationFactor;
+	gyro[0] = data1[0]/131.00;
+	gyro[1] = data1[1]/131.00;
+	gyro[2] = -data1[2]/131.00;
+	
+//	gyro[0] = data1[0]/allPara.sDta.para.calibrationFactor;
+//	gyro[1] = data1[1]/allPara.sDta.para.calibrationFactor;
+//	gyro[2] = -data1[2]/allPara.sDta.para.calibrationFactor;
 
 }
 void icm_read_gyro_rate(double data[GYRO_NUMBER])

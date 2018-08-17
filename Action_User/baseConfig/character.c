@@ -4,7 +4,7 @@
 
 //设置FLASH 保存地址(必须为偶数，且所在扇区,要大于本代码所占用到的扇区.
 //否则,写操作的时候,可能会导致擦除整个扇区,从而引起部分程序丢失.引起死机.
-#define FLASH_SAVE_ADDR 					0x080A0000 	
+#define FLASH_SAVE_ADDR 					0x080d0000 	
 
 extern AllPara_t allPara;
 
@@ -69,7 +69,7 @@ void writeCharacters(void)
 	character_t *pBuffer=&allPara.sDta.para;
 
   unsigned int* address=(unsigned int*)pBuffer;
-  unsigned int WriteAddr=FLASH_SAVE_ADDR+sizeof(character_t);
+  unsigned int WriteAddr=FLASH_SAVE_ADDR;
   unsigned int endaddr=WriteAddr+sizeof(character_t);
   
   FLASH_Unlock();									//解锁 

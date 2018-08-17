@@ -121,11 +121,11 @@ int32_t getEncoderSum(int num)
 	}
 	
 	
-	vell[0]-=(vell[0]>(4096/2))*4096;
-	vell[0]+=(vell[0]<(-(4096/2)))*4096;
+	vell[0]-=(vell[0]>(32768/2))*32768;
+	vell[0]+=(vell[0]<(-(32768/2)))*32768;
 	
-	vell[1]-=(vell[1]>(4096/2))*4096;
-	vell[1]+=(vell[1]<(-(4096/2)))*4096;
+	vell[1]-=(vell[1]>(32768/2))*32768;
+	vell[1]+=(vell[1]<(-(32768/2)))*32768;
 	
 	sum[0]=sum[0]+vell[0];
 	sum[1]=sum[1]+vell[1];
@@ -162,11 +162,11 @@ double getDirectLine(float wheel1,float wheel2,float errorAngle)
 		encoderLast[1]=encoder[1];
 	}
 	
-	vell[0]-=(vell[0]>(4096/2))*4096;
-	vell[0]+=(vell[0]<(-(4096/2)))*4096;
+	vell[0]-=(vell[0]>(32768/2))*32768;
+	vell[0]+=(vell[0]<(-(32768/2)))*32768;
 	
-	vell[1]-=(vell[1]>(4096/2))*4096;
-	vell[1]+=(vell[1]<(-(4096/2)))*4096;
+	vell[1]-=(vell[1]>(32768/2))*32768;
+	vell[1]+=(vell[1]<(-(32768/2)))*32768;
 	
 	sum[0]=sum[0]+vell[0];
 	sum[1]=sum[1]+vell[1];
@@ -176,8 +176,8 @@ double getDirectLine(float wheel1,float wheel2,float errorAngle)
 	real[0]=sum[0];
 	real[1]=1.0/cos((double)errorAngle/180.0*PI_DOUBLE)*sum[1]-tan((double)errorAngle/180.0*PI_DOUBLE)*sum[0];
 	
-	sumF[0]=real[0]/4096*2*PI*wheel1;
-	sumF[1]=real[1]/4096*2*PI*wheel2;
+	sumF[0]=real[0]/32768*2*PI*wheel1;
+	sumF[1]=real[1]/32768*2*PI*wheel2;
 	
 	if(allPara.sDta.flag&TEST_MACHINERY_CLEAR)
 	{

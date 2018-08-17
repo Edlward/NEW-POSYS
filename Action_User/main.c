@@ -22,9 +22,14 @@ AllPara_t allPara={0};
 void init(void)
 {
 	Led_Init();
-	
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
-	
+	allPara.sDta.para.rWheelNo1=25.1;
+	allPara.sDta.para.rWheelNo2=25.3;
+	allPara.sDta.para.gyroScale=500;
+	allPara.sDta.para.angleWheelError=0.1;
+	allPara.sDta.para.calibrationFactor=65.6;
+//  STMFLASH_ERASE();
+//	writeCharacters();
 	SoftWareReset();
 	
   pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz

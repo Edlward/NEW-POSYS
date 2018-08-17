@@ -3,7 +3,7 @@
 
 #include "stdint.h"
 typedef struct{
-	
+
 	double  rWheelNo1;
 	
 	double  rWheelNo2;

@@ -98,6 +98,96 @@ void USART6_IRQHandler(void)
   }
 }
 
+int32_t getEncoderSum(int num)
+{	
+	uint16_t encoder[2]={allPara.sDta.codeData[0],allPara.sDta.codeData[1]};
+	static uint16_t encoderLast[2]={0};
+	static int ignore=0;
+	int32_t vell[2]={0};
+	static int sum[2]={0};
+	
+	ignore++;
+	if(ignore<5)
+	{
+		vell[0]=0;
+		vell[1]=0;
+		encoderLast[0]=encoder[0];
+		encoderLast[1]=encoder[1];
+	}else{
+		vell[0]=encoder[0]-encoderLast[0];
+		vell[1]=encoder[1]-encoderLast[1];
+		encoderLast[0]=encoder[0];
+		encoderLast[1]=encoder[1];
+	}
+	
+	
+	vell[0]-=(vell[0]>(4096/2))*4096;
+	vell[0]+=(vell[0]<(-(4096/2)))*4096;
+	
+	vell[1]-=(vell[1]>(4096/2))*4096;
+	vell[1]+=(vell[1]<(-(4096/2)))*4096;
+	
+	sum[0]=sum[0]+vell[0];
+	sum[1]=sum[1]+vell[1];
+	
+	if(allPara.sDta.flag&TEST_MACHINERY_CLEAR)
+	{
+		sum[0]=0;
+		sum[1]=0;
+	}
+	return sum[num];
+}
+
+//return the length of PPS's measured value when it walks directly
+double getDirectLine(float wheel1,float wheel2,float errorAngle)
+{	
+	uint16_t encoder[2]={allPara.sDta.codeData[0],allPara.sDta.codeData[1]};
+	static uint16_t encoderLast[2]={0};
+	static int ignore=0;
+	int32_t vell[2]={0};
+	double sumF[2]={0.0};
+	static int sum[2]={0};
+	
+	ignore++;
+	if(ignore<5)
+	{
+		vell[0]=0;
+		vell[1]=0;
+		encoderLast[0]=encoder[0];
+		encoderLast[1]=encoder[1];
+	}else{
+		vell[0]=encoder[0]-encoderLast[0];
+		vell[1]=encoder[1]-encoderLast[1];
+		encoderLast[0]=encoder[0];
+		encoderLast[1]=encoder[1];
+	}
+	
+	vell[0]-=(vell[0]>(4096/2))*4096;
+	vell[0]+=(vell[0]<(-(4096/2)))*4096;
+	
+	vell[1]-=(vell[1]>(4096/2))*4096;
+	vell[1]+=(vell[1]<(-(4096/2)))*4096;
+	
+	sum[0]=sum[0]+vell[0];
+	sum[1]=sum[1]+vell[1];
+	
+	double real[2]={0.0,0.0};
+	
+	real[0]=sum[0];
+	real[1]=1.0/cos((double)errorAngle/180.0*PI_DOUBLE)*sum[1]-tan((double)errorAngle/180.0*PI_DOUBLE)*sum[0];
+	
+	sumF[0]=real[0]/4096*2*PI*wheel1;
+	sumF[1]=real[1]/4096*2*PI*wheel2;
+	
+	if(allPara.sDta.flag&TEST_MACHINERY_CLEAR)
+	{
+		sum[0]=0;
+		sum[1]=0;
+	}
+	return sqrt(pow(sumF[0],2)+pow(sumF[1],2));
+}
+
+
 void DataSend(void)
 {
 	int i;
@@ -115,7 +205,10 @@ void DataSend(void)
 	valSend.val=(float)allPara.sDta.Result_Angle[2];
   memcpy(tdata+2,valSend.data,4);
 	
-	valSend.val=(float)allPara.sDta.vellx;
+	if(allPara.sDta.flag&TEST_MACHINERY)
+		valSend.val=(float)getDirectLine(allPara.sDta.para.rWheelNo1,allPara.sDta.para.rWheelNo2,allPara.sDta.para.angleWheelError);
+	else
+		valSend.val=(float)allPara.sDta.vellx;
   memcpy(tdata+6,valSend.data,4);
 	
 	valSend.val=(float)allPara.sDta.velly;
@@ -130,10 +223,16 @@ void DataSend(void)
 	valSend.val=(float)allPara.GYRO_Real[2];
   memcpy(tdata+22,valSend.data,4);
 	
-	valSend.val=(float)allPara.sDta.codeData[0];
+	if(allPara.sDta.flag&TEST_MACHINERY)
+		valSend.val=(float)getEncoderSum(0);
+	else
+		valSend.val=(float)allPara.sDta.codeData[0];
   memcpy(tdata+26,valSend.data,4);
 	 
-	valSend.val=(float)allPara.sDta.codeData[1];
+	if(allPara.sDta.flag&TEST_MACHINERY)
+		valSend.val=(float)getEncoderSum(1);
+	else
+		valSend.val=(float)allPara.sDta.codeData[1];
   memcpy(tdata+30,valSend.data,4);
 //	
 	#ifdef TEST_SUMMER
@@ -187,7 +286,8 @@ void DataSend(void)
 		else if(USART_USED==USART1)
 			USART_SendDataToDMA_USATR1(tdata[i]);
 	}
-
+	
+	SetFlag(~TEST_MACHINERY_CLEAR);
 	#endif
 }
 
@@ -290,6 +390,18 @@ void AT_CMD_Judge(void){
 		}
 		USART_OUT(USART_USED,"OK");
 	}
+	else if((bufferI == 5) && strncmp(buffer, "AME\r\n", 3)==0)//AT    
+	{
+    bufferInit();
+		SetFlag(TEST_MACHINERY);
+		USART_OUT(USART_USED,"OK");
+	}
+	else if((bufferI == 5) && strncmp(buffer, "AMC\r\n", 3)==0)//AT    
+	{
+    bufferInit();
+		SetFlag(TEST_MACHINERY_CLEAR);
+		USART_OUT(USART_USED,"OK");
+	}
 	else if((bufferI == 10) && strncmp(buffer, "AWR1", 4)==0)//AT    
 	{
 		convert_u.data[0]=*(buffer+4);
@@ -387,6 +499,18 @@ void SetFlag(int val){
 		break;
   case ~STATIC_FORCE:
     allPara.sDta.flag&=~STATIC_FORCE;
+    break;
+	case TEST_MACHINERY:
+    allPara.sDta.flag|=TEST_MACHINERY;
+		break;
+  case ~TEST_MACHINERY:
+    allPara.sDta.flag&=~TEST_MACHINERY;
+    break;
+	case TEST_MACHINERY_CLEAR:
+    allPara.sDta.flag|=TEST_MACHINERY_CLEAR;
+		break;
+  case ~TEST_MACHINERY_CLEAR:
+    allPara.sDta.flag&=~TEST_MACHINERY_CLEAR;
     break;
   }
 }

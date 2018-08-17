@@ -88,6 +88,9 @@
 #define NULL_FLAG									0X04
 #define HEATING										0X08
 #define STATIC_FORCE							0X10
+#define TEST_MACHINERY 					  0X20
+#define TEST_MACHINERY_CLEAR 			0X40
+
 
 #define ICM20608G_WHO_AM_I							0x75
 

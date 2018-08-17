@@ -3,7 +3,6 @@
 
 
 /*算法中 H,φ,Γ均为一*/
-/*算法中 H,φ,Γ均为一*/
 double KalmanFilterZ1(double measureData)
 {
   static double act_value=0;  //实际值

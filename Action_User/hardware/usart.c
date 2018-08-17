@@ -12,6 +12,7 @@
 
 
 static uint8_t dmaSendBuffer[DMA_SEND_SIZE];
+static uint8_t dmaSendBuffer6[100];
 
 void USART_SendDataToDMA_USART3(uint8_t data)
 {
@@ -282,7 +283,7 @@ void USART6DMAInit(uint32_t BaudRate)
 	DMA_DeInit(DMA2_Stream6);  
 	DMA_InitStructure.DMA_Channel = DMA_Channel_5;   
 	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)(&USART6->DR);  
-	DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)dmaSendBuffer;  
+	DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)dmaSendBuffer6;  
 	DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral;   
 	DMA_InitStructure.DMA_BufferSize = DMA_SEND_SIZE;  
 	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;  
@@ -310,7 +311,7 @@ void USART6DMAInit(uint32_t BaudRate)
 	USART_Cmd(USART6, ENABLE); 
   
 }
-void USART_SendDataToDMA_USATR6(uint8_t data)
+void USART_SendDataToDMA_USART6(uint8_t data)
 {
 	static uint8_t tempBuffer[DMA_SEND_SIZE];
 	static uint32_t count=0;
@@ -331,7 +332,7 @@ void USART_SendDataToDMA_USATR6(uint8_t data)
 		DMA_ClearFlag(DMA2_Stream6,DMA_IT_TCIF6);  
 		DMA_Cmd(DMA2_Stream6,DISABLE);  
 		count=0;
-		memcpy(dmaSendBuffer,tempBuffer,DMA_SEND_SIZE);
+		memcpy(dmaSendBuffer6,tempBuffer,DMA_SEND_SIZE);
 		DMA_SetCurrDataCounter(DMA2_Stream6,DMA_SEND_SIZE);
 		DMA_Cmd(DMA2_Stream6,ENABLE);
 	}
@@ -359,13 +360,13 @@ void USART_OUTByDMAF(float x){
 		 sprintf(String,"%f\t",x);
 		 for (s=String; *s; s++) 
 		 {
-				USART_SendDataToDMA_USATR6(*s);
+				USART_SendDataToDMA_USART6(*s);
      }
 }
 
 void USART_EnterByDMA(void){
-	USART_SendDataToDMA_USATR6('\r');
-	USART_SendDataToDMA_USATR6('\n');
+	USART_SendDataToDMA_USART6('\r');
+	USART_SendDataToDMA_USART6('\n');
 }
 void USART_OUT(USART_TypeDef* USARTx,const char *Data,...){ 
   const char *s;

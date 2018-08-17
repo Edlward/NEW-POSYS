@@ -23,6 +23,7 @@
 #include "stm32f4xx_rcc.h"
 #include "odom.h"
 #include "spi.h"
+#include "usart.h"
 /* Private define ------------------------------------------------------------*/
 
 #define   DUMMY_BYTE          0xFFFF      //哑元字节 SPI 读数据用
@@ -42,6 +43,26 @@ static void	SPI3_TX_OFF(void);
 static void	SPI3_TX_ON(void);
 uint16_t	TLE5012WriteReg(SPI_TypeDef* SPIx, uint16_t u16Command, uint16_t* pu16Data);
 
+//转换成二进制数，帮助理解数据包组成
+void sendBinary(uint32_t value)
+{
+	uint32_t a,b,k,i;
+	int remainder[33];
+	//定义了一个remainder数组，用来收集短除法除得的余数，栈倒序输出。
+	a=value;
+	k=0;
+	while(a!=0){
+		b=a/2;
+		k++;
+		remainder[k]=a-b*2;
+		a=a/2;
+	};
+	for (i=k;i>=1;i--){
+		USART_SendDataToDMA_USART6(remainder[i]+48);
+	} 
+
+	USART_SendDataToDMA_USART6('\t');
+}
 /**
  * @brief  读取TLE5012的寄存器
  * @param  commond：命令字
@@ -54,18 +75,35 @@ uint16_t TLE5012ReadAbsPos_A(void)
 	uint16_t u16Command = 0xFFFF;
 	uint16_t u16Data = 0x0000;
 	u16Command = READ_ANGLE_VALUE;
-	TLE5012ReadReg(SPI2, u16Command, &u16Data);//返回safe
+	TLE5012ReadReg(SPI3, u16Command, &u16Data);//返回safe
 	u16Data = u16Data & 0x7FFF;
-	return ((int16_t)(u16Data << 1)) >> 1;
+	
+	//为了老版编码器芯片保持一致，都是顺时针转动为正而做的处理。如果不想与老板一致，坐标计算公式还有矫正平台测轮子半径部分矫正算法都要改。
+	u16Data=0x7FFF-u16Data;
+	
+	//USART_OUTByDMAF(u16Data);
+	//帮助理解数据包组成
+	//sendBinary(u16Data);
+
+	return u16Data;
 }
+
 uint16_t TLE5012ReadAbsPos_B(void)
 {
 	uint16_t u16Command = 0xFFFF;
 	uint16_t u16Data = 0x0000;
 	u16Command = READ_ANGLE_VALUE;
-	TLE5012ReadReg(SPI3, u16Command, &u16Data);//返回safe
+	TLE5012ReadReg(SPI2, u16Command, &u16Data);//返回safe
 	u16Data = u16Data & 0x7FFF;
-	return ((int16_t)(u16Data << 1)) >> 1;
+	
+	u16Data=0x7FFF-u16Data;
+	
+	//USART_OUTByDMAF(u16Data);
+	//帮助理解数据包组成
+	//sendBinary(u16Data);
+	//USART_EnterByDMA();
+	
+	return u16Data;
 }
 
 uint16_t	TLE5012ReadReg(SPI_TypeDef* SPIx, uint16_t u16Command, uint16_t* pu16Data)
@@ -93,6 +131,11 @@ uint16_t	TLE5012ReadReg(SPI_TypeDef* SPIx, uint16_t u16Command, uint16_t* pu16Da
 	*pu16Data = SPIx_RdWr_HalfWord(SPIx, DUMMY_BYTE);	
 	u16Safe = SPIx_RdWr_HalfWord(SPIx, DUMMY_BYTE);
 	
+	//帮助理解数据包组成
+//	uint32_t value=0;
+//	value=(uint32_t)(((uint32_t)(*pu16Data)<<16)|(uint32_t)u16Safe);
+//	sendBinary(value);
+	
 	while(SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_BSY) == SET);
 	
 	if(SPIx==SPI2)
@@ -118,7 +161,7 @@ uint16_t	TLE5012WriteReg(SPI_TypeDef* SPIx, uint16_t u16Command, uint16_t* pu16D
 		TLE5012_B_CS_ENABLE();
 	}
 
-	u16Safe = SPIx_RdWr_HalfWord(SPIx, u16Command);	
+	u16Safe = SPIx_RdWr_HalfWord(SPIx, u16Command);
 	u16Safe = SPIx_RdWr_HalfWord(SPIx, *pu16Data);
 	
 	if(SPIx==SPI2)

@@ -118,6 +118,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
+          <Name>梵?</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -166,6 +167,11 @@
           <count>3</count>
           <WinNumber>1</WinNumber>
           <ItemText>ignore,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>string</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>

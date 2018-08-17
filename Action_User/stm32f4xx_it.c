@@ -96,17 +96,10 @@ void TIM2_IRQHandler(void)
 	  if(timeCnt==5)
 		{
 			figureVell();
-			#ifdef TESTCAR
-			  double percentages[3][3]={
-				1.0,0.0,0.0,
-				1.0,0.0,0.0,
-				1.0,0.0,0.0};
-			#else
-				double percentages[3][3]={
-				1.0,0.0,0.0,
-				1.0,0.0,0.0,
-				1.0,0.0,0.0	};
-			#endif
+			double percentages[3][3]={
+			1.0,0.0,0.0,
+			1.0,0.0,0.0,
+			1.0,0.0,0.0	};
 			readOrder++;
       timeCnt=0;
 			for(gyro=0;gyro<GYRO_NUMBER;gyro++)

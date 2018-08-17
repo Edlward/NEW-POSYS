@@ -41,6 +41,7 @@
 #include "quarternion.h"
 #include "adc.h"
 #include "odom.h"
+#include "character.h"
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 
@@ -183,6 +184,8 @@ typedef struct{
   uint32_t flag;
 	
   uint32_t time;
+	
+	character_t para;
 }DataSave_t;
 
 

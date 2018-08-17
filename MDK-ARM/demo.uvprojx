@@ -471,6 +471,11 @@
               <FileType>1</FileType>
               <FilePath>..\Action_User\hardware\odom.c</FilePath>
             </File>
+            <File>
+              <FileName>character.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Action_User\baseConfig\character.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

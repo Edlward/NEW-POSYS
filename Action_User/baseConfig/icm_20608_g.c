@@ -49,6 +49,11 @@ void MEMS_Configure(int gyroNum)
 	
   Delay_ms(MAX_POWER_RAMP_TIME + MAX_REGISTER_STARTUP_TIME);							//in consideration of worse case, we need wait this much time
   
+	if(allPara.sDta.para.gyroScale==500)
+		registers[3]=8;
+	else if(allPara.sDta.para.gyroScale==1000)
+		registers[3]=16;
+	
   for(order=0;order<REGISTERS/2;order++){
     uint8_t i=0;
     uint8_t data=0xFF;
@@ -105,9 +110,9 @@ void icm_update_gyro_rate(int gyroNum)
 	data1[1] = (raw[2]<<8) | raw[3];
   data1[2] = (raw[4]<<8) | raw[5];
   
-	gyro[0] = data1[0]/130.774388888889;
-	gyro[1] = data1[1]/130.774388888889;
-	gyro[2] = -data1[2]/130.774388888889;
+	gyro[0] = data1[0]/allPara.sDta.para.calibrationFactor;
+	gyro[1] = data1[1]/allPara.sDta.para.calibrationFactor;
+	gyro[2] = -data1[2]/allPara.sDta.para.calibrationFactor;
 
 }
 void icm_read_gyro_rate(double data[GYRO_NUMBER])

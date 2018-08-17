@@ -24,7 +24,7 @@ void init(void)
 	Led_Init();
 	
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
-		
+	
 	SoftWareReset();
 	
   pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz

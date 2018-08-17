@@ -290,6 +290,61 @@ void AT_CMD_Judge(void){
 		}
 		USART_OUT(USART_USED,"OK");
 	}
+	else if((bufferI == 10) && strncmp(buffer, "AWR1", 4)==0)//AT    
+	{
+		convert_u.data[0]=*(buffer+4);
+		convert_u.data[1]=*(buffer+6);
+		convert_u.data[2]=*(buffer+7);
+		convert_u.data[3]=*(buffer+8);
+		allPara.sDta.para.rWheelNo1=(double)convert_u.value;
+		USART_OUT(USART_USED,"OK");
+    bufferInit();
+		writeCharacters();
+	}
+	else if((bufferI == 10) && strncmp(buffer, "AWR2", 4)==0)//AT    
+	{
+		convert_u.data[0]=*(buffer+4);
+		convert_u.data[1]=*(buffer+6);
+		convert_u.data[2]=*(buffer+7);
+		convert_u.data[3]=*(buffer+8);
+		allPara.sDta.para.rWheelNo2=(double)convert_u.value;
+		USART_OUT(USART_USED,"OK");
+    bufferInit();
+		writeCharacters();
+	}
+	else if((bufferI == 10) && strncmp(buffer, "AAGE", 4)==0)//AT    
+	{
+		convert_u.data[0]=*(buffer+4);
+		convert_u.data[1]=*(buffer+6);
+		convert_u.data[2]=*(buffer+7);
+		convert_u.data[3]=*(buffer+8);
+		allPara.sDta.para.angleWheelError=(double)convert_u.value;
+		USART_OUT(USART_USED,"OK");
+    bufferInit();
+		writeCharacters();
+	}
+	else if((bufferI == 10) && strncmp(buffer, "ACAF", 4)==0)//AT    
+	{
+		convert_u.data[0]=*(buffer+4);
+		convert_u.data[1]=*(buffer+6);
+		convert_u.data[2]=*(buffer+7);
+		convert_u.data[3]=*(buffer+8);
+		allPara.sDta.para.calibrationFactor=(double)convert_u.value;
+		USART_OUT(USART_USED,"OK");
+    bufferInit();
+		writeCharacters();
+	}
+	else if((bufferI == 10) && strncmp(buffer, "AGYS", 4)==0)//AT    
+	{
+		convert_u.data[0]=*(buffer+4);
+		convert_u.data[1]=*(buffer+6);
+		convert_u.data[2]=*(buffer+7);
+		convert_u.data[3]=*(buffer+8);
+		allPara.sDta.para.gyroScale=(uint32_t)convert_u.value;
+		USART_OUT(USART_USED,"OK");
+    bufferInit();
+		writeCharacters();
+	}
   else 
 	{
     atCommand=666;

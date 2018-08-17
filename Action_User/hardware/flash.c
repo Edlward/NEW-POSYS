@@ -22,12 +22,26 @@
 #include "usart.h"
 /* Private  typedef -----------------------------------------------------------*/
 /* Private  define ------------------------------------------------------------*/
-#define FLASH_USER_ADDRESS 0x08040000   //FLASH起始地址
 /* Private  macro -------------------------------------------------------------*/
 /* Private  variables ---------------------------------------------------------*/
 
-FlashData_t flashData={0};
 
+
+uint16_t STMFLASH_GetFlashSector(unsigned int addr)
+{
+  if(addr<ADDR_FLASH_SECTOR_1)return FLASH_Sector_0;
+  else if(addr<ADDR_FLASH_SECTOR_2)return FLASH_Sector_1;
+  else if(addr<ADDR_FLASH_SECTOR_3)return FLASH_Sector_2;
+  else if(addr<ADDR_FLASH_SECTOR_4)return FLASH_Sector_3;
+  else if(addr<ADDR_FLASH_SECTOR_5)return FLASH_Sector_4;
+  else if(addr<ADDR_FLASH_SECTOR_6)return FLASH_Sector_5;
+  else if(addr<ADDR_FLASH_SECTOR_7)return FLASH_Sector_6;
+  else if(addr<ADDR_FLASH_SECTOR_8)return FLASH_Sector_7;
+  else if(addr<ADDR_FLASH_SECTOR_9)return FLASH_Sector_8;
+  else if(addr<ADDR_FLASH_SECTOR_10)return FLASH_Sector_9;
+  else if(addr<ADDR_FLASH_SECTOR_11)return FLASH_Sector_10;
+  return FLASH_Sector_11;	
+}
 
 /**
 * @brief  FLASH加密
@@ -65,73 +79,6 @@ FlashData_t flashData={0};
 
 //}
 
-//void STMFLASH_Write(FlashData_t *pBuffer,unsigned int resetTime)	
-//{ 
-//  unsigned int* address=(unsigned int*)pBuffer;
-//  unsigned int WriteAddr=FLASH_USER_ADDRESS+resetTime*sizeof(FlashData_t);
-//  unsigned int endaddr=WriteAddr+sizeof(FlashData_t);
-//  
-//  FLASH_Unlock();									//解锁 
-//  FLASH_DataCacheCmd(DISABLE);//FLASH擦除期间,必须禁止数据缓存
-//  
-//  while(WriteAddr<endaddr)//写数据
-//  {
-//    if(FLASH_ProgramWord(WriteAddr,*address)!=FLASH_COMPLETE)//写入数据
-//    { 
-//      address=address;	//写入异常
-//    }
-//		/*WriteAddr是整数，要加4，address是指针只用加一*/
-//    WriteAddr+=MAX_SIZE;
-//    address++;
-//  }
-//  
-//  FLASH_DataCacheCmd(ENABLE);	//FLASH擦除结束,开启数据缓存
-//  FLASH_Lock();//上锁
-//} 
-
-//void copyFlashData_tFromOther(FlashData_t* copy,FlashData_t* const reality)
-//{
-//	unsigned int* address=(unsigned int*)reality;
-//  unsigned int* WriteAddr=(unsigned int*)copy;
-//  unsigned int* endaddr=WriteAddr+sizeof(FlashData_t)/MAX_SIZE;
-//	
-//  while(WriteAddr<endaddr)//写数据
-//  {
-//    *WriteAddr=*address;
-//    WriteAddr++;
-//    address++;
-//  }
-//}
-
-//void copyFlashData_tAlongAddress(FlashData_t* copy,uint32_t address)
-//{
-//  unsigned int* WriteAddr=(unsigned int*)copy;
-//  unsigned int* endaddr=WriteAddr+sizeof(FlashData_t)/MAX_SIZE;
-//	
-//  while(WriteAddr<endaddr)//写数据
-//  {
-//    *WriteAddr=STMFLASH_ReadWord(address);
-//    WriteAddr++;
-//    address+=MAX_SIZE;
-//  }
-//}
-
-///*把传入的机器人结构体的参数保存到“flash写入结构体”里*/
-//void WriteFlashData(AllPara_t robot,unsigned int resetTime)
-//{
-//	copyFlashData_tFromOther(&dataSave,&robot.sDta);
-//  
-//  STMFLASH_Write(&dataSave,allPara.resetTime);
-//}
-
-
-///*读出第resetTime个结构体的值，resetTime取0 1 2 3*/
-//void STMFLASH_Read(FlashData_t* temp,uint32_t resetTime)   	
-//{
-//  uint32_t baseAdd=FLASH_USER_ADDRESS+resetTime*sizeof(FlashData_t);
-//  
-//	copyFlashData_tAlongAddress(temp,baseAdd);
-//}
 
 
 

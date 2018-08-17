@@ -50,13 +50,17 @@
 
 #define AUTOCAR
 //#define TESTCAR
+
+#define TLE5012_USED
+
 /* Flash Read Protection */
 //#define FLASH_ENCRYP
+
+
 #define PERIOD    											0.005f
 #define dT 					 								 	  0.005         
 
-#define R_wheel1      								  25.284126
-#define R_wheel2    								    25.42820678
+#define PI_DOUBLE												3.14159265358979
 #define LEASTNUM											 	50
 
 #define TempTable_min 								  0.35

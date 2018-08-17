@@ -25,13 +25,9 @@ void init(void)
 	
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_2);
 		
-	//StartCount();
 	SoftWareReset();
 	
-//	LED1_OFF;
-//	LED2_OFF;
   pwm_init(999, 83);//Ϊ84MHz/(83+1)/(999+1)=1KHz
-  
 	ICM_SPIInit();
 	SPI2_Init();
 	SPI3_Init();
@@ -43,7 +39,6 @@ void init(void)
 	USART1DMAInit(115200);
 	#endif
 	USART6DMAInit(921600);
-//  Flash_Init();
 	
 	for(int gyro;gyro<GYRO_NUMBER;gyro++)
 	{

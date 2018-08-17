@@ -1,7 +1,6 @@
 #ifndef __ODOM_H
 #define __ODOM_H
 	
-//#define TLE5012_USED
 /* TLE5012 GPIO PIN define -----------------------------------------------------------*/
 #define      TLE5012_SDN_APBxClock_FUN                    RCC_APB2PeriphClockCmd
 #define      TLE5012_SDN_CLK                              RCC_APB2Periph_GPIOB    

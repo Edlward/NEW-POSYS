@@ -58,6 +58,23 @@ extern AllPara_t allPara;
 #define OLD_1
 //#define OLD_2
 //#define NEW_2
+
+#ifdef OLD_1
+	#define R_wheel1     25.284126
+	#define R_wheel2     25.42820678
+	#define ERROR_ANGLE	 0.0		
+#endif
+#ifdef OLD_2
+	#define R_wheel1     25.284126
+	#define R_wheel2     25.42820678
+	#define ERROR_ANGLE	 0.0		
+#endif
+#ifdef NEW_2
+	#define R_wheel1     25.284126
+	#define R_wheel2     25.42820678
+	#define ERROR_ANGLE	 0.0		
+#endif
+
 void calculatePos(void)
 {
 	
@@ -86,20 +103,10 @@ void calculatePos(void)
 	
 	//直角坐标系和非直角坐标系的转换  一定要注意坐标系的正方向和角度正方向一样！
 
-	#ifdef AUTOCAR	//以y为标准
-		#ifdef OLD_1
-			real[0]=allPara.sDta.vellF[0];
-			real[1]=1.00001901160992*(double)allPara.sDta.vellF[1]-0.006166326400784*(double)allPara.sDta.vellF[0];
-		#endif
-		#ifdef OLD_2
-			real[0]=allPara.sDta.vellF[0];
-			real[1]=1.0000276669728*(double)allPara.sDta.vellF[1]-0.0074387304741118*(double)allPara.sDta.vellF[0];
-		#endif
-		#ifdef NEW_2
-			real[0]=allPara.sDta.vellF[0];
-			real[1]=1.00005377860061*(double)allPara.sDta.vellF[1]-0.0103711182308368*(double)allPara.sDta.vellF[0];
-		#endif
-	#else			//以x为标准
+	#ifdef AUTOCAR	//以x为标准
+		real[0]=allPara.sDta.vellF[0];
+		real[1]=1.0/cos(ERROR_ANGLE*PI_DOUBLE/180.0)*(double)allPara.sDta.vellF[1]-tan(ERROR_ANGLE*PI_DOUBLE/180.0)*(double)allPara.sDta.vellF[0];
+	#else	
 		real[0]=allPara.sDta.vellF[0];
 		real[1]=allPara.sDta.vellF[1];
 	#endif
@@ -150,41 +157,26 @@ void figureVell(void)
 	}
 	
 	#ifdef TLE5012_USED
-		if(allPara.vell[0]>16384)
-			allPara.vell[0]-=32768;
-		if(allPara.vell[0]<-16384)
-			allPara.vell[0]+=32768;
 		
-		if(allPara.vell[1]>16384)
-			allPara.vell[1]-=32768;
-		if(allPara.vell[1]<-16384)
-			allPara.vell[1]+=32768;
+		allPara.vell[0]=allPara.vell[0]-(allPara.vell[0]>16384)*32768;
+		allPara.vell[0]=allPara.vell[0]+(allPara.vell[0]<-16384)*32768;
+	
+		allPara.vell[1]=allPara.vell[1]-(allPara.vell[1]>16384)*32768;
+		allPara.vell[1]=allPara.vell[1]+(allPara.vell[1]<-16384)*32768;
 		
-		allPara.sDta.vellF[0]=allPara.vell[0]*0.310270529087862;
-		allPara.sDta.vellF[1]=allPara.vell[1]*0.309998405357997;
+		allPara.sDta.vellF[0]=allPara.vell[0]*2.0*PI_DOUBLE*R_wheel1/32768.0;
+		allPara.sDta.vellF[1]=allPara.vell[1]*2.0*PI_DOUBLE*R_wheel2/32768.0;
 	#else
-		if(allPara.vell[0]>2048)
-			allPara.vell[0]-=4096;
-		if(allPara.vell[0]<-2048)
-			allPara.vell[0]+=4096;
 		
-		if(allPara.vell[1]>2048)
-			allPara.vell[1]-=4096;
-		if(allPara.vell[1]<-2048)
-			allPara.vell[1]+=4096;
+		allPara.vell[0]=allPara.vell[0]-(allPara.vell[0]>2048)*4096;
+		allPara.vell[0]=allPara.vell[0]+(allPara.vell[0]<-2048)*4096;
 		
-		#ifdef OLD_1
-			allPara.sDta.vellF[0]=allPara.vell[0]*0.038622517085838;
-			allPara.sDta.vellF[1]=allPara.vell[1]*0.038651337725656;
-		#endif
-		#ifdef OLD_2
-			allPara.sDta.vellF[0]=allPara.vell[0]*0.0386727142516114;
-			allPara.sDta.vellF[1]=allPara.vell[1]*0.0386102431015306;
-		#endif
-		#ifdef NEW_2
-		allPara.sDta.vellF[0]=allPara.vell[0]*0.0387225283845694;
-		allPara.sDta.vellF[1]=allPara.vell[1]*0.0387374461979914;
-		#endif
+		allPara.vell[1]=allPara.vell[1]-(allPara.vell[1]>2048)*4096;
+		allPara.vell[1]=allPara.vell[1]+(allPara.vell[1]<-2048)*4096;
+		
+		allPara.sDta.vellF[0]=allPara.vell[0]*2.0*PI_DOUBLE*R_wheel1/4096.0;
+		allPara.sDta.vellF[1]=allPara.vell[1]*2.0*PI_DOUBLE*R_wheel2/4096.0;
+		
 	#endif
 	
 	allPara.vellSum[0]+=allPara.vell[0];

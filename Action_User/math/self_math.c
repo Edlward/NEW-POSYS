@@ -212,30 +212,22 @@ void JudgeStatic(void)
 	difCode[1]=FindMax(codes1)-FindMin(codes1);
 	
 	#ifdef TLE5012_USED
-		if(difCode[0]>16384)
-			difCode[0]-=32768;
-		if(difCode[0]<-16384)
-			difCode[0]+=32768;
+		difCode[0]=difCode[0]-(difCode[0]>16384)*32768;
+		difCode[0]=difCode[0]+(difCode[0]<-16384)*32768;
 		
-		if(difCode[1]>16384)
-			difCode[1]-=32768;
-		if(difCode[1]<-16384)
-			difCode[1]+=32768;
+		difCode[1]=difCode[1]-(difCode[1]>16384)*32768;
+		difCode[1]=difCode[1]+(difCode[1]<-16384)*32768;
 		
 		if(abs(difCode[0])<5&&abs(difCode[1])<5&&fabs(allPara.GYRO_Real[2])<0.20)
 			count++;
 		else
 			count=0;
 	#else
-		if(difCode[0]>2048)
-			difCode[0]-=4096;
-		if(difCode[0]<-2048)
-			difCode[0]+=4096;
+		difCode[0]=difCode[0]-(difCode[0]>2048)*4096;
+		difCode[0]=difCode[0]+(difCode[0]<-2048)*4096;
 		
-		if(difCode[1]>2048)
-			difCode[1]-=4096;
-		if(difCode[1]<-2048)
-			difCode[1]+=4096;
+		difCode[1]=difCode[1]-(difCode[1]>2048)*4096;
+		difCode[1]=difCode[1]+(difCode[1]<-2048)*4096;
 		
 		if(abs(difCode[0])<3&&abs(difCode[1])<3&&fabs(allPara.GYRO_Real[2])<0.20)
 			count++;

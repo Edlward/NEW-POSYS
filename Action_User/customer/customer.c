@@ -404,58 +404,28 @@ void AT_CMD_Judge(void){
 	}
 	else if((bufferI == 10) && strncmp(buffer, "AWR1", 4)==0)//AT    
 	{
-		convert_u.data[0]=*(buffer+4);
-		convert_u.data[1]=*(buffer+6);
-		convert_u.data[2]=*(buffer+7);
-		convert_u.data[3]=*(buffer+8);
-		allPara.sDta.para.rWheelNo1=(double)convert_u.value;
+		atCommand=1;
 		USART_OUT(USART_USED,"OK");
-    bufferInit();
-		writeCharacters();
 	}
 	else if((bufferI == 10) && strncmp(buffer, "AWR2", 4)==0)//AT    
 	{
-		convert_u.data[0]=*(buffer+4);
-		convert_u.data[1]=*(buffer+6);
-		convert_u.data[2]=*(buffer+7);
-		convert_u.data[3]=*(buffer+8);
-		allPara.sDta.para.rWheelNo2=(double)convert_u.value;
+		atCommand=2;
 		USART_OUT(USART_USED,"OK");
-    bufferInit();
-		writeCharacters();
 	}
 	else if((bufferI == 10) && strncmp(buffer, "AAGE", 4)==0)//AT    
 	{
-		convert_u.data[0]=*(buffer+4);
-		convert_u.data[1]=*(buffer+6);
-		convert_u.data[2]=*(buffer+7);
-		convert_u.data[3]=*(buffer+8);
-		allPara.sDta.para.angleWheelError=(double)convert_u.value;
+		atCommand=3;
 		USART_OUT(USART_USED,"OK");
-    bufferInit();
-		writeCharacters();
 	}
 	else if((bufferI == 10) && strncmp(buffer, "ACAF", 4)==0)//AT    
 	{
-		convert_u.data[0]=*(buffer+4);
-		convert_u.data[1]=*(buffer+6);
-		convert_u.data[2]=*(buffer+7);
-		convert_u.data[3]=*(buffer+8);
-		allPara.sDta.para.calibrationFactor=(double)convert_u.value;
+		atCommand=4;
 		USART_OUT(USART_USED,"OK");
-    bufferInit();
-		writeCharacters();
 	}
 	else if((bufferI == 10) && strncmp(buffer, "AGYS", 4)==0)//AT    
 	{
-		convert_u.data[0]=*(buffer+4);
-		convert_u.data[1]=*(buffer+6);
-		convert_u.data[2]=*(buffer+7);
-		convert_u.data[3]=*(buffer+8);
-		allPara.sDta.para.gyroScale=(uint32_t)convert_u.value;
+		atCommand=5;
 		USART_OUT(USART_USED,"OK");
-    bufferInit();
-		writeCharacters();
 	}
   else 
 	{
@@ -467,11 +437,60 @@ void AT_CMD_Judge(void){
 
 void AT_CMD_Handle(void){
 	
+	union{
+		uint8_t data[4];
+		float value;
+	}convert_u;
 	switch(atCommand)
 	{
 		case 0:
+			
 			break;
-
+		case 1:
+			convert_u.data[0]=*(buffer+4);
+			convert_u.data[1]=*(buffer+5);
+			convert_u.data[2]=*(buffer+6);
+			convert_u.data[3]=*(buffer+7);
+			allPara.sDta.para.rWheelNo1=(double)convert_u.value;
+			bufferInit();
+			writeCharacters();
+			break;
+		case 2:
+			convert_u.data[0]=*(buffer+4);
+			convert_u.data[1]=*(buffer+5);
+			convert_u.data[2]=*(buffer+6);
+			convert_u.data[3]=*(buffer+7);
+			allPara.sDta.para.rWheelNo2=(double)convert_u.value;
+			bufferInit();
+			writeCharacters();
+			break;
+		case 3:
+			convert_u.data[0]=*(buffer+4);
+			convert_u.data[1]=*(buffer+5);
+			convert_u.data[2]=*(buffer+6);
+			convert_u.data[3]=*(buffer+7);
+			allPara.sDta.para.angleWheelError=(double)convert_u.value;
+			bufferInit();
+			writeCharacters();
+			break;
+		case 4:
+			convert_u.data[0]=*(buffer+4);
+			convert_u.data[1]=*(buffer+5);
+			convert_u.data[2]=*(buffer+6);
+			convert_u.data[3]=*(buffer+7);
+			allPara.sDta.para.calibrationFactor=(double)convert_u.value;
+			bufferInit();
+			writeCharacters();
+			break;
+		case 5:
+			convert_u.data[0]=*(buffer+4);
+			convert_u.data[1]=*(buffer+5);
+			convert_u.data[2]=*(buffer+6);
+			convert_u.data[3]=*(buffer+7);
+			allPara.sDta.para.gyroScale=(uint32_t)convert_u.value;
+			bufferInit();
+			writeCharacters();
+			break;
 		default:
 			USART_OUT(USART_USED,"error\r\n");
 			break;

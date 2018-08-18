@@ -1,6 +1,7 @@
 #include "character.h"
 #include "flash.h"
 #include "stm32f4xx_flash.h"
+#include "iwdg.h"
 
 //设置FLASH 保存地址(必须为偶数，且所在扇区,要大于本代码所占用到的扇区.
 //否则,写操作的时候,可能会导致擦除整个扇区,从而引起部分程序丢失.引起死机.
@@ -97,6 +98,8 @@ void writeCharacters(void)
 
 void CharactersReserveSectorErase(void)	
 { 
+	
+	IWDG_Long();       //使能看门狗
   FLASH_Unlock();									//解锁 
   FLASH_DataCacheCmd(DISABLE);//FLASH擦除期间,必须禁止数据缓存
   if(FLASH_EraseSector(STMFLASH_GetFlashSector(FLASH_SAVE_ADDR),VoltageRange_3)!=FLASH_COMPLETE) 
@@ -104,5 +107,6 @@ void CharactersReserveSectorErase(void)
   }
   FLASH_DataCacheCmd(ENABLE);	//FLASH擦除结束,开启数据缓存
   FLASH_Lock();//上锁
+	IWDG_Enable();       //使能看门狗
 } 
 

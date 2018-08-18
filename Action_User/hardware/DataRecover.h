@@ -29,7 +29,7 @@
 
 
 
-void STMFLASH_ERASE(void);
+void DataReserveSectorErase(void);
 void WriteFlashData(AllPara_t robot,unsigned int resetTime);
 void SoftWareReset(void);
 void STMFLASH_Read(DataSave_t* flashdata,uint32_t resetTime) ;

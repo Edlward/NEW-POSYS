@@ -73,11 +73,13 @@ uint16_t STMFLASH_GetFlashSector(unsigned int addr)
 * @param  None
 * @retval None
 */
-//void Flash_Init(void)
-//{
+void Flash_Init(void)
+{
+	// HCLLKÎª168MHz£¬²Á³ýµçÑ¹Îª3.3V
+	FLASH_SetLatency(5);
 	
 
-//}
+}
 
 
 

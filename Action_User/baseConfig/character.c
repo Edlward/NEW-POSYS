@@ -4,7 +4,7 @@
 
 //设置FLASH 保存地址(必须为偶数，且所在扇区,要大于本代码所占用到的扇区.
 //否则,写操作的时候,可能会导致擦除整个扇区,从而引起部分程序丢失.引起死机.
-#define FLASH_SAVE_ADDR 					0x080d0000 	
+#define FLASH_SAVE_ADDR 					0x080C0000 	
 
 extern AllPara_t allPara;
 
@@ -18,26 +18,29 @@ void CheckDafault(void)
 	if(allPara.sDta.para.rWheelNo2>25.6||allPara.sDta.para.rWheelNo2<25.0||isnan(allPara.sDta.para.rWheelNo2))
 		allPara.sDta.para.rWheelNo2=25.4;
 	
-	if(((allPara.sDta.para.calibrationFactor>132.0||allPara.sDta.para.calibrationFactor<130.0)&&(allPara.sDta.para.gyroScale==250))||isnan(allPara.sDta.para.calibrationFactor))
+	if(allPara.sDta.para.gyroScale!=250&&allPara.sDta.para.gyroScale!=500&&allPara.sDta.para.gyroScale!=1000)
 	{
 		allPara.sDta.para.calibrationFactor=131.0;
 		allPara.sDta.para.gyroScale=250;
-	}
-	else if(((allPara.sDta.para.calibrationFactor>66.0||allPara.sDta.para.calibrationFactor<65.0)&&(allPara.sDta.para.gyroScale==500))||isnan(allPara.sDta.para.calibrationFactor))
-	{
-		allPara.sDta.para.calibrationFactor=65.5;
-		allPara.sDta.para.gyroScale=500;
-	}
-	else if(((allPara.sDta.para.calibrationFactor>33.3||allPara.sDta.para.calibrationFactor<32.3)&&(allPara.sDta.para.gyroScale==1000))||isnan(allPara.sDta.para.calibrationFactor))
-	{
-		allPara.sDta.para.calibrationFactor=32.8;
-		allPara.sDta.para.gyroScale=1000;
 	}
 	else
-		allPara.sDta.para.calibrationFactor=131.0;
-	
-	if(allPara.sDta.para.gyroScale!=250&&allPara.sDta.para.gyroScale!=500&&allPara.sDta.para.gyroScale!=1000)
-		allPara.sDta.para.gyroScale=250;
+	{
+		if(((allPara.sDta.para.calibrationFactor>132.0||allPara.sDta.para.calibrationFactor<130.0)&&(allPara.sDta.para.gyroScale==250))||isnan(allPara.sDta.para.calibrationFactor))
+		{
+			allPara.sDta.para.calibrationFactor=131.0;
+			allPara.sDta.para.gyroScale=250;
+		}
+		else if(((allPara.sDta.para.calibrationFactor>66.0||allPara.sDta.para.calibrationFactor<65.0)&&(allPara.sDta.para.gyroScale==500))||isnan(allPara.sDta.para.calibrationFactor))
+		{
+			allPara.sDta.para.calibrationFactor=65.5;
+			allPara.sDta.para.gyroScale=500;
+		}
+		else if(((allPara.sDta.para.calibrationFactor>33.3||allPara.sDta.para.calibrationFactor<32.3)&&(allPara.sDta.para.gyroScale==1000))||isnan(allPara.sDta.para.calibrationFactor))
+		{
+			allPara.sDta.para.calibrationFactor=32.8;
+			allPara.sDta.para.gyroScale=1000;
+		}
+	}
 	
 	if(allPara.sDta.para.angleWheelError>1.0||allPara.sDta.para.angleWheelError<-1.0||isnan(allPara.sDta.para.angleWheelError))
 		allPara.sDta.para.angleWheelError=0.0;
@@ -48,7 +51,7 @@ void CheckDafault(void)
 //上电从flash里读取最新的信息
 void ReadCharacters(void)
 {
-	uint32_t baseAdd=FLASH_SAVE_ADDR+sizeof(character_t);
+	uint32_t baseAdd=FLASH_SAVE_ADDR;
 	
 	unsigned int* WriteAddr=(unsigned int*)(&allPara.sDta.para);
   unsigned int* endaddr=WriteAddr+sizeof(character_t)/4;
@@ -60,7 +63,7 @@ void ReadCharacters(void)
     baseAdd+=4;
   }
 	
-	CheckDafault();
+		CheckDafault();
 }
 
 //存储到flash里
@@ -68,7 +71,9 @@ void writeCharacters(void)
 {
 	character_t *pBuffer=&allPara.sDta.para;
 
-  unsigned int* address=(unsigned int*)pBuffer;
+	CharactersReserveSectorErase();
+  
+	unsigned int* address=(unsigned int*)pBuffer;
   unsigned int WriteAddr=FLASH_SAVE_ADDR;
   unsigned int endaddr=WriteAddr+sizeof(character_t);
   
@@ -90,5 +95,14 @@ void writeCharacters(void)
   FLASH_Lock();//上锁
 }
 
-
+void CharactersReserveSectorErase(void)	
+{ 
+  FLASH_Unlock();									//解锁 
+  FLASH_DataCacheCmd(DISABLE);//FLASH擦除期间,必须禁止数据缓存
+  if(FLASH_EraseSector(STMFLASH_GetFlashSector(FLASH_SAVE_ADDR),VoltageRange_3)!=FLASH_COMPLETE) 
+  {
+  }
+  FLASH_DataCacheCmd(ENABLE);	//FLASH擦除结束,开启数据缓存
+  FLASH_Lock();//上锁
+} 
 

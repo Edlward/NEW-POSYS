@@ -22,6 +22,7 @@ void ReadCharacters(void);
 //¥Ê¥¢µΩflash¿Ô
 void writeCharacters(void);
 
+void CharactersReserveSectorErase(void);
 #endif
 
 

@@ -332,13 +332,8 @@ void AT_CMD_Judge(void){
 	{
     bufferInit();
 		allPara.sDta.Result_Angle[2]=0.0;
-		USART_OUT(USART_USED,"OK");
-	}
-	else if((bufferI == 4) && strncmp(buffer, "AQ\r\n", 4)==0)//AT    
-	{
-    bufferInit();
-		allPara.sDta.Result_Angle[2]=0.0;
 		allPara.sDta.posx=0.0;
+		allPara.sDta.posy=0.0;
 		USART_OUT(USART_USED,"OK");
 	}
 	else if((bufferI == 8) && strncmp(buffer, "AX", 2)==0)//AT    
@@ -404,27 +399,27 @@ void AT_CMD_Judge(void){
 	}
 	else if((bufferI == 10) && strncmp(buffer, "AWR1", 4)==0)//AT    
 	{
-		atCommand=1;
+		atCommand=UPDATE_WHEEL_R1;
 		USART_OUT(USART_USED,"OK");
 	}
 	else if((bufferI == 10) && strncmp(buffer, "AWR2", 4)==0)//AT    
 	{
-		atCommand=2;
+		atCommand=UPDATE_WHEEL_R2;
 		USART_OUT(USART_USED,"OK");
 	}
 	else if((bufferI == 10) && strncmp(buffer, "AAGE", 4)==0)//AT    
 	{
-		atCommand=3;
+		atCommand=UPDATE_ANGLE_ERROR;
 		USART_OUT(USART_USED,"OK");
 	}
 	else if((bufferI == 10) && strncmp(buffer, "ACAF", 4)==0)//AT    
 	{
-		atCommand=4;
+		atCommand=UPDATE_CALIBRATION_FACTOR;
 		USART_OUT(USART_USED,"OK");
 	}
 	else if((bufferI == 10) && strncmp(buffer, "AGYS", 4)==0)//AT    
 	{
-		atCommand=5;
+		atCommand=UPDATE_GYRO_SCALE;
 		USART_OUT(USART_USED,"OK");
 	}
   else 
@@ -446,7 +441,7 @@ void AT_CMD_Handle(void){
 		case 0:
 			
 			break;
-		case 1:
+		case UPDATE_WHEEL_R1:
 			convert_u.data[0]=*(buffer+4);
 			convert_u.data[1]=*(buffer+5);
 			convert_u.data[2]=*(buffer+6);
@@ -455,7 +450,7 @@ void AT_CMD_Handle(void){
 			bufferInit();
 			writeCharacters();
 			break;
-		case 2:
+		case UPDATE_WHEEL_R2:
 			convert_u.data[0]=*(buffer+4);
 			convert_u.data[1]=*(buffer+5);
 			convert_u.data[2]=*(buffer+6);
@@ -464,7 +459,7 @@ void AT_CMD_Handle(void){
 			bufferInit();
 			writeCharacters();
 			break;
-		case 3:
+		case UPDATE_ANGLE_ERROR:
 			convert_u.data[0]=*(buffer+4);
 			convert_u.data[1]=*(buffer+5);
 			convert_u.data[2]=*(buffer+6);
@@ -473,7 +468,7 @@ void AT_CMD_Handle(void){
 			bufferInit();
 			writeCharacters();
 			break;
-		case 4:
+		case UPDATE_CALIBRATION_FACTOR:
 			convert_u.data[0]=*(buffer+4);
 			convert_u.data[1]=*(buffer+5);
 			convert_u.data[2]=*(buffer+6);
@@ -482,7 +477,7 @@ void AT_CMD_Handle(void){
 			bufferInit();
 			writeCharacters();
 			break;
-		case 5:
+		case UPDATE_GYRO_SCALE:
 			convert_u.data[0]=*(buffer+4);
 			convert_u.data[1]=*(buffer+5);
 			convert_u.data[2]=*(buffer+6);

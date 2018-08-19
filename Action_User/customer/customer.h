@@ -22,6 +22,12 @@
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
+
+#define UPDATE_WHEEL_R1											1
+#define UPDATE_WHEEL_R2											2
+#define UPDATE_ANGLE_ERROR									3
+#define UPDATE_CALIBRATION_FACTOR						4
+#define UPDATE_GYRO_SCALE										5
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void DataSend(void);

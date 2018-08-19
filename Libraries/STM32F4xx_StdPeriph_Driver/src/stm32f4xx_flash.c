@@ -1025,6 +1025,7 @@ FLASH_Status FLASH_GetStatus(void)
   * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
   *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
   */
+#include "iwdg.h"
 FLASH_Status FLASH_WaitForLastOperation(void)
 { 
   __IO FLASH_Status status = FLASH_COMPLETE;

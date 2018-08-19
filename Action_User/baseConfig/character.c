@@ -98,8 +98,7 @@ void writeCharacters(void)
 
 void CharactersReserveSectorErase(void)	
 { 
-	
-	IWDG_Long();       //使能看门狗
+	IWDG_Long();
   FLASH_Unlock();									//解锁 
   FLASH_DataCacheCmd(DISABLE);//FLASH擦除期间,必须禁止数据缓存
   if(FLASH_EraseSector(STMFLASH_GetFlashSector(FLASH_SAVE_ADDR),VoltageRange_3)!=FLASH_COMPLETE) 
@@ -107,6 +106,6 @@ void CharactersReserveSectorErase(void)
   }
   FLASH_DataCacheCmd(ENABLE);	//FLASH擦除结束,开启数据缓存
   FLASH_Lock();//上锁
-	IWDG_Enable();       //使能看门狗
+	IWDG_Init(4,100);
 } 
 

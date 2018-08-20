@@ -422,9 +422,19 @@
               <FilePath>..\Action_User\develop\temperature_control.c</FilePath>
             </File>
             <File>
-              <FileName>customer.c</FileName>
+              <FileName>receiveData.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Action_User\customer\customer.c</FilePath>
+              <FilePath>..\Action_User\customer\receiveData.c</FilePath>
+            </File>
+            <File>
+              <FileName>sendData.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Action_User\customer\sendData.c</FilePath>
+            </File>
+            <File>
+              <FileName>rotate.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Action_User\customer\rotate.c</FilePath>
             </File>
           </Files>
         </Group>

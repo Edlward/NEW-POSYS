@@ -6,7 +6,7 @@
 #ifdef TEST_SUMMER
 #define DMA_SEND_SIZE   100
 #else
-#define DMA_SEND_SIZE   36
+#define DMA_SEND_SIZE   28
 #endif
 
 #define USART_USED   		USART1

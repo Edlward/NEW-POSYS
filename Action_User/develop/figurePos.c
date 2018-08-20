@@ -68,7 +68,7 @@ void calculatePos(void)
 	/*获得定位系统x，y方向上的速度*/
 	allPara.sDta.vellx=delPos[0]*200.f;
 	allPara.sDta.velly=delPos[1]*200.f;
-	
+
 }
 
 void figureVell(void)

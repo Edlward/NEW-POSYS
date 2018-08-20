@@ -30,7 +30,8 @@
 #include "buildExcel.h"
 #include "spi.h"
 #include "figureAngle.h"
-#include "customer.h"
+#include "receiveData.h" 
+#include "sendData.h"
 #include "timer.h"
 #include "usart.h"
 #include "arm_math.h"
@@ -42,6 +43,7 @@
 #include "adc.h"
 #include "odom.h"
 #include "character.h"
+#include "rotate.h"
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 
@@ -189,13 +191,32 @@ typedef struct{
   uint32_t time;
 	
 	character_t para;
+	
 }DataSave_t;
+
+typedef struct{
+
+	float angle;
+	
+	float x;
+	
+	float y;
+	
+	float speedX;
+	
+	float speedY;
+	
+	float wz;
+}talkData_t;
 
 
 typedef struct{
 	
 	/*重启需要储存的数据*/
 	DataSave_t sDta;
+	
+	/*和用户交流的信息*/
+	talkData_t talkData;
 	
 	/*陀螺仪原始数据*/
 	double GYROWithoutRemoveDrift[GYRO_NUMBER][AXIS_NUMBER];

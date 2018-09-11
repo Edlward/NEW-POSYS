@@ -28,6 +28,11 @@
 #define UPDATE_ANGLE_ERROR									3
 #define UPDATE_CALIBRATION_FACTOR						4
 #define UPDATE_GYRO_SCALE										5
+
+/*返回数给测试平台*/
+#define RETURN_ANGLE_ERROR_TO_TESTPLAN      6
+#define RETURN_WHEEL_R1_TO_TESTPLAN         7
+#define RETURN_WHEEL_R2_TO_TESTPLAN         8
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 

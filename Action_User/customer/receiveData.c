@@ -236,6 +236,20 @@ void AT_CMD_Judge(void){
 		atCommand=UPDATE_GYRO_SCALE;
 		USART_OUT(USART_USED,"OK");
 	}
+	else if((bufferI == 11) && strncmp(buffer, "ATFLASH", 7)==0)//AT    
+	{
+		if(strncmp(buffer+7, "AE", 2)==0)
+		{
+			atCommand=RETURN_ANGLE_ERROR_TO_TESTPLAN;
+		}else if(strncmp(buffer+7, "R1", 2)==0)
+		{
+			atCommand=RETURN_WHEEL_R1_TO_TESTPLAN;
+		}else if(strncmp(buffer+7, "R2", 2)==0)
+		{
+		  atCommand=RETURN_WHEEL_R2_TO_TESTPLAN;
+		}
+		USART_OUT(USART_USED,"OK");
+	}
   else 
 	{
     atCommand=666;
@@ -301,6 +315,40 @@ void AT_CMD_Handle(void){
 			writeCharacters();
 			IWDG_Reset();
 			break;
+		
+		case RETURN_ANGLE_ERROR_TO_TESTPLAN:
+			convert_u.data[0]=*(buffer+4);
+			convert_u.data[1]=*(buffer+5);
+			convert_u.data[2]=*(buffer+6);
+			convert_u.data[3]=*(buffer+7);
+			allPara.sDta.para.gyroScale=(uint32_t)convert_u.value;
+			bufferInit();
+			writeCharacters();
+			IWDG_Reset();
+		break;
+		
+		case RETURN_WHEEL_R1_TO_TESTPLAN:
+			convert_u.data[0]=*(buffer+4);
+			convert_u.data[1]=*(buffer+5);
+			convert_u.data[2]=*(buffer+6);
+			convert_u.data[3]=*(buffer+7);
+			allPara.sDta.para.gyroScale=(uint32_t)convert_u.value;
+			bufferInit();
+			writeCharacters();
+			IWDG_Reset();
+		break;
+		
+		case RETURN_WHEEL_R2_TO_TESTPLAN:
+			convert_u.data[0]=*(buffer+4);
+			convert_u.data[1]=*(buffer+5);
+			convert_u.data[2]=*(buffer+6);
+			convert_u.data[3]=*(buffer+7);
+			allPara.sDta.para.gyroScale=(uint32_t)convert_u.value;
+			bufferInit();
+			writeCharacters();
+			IWDG_Reset();
+		break;
+		
 		default:
 			USART_OUT(USART_USED,"error\r\n");
 			break;

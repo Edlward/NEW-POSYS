@@ -5,7 +5,6 @@
 
 //设置FLASH 保存地址(必须为偶数，且所在扇区,要大于本代码所占用到的扇区.
 //否则,写操作的时候,可能会导致擦除整个扇区,从而引起部分程序丢失.引起死机.
-#define FLASH_SAVE_ADDR 					0x080C0000 	
 
 extern AllPara_t allPara;
 
@@ -52,7 +51,7 @@ void CheckDafault(void)
 //上电从flash里读取最新的信息
 void ReadCharacters(void)
 {
-	uint32_t baseAdd=FLASH_SAVE_ADDR;
+	uint32_t baseAdd=READ_FLASH_SAVE_PHYSICAL_PARA_ADDR;
 	
 	unsigned int* WriteAddr=(unsigned int*)(&allPara.sDta.para);
   unsigned int* endaddr=WriteAddr+sizeof(character_t)/4;
@@ -75,7 +74,7 @@ void writeCharacters(void)
 	CharactersReserveSectorErase();
   
 	unsigned int* address=(unsigned int*)pBuffer;
-  unsigned int WriteAddr=FLASH_SAVE_ADDR;
+  unsigned int WriteAddr=READ_FLASH_SAVE_PHYSICAL_PARA_ADDR;
   unsigned int endaddr=WriteAddr+sizeof(character_t);
   
   FLASH_Unlock();									//解锁 
@@ -101,7 +100,7 @@ void CharactersReserveSectorErase(void)
 	IWDG_Long();
   FLASH_Unlock();									//解锁 
   FLASH_DataCacheCmd(DISABLE);//FLASH擦除期间,必须禁止数据缓存
-  if(FLASH_EraseSector(STMFLASH_GetFlashSector(FLASH_SAVE_ADDR),VoltageRange_3)!=FLASH_COMPLETE) 
+  if(FLASH_EraseSector(STMFLASH_GetFlashSector(READ_FLASH_SAVE_PHYSICAL_PARA_ADDR),VoltageRange_3)!=FLASH_COMPLETE) 
   {
   }
   FLASH_DataCacheCmd(ENABLE);	//FLASH擦除结束,开启数据缓存

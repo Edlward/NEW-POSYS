@@ -2,6 +2,8 @@
 #define __CHARACTER_H
 
 #include "stdint.h"
+
+#define READ_FLASH_SAVE_PHYSICAL_PARA_ADDR 					0x080C0000
 typedef struct{
 
 	double  rWheelNo1;
@@ -12,7 +14,7 @@ typedef struct{
 	
 	double  calibrationFactor;
 	
-	uint32_t  gyroScale;
+	double  gyroScale;
 	
 }character_t;
 

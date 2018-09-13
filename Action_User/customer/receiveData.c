@@ -17,6 +17,8 @@
 
 #include "config.h"
 #include "iwdg.h"
+#include "character.h"
+
 
 extern AllPara_t allPara;
 static char buffer[20];
@@ -236,19 +238,10 @@ void AT_CMD_Judge(void){
 		atCommand=UPDATE_GYRO_SCALE;
 		USART_OUT(USART_USED,"OK");
 	}
-	else if((bufferI == 11) && strncmp(buffer, "ATFLASH", 7)==0)//AT    
+	else if((bufferI == 9) && strncmp(buffer, "ATFLASH", 7)==0)//AT    
 	{
-		if(strncmp(buffer+7, "AE", 2)==0)
-		{
-			atCommand=RETURN_ANGLE_ERROR_TO_TESTPLAN;
-		}else if(strncmp(buffer+7, "R1", 2)==0)
-		{
-			atCommand=RETURN_WHEEL_R1_TO_TESTPLAN;
-		}else if(strncmp(buffer+7, "R2", 2)==0)
-		{
-		  atCommand=RETURN_WHEEL_R2_TO_TESTPLAN;
-		}
-		USART_OUT(USART_USED,"OK");
+		atCommand=RETURN_DATA_TO_TESTPLAN;
+//		USART_OUT(USART_USED,"OK");
 	}
   else 
 	{
@@ -316,38 +309,11 @@ void AT_CMD_Handle(void){
 			IWDG_Reset();
 			break;
 		
-		case RETURN_ANGLE_ERROR_TO_TESTPLAN:
-			convert_u.data[0]=*(buffer+4);
-			convert_u.data[1]=*(buffer+5);
-			convert_u.data[2]=*(buffer+6);
-			convert_u.data[3]=*(buffer+7);
-			allPara.sDta.para.gyroScale=(uint32_t)convert_u.value;
+		case RETURN_DATA_TO_TESTPLAN:
+			ReturnDataToTestPlan();
 			bufferInit();
-			writeCharacters();
-			IWDG_Reset();
 		break;
 		
-		case RETURN_WHEEL_R1_TO_TESTPLAN:
-			convert_u.data[0]=*(buffer+4);
-			convert_u.data[1]=*(buffer+5);
-			convert_u.data[2]=*(buffer+6);
-			convert_u.data[3]=*(buffer+7);
-			allPara.sDta.para.gyroScale=(uint32_t)convert_u.value;
-			bufferInit();
-			writeCharacters();
-			IWDG_Reset();
-		break;
-		
-		case RETURN_WHEEL_R2_TO_TESTPLAN:
-			convert_u.data[0]=*(buffer+4);
-			convert_u.data[1]=*(buffer+5);
-			convert_u.data[2]=*(buffer+6);
-			convert_u.data[3]=*(buffer+7);
-			allPara.sDta.para.gyroScale=(uint32_t)convert_u.value;
-			bufferInit();
-			writeCharacters();
-			IWDG_Reset();
-		break;
 		
 		default:
 			USART_OUT(USART_USED,"error\r\n");
@@ -391,3 +357,58 @@ void SetFlag(int val){
     break;
   }
 }
+#define RETURN_DATA_LONG     44
+void ReturnDataToTestPlan(void)
+{
+	USART_OUT(USART_USED,"OK");
+
+	uint32_t baseAdd=READ_FLASH_SAVE_PHYSICAL_PARA_ADDR;
+	
+	character_t returnData;
+	uint8_t sendReturnData[RETURN_DATA_LONG];
+	unsigned int* writeAddr=(unsigned int*)(&returnData);
+  unsigned int* endaddr=writeAddr+sizeof(character_t)/4;
+	union {
+		 double sendDouble;
+		 uint8_t sendChar[8];
+	}sendDataDouble;
+
+  while(writeAddr<endaddr)//Ð´Êý¾Ý
+  {
+    *writeAddr=*(volatile unsigned int*)(baseAdd);
+    writeAddr++;
+    baseAdd+=4;
+  }
+	
+	sendReturnData[0]='R';
+	sendReturnData[1]='E';
+	
+	sendReturnData[RETURN_DATA_LONG-2]='\r';
+	sendReturnData[RETURN_DATA_LONG-1]='\n';
+	
+	sendDataDouble.sendDouble = returnData.angleWheelError;
+	memcpy(sendReturnData+2,sendDataDouble.sendChar,8);
+
+  sendDataDouble.sendDouble = returnData.rWheelNo1;
+	memcpy(sendReturnData+10,sendDataDouble.sendChar,8);
+
+	sendDataDouble.sendDouble = returnData.rWheelNo2;
+	memcpy(sendReturnData+18,sendDataDouble.sendChar,8);
+
+	sendDataDouble.sendDouble = returnData.calibrationFactor;
+	memcpy(sendReturnData+26,sendDataDouble.sendChar,8);
+
+	sendDataDouble.sendDouble = returnData.gyroScale;
+	memcpy(sendReturnData+34,sendDataDouble.sendChar,8);
+
+
+	for(int i=0;i<RETURN_DATA_LONG;i++)
+	{
+		delay_ms(1);
+		USART_SendData(USART_USED,sendReturnData[i]);
+	}
+
+
+
+}
+

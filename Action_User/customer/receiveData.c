@@ -274,6 +274,7 @@ void AT_CMD_Handle(void){
 			bufferInit();
 			writeCharacters();
 			USART_OUT(USART_USED,"OK");
+			USART_OUT(USART_USED,"DONE");
 			break;
 		case UPDATE_WHEEL_R2:
 			convert_u.data[0]=*(buffer+4);
@@ -287,6 +288,7 @@ void AT_CMD_Handle(void){
 			bufferInit();
 			writeCharacters();
 			USART_OUT(USART_USED,"OK");
+			USART_OUT(USART_USED,"DONE");
 			break;
 		case UPDATE_ANGLE_ERROR:
 			convert_u.data[0]=*(buffer+4);
@@ -301,6 +303,7 @@ void AT_CMD_Handle(void){
 			writeCharacters();
 		
 			USART_OUT(USART_USED,"OK");
+			USART_OUT(USART_USED,"DONE");
 			break;
 		case UPDATE_CALIBRATION_FACTOR:
 			convert_u.data[0]=*(buffer+4);
@@ -316,6 +319,7 @@ void AT_CMD_Handle(void){
 			writeCharacters();
 		
 			USART_OUT(USART_USED,"OK");
+			USART_OUT(USART_USED,"DONE");
 			break;
 		case UPDATE_GYRO_SCALE:
 			convert_u.data[0]=*(buffer+4);
@@ -332,11 +336,13 @@ void AT_CMD_Handle(void){
 			IWDG_Reset();
 		
 			USART_OUT(USART_USED,"OK");
+			USART_OUT(USART_USED,"DONE");
 			break;
 		
 		case RETURN_DATA_TO_TESTPLAN:
 			USART_OUT(USART_USED,"OK");
 		  ReturnDataToTestPlan();
+			USART_OUT(USART_USED,"DONE");
 			bufferInit();
 		break;
 		

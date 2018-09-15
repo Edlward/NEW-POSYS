@@ -344,7 +344,20 @@ void USART_SendDataToDMA_USART6(uint8_t data)
 */
 
 //PD8
-
+void USART_OUTF(float x)
+{
+     const char *s;
+		 char String[20]={0};
+		 int integer=( int )x;
+		 if(x<0.f&&x>-1.f)
+			 sprintf( (char*)String, "-%d.%04d\t", ( int )x, (unsigned int)((fabs(x) - abs(integer))  * 10000));
+		 else
+			 sprintf( (char*)String, "%d.%04d\t", ( int )x, (unsigned int)((fabs(x) - abs(integer))  * 10000));
+		 for (s=String; *s; s++) 
+		 {
+				USART_SendData(USART6,*s);
+     }
+}
 void USART_OUT_F(float value)
 {
   char s[10]={0};

@@ -3,14 +3,14 @@
 #include "stm32f4xx_flash.h"
 #include "iwdg.h"
 
-//ÉèÖÃFLASH ±£´æµØÖ·(±ØÐëÎªÅ¼Êý£¬ÇÒËùÔÚÉÈÇø,Òª´óÓÚ±¾´úÂëËùÕ¼ÓÃµ½µÄÉÈÇø.
-//·ñÔò,Ð´²Ù×÷µÄÊ±ºò,¿ÉÄÜ»áµ¼ÖÂ²Á³ýÕû¸öÉÈÇø,´Ó¶øÒýÆð²¿·Ö³ÌÐò¶ªÊ§.ÒýÆðËÀ»ú.
+//è®¾ç½®FLASH ä¿å­˜åœ°å€(å¿…é¡»ä¸ºå¶æ•°ï¼Œä¸”æ‰€åœ¨æ‰‡åŒº,è¦å¤§äºŽæœ¬ä»£ç æ‰€å ç”¨åˆ°çš„æ‰‡åŒº.
+//å¦åˆ™,å†™æ“ä½œçš„æ—¶å€™,å¯èƒ½ä¼šå¯¼è‡´æ“¦é™¤æ•´ä¸ªæ‰‡åŒº,ä»Žè€Œå¼•èµ·éƒ¨åˆ†ç¨‹åºä¸¢å¤±.å¼•èµ·æ­»æœº.
 
 extern AllPara_t allPara;
 
 void CheckDafault(void)
 {
-	//Èç¹ûflashÀïÃ»ÓÐ´æ´¢ÐÅÏ¢(»òÆ«ÀëÕý³£Öµ)£¬ÔòÊ¹ÓÃÄ¬ÈÏÐÅÏ¢
+	//å¦‚æžœflashé‡Œæ²¡æœ‰å­˜å‚¨ä¿¡æ¯(æˆ–åç¦»æ­£å¸¸å€¼)ï¼Œåˆ™ä½¿ç”¨é»˜è®¤ä¿¡æ¯
 	
 	if(allPara.sDta.para.rWheelNo1>25.6||allPara.sDta.para.rWheelNo1<25.0||isnan(allPara.sDta.para.rWheelNo1))
 		allPara.sDta.para.rWheelNo1=25.4;
@@ -48,7 +48,7 @@ void CheckDafault(void)
 }
 
 
-//ÉÏµç´ÓflashÀï¶ÁÈ¡×îÐÂµÄÐÅÏ¢
+//ä¸Šç”µä»Žflashé‡Œè¯»å–æœ€æ–°çš„ä¿¡æ¯
 void ReadCharacters(void)
 {
 	uint32_t baseAdd=READ_FLASH_SAVE_PHYSICAL_PARA_ADDR;
@@ -56,7 +56,7 @@ void ReadCharacters(void)
 	unsigned int* WriteAddr=(unsigned int*)(&allPara.sDta.para);
   unsigned int* endaddr=WriteAddr+sizeof(character_t)/4;
 	
-  while(WriteAddr<endaddr)//Ð´Êý¾Ý
+  while(WriteAddr<endaddr)//å†™æ•°æ®
   {
     *WriteAddr=*(volatile unsigned int*)(baseAdd);
     WriteAddr++;
@@ -66,7 +66,7 @@ void ReadCharacters(void)
 		CheckDafault();
 }
 
-//´æ´¢µ½flashÀï
+//å­˜å‚¨åˆ°flashé‡Œ
 void writeCharacters(void)
 {
 	character_t *pBuffer=&allPara.sDta.para;
@@ -77,34 +77,34 @@ void writeCharacters(void)
   unsigned int WriteAddr=READ_FLASH_SAVE_PHYSICAL_PARA_ADDR;
   unsigned int endaddr=WriteAddr+sizeof(character_t);
   
-  FLASH_Unlock();									//½âËø 
-  FLASH_DataCacheCmd(DISABLE);//FLASH²Á³ýÆÚ¼ä,±ØÐë½ûÖ¹Êý¾Ý»º´æ
+  FLASH_Unlock();									//è§£é” 
+  FLASH_DataCacheCmd(DISABLE);//FLASHæ“¦é™¤æœŸé—´,å¿…é¡»ç¦æ­¢æ•°æ®ç¼“å­˜
   
-  while(WriteAddr<endaddr)//Ð´Êý¾Ý
+  while(WriteAddr<endaddr)//å†™æ•°æ®
   {
-    if(FLASH_ProgramWord(WriteAddr,*address)!=FLASH_COMPLETE)//Ð´ÈëÊý¾Ý
+    if(FLASH_ProgramWord(WriteAddr,*address)!=FLASH_COMPLETE)//å†™å…¥æ•°æ®
     { 
-      address=address;	//Ð´ÈëÒì³£
+      address=address;	//å†™å…¥å¼‚å¸¸
     }
-		/*WriteAddrÊÇÕûÊý£¬Òª¼Ó4£¬addressÊÇÖ¸ÕëÖ»ÓÃ¼ÓÒ»*/
+		/*WriteAddræ˜¯æ•´æ•°ï¼Œè¦åŠ 4ï¼Œaddressæ˜¯æŒ‡é’ˆåªç”¨åŠ ä¸€*/
     WriteAddr+=4;
     address++;
   }
   
-  FLASH_DataCacheCmd(ENABLE);	//FLASH²Á³ý½áÊø,¿ªÆôÊý¾Ý»º´æ
-  FLASH_Lock();//ÉÏËø
+  FLASH_DataCacheCmd(ENABLE);	//FLASHæ“¦é™¤ç»“æŸ,å¼€å¯æ•°æ®ç¼“å­˜
+  FLASH_Lock();//ä¸Šé”
 }
 
 void CharactersReserveSectorErase(void)	
 { 
 	IWDG_Long();
-  FLASH_Unlock();									//½âËø 
-  FLASH_DataCacheCmd(DISABLE);//FLASH²Á³ýÆÚ¼ä,±ØÐë½ûÖ¹Êý¾Ý»º´æ
+  FLASH_Unlock();									//è§£é” 
+  FLASH_DataCacheCmd(DISABLE);//FLASHæ“¦é™¤æœŸé—´,å¿…é¡»ç¦æ­¢æ•°æ®ç¼“å­˜
   if(FLASH_EraseSector(STMFLASH_GetFlashSector(READ_FLASH_SAVE_PHYSICAL_PARA_ADDR),VoltageRange_3)!=FLASH_COMPLETE) 
   {
   }
-  FLASH_DataCacheCmd(ENABLE);	//FLASH²Á³ý½áÊø,¿ªÆôÊý¾Ý»º´æ
-  FLASH_Lock();//ÉÏËø
+  FLASH_DataCacheCmd(ENABLE);	//FLASHæ“¦é™¤ç»“æŸ,å¼€å¯æ•°æ®ç¼“å­˜
+  FLASH_Lock();//ä¸Šé”
 	IWDG_Init(4,100);
 } 
 

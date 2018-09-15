@@ -216,27 +216,27 @@ void AT_CMD_Judge(void){
 	else if((bufferI == 10) && strncmp(buffer, "AWR1", 4)==0)//AT    
 	{
 		atCommand=UPDATE_WHEEL_R1;
-		USART_OUT(USART_USED,"OK");
+//		USART_OUT(USART_USED,"OK");
 	}
 	else if((bufferI == 10) && strncmp(buffer, "AWR2", 4)==0)//AT    
 	{
 		atCommand=UPDATE_WHEEL_R2;
-		USART_OUT(USART_USED,"OK");
+//		USART_OUT(USART_USED,"OK");
 	}
 	else if((bufferI == 10) && strncmp(buffer, "AAGE", 4)==0)//AT    
 	{
 		atCommand=UPDATE_ANGLE_ERROR;
-		USART_OUT(USART_USED,"OK");
+//		USART_OUT(USART_USED,"OK");
 	}
 	else if((bufferI == 10) && strncmp(buffer, "ACAF", 4)==0)//AT    
 	{
 		atCommand=UPDATE_CALIBRATION_FACTOR;
-		USART_OUT(USART_USED,"OK");
+//		USART_OUT(USART_USED,"OK");
 	}
 	else if((bufferI == 10) && strncmp(buffer, "AGYS", 4)==0)//AT    
 	{
 		atCommand=UPDATE_GYRO_SCALE;
-		USART_OUT(USART_USED,"OK");
+//		USART_OUT(USART_USED,"OK");
 	}
 	else if((bufferI == 9) && strncmp(buffer, "ATFLASH", 7)==0)//AT    
 	{
@@ -268,8 +268,12 @@ void AT_CMD_Handle(void){
 			convert_u.data[2]=*(buffer+6);
 			convert_u.data[3]=*(buffer+7);
 			allPara.sDta.para.rWheelNo1=(double)convert_u.value;
+			USART_OUTByDMAF(allPara.sDta.para.rWheelNo1);
+			USART_EnterByDMA();
+
 			bufferInit();
 			writeCharacters();
+			USART_OUT(USART_USED,"OK");
 			break;
 		case UPDATE_WHEEL_R2:
 			convert_u.data[0]=*(buffer+4);
@@ -277,8 +281,12 @@ void AT_CMD_Handle(void){
 			convert_u.data[2]=*(buffer+6);
 			convert_u.data[3]=*(buffer+7);
 			allPara.sDta.para.rWheelNo2=(double)convert_u.value;
+			USART_OUTByDMAF(allPara.sDta.para.rWheelNo2);
+			USART_EnterByDMA();
+
 			bufferInit();
 			writeCharacters();
+			USART_OUT(USART_USED,"OK");
 			break;
 		case UPDATE_ANGLE_ERROR:
 			convert_u.data[0]=*(buffer+4);
@@ -286,17 +294,28 @@ void AT_CMD_Handle(void){
 			convert_u.data[2]=*(buffer+6);
 			convert_u.data[3]=*(buffer+7);
 			allPara.sDta.para.angleWheelError=(double)convert_u.value;
+			USART_OUTByDMAF(allPara.sDta.para.angleWheelError);
+			USART_EnterByDMA();
+
 			bufferInit();
 			writeCharacters();
+		
+			USART_OUT(USART_USED,"OK");
 			break;
 		case UPDATE_CALIBRATION_FACTOR:
 			convert_u.data[0]=*(buffer+4);
 			convert_u.data[1]=*(buffer+5);
 			convert_u.data[2]=*(buffer+6);
 			convert_u.data[3]=*(buffer+7);
+			USART_OUTByDMAF(allPara.sDta.para.calibrationFactor);
+			USART_EnterByDMA();
+
 			allPara.sDta.para.calibrationFactor=(double)convert_u.value;
+
 			bufferInit();
 			writeCharacters();
+		
+			USART_OUT(USART_USED,"OK");
 			break;
 		case UPDATE_GYRO_SCALE:
 			convert_u.data[0]=*(buffer+4);
@@ -304,13 +323,20 @@ void AT_CMD_Handle(void){
 			convert_u.data[2]=*(buffer+6);
 			convert_u.data[3]=*(buffer+7);
 			allPara.sDta.para.gyroScale=(uint32_t)convert_u.value;
+		
+			USART_OUTByDMAF(allPara.sDta.para.gyroScale);
+			USART_EnterByDMA();
+		
 			bufferInit();
 			writeCharacters();
 			IWDG_Reset();
+		
+			USART_OUT(USART_USED,"OK");
 			break;
 		
 		case RETURN_DATA_TO_TESTPLAN:
-			ReturnDataToTestPlan();
+			USART_OUT(USART_USED,"OK");
+		  ReturnDataToTestPlan();
 			bufferInit();
 		break;
 		
@@ -360,7 +386,6 @@ void SetFlag(int val){
 #define RETURN_DATA_LONG     44
 void ReturnDataToTestPlan(void)
 {
-	USART_OUT(USART_USED,"OK");
 
 	uint32_t baseAdd=READ_FLASH_SAVE_PHYSICAL_PARA_ADDR;
 	
@@ -407,6 +432,13 @@ void ReturnDataToTestPlan(void)
 		delay_ms(1);
 		USART_SendData(USART_USED,sendReturnData[i]);
 	}
+
+	USART_OUTByDMAF(returnData.angleWheelError);
+	USART_OUTByDMAF(returnData.rWheelNo1);
+	USART_OUTByDMAF(returnData.rWheelNo2);
+	USART_OUTByDMAF(returnData.calibrationFactor);
+	USART_OUTByDMAF(returnData.gyroScale);
+	USART_EnterByDMA();
 
 
 

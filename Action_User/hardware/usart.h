@@ -25,6 +25,6 @@ void USART_OUT(USART_TypeDef* USARTx,const char *Data,...);
 char *itoa(int value, char *string, int radix);
 void USART_OUT_F(float value);
 void USART_Enter(void);
-
+void USART_OUTF(float x);
 #endif
 

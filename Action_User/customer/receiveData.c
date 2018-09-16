@@ -270,8 +270,8 @@ void AT_CMD_Handle(void){
 			convert_u.data[2]=*(buffer+6);
 			convert_u.data[3]=*(buffer+7);
 			allPara.sDta.para.rWheelNo1=(double)convert_u.value;
-			USART_OUTByDMAF(allPara.sDta.para.rWheelNo1);
-			USART_EnterByDMA();
+			USART_OUTF(allPara.sDta.para.rWheelNo1);
+			USART_OUT(USART6,"\r\n");
 
 			bufferInit();
 			writeCharacters();
@@ -285,8 +285,8 @@ void AT_CMD_Handle(void){
 			convert_u.data[2]=*(buffer+6);
 			convert_u.data[3]=*(buffer+7);
 			allPara.sDta.para.rWheelNo2=(double)convert_u.value;
-			USART_OUTByDMAF(allPara.sDta.para.rWheelNo2);
-			USART_EnterByDMA();
+			USART_OUTF(allPara.sDta.para.rWheelNo2);
+			USART_OUT(USART6,"\r\n");
 
 			bufferInit();
 			writeCharacters();
@@ -300,8 +300,8 @@ void AT_CMD_Handle(void){
 			convert_u.data[2]=*(buffer+6);
 			convert_u.data[3]=*(buffer+7);
 			allPara.sDta.para.angleWheelError=(double)convert_u.value;
-			USART_OUTByDMAF(allPara.sDta.para.angleWheelError);
-			USART_EnterByDMA();
+			USART_OUTF(allPara.sDta.para.angleWheelError);
+			USART_OUT(USART6,"\r\n");
 
 			bufferInit();
 			writeCharacters();
@@ -315,8 +315,8 @@ void AT_CMD_Handle(void){
 			convert_u.data[1]=*(buffer+5);
 			convert_u.data[2]=*(buffer+6);
 			convert_u.data[3]=*(buffer+7);
-			USART_OUTByDMAF(allPara.sDta.para.calibrationFactor);
-			USART_EnterByDMA();
+			USART_OUTF(allPara.sDta.para.calibrationFactor);
+			USART_OUT(USART6,"\r\n");
 
 			allPara.sDta.para.calibrationFactor=(double)convert_u.value;
 
@@ -334,8 +334,8 @@ void AT_CMD_Handle(void){
 			convert_u.data[3]=*(buffer+7);
 			allPara.sDta.para.gyroScale=(uint32_t)convert_u.value;
 		
-			USART_OUTByDMAF(allPara.sDta.para.gyroScale);
-			USART_EnterByDMA();
+			USART_OUTF(allPara.sDta.para.gyroScale);
+			USART_OUT(USART6,"\r\n");
 		
 			bufferInit();
 			writeCharacters();
@@ -444,12 +444,12 @@ void ReturnDataToTestPlan(void)
 		USART_SendData(USART_USED,sendReturnData[i]);
 	}
 
-	USART_OUTByDMAF(returnData.angleWheelError);
-	USART_OUTByDMAF(returnData.rWheelNo1);
-	USART_OUTByDMAF(returnData.rWheelNo2);
-	USART_OUTByDMAF(returnData.calibrationFactor);
-	USART_OUTByDMAF(returnData.gyroScale);
-	USART_EnterByDMA();
+	USART_OUTF(returnData.angleWheelError);
+	USART_OUTF(returnData.rWheelNo1);
+	USART_OUTF(returnData.rWheelNo2);
+	USART_OUTF(returnData.calibrationFactor);
+	USART_OUTF(returnData.gyroScale);
+	USART_OUT(USART6,"\r\n");
 
 
 
